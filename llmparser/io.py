@@ -34,6 +34,9 @@ def yaml_to_dict(filepath:Path|str) -> dict:
 
 
 def write_yaml(data, filepath:Path|str):
+    filepath = Path(filepath)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    
     with open(filepath, "w") as f:
         for file_key, data in data.items():
             yaml.dump({file_key: data}, f, Dumper=LiteralDumper, sort_keys=False, allow_unicode=True)
@@ -44,11 +47,14 @@ def conllu_to_dict(
     conllu_path:Path,
 ) -> dict:
     output_data = {}
+
+    with open(conllu_path, "r", encoding="utf-8") as f:
+        count = sum(1 for _ in conllu.parse_incr(f))
     
     with open(conllu_path, "r", encoding="utf-8") as f:
         data = conllu.parse_incr(f)
 
-        for example in track(data):
+        for example in track(data, total=count, description="Opening CoNLL-U file"):
             item_data = dict(example.metadata)
             sent_id = item_data.get("sent_id")
             text = item_data.get("text", "").strip()

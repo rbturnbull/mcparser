@@ -2,7 +2,7 @@ from pathlib import Path
 import typer
 import llmloader
 
-from .io import write_yaml, load_file
+from .io import load_file
 from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
 from .parsing import parse_items
 
@@ -41,10 +41,7 @@ def parse(
     # Read input YAML file
     data = load_file(input)
 
-    parsed_data = parse_items(data, database, llm, n_examples)
-
-    # Write output YAML file
-    write_yaml(parsed_data, output)
+    parse_items(data, database, llm, n_examples, output=output)
 
 
 @app.command()
