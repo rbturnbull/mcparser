@@ -1,11 +1,11 @@
 from pathlib import Path
 import typer
 import llmloader
-import conllu
 import yaml
 
 from .io import write_yaml
 from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
+from .prompt import build_chain
 
 app = typer.Typer()
 
@@ -31,26 +31,29 @@ def parse(
     model:str = typer.Option("claude-sonnet-4-5-20250929", help="LLM model to use"),
     temperature:float = typer.Option(0.2, help="LLM temperature"),
     api_key:str = typer.Option(None, help="API key for LLM"),
+    embedding_model:str = typer.Option(DEFAULT_EMBEDDING_MODEL_ID, help="Embedding model ID"),
 ):
     llm = llmloader.load(model, temperature=temperature, api_key=api_key)
 
-    # TODO Load database
+    # Load database
+    database = load_database(db, embedding_model_id=embedding_model)
 
-    # TODO Read input YAML file
-    # data = 
+    # Read input YAML file
+    data = yaml.parse( Path(input).read_text() )
 
     # Loop over sentences
     for key, item_data in data.items():
-        # TODO Embed sentence
+        assert 'text' in item_data
+        sentence = item_data["text"]
 
-        # TODO Retrieve examples from database
+        # Retrieve examples from database
+        examples = database.similarity_search(sentence, k=n_examples)
 
-        # TODO Create prompt
-        prompt = ""
-        chain = prompt | llm | StrOutputParser()
+        # Create prompt
+        chain = build_chain(llm, sentence, examples)
 
-        # TODO Call LLM to get parse
-        result = chain.invoke(prompt)
+        # Call LLM to get parsing
+        result = chain.invoke({})
 
         # Store result
         item_data['conllu'] = result
