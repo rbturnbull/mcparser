@@ -1,5 +1,6 @@
 from pathlib import Path
 import typer
+from rich.progress import track
 import llmloader
 import yaml
 
@@ -61,3 +62,27 @@ def parse(
 
     # Write output YAML file
     write_yaml(data, output)
+
+@app.command()
+def conllu_to_yaml(
+    conllu_path:Path = typer.Argument(..., help="Path to input CoNLL-U file"),
+    yaml_path:Path = typer.Argument(..., help="Path to output YAML file"),
+) -> dict:
+    output_data = {}
+    import conllu
+
+    with open(conllu_path, "r", encoding="utf-8") as f:
+        data = conllu.parse_incr(f)
+
+        for example in track(data):
+            item_data = dict(example.metadata)
+            sent_id = next(item_data.values())
+            text = item_data.get("text", "").strip()
+            if not text:
+                continue            
+            item_data["text"] = text
+            output_data[sent_id] = item_data
+    
+    write_yaml(output_data, yaml_path)
+    
+    return output_data

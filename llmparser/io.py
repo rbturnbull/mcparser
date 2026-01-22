@@ -1,6 +1,9 @@
 from pathlib import Path
 import yaml
 from yaml.emitter import Emitter, ScalarAnalysis
+import conllu
+from rich.progress import track
+
 
 # Keep original function
 _orig_analyze_scalar = Emitter.analyze_scalar
@@ -31,3 +34,30 @@ def write_yaml(data, filepath:Path|str):
         for file_key, data in data.items():
             yaml.dump({file_key: data}, f, Dumper=LiteralDumper, sort_keys=False, allow_unicode=True)
             f.write("\n")                
+
+
+def conllu_to_dict(
+    conllu_path:Path,
+) -> dict:
+    output_data = {}
+    
+    with open(conllu_path, "r", encoding="utf-8") as f:
+        data = conllu.parse_incr(f)
+
+        for example in track(data):
+            item_data = dict(example.metadata)
+            sent_id = next(item_data.values())
+            text = item_data.get("text", "").strip()
+            if not text:
+                continue            
+            item_data["text"] = text
+            output_data[sent_id] = item_data
+
+    return output_data
+
+
+def conllu_to_yaml(conllu_path:Path, yaml_path:Path) -> dict:
+    output_data = conllu_to_dict(conllu_path)    
+    write_yaml(output_data, yaml_path)
+    
+    return output_data
