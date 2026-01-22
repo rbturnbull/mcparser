@@ -26,7 +26,7 @@ def parse(
     input:Path = typer.Argument(..., help="Path to input YAML file"),
     db:Path = typer.Option(..., help="Path to database with examples (see `db` command)"),
     output:Path = typer.Option(..., help="Path to output YAML file"),
-    n_examples:int = typer.Option(100, help="Number of examples to include in the prompt"),
+    n_examples:int = typer.Option(10, help="Number of examples to include in the prompt"),
     model:str = typer.Option("claude-sonnet-4-5-20250929", help="LLM model to use"),
     temperature:float = typer.Option(0.2, help="LLM temperature"),
     api_key:str = typer.Option(None, help="API key for LLM"),

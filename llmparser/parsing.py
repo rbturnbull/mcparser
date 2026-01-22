@@ -7,8 +7,8 @@ def parse_items(
     data:dict,
     database:Chroma,
     llm,
-    n_examples:int = 100,
-) -> None:
+    n_examples:int = 10,
+) -> dict:
     data = dict(data)  # Make a copy to avoid modifying the input dict
     
     # Loop over each item
