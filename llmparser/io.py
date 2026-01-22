@@ -29,6 +29,10 @@ def str_presenter(dumper, data):
 LiteralDumper.add_representer(str, str_presenter)
 
 
+def yaml_to_dict(filepath:Path|str):
+    return yaml.parse( Path(filepath).read_text() )    
+
+
 def write_yaml(data, filepath:Path|str):
     with open(filepath, "w") as f:
         for file_key, data in data.items():
@@ -56,8 +60,18 @@ def conllu_to_dict(
     return output_data
 
 
-def conllu_to_yaml(conllu_path:Path, yaml_path:Path) -> dict:
-    output_data = conllu_to_dict(conllu_path)    
+def convert_to_yaml(input:Path, yaml_path:Path) -> dict:
+    output_data = load_file(input)    
     write_yaml(output_data, yaml_path)
     
     return output_data
+
+
+def load_file(filepath:Path|str):
+    suffix = Path(filepath).suffix.lower()
+    if suffix in [".yaml", ".yml"]:
+        return yaml_to_dict(filepath)
+    elif suffix == ".conllu":
+        return conllu_to_dict(filepath)
+    else:
+        raise ValueError(f"Unsupported file extension: {suffix}")

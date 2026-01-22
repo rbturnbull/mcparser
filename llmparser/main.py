@@ -1,10 +1,8 @@
 from pathlib import Path
 import typer
-from rich.progress import track
 import llmloader
-import yaml
 
-from .io import write_yaml
+from .io import write_yaml, load_file
 from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
 from .prompt import build_chain
 
@@ -40,7 +38,7 @@ def parse(
     database = load_database(db, embedding_model_id=embedding_model)
 
     # Read input YAML file
-    data = yaml.parse( Path(input).read_text() )
+    data = load_file(input)
 
     # Loop over sentences
     for key, item_data in data.items():
@@ -63,26 +61,11 @@ def parse(
     # Write output YAML file
     write_yaml(data, output)
 
+
 @app.command()
-def conllu_to_yaml(
-    conllu_path:Path = typer.Argument(..., help="Path to input CoNLL-U file"),
+def convert_to_yaml(
+    input:Path = typer.Argument(..., help="Path to input CoNLL-U file"),
     yaml_path:Path = typer.Argument(..., help="Path to output YAML file"),
 ) -> dict:
-    output_data = {}
-    import conllu
-
-    with open(conllu_path, "r", encoding="utf-8") as f:
-        data = conllu.parse_incr(f)
-
-        for example in track(data):
-            item_data = dict(example.metadata)
-            sent_id = next(item_data.values())
-            text = item_data.get("text", "").strip()
-            if not text:
-                continue            
-            item_data["text"] = text
-            output_data[sent_id] = item_data
-    
-    write_yaml(output_data, yaml_path)
-    
-    return output_data
+    from .io import convert_to_yaml as convert_to_yaml_func
+    return convert_to_yaml_func(input, yaml_path)
