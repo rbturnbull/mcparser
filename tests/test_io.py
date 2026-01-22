@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from llmparser.io import conllu_to_dict, write_yaml
+from llmparser.io import conllu_to_dict, convert_to_yaml, load_file, write_yaml
 
 
 def test_write_yaml_single_item_preserves_key_order(tmp_path: Path) -> None:
@@ -63,3 +63,32 @@ def test_conllu_to_dict_uses_sent_id_and_text() -> None:
 
     assert "5.7" in data
     assert data["5.7"]["text"].strip() != ""
+
+
+def test_load_file_reads_yaml(tmp_path: Path) -> None:
+    yaml_path = tmp_path / "input.yml"
+    yaml_path.write_text("item1:\n  text: hello\n")
+
+    data = load_file(yaml_path)
+
+    assert data["item1"]["text"] == "hello"
+
+
+def test_load_file_reads_conllu() -> None:
+    conllu_path = Path(__file__).parent / "test_data" / "hit_hittb-ud-test.conllu"
+
+    data = load_file(conllu_path)
+
+    assert "5.7" in data
+    assert data["5.7"]["text"].strip() != ""
+
+
+def test_convert_to_yaml_writes_output(tmp_path: Path) -> None:
+    conllu_path = Path(__file__).parent / "test_data" / "hit_hittb-ud-test.conllu"
+    yaml_path = tmp_path / "out.yml"
+
+    data = convert_to_yaml(conllu_path, yaml_path)
+
+    assert "5.7" in data
+    content = yaml_path.read_text()
+    assert "'5.7':\n" in content

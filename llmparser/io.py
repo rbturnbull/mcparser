@@ -29,8 +29,8 @@ def str_presenter(dumper, data):
 LiteralDumper.add_representer(str, str_presenter)
 
 
-def yaml_to_dict(filepath:Path|str):
-    return yaml.parse( Path(filepath).read_text() )    
+def yaml_to_dict(filepath:Path|str) -> dict:
+    return yaml.safe_load( Path(filepath).read_text() )    
 
 
 def write_yaml(data, filepath:Path|str):
