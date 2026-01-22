@@ -1,5 +1,5 @@
-from langchain.prompts import ChatPromptTemplate
-from langchain.schema.output_parser import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 
 
 def build_prompt(text:str, examples) -> ChatPromptTemplate:

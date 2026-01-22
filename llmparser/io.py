@@ -50,7 +50,7 @@ def conllu_to_dict(
 
         for example in track(data):
             item_data = dict(example.metadata)
-            sent_id = next(item_data.values())
+            sent_id = item_data.get("sent_id")
             text = item_data.get("text", "").strip()
             if not text:
                 continue            
