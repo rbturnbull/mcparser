@@ -4,6 +4,8 @@ import llmloader
 import conllu
 import yaml
 
+from .io import write_yaml
+
 app = typer.Typer()
 
 @app.command()
@@ -56,5 +58,4 @@ def parse(
         data[key] = item_data
 
     # Write output YAML file
-    with open(output, "w", encoding="utf-8") as f:
-        yaml.dump(data, f)
+    write_yaml(data, output)
