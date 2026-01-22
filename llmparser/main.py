@@ -4,7 +4,7 @@ import llmloader
 
 from .io import write_yaml, load_file
 from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
-from .prompt import build_chain
+from .parsing import parse_items
 
 app = typer.Typer()
 
@@ -32,6 +32,7 @@ def parse(
     api_key:str = typer.Option(None, help="API key for LLM"),
     embedding_model:str = typer.Option(DEFAULT_EMBEDDING_MODEL_ID, help="Embedding model ID"),
 ):
+    """ Parse items in input YAML file using LLM and example database, write output YAML file. """
     llm = llmloader.load(model, temperature=temperature, api_key=api_key)
 
     # Load database
@@ -40,26 +41,10 @@ def parse(
     # Read input YAML file
     data = load_file(input)
 
-    # Loop over sentences
-    for key, item_data in data.items():
-        assert 'text' in item_data
-        sentence = item_data["text"]
-
-        # Retrieve examples from database
-        examples = database.similarity_search(sentence, k=n_examples)
-
-        # Create prompt
-        chain = build_chain(llm, sentence, examples)
-
-        # Call LLM to get parsing
-        result = chain.invoke({})
-
-        # Store result
-        item_data['conllu'] = result
-        data[key] = item_data
+    parsed_data = parse_items(data, database, llm, n_examples)
 
     # Write output YAML file
-    write_yaml(data, output)
+    write_yaml(parsed_data, output)
 
 
 @app.command()
