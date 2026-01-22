@@ -5,6 +5,7 @@ import conllu
 import yaml
 
 from .io import write_yaml
+from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
 
 app = typer.Typer()
 
@@ -12,16 +13,14 @@ app = typer.Typer()
 def db(
     input:Path = typer.Argument(..., help="Path to input CoNLL-U file"),
     output:Path = typer.Argument(..., help="Path to output database"),
+    embedding_model:str = typer.Option(DEFAULT_EMBEDDING_MODEL_ID, help="Embedding model ID"),
 ):
-    # TODO Read CONLL-U file
-    with open(input, "r", encoding="utf-8") as f:
-        data = conllu.parse_incr(f)
+    build_database(
+        conllu_path=input,
+        output_path=output,
+        embedding_model_id=embedding_model,
+    )
 
-        # TODO Create Document with metadata
-
-        # TODO Embed sentences
-
-    # TODO Save database
 
 @app.command()
 def parse(
