@@ -37,7 +37,7 @@ def parse(
     # TODO Load database
 
     # TODO Read input YAML file
-    data = 
+    # data = 
 
     # Loop over sentences
     for key, item_data in data.items():
