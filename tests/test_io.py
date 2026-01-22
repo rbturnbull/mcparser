@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from llmparser.io import write_yaml
+from llmparser.io import conllu_to_dict, write_yaml
 
 
 def test_write_yaml_single_item_preserves_key_order(tmp_path: Path) -> None:
@@ -54,3 +54,12 @@ def test_write_yaml_multiple_items_are_separated(tmp_path: Path) -> None:
     assert len(blocks) == 2
     assert blocks[0].lstrip().startswith("first:")
     assert blocks[1].lstrip().startswith("second:")
+
+
+def test_conllu_to_dict_uses_sent_id_and_text() -> None:
+    conllu_path = Path(__file__).parent / "test_data" / "hit_hittb-ud-test.conllu"
+
+    data = conllu_to_dict(conllu_path)
+
+    assert "5.7" in data
+    assert data["5.7"]["text"].strip() != ""
