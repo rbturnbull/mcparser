@@ -14,6 +14,7 @@ def db(
     output:Path = typer.Argument(..., help="Path to output database"),
     embedding_model:str = typer.Option(DEFAULT_EMBEDDING_MODEL_ID, help="Embedding model ID"),
 ):
+    """ Build database of examples from a CoNLL-U file. """
     build_database(
         conllu_path=input,
         output_path=output,
