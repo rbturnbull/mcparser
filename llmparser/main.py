@@ -3,7 +3,7 @@ import typer
 import llmloader
 
 from .io import load_file
-from .database import load_database, build_database
+from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
 from .parsing import parse_items
 
 app = typer.Typer()
@@ -12,13 +12,11 @@ app = typer.Typer()
 def db(
     input:Path = typer.Argument(..., help="Path to input CoNLL-U file"),
     output:Path = typer.Argument(..., help="Path to output database"),
-    embedding_model:str | None = typer.Option(None, help="Embedding model ID (optional; defaults to DB config)"),
 ):
     """ Build database of examples from a CoNLL-U file. """
     build_database(
         conllu_path=input,
         output_path=output,
-        embedding_model_id=embedding_model,
     )
 
 

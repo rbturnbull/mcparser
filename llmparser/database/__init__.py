@@ -1,12 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Iterable
 
-from .databases.database_chroma import (
-    DatabaseChroma,
-)
-from .databases.database_retriv import DatabaseRetriv
+from .database_chroma import DatabaseChroma, DEFAULT_EMBEDDING_MODEL_ID, build_embedding_docs
+from .database_retriv import DatabaseRetriv
 
 
 _DATABASE_CLASSES: tuple[type, ...] = (DatabaseChroma, DatabaseRetriv)
@@ -15,8 +12,10 @@ _DATABASE_CLASSES: tuple[type, ...] = (DatabaseChroma, DatabaseRetriv)
 def build_database(
     conllu_path: Path,
     output_path: Path,
+    embedding_model_id: str | None = DEFAULT_EMBEDDING_MODEL_ID,
 ):
-    return DatabaseRetriv.build(conllu_path, output_path)
+    model_id = embedding_model_id or DEFAULT_EMBEDDING_MODEL_ID
+    return DatabaseChroma.build(conllu_path, output_path, embedding_model_id=model_id)
 
 
 def load_database(

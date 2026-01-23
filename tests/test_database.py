@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from llmparser.database import build_database, load_database
-from llmparser.databases.database_chroma import build_embedding_docs
+from llmparser.database.database_chroma import build_embedding_docs
 from llmparser.io import conllu_to_dict
 
 

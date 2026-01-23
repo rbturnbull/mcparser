@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-import llmparser.databases.database_chroma as database_chroma
+import llmparser.database.database_chroma as database_chroma
 
 
 class DummyEmbeddings:

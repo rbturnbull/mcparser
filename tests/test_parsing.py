@@ -9,7 +9,7 @@ class DummyDatabase:
     def __init__(self, examples):
         self._examples = list(examples)
 
-    def similarity_search(self, _sentence: str, k: int = 100):
+    def __call__(self, _sentence: str, k: int = 100):
         return self._examples[:k]
 
 

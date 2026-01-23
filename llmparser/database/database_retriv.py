@@ -66,10 +66,7 @@ class DatabaseRetriv(DatabaseBase):
             task = progress.add_task("[cyan]Indexing documents...", total=len(collection))
             for start in range(0, len(collection), batch_size):
                 batch = collection[start : start + batch_size]
-                if start == 0:
-                    sr.index(batch)
-                else:
-                    sr.index(batch, show_progress=False)
+                sr.index(batch, show_progress=False)
                 progress.update(task, advance=len(batch))
 
         return cls(output_path, index_name=index_name)
