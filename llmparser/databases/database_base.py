@@ -1,5 +1,5 @@
 from pathlib import Path
-from collections import ABC
+from abc import ABC
 
 DEFAULT_NUM_RESULTS = 10
 
@@ -25,6 +25,6 @@ class DatabaseBase(ABC):
     def __call__(
         self,
         query:str,
-        num_results:int = DEFAULT_NUM_RESULTS,
+        k:int = DEFAULT_NUM_RESULTS,
     ) -> list[dict]:
         raise NotImplementedError()

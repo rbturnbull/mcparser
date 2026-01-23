@@ -4,8 +4,9 @@ from types import SimpleNamespace
 import llmloader
 from typer.testing import CliRunner
 
-from llmparser.database import build_embedding_docs, load_database
+from llmparser.database import load_database
 from llmparser.main import app
+from llmparser.io import conllu_to_dict
 
 
 class DummyDatabase:
@@ -24,7 +25,9 @@ def test_db_command_builds_database(tmp_path: Path, patch_embeddings_and_chroma)
     result = runner.invoke(app, ["db", str(conllu_path), str(db_path)])
 
     assert result.exit_code == 0
-    expected_docs = build_embedding_docs(conllu_path)
+
+    
+    expected_docs = conllu_to_dict(conllu_path)
     loaded_db = load_database(db_path)
     assert loaded_db.docs_count == len(expected_docs)
 

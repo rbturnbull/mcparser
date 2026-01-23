@@ -1,13 +1,15 @@
 from __future__ import annotations
 
-import json
 import os
 from pathlib import Path
 from typing import Any
+from types import SimpleNamespace
 
 import conllu
 from retriv import SparseRetriever
 from rich.progress import Progress, track
+
+from .database_base import DEFAULT_NUM_RESULTS, DatabaseBase
 
 
 def build_retriv_collection(conllu_path: Path) -> list[dict[str, Any]]:
@@ -35,52 +37,69 @@ def build_retriv_collection(conllu_path: Path) -> list[dict[str, Any]]:
     return collection
 
 
-def build_database(conllu_path: Path, output_path: Path) -> SparseRetriever:
-    """
-    Build a retriv sparse index (BM25) called 'index' and persist it under output_path.
+class DatabaseRetriv(DatabaseBase):
+    def __init__(self, path: Path | str, index_name: str = "index"):
+        self.index_name = index_name
+        self.db: SparseRetriever | None = None
+        super().__init__(path)
 
-    retriv stores indices under a "base path". We set RETRIV_BASE_PATH so you fully control
-    where the index lives on disk.
-    """
-    output_path = Path(output_path)
-    output_path.mkdir(parents=True, exist_ok=True)
+    @classmethod
+    def build(cls, conllu_path: Path, output_path: Path, index_name: str = "index") -> "DatabaseRetriv":
+        """
+        Build a retriv sparse index (BM25) called 'index' and persist it under output_path.
 
-    os.environ["RETRIV_BASE_PATH"] = str(output_path)
+        retriv stores indices under a "base path". We set RETRIV_BASE_PATH so you fully control
+        where the index lives on disk.
+        """
+        output_path = Path(output_path)
+        output_path.mkdir(parents=True, exist_ok=True)
 
-    collection = build_retriv_collection(conllu_path)
-    print(f"Indexing {len(collection)} items into retriv base path: {output_path}")
+        os.environ["RETRIV_BASE_PATH"] = str(output_path)
 
-    sr = SparseRetriever(index_name="index")
+        collection = build_retriv_collection(conllu_path)
+        print(f"Indexing {len(collection)} items into retriv base path: {output_path}")
 
-    # If you want progress feedback, chunk the indexing (works well for ~10k docs)
-    batch_size = 2_000
-    with Progress() as progress:
-        task = progress.add_task("[cyan]Indexing documents...", total=len(collection))
-        for start in range(0, len(collection), batch_size):
-            batch = collection[start : start + batch_size]
-            if start == 0:
-                sr.index(batch)
-            else:
-                # retriv supports incremental indexing by calling index() again
-                sr.index(batch, show_progress=False)
-            progress.update(task, advance=len(batch))
+        sr = SparseRetriever(index_name=index_name)
 
-    return sr
+        batch_size = 2_000
+        with Progress() as progress:
+            task = progress.add_task("[cyan]Indexing documents...", total=len(collection))
+            for start in range(0, len(collection), batch_size):
+                batch = collection[start : start + batch_size]
+                if start == 0:
+                    sr.index(batch)
+                else:
+                    sr.index(batch, show_progress=False)
+                progress.update(task, advance=len(batch))
+
+        return cls(output_path, index_name=index_name)
+
+    def load(self, path: Path | str) -> None:
+        path = Path(path)
+        assert path.exists(), f"Database path {path} does not exist"
+
+        os.environ["RETRIV_BASE_PATH"] = str(path)
+        self.db = SparseRetriever(index_name=self.index_name)
+
+    def __call__(self, query: str, k: int = DEFAULT_NUM_RESULTS) -> list[dict]:
+        if self.db is None:
+            raise RuntimeError("Database is not loaded.")
+        return self.db.search(query, return_docs=True, cutoff=k)
+
+    def similarity_search(self, query: str, k: int = DEFAULT_NUM_RESULTS):
+        if self.db is None:
+            raise RuntimeError("Database is not loaded.")
+        results = self.db.search(query, return_docs=True, cutoff=k)
+        return [SimpleNamespace(metadata=result) for result in results]
 
 
-def load_database(path: Path | str) -> SparseRetriever:
-    """
-    Load an existing retriv index named 'index' from the given base path.
-    """
-    path = Path(path)
-    assert path.exists(), f"Database path {path} does not exist"
-
-    os.environ["RETRIV_BASE_PATH"] = str(path)
-    return SparseRetriever(index_name="my-index")
+def build_database(conllu_path: Path, output_path: Path, index_name: str = "index") -> DatabaseRetriv:
+    return DatabaseRetriv.build(conllu_path, output_path, index_name=index_name)
 
 
-def search_database(db: SparseRetriever, query: str, cutoff: int = 10) -> list[dict[str, Any]]:
-    """
-    Search and return docs (including stored metadata_json).
-    """
-    return db.search(query, return_docs=True, cutoff=cutoff)
+def load_database(path: Path | str, index_name: str = "index") -> DatabaseRetriv:
+    return DatabaseRetriv(path, index_name=index_name)
+
+
+def search_database(db: DatabaseRetriv, query: str, cutoff: int = 10) -> list[dict[str, Any]]:
+    return db(query, k=cutoff)

@@ -3,7 +3,7 @@ import typer
 import llmloader
 
 from .io import load_file
-from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
+from .database import load_database, build_database
 from .parsing import parse_items
 
 app = typer.Typer()
@@ -12,7 +12,7 @@ app = typer.Typer()
 def db(
     input:Path = typer.Argument(..., help="Path to input CoNLL-U file"),
     output:Path = typer.Argument(..., help="Path to output database"),
-    embedding_model:str = typer.Option(DEFAULT_EMBEDDING_MODEL_ID, help="Embedding model ID"),
+    embedding_model:str | None = typer.Option(None, help="Embedding model ID (optional; defaults to DB config)"),
 ):
     """ Build database of examples from a CoNLL-U file. """
     build_database(
@@ -31,13 +31,13 @@ def parse(
     model:str = typer.Option("claude-sonnet-4-5-20250929", help="LLM model to use"),
     temperature:float = typer.Option(0.2, help="LLM temperature"),
     api_key:str = typer.Option(None, help="API key for LLM"),
-    embedding_model:str = typer.Option(DEFAULT_EMBEDDING_MODEL_ID, help="Embedding model ID"),
+    # embedding_model:str = typer.Option(DEFAULT_EMBEDDING_MODEL_ID, help="Embedding model ID"),
 ):
     """ Parse items in input YAML file using LLM and example database, write output YAML file. """
     llm = llmloader.load(model, temperature=temperature, api_key=api_key)
 
     # Load database
-    database = load_database(db, embedding_model_id=embedding_model)
+    database = load_database(db)
 
     # Read input YAML file
     data = load_file(input)

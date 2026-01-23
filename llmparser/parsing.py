@@ -20,7 +20,7 @@ def parse_items(
         sentence = item_data["text"]
 
         # Retrieve examples from database
-        examples = database.similarity_search(sentence, k=n_examples)
+        examples = database(sentence, k=n_examples)
 
         # Create prompt
         chain = build_chain(llm, sentence, examples)

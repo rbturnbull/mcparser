@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-import llmparser.database as database
+import llmparser.databases.database_chroma as database_chroma
 
 
 class DummyEmbeddings:
@@ -38,6 +38,6 @@ class FakeChroma:
 
 @pytest.fixture
 def patch_embeddings_and_chroma(monkeypatch):
-    monkeypatch.setattr(database, "OpenAIEmbeddings", DummyEmbeddings)
-    monkeypatch.setattr(database, "Chroma", FakeChroma)
+    monkeypatch.setattr(database_chroma, "OpenAIEmbeddings", DummyEmbeddings)
+    monkeypatch.setattr(database_chroma, "Chroma", FakeChroma)
     return FakeChroma

@@ -7,12 +7,14 @@ authors = [
 ]
 license = {text = "Apache-2.0"}
 readme = "README.rst"
-requires-python = ">3.10,<4.0"
+requires-python = ">3.10,<3.13"
 dependencies = [
     "llmloader (>=0.1.9,<0.2.0)",
     "typer (>=0.21.1,<0.22.0)",
     "conllu (>=6.0.0,<7.0.0)",
-    "langchain-chroma (>=1.1.0,<2.0.0)"
+    "langchain-chroma (>=1.1.0,<2.0.0)",
+    "retriv (>=0.2.3,<0.3.0)",
+    "psutil (>=7.2.1,<8.0.0)"
 ]
 
 
