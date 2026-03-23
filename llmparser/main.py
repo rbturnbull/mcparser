@@ -29,6 +29,7 @@ def parse(
     model:str = typer.Option("claude-sonnet-4-5-20250929", help="LLM model to use"),
     temperature:float = typer.Option(0.2, help="LLM temperature"),
     api_key:str = typer.Option(None, help="API key for LLM"),
+    ignore_existing:bool = typer.Option(True, help="Ignore items that already have 'conllu' field in the output"),
     # embedding_model:str = typer.Option(DEFAULT_EMBEDDING_MODEL_ID, help="Embedding model ID"),
 ):
     """ Parse items in input YAML file using LLM and example database, write output YAML file. """
@@ -40,7 +41,7 @@ def parse(
     # Read input YAML file
     data = load_file(input)
 
-    parse_items(data, database, llm, n_examples, output=output)
+    parse_items(data, database, llm, n_examples, output=output, ignore_existing=ignore_existing)
 
 
 @app.command()

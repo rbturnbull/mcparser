@@ -11,6 +11,7 @@ def parse_items(
     llm,
     n_examples:int = 10,
     output:str|Path|None = None,
+    ignore_existing:bool = True,
 ) -> dict:
     data = dict(data)  # Make a copy to avoid modifying the input dict
     
@@ -18,6 +19,8 @@ def parse_items(
     for key, item_data in track(data.items(), description="Parsing items", total=len(data)):
         assert 'text' in item_data
         sentence = item_data["text"]
+        if ignore_existing and 'conllu' in item_data:
+            continue
 
         # Retrieve examples from database
         examples = database(sentence, k=n_examples)
