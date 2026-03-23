@@ -7,6 +7,17 @@ def clean_text(text:str) -> str:
     return text
 
 
+def get_example_conllu(example) -> str:
+    if isinstance(example, dict):
+        return example["conllu"]
+
+    metadata = getattr(example, "metadata", None)
+    if metadata is not None:
+        return metadata["conllu"]
+
+    return example["conllu"]
+
+
 def build_prompt(text:str, examples) -> ChatPromptTemplate:
     human_message = f"""
         You need to perform dependency parsing on this text:
@@ -15,7 +26,7 @@ def build_prompt(text:str, examples) -> ChatPromptTemplate:
         These are examples of the CoNLL-U output that you need to produce:
     """
     for example in examples:
-        human_message += "\n" + example["conllu"] + "\n"
+        human_message += "\n" + get_example_conllu(example) + "\n"
 
     human_message += f"""
         Output exactly like those examples with the correct number of columns in the same format.

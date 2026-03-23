@@ -76,7 +76,10 @@ class DatabaseRetriv(DatabaseBase):
         assert path.exists(), f"Database path {path} does not exist"
 
         os.environ["RETRIV_BASE_PATH"] = str(path)
-        self.db = SparseRetriever(index_name=self.index_name)
+        if hasattr(SparseRetriever, "load"):
+            self.db = SparseRetriever.load(index_name=self.index_name)
+        else:
+            self.db = SparseRetriever(index_name=self.index_name)
 
     def __call__(self, query: str, k: int = DEFAULT_NUM_RESULTS) -> list[dict]:
         if self.db is None:
@@ -88,6 +91,12 @@ class DatabaseRetriv(DatabaseBase):
             raise RuntimeError("Database is not loaded.")
         results = self.db.search(query, return_docs=True, cutoff=k)
         return [SimpleNamespace(metadata=result) for result in results]
+
+    @property
+    def docs_count(self) -> int | None:
+        if self.db is None:
+            return None
+        return getattr(self.db, "doc_count", None)
 
 
 def build_database(conllu_path: Path, output_path: Path, index_name: str = "index") -> DatabaseRetriv:
