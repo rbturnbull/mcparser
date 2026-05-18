@@ -1,7 +1,13 @@
 from pathlib import Path
 
 from llmparser.conllu_model import ConlluSentence
-from llmparser.correction import CorrectionPatch, correct_predictions
+from llmparser.correction import (
+    CorrectionPatch,
+    TokenCorrectionResult,
+    correct_predictions,
+    correct_token_column,
+)
+from llmparser.evidence import TrainingEvidence
 from llmparser.validation import validate_sentence
 
 
@@ -81,6 +87,29 @@ def test_correction_patch_normalises_column() -> None:
     assert patch.column == "upos"
 
 
+def test_token_correction_result_collects_patch_evidence_and_notes() -> None:
+    result = TokenCorrectionResult(
+        token_id=1,
+        column="LEMMA",
+        status="patched",
+        patches=[
+            CorrectionPatch(
+                token_id=1,
+                column="lemma",
+                value="hello-corrected",
+                evidence_sent_ids=["train1"],
+            )
+        ],
+        evidence_sent_ids=["train1"],
+        notes="Predicted lemma differed from comparable examples.",
+    )
+
+    assert result.column == "lemma"
+    assert result.status == "patched"
+    assert result.patches[0].value == "hello-corrected"
+    assert result.to_dict()["notes"] == "Predicted lemma differed from comparable examples."
+
+
 def test_correct_predictions_applies_checker_patch(tmp_path: Path) -> None:
     prediction_path = tmp_path / "predicted.conllu"
     prediction_path.write_text(PREDICTED_CONLLU)
@@ -111,3 +140,96 @@ def test_correct_predictions_applies_checker_patch(tmp_path: Path) -> None:
     assert item["tokens"][0]["upos"] == "INTJ"
     assert "1\tHello\thello\tINTJ" in item["conllu"]
     assert item["audit"]["upos"]["patches"][0]["evidence_sent_ids"] == ["train1"]
+
+
+def test_correct_token_column_loops_through_tokens_and_applies_lemma_patches() -> None:
+    sentence = ConlluSentence.from_text(PREDICTED_CONLLU)
+    database = DummyDatabase()
+    evidence = TrainingEvidence(database)
+    calls = []
+
+    def token_checker(sentence, token, column, examples):
+        calls.append((token.id, column, [example["sent_id"] for example in examples]))
+        if token.form == "Hello":
+            return TokenCorrectionResult(
+                token_id=token.id,
+                column=column,
+                status="patched",
+                patches=[
+                    CorrectionPatch(
+                        token_id=token.id,
+                        column=column,
+                        value="hello-corrected",
+                        reason="Comparable training examples prefer this lemma.",
+                        evidence_sent_ids=["train1"],
+                    )
+                ],
+                evidence_sent_ids=["train1"],
+                notes="Comparable examples prefer this lemma.",
+            )
+        return TokenCorrectionResult(
+            token_id=token.id,
+            column=column,
+            status="checked",
+            evidence_sent_ids=["train1"],
+        )
+
+    audit = correct_token_column(
+        sentence,
+        column="lemma",
+        evidence=evidence,
+        checker=token_checker,
+        n_examples=1,
+    )
+
+    assert sentence.tokens[0].lemma == "hello-corrected"
+    assert sentence.tokens[1].lemma == "world"
+    assert calls == [
+        (1, "lemma", ["train1"]),
+        (2, "lemma", ["train1"]),
+    ]
+    assert database.queries == [
+        ("FORM Hello", 1),
+        ("FORM world", 1),
+    ]
+    assert audit.status == "patched"
+    assert audit.patches[0].token_id == 1
+    assert audit.token_results[0].notes == "Comparable examples prefer this lemma."
+
+
+def test_correct_predictions_accepts_token_checker_for_lemma(tmp_path: Path) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    prediction_path.write_text(PREDICTED_CONLLU)
+    database = DummyDatabase()
+
+    def token_checker(sentence, token, column, examples):
+        if column == "lemma" and token.form == "Hello":
+            return [CorrectionPatch(token_id=token.id, column=column, value="hello-corrected")]
+        return []
+
+    corrected = correct_predictions(
+        prediction_path,
+        database,
+        token_checkers={"lemma": token_checker},
+        n_examples=1,
+        columns=("lemma",),
+    )
+
+    item = corrected["s1"]
+    assert item["tokens"][0]["lemma"] == "hello-corrected"
+    assert item["audit"]["lemma"]["status"] == "patched"
+    assert database.queries == [
+        ("Hello world.", 1),
+        ("FORM Hello", 1),
+        ("FORM world", 1),
+    ]
+
+
+def test_correct_lemma_skill_file_documents_token_patch_contract() -> None:
+    skill_path = Path(__file__).parents[1] / "agents" / "correct_lemma" / "SKILL.md"
+
+    content = skill_path.read_text()
+
+    assert "LEMMA" in content
+    assert "CorrectionPatch" in content
+    assert "Do not modify" in content

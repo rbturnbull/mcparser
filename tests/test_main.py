@@ -96,3 +96,57 @@ def test_correct_command_writes_correction_yaml(tmp_path: Path, monkeypatch) -> 
     assert "s1:" in output_text
     assert "audit:" in output_text
     assert "conllu:" in output_text
+
+
+def test_correct_command_can_run_rule_based_lemma_checker(tmp_path: Path, monkeypatch) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    output_path = tmp_path / "corrected.yml"
+    prediction_path.write_text(
+        """# sent_id = s1
+# text = ἐδόκεε
+1	ἐδόκεε	ἐδόκεε	VERB	V-	_	0	root	_	_
+"""
+    )
+    examples = [
+        {
+            "sent_id": "train1",
+            "conllu": """# sent_id = train1
+# text = ἐδόκεε
+1	ἐδόκεε	δοκέω	VERB	V-	_	0	root	_	_
+""",
+        },
+        {
+            "sent_id": "train2",
+            "conllu": """# sent_id = train2
+# text = ἐδόκεε
+1	ἐδόκεε	δοκέω	VERB	V-	_	0	root	_	_
+""",
+        },
+    ]
+
+    monkeypatch.setattr(
+        "llmparser.main.load_database",
+        lambda *_args, **_kwargs: DummyDatabase(examples),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "correct",
+            str(prediction_path),
+            "--db",
+            str(tmp_path / "db"),
+            "--output",
+            str(output_path),
+            "--lemma-checker",
+            "rule",
+            "--n-examples",
+            "2",
+        ],
+    )
+
+    assert result.exit_code == 0
+    output_text = output_path.read_text()
+    assert "δοκέω" in output_text
+    assert "status: patched" in output_text

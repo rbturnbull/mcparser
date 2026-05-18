@@ -6,6 +6,7 @@ from .io import load_file
 from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
 from .parsing import parse_items
 from .correction import correct_predictions
+from .lemma_checker import RuleBasedLemmaChecker
 
 app = typer.Typer()
 
@@ -50,12 +51,20 @@ def correct(
     db:Path = typer.Option(..., help="Path to database with training examples (see `db` command)"),
     output:Path = typer.Option(..., help="Path to output YAML file"),
     n_examples:int = typer.Option(10, help="Number of examples to retrieve for correction"),
+    lemma_checker:str|None = typer.Option(None, help="Lemma checker to use: 'rule' or omit for no lemma checker"),
 ):
     """Validate and correct CoNLL-U predictions using training examples."""
     database = load_database(db)
+    token_checkers = {}
+    if lemma_checker == "rule":
+        token_checkers["lemma"] = RuleBasedLemmaChecker()
+    elif lemma_checker is not None:
+        raise typer.BadParameter("lemma-checker must be 'rule' when provided.")
+
     correct_predictions(
         prediction_path=input,
         database=database,
+        token_checkers=token_checkers,
         n_examples=n_examples,
         output=output,
     )
