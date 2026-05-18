@@ -9,7 +9,7 @@ from .io import write_yaml
 from .validation import validate_sentence
 
 
-DEFAULT_CHECK_COLUMNS = (
+DEFAULT_CORRECTION_COLUMNS = (
     "lemma",
     "upos",
     "xpos",
@@ -20,7 +20,7 @@ DEFAULT_CHECK_COLUMNS = (
     "misc",
 )
 
-Checker = Callable[[ConlluSentence, str, list[dict[str, Any]]], list[dict[str, Any]]]
+CorrectionChecker = Callable[[ConlluSentence, str, list[dict[str, Any]]], list[dict[str, Any]]]
 
 
 def load_prediction_sentences(path: Path | str) -> list[ConlluSentence]:
@@ -38,16 +38,16 @@ def _normalise_patch(patch: dict[str, Any]) -> dict[str, Any]:
     return normalised
 
 
-def check_external_predictions(
+def correct_predictions(
     prediction_path: Path | str,
     database,
-    checker: Checker | None = None,
+    checker: CorrectionChecker | None = None,
     n_examples: int = 10,
     output: Path | str | None = None,
-    columns: tuple[str, ...] = DEFAULT_CHECK_COLUMNS,
+    columns: tuple[str, ...] = DEFAULT_CORRECTION_COLUMNS,
 ) -> dict[str, dict[str, Any]]:
     sentences = load_prediction_sentences(prediction_path)
-    checked: dict[str, dict[str, Any]] = {}
+    corrected: dict[str, dict[str, Any]] = {}
 
     for index, sentence in enumerate(sentences):
         examples = database(sentence.text, k=n_examples)
@@ -73,9 +73,9 @@ def check_external_predictions(
 
         item = sentence.to_dict()
         item["audit"] = audit
-        checked[_sentence_key(sentence, index)] = item
+        corrected[_sentence_key(sentence, index)] = item
 
     if output is not None:
-        write_yaml(checked, output)
+        write_yaml(corrected, output)
 
-    return checked
+    return corrected

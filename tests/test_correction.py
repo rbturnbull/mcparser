@@ -1,8 +1,8 @@
 from pathlib import Path
 
 from llmparser.conllu_model import ConlluSentence
+from llmparser.correction import correct_predictions
 from llmparser.validation import validate_sentence
-from llmparser.workflow import check_external_predictions
 
 
 PREDICTED_CONLLU = """# sent_id = s1
@@ -57,7 +57,7 @@ def test_validate_sentence_reports_invalid_head() -> None:
     assert "4" in errors[0].message
 
 
-def test_check_external_predictions_applies_checker_patch(tmp_path: Path) -> None:
+def test_correct_predictions_applies_checker_patch(tmp_path: Path) -> None:
     prediction_path = tmp_path / "predicted.conllu"
     prediction_path.write_text(PREDICTED_CONLLU)
     database = DummyDatabase()
@@ -75,14 +75,14 @@ def test_check_external_predictions_applies_checker_patch(tmp_path: Path) -> Non
             ]
         return []
 
-    checked = check_external_predictions(
+    corrected = correct_predictions(
         prediction_path,
         database,
         checker=checker,
         n_examples=1,
     )
 
-    item = checked["s1"]
+    item = corrected["s1"]
     assert database.queries == [("Hello world.", 1)]
     assert item["tokens"][0]["upos"] == "INTJ"
     assert "1\tHello\thello\tINTJ" in item["conllu"]
