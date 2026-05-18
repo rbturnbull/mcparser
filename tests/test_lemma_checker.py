@@ -1,4 +1,5 @@
 from llmparser.conllu_model import ConlluSentence
+from llmparser.evidence import TokenEvidence
 from llmparser.lemma_checker import RuleBasedLemmaChecker
 
 
@@ -84,3 +85,39 @@ def test_rule_based_lemma_checker_marks_weak_evidence_uncertain() -> None:
 
     assert result.status == "uncertain"
     assert result.patches == []
+
+
+def test_rule_based_lemma_checker_accepts_token_evidence_bundle() -> None:
+    sentence = ConlluSentence.from_text(
+        """# sent_id = pred
+# text = ἐδόκεε
+1	ἐδόκεε	ἐδόκεε	VERB	V-	_	0	root	_	_
+"""
+    )
+    token = sentence.tokens[0]
+    checker = RuleBasedLemmaChecker(min_count=1, min_ratio=1.0)
+    bundle = TokenEvidence(
+        form_examples=[
+            {
+                "sent_id": "train1",
+                "conllu": """# sent_id = train1
+# text = ἐδόκεε
+1	ἐδόκεε	δοκέω	VERB	V-	_	0	root	_	_
+""",
+            }
+        ],
+        lemma_examples=[
+            {
+                "sent_id": "noise",
+                "conllu": """# sent_id = noise
+# text = unrelated
+1	unrelated	unrelated	ADJ	V-	_	0	root	_	_
+""",
+            }
+        ],
+    )
+
+    result = checker(sentence, token, "lemma", bundle)
+
+    assert result.status == "patched"
+    assert result.patches[0].value == "δοκέω"

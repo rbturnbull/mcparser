@@ -149,7 +149,7 @@ def test_correct_token_column_loops_through_tokens_and_applies_lemma_patches() -
     calls = []
 
     def token_checker(sentence, token, column, examples):
-        calls.append((token.id, column, [example["sent_id"] for example in examples]))
+        calls.append((token.id, column, [example["sent_id"] for example in examples.form_examples]))
         if token.form == "Hello":
             return TokenCorrectionResult(
                 token_id=token.id,
@@ -190,7 +190,13 @@ def test_correct_token_column_loops_through_tokens_and_applies_lemma_patches() -
     ]
     assert database.queries == [
         ("FORM Hello", 1),
+        ("LEMMA hello", 1),
+        ("FORM Hello UPOS NOUN", 1),
+        ("Hello world.", 1),
         ("FORM world", 1),
+        ("LEMMA world", 1),
+        ("FORM world UPOS NOUN", 1),
+        ("Hello world.", 1),
     ]
     assert audit.status == "patched"
     assert audit.patches[0].token_id == 1
@@ -221,7 +227,13 @@ def test_correct_predictions_accepts_token_checker_for_lemma(tmp_path: Path) -> 
     assert database.queries == [
         ("Hello world.", 1),
         ("FORM Hello", 1),
+        ("LEMMA hello", 1),
+        ("FORM Hello UPOS NOUN", 1),
+        ("Hello world.", 1),
         ("FORM world", 1),
+        ("LEMMA world", 1),
+        ("FORM world UPOS NOUN", 1),
+        ("Hello world.", 1),
     ]
 
 

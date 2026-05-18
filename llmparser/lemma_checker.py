@@ -5,6 +5,7 @@ from typing import Any
 
 from .conllu_model import ConlluSentence, ConlluToken
 from .correction import CorrectionPatch, TokenCorrectionResult
+from .evidence import TokenEvidence
 
 
 def _example_metadata(example: Any) -> dict[str, Any]:
@@ -28,7 +29,7 @@ class RuleBasedLemmaChecker:
         sentence: ConlluSentence,
         token: ConlluToken,
         column: str,
-        examples: list[dict[str, Any]],
+        examples: TokenEvidence | list[dict[str, Any]],
     ) -> TokenCorrectionResult:
         if column != "lemma":
             return TokenCorrectionResult(
@@ -40,8 +41,9 @@ class RuleBasedLemmaChecker:
 
         counts: Counter[str] = Counter()
         lemma_evidence: dict[str, list[str]] = defaultdict(list)
+        candidate_examples = examples.form_examples if isinstance(examples, TokenEvidence) else examples
 
-        for example in examples:
+        for example in candidate_examples:
             metadata = _example_metadata(example)
             conllu_text = metadata.get("conllu")
             if not conllu_text:

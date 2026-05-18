@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .conllu_model import CONLLU_COLUMNS
 from .conllu_model import ConlluSentence, ConlluToken
-from .evidence import TrainingEvidence
+from .evidence import TokenEvidence, TrainingEvidence
 from .io import write_yaml
 from .validation import validate_sentence
 
@@ -81,7 +81,7 @@ CorrectionPatchInput = CorrectionPatch | dict[str, Any]
 CorrectionChecker = Callable[[ConlluSentence, str, list[dict[str, Any]]], list[CorrectionPatchInput]]
 TokenCorrectionOutput = TokenCorrectionResult | list[CorrectionPatchInput]
 TokenCorrectionChecker = Callable[
-    [ConlluSentence, ConlluToken, str, list[dict[str, Any]]],
+    [ConlluSentence, ConlluToken, str, TokenEvidence],
     TokenCorrectionOutput,
 ]
 
@@ -128,7 +128,7 @@ def correct_token_column(
     token_results: list[TokenCorrectionResult] = []
 
     for token in sentence.tokens:
-        examples = evidence.find_examples_for_token_column(
+        token_evidence = evidence.find_token_evidence(
             sentence=sentence,
             token=token,
             column=column,
@@ -137,7 +137,7 @@ def correct_token_column(
         token_result = _normalise_token_result(
             token=token,
             column=column,
-            result=checker(sentence, token, column, examples),
+            result=checker(sentence, token, column, token_evidence),
         )
         for patch in token_result.patches:
             sentence.apply_patch(patch.to_dict())
