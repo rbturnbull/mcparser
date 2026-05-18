@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from llmparser.conllu_model import ConlluSentence
-from llmparser.correction import correct_predictions
+from llmparser.correction import CorrectionPatch, correct_predictions
 from llmparser.validation import validate_sentence
 
 
@@ -57,6 +57,30 @@ def test_validate_sentence_reports_invalid_head() -> None:
     assert "4" in errors[0].message
 
 
+def test_validate_sentence_reports_duplicate_id_invalid_upos_and_root_mismatch() -> None:
+    sentence = ConlluSentence.from_text(
+        """# sent_id = bad
+# text = Broken root.
+1	Broken	broken	BADPOS	_	_	2	root	_	_
+1	root	root	NOUN	_	_	0	nsubj	_	_
+"""
+    )
+
+    errors = validate_sentence(sentence)
+    codes = {error.code for error in errors}
+
+    assert "duplicate-id" in codes
+    assert "invalid-upos" in codes
+    assert "root-deprel-head" in codes
+    assert "head-zero-deprel" in codes
+
+
+def test_correction_patch_normalises_column() -> None:
+    patch = CorrectionPatch(token_id=1, column="UPOS", value="INTJ")
+
+    assert patch.column == "upos"
+
+
 def test_correct_predictions_applies_checker_patch(tmp_path: Path) -> None:
     prediction_path = tmp_path / "predicted.conllu"
     prediction_path.write_text(PREDICTED_CONLLU)
@@ -65,13 +89,13 @@ def test_correct_predictions_applies_checker_patch(tmp_path: Path) -> None:
     def checker(sentence, column, examples):
         if column == "upos" and sentence.tokens[0].form == "Hello":
             return [
-                {
-                    "token_id": 1,
-                    "column": "upos",
-                    "value": "INTJ",
-                    "reason": "Training examples use INTJ for greeting Hello.",
-                    "evidence_sent_ids": ["train1"],
-                }
+                CorrectionPatch(
+                    token_id=1,
+                    column="upos",
+                    value="INTJ",
+                    reason="Training examples use INTJ for greeting Hello.",
+                    evidence_sent_ids=["train1"],
+                )
             ]
         return []
 

@@ -67,3 +67,32 @@ def test_parse_command_writes_conllu(tmp_path: Path, monkeypatch) -> None:
     output_text = output_path.read_text()
     assert "conllu:" in output_text
     assert "Hello world." in output_text
+
+
+def test_correct_command_writes_correction_yaml(tmp_path: Path, monkeypatch) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    output_path = tmp_path / "corrected.yml"
+    prediction_path.write_text(
+        """# sent_id = s1
+# text = Hello world.
+1	Hello	hello	INTJ	_	_	0	root	_	_
+"""
+    )
+    examples = [SimpleNamespace(metadata={"conllu": "1\tHello\thello\tINTJ\t_\t_\t0\troot\t_\t_"})]
+
+    monkeypatch.setattr(
+        "llmparser.main.load_database",
+        lambda *_args, **_kwargs: DummyDatabase(examples),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        ["correct", str(prediction_path), "--db", str(tmp_path / "db"), "--output", str(output_path)],
+    )
+
+    assert result.exit_code == 0
+    output_text = output_path.read_text()
+    assert "s1:" in output_text
+    assert "audit:" in output_text
+    assert "conllu:" in output_text

@@ -4,6 +4,9 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from .conllu_model import CONLLU_COLUMNS
 from .conllu_model import ConlluSentence
 from .io import write_yaml
 from .validation import validate_sentence
@@ -20,7 +23,38 @@ DEFAULT_CORRECTION_COLUMNS = (
     "misc",
 )
 
-CorrectionChecker = Callable[[ConlluSentence, str, list[dict[str, Any]]], list[dict[str, Any]]]
+
+class CorrectionPatch(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    token_id: Any
+    column: str
+    value: Any
+    reason: str | None = None
+    evidence_sent_ids: list[str] = Field(default_factory=list)
+
+    @field_validator("column")
+    @classmethod
+    def normalise_column(cls, column: str) -> str:
+        column = column.lower()
+        if column not in CONLLU_COLUMNS:
+            raise ValueError(f"Unsupported CoNLL-U column: {column}")
+        return column
+
+    def to_dict(self) -> dict[str, Any]:
+        return self.model_dump()
+
+
+class ColumnCorrectionAudit(BaseModel):
+    status: str
+    patches: list[CorrectionPatch] = Field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return self.model_dump()
+
+
+CorrectionPatchInput = CorrectionPatch | dict[str, Any]
+CorrectionChecker = Callable[[ConlluSentence, str, list[dict[str, Any]]], list[CorrectionPatchInput]]
 
 
 def load_prediction_sentences(path: Path | str) -> list[ConlluSentence]:
@@ -31,11 +65,10 @@ def _sentence_key(sentence: ConlluSentence, index: int) -> str:
     return sentence.sent_id or f"sentence_{index + 1}"
 
 
-def _normalise_patch(patch: dict[str, Any]) -> dict[str, Any]:
-    normalised = dict(patch)
-    if "column" in normalised:
-        normalised["column"] = str(normalised["column"]).lower()
-    return normalised
+def _normalise_patch(patch: CorrectionPatchInput) -> CorrectionPatch:
+    if isinstance(patch, CorrectionPatch):
+        return patch
+    return CorrectionPatch.model_validate(patch)
 
 
 def correct_predictions(
@@ -56,16 +89,16 @@ def correct_predictions(
         }
 
         for column in columns:
-            patches: list[dict[str, Any]] = []
+            patches: list[CorrectionPatch] = []
             if checker is not None:
                 patches = [_normalise_patch(patch) for patch in checker(sentence, column, examples)]
                 for patch in patches:
-                    sentence.apply_patch(patch)
+                    sentence.apply_patch(patch.to_dict())
 
-            audit[column] = {
-                "patches": patches,
-                "status": "patched" if patches else "checked",
-            }
+            audit[column] = ColumnCorrectionAudit(
+                patches=patches,
+                status="patched" if patches else "checked",
+            ).to_dict()
 
         post_validation = [error.to_dict() for error in validate_sentence(sentence)]
         if post_validation:

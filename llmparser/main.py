@@ -5,6 +5,7 @@ import llmloader
 from .io import load_file
 from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
 from .parsing import parse_items
+from .correction import correct_predictions
 
 app = typer.Typer()
 
@@ -41,6 +42,23 @@ def parse(
     data = load_file(input)
 
     parse_items(data, database, llm, n_examples, output=output, ignore_existing=ignore_existing)
+
+
+@app.command()
+def correct(
+    input:Path = typer.Argument(..., help="Path to predicted CoNLL-U file"),
+    db:Path = typer.Option(..., help="Path to database with training examples (see `db` command)"),
+    output:Path = typer.Option(..., help="Path to output YAML file"),
+    n_examples:int = typer.Option(10, help="Number of examples to retrieve for correction"),
+):
+    """Validate and correct CoNLL-U predictions using training examples."""
+    database = load_database(db)
+    correct_predictions(
+        prediction_path=input,
+        database=database,
+        n_examples=n_examples,
+        output=output,
+    )
 
 
 @app.command()
