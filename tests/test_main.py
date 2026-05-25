@@ -364,6 +364,117 @@ upos_xpos:
     assert "status: patched" in output_text
 
 
+def test_correct_command_rejects_agent_config_without_runtime(tmp_path: Path, monkeypatch) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    config_path = tmp_path / "correction.yml"
+    prediction_path.write_text(
+        """# sent_id = s1
+# text = Hello
+1	Hello	hello	INTJ	_	_	0	root	_	_
+"""
+    )
+    config_path.write_text(
+        """
+lemma:
+  agent:
+    skill: agents/correct_lemma/SKILL.md
+"""
+    )
+
+    monkeypatch.setattr(
+        "llmparser.main.load_database",
+        lambda *_args, **_kwargs: DummyDatabase([]),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "correct",
+            str(prediction_path),
+            "--db",
+            str(tmp_path / "db"),
+            "--output",
+            str(tmp_path / "corrected.yml"),
+            "--config",
+            str(config_path),
+        ],
+    )
+
+    assert result.exit_code != 0
+    assert "Agent checkers are not available from the CLI yet" in result.output
+
+
+def test_correct_command_full_rule_config_smoke(tmp_path: Path, monkeypatch) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    output_path = tmp_path / "corrected.yml"
+    config_path = tmp_path / "correction.yml"
+    prediction_path.write_text(
+        """# sent_id = s1
+# text = Hello
+1	Hello	hello	NOUN	NN	Case=Nom	2	root	_	_
+2	.	.	PUNCT	_	_	1	punct	_	_
+"""
+    )
+    config_path.write_text(
+        """
+lemma:
+  rule: true
+upos_xpos:
+  rule: true
+feats:
+  rule: true
+head_deprel:
+  rule: true
+"""
+    )
+    examples = [
+        {
+            "sent_id": "train1",
+            "conllu": """# sent_id = train1
+# text = Hello
+1	Hello	hello	INTJ	Uh	_	0	root	_	_
+""",
+        },
+        {
+            "sent_id": "train2",
+            "conllu": """# sent_id = train2
+# text = Hello
+1	Hello	hello	INTJ	Uh	_	0	root	_	_
+""",
+        },
+    ]
+
+    monkeypatch.setattr(
+        "llmparser.main.load_database",
+        lambda *_args, **_kwargs: DummyDatabase(examples),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "correct",
+            str(prediction_path),
+            "--db",
+            str(tmp_path / "db"),
+            "--output",
+            str(output_path),
+            "--config",
+            str(config_path),
+            "--n-examples",
+            "2",
+        ],
+    )
+
+    assert result.exit_code == 0
+    output_text = output_path.read_text()
+    assert "INTJ" in output_text
+    assert "Uh" in output_text
+    assert "audit_summary:" in output_text
+    assert "patched_columns:" in output_text
+
+
 def test_serve_mcp_command_reports_missing_sdk(tmp_path: Path, monkeypatch) -> None:
     prediction_path = tmp_path / "predicted.conllu"
     prediction_path.write_text(

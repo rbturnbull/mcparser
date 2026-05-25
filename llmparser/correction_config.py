@@ -70,6 +70,19 @@ def load_correction_config(path: Path | str) -> CorrectionConfig:
     return CorrectionConfig.model_validate(data)
 
 
+def config_has_agent_checkers(config: CorrectionConfig) -> bool:
+    return any(
+        checker.agent is not None
+        for checker in (
+            config.segmentation,
+            config.lemma,
+            config.upos_xpos,
+            config.feats,
+            config.head_deprel,
+        )
+    )
+
+
 def build_checkers(
     config: CorrectionConfig,
     agent_clients: dict[str, AgentClient] | None = None,

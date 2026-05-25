@@ -283,9 +283,35 @@ def correct_predictions(
 
         item = sentence.to_dict()
         item["audit"] = audit
+        item["audit_summary"] = build_audit_summary(audit)
         corrected[_sentence_key(sentence, index)] = item
 
     if output is not None:
         write_yaml(corrected, output)
 
     return corrected
+
+
+def build_audit_summary(audit: dict[str, Any]) -> dict[str, Any]:
+    patched_columns: list[str] = []
+    uncertain_columns: list[str] = []
+    needs_syntax_correction = False
+
+    for key, value in audit.items():
+        if not isinstance(value, dict):
+            continue
+        status = value.get("status")
+        if status == "patched":
+            patched_columns.append(key)
+        elif status == "uncertain":
+            uncertain_columns.append(key)
+        if value.get("needs_syntax_correction"):
+            needs_syntax_correction = True
+
+    return {
+        "patched_columns": patched_columns,
+        "uncertain_columns": uncertain_columns,
+        "needs_syntax_correction": needs_syntax_correction,
+        "initial_validation_errors": len(audit.get("validation", [])),
+        "post_validation_errors": len(audit.get("post_validation", [])),
+    }

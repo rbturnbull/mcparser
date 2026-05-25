@@ -1,0 +1,11 @@
+lemma:
+  rule: true
+
+upos_xpos:
+  rule: true
+
+feats:
+  rule: true
+
+head_deprel:
+  rule: true

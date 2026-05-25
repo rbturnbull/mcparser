@@ -5,7 +5,7 @@ import llmloader
 from .io import load_file
 from .database import load_database, build_database, DEFAULT_EMBEDDING_MODEL_ID
 from .parsing import parse_items
-from .correction_config import build_checkers, load_correction_config
+from .correction_config import build_checkers, config_has_agent_checkers, load_correction_config
 from .correction import correct_predictions
 from .feats_checker import RuleBasedFeatsChecker
 from .lemma_checker import RuleBasedLemmaChecker
@@ -65,9 +65,13 @@ def correct(
     """Validate and correct CoNLL-U predictions using training examples."""
     database = load_database(db)
     if config is not None:
-        token_checkers, sentence_checkers, segmentation_checker = build_checkers(
-            load_correction_config(config)
-        )
+        correction_config = load_correction_config(config)
+        if config_has_agent_checkers(correction_config):
+            raise typer.BadParameter(
+                "Agent checkers are not available from the CLI yet. "
+                "Use rule: true only, or provide agent clients through the Python API."
+            )
+        token_checkers, sentence_checkers, segmentation_checker = build_checkers(correction_config)
     else:
         token_checkers = {}
         sentence_checkers = {}

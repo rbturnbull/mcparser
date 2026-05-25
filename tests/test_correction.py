@@ -314,3 +314,27 @@ def test_correct_predictions_runs_segmentation_before_token_checkers(tmp_path: P
     assert seen_forms == ["و", "كتابه", "جاء"]
     assert item["audit"]["segmentation"]["status"] == "patched"
     assert item["audit"]["segmentation"]["needs_syntax_correction"] is True
+
+
+def test_correct_predictions_adds_audit_summary(tmp_path: Path) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    prediction_path.write_text(PREDICTED_CONLLU)
+    database = DummyDatabase()
+
+    def checker(sentence, column, examples):
+        if column == "upos":
+            return [CorrectionPatch(token_id=1, column="upos", value="INTJ")]
+        return []
+
+    corrected = correct_predictions(
+        prediction_path,
+        database,
+        checker=checker,
+        columns=("upos",),
+    )
+
+    summary = corrected["s1"]["audit_summary"]
+
+    assert summary["patched_columns"] == ["upos"]
+    assert summary["uncertain_columns"] == []
+    assert summary["needs_syntax_correction"] is False
