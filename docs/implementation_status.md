@@ -12,16 +12,17 @@
 - Runtime-neutral agent checker adapters
 - MCP-style correction session and tool registry
 - CLI correction workflow for rule-based correction
+- Column-by-column prediction runner with pluggable predictors
 
 ## Partly Implemented
 
+- Prediction module: patch/audit runner exists, but no real LLM predictor is wired.
 - Agent-backed checkers: config models and adapters exist, but no real LLM runtime is wired into the CLI.
 - MCP support: correction tool logic and registry exist, but no MCP SDK transport is wired.
 - Segmentation correction: row-level patches and evidence exist, but no linguistic segmenter is implemented.
 
 ## Not Implemented
 
-- Initial prediction module for producing CoNLL-U column by column.
 - Real MCP server process.
 - Real LLM/agent client integration.
 - Automatic Arabic segmentation agent.

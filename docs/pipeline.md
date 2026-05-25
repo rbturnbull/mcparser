@@ -5,6 +5,8 @@ CoNLL-U predictions. Nodes are colored by implementation status and role.
 
 ```mermaid
 graph TD
+    P0["Raw text / initialized tokens"] --> PA0["Column-by-column prediction"]
+    PA0 --> A["Predicted CoNLL-U"]
     A["External CoNLL-U predictions"] --> B["Load CorrectionSession"]
     B --> C["Parse into ConlluSentence / ConlluToken"]
     C --> D["Initial deterministic validation"]
@@ -89,7 +91,7 @@ graph TD
     classDef future fill:#eeeeee,stroke:#777777,color:#111111
     classDef partial fill:#fff3cd,stroke:#b7791f,color:#111111
 
-    class B,C,D,V,O,LR,PR,FR,HR,LC,PC,FC,HC,AP,CFG,BUILD,CHAIN,SR,SC implemented
+    class B,C,D,V,O,LR,PR,FR,HR,LC,PC,FC,HC,AP,CFG,BUILD,CHAIN,SR,SC,PA0 implemented
     class MCP,T1,T2,T3,T4,T5,T6,T7,T8 infra
     class SA,LA,PA,FA,HA,S partial
 ```
@@ -126,7 +128,7 @@ graph TD
 | Agent skills | Partly implemented | `SKILL.md` contracts exist; no real LLM runtime yet |
 | MCP correction tools | Partly implemented | Tool logic and registry exist; real MCP transport not wired |
 | Segmentation correction | Partly implemented | Pipeline hook and evidence exist; no linguistic segmenter yet |
-| Prediction module | Not implemented | Future module for initial column-by-column prediction |
+| Prediction module | Partly implemented | Column-by-column runner exists; no real LLM predictor is wired |
 
 ## Example Config
 
