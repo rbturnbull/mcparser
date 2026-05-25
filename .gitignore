@@ -1,2 +1,6 @@
 results/
 ArabGr1-Ephesians-Parsed.yaml
+docs/*.html
+docs/*.pdf
+examples/corrected.yml
+example-db/

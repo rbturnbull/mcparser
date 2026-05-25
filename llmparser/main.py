@@ -19,11 +19,13 @@ app = typer.Typer()
 def db(
     input:Path = typer.Argument(..., help="Path to input CoNLL-U file"),
     output:Path = typer.Argument(..., help="Path to output database"),
+    sparse:bool = typer.Option(False, help="Use sparse local retrieval instead of OpenAI embeddings"),
 ):
     """ Build database of examples from a CoNLL-U file. """
     build_database(
         conllu_path=input,
         output_path=output,
+        embedding_model_id=None if sparse else DEFAULT_EMBEDDING_MODEL_ID,
     )
 
 
