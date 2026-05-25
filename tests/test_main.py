@@ -150,3 +150,239 @@ def test_correct_command_can_run_rule_based_lemma_checker(tmp_path: Path, monkey
     output_text = output_path.read_text()
     assert "δοκέω" in output_text
     assert "status: patched" in output_text
+
+
+def test_correct_command_can_run_rule_based_pos_checker(tmp_path: Path, monkeypatch) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    output_path = tmp_path / "corrected.yml"
+    prediction_path.write_text(
+        """# sent_id = s1
+# text = Hello
+1	Hello	hello	NOUN	NN	_	0	root	_	_
+"""
+    )
+    examples = [
+        {
+            "sent_id": "train1",
+            "conllu": """# sent_id = train1
+# text = Hello
+1	Hello	hello	INTJ	Uh	_	0	root	_	_
+""",
+        },
+        {
+            "sent_id": "train2",
+            "conllu": """# sent_id = train2
+# text = Hello
+1	Hello	hello	INTJ	Uh	_	0	root	_	_
+""",
+        },
+    ]
+
+    monkeypatch.setattr(
+        "llmparser.main.load_database",
+        lambda *_args, **_kwargs: DummyDatabase(examples),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "correct",
+            str(prediction_path),
+            "--db",
+            str(tmp_path / "db"),
+            "--output",
+            str(output_path),
+            "--pos-checker",
+            "rule",
+            "--n-examples",
+            "2",
+        ],
+    )
+
+    assert result.exit_code == 0
+    output_text = output_path.read_text()
+    assert "INTJ" in output_text
+    assert "Uh" in output_text
+    assert "status: patched" in output_text
+
+
+def test_correct_command_can_run_rule_based_feats_checker(tmp_path: Path, monkeypatch) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    output_path = tmp_path / "corrected.yml"
+    prediction_path.write_text(
+        """# sent_id = s1
+# text = λόγον
+1	λόγον	λόγος	NOUN	Nb	Case=Nom	0	root	_	_
+"""
+    )
+    examples = [
+        {
+            "sent_id": "train1",
+            "conllu": """# sent_id = train1
+# text = λόγον
+1	λόγον	λόγος	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	0	root	_	_
+""",
+        },
+        {
+            "sent_id": "train2",
+            "conllu": """# sent_id = train2
+# text = λόγον
+1	λόγον	λόγος	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	0	root	_	_
+""",
+        },
+    ]
+
+    monkeypatch.setattr(
+        "llmparser.main.load_database",
+        lambda *_args, **_kwargs: DummyDatabase(examples),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "correct",
+            str(prediction_path),
+            "--db",
+            str(tmp_path / "db"),
+            "--output",
+            str(output_path),
+            "--feats-checker",
+            "rule",
+            "--n-examples",
+            "2",
+        ],
+    )
+
+    assert result.exit_code == 0
+    output_text = output_path.read_text()
+    assert "Case: Acc" in output_text
+    assert "Gender: Masc" in output_text
+    assert "status: patched" in output_text
+
+
+def test_correct_command_can_run_rule_based_syntax_checker(tmp_path: Path, monkeypatch) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    output_path = tmp_path / "corrected.yml"
+    prediction_path.write_text(
+        """# sent_id = s1
+# text = Broken.
+1	Broken	broken	ADJ	_	_	2	root	_	_
+2	.	.	PUNCT	_	_	1	punct	_	_
+"""
+    )
+
+    monkeypatch.setattr(
+        "llmparser.main.load_database",
+        lambda *_args, **_kwargs: DummyDatabase([]),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "correct",
+            str(prediction_path),
+            "--db",
+            str(tmp_path / "db"),
+            "--output",
+            str(output_path),
+            "--syntax-checker",
+            "rule",
+        ],
+    )
+
+    assert result.exit_code == 0
+    output_text = output_path.read_text()
+    assert "head" in output_text
+    assert "value: 0" in output_text
+    assert "status: patched" in output_text
+
+
+def test_correct_command_can_use_correction_config(tmp_path: Path, monkeypatch) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    output_path = tmp_path / "corrected.yml"
+    config_path = tmp_path / "correction.yml"
+    prediction_path.write_text(
+        """# sent_id = s1
+# text = Hello
+1	Hello	hello	NOUN	NN	_	0	root	_	_
+"""
+    )
+    config_path.write_text(
+        """
+lemma:
+  rule: true
+upos_xpos:
+  rule: true
+"""
+    )
+    examples = [
+        {
+            "sent_id": "train1",
+            "conllu": """# sent_id = train1
+# text = Hello
+1	Hello	hello	INTJ	Uh	_	0	root	_	_
+""",
+        },
+        {
+            "sent_id": "train2",
+            "conllu": """# sent_id = train2
+# text = Hello
+1	Hello	hello	INTJ	Uh	_	0	root	_	_
+""",
+        },
+    ]
+
+    monkeypatch.setattr(
+        "llmparser.main.load_database",
+        lambda *_args, **_kwargs: DummyDatabase(examples),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "correct",
+            str(prediction_path),
+            "--db",
+            str(tmp_path / "db"),
+            "--output",
+            str(output_path),
+            "--config",
+            str(config_path),
+            "--n-examples",
+            "2",
+        ],
+    )
+
+    assert result.exit_code == 0
+    output_text = output_path.read_text()
+    assert "INTJ" in output_text
+    assert "Uh" in output_text
+    assert "status: patched" in output_text
+
+
+def test_serve_mcp_command_reports_missing_sdk(tmp_path: Path, monkeypatch) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    prediction_path.write_text(
+        """# sent_id = s1
+# text = Hello
+1	Hello	hello	INTJ	_	_	0	root	_	_
+"""
+    )
+
+    monkeypatch.setattr(
+        "llmparser.main.load_database",
+        lambda *_args, **_kwargs: DummyDatabase([]),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        ["serve-mcp", str(prediction_path), "--db", str(tmp_path / "db")],
+    )
+
+    assert result.exit_code != 0
+    assert "MCP SDK is not installed" in result.output

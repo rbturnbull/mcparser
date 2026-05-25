@@ -1,5 +1,5 @@
 from llmparser.conllu_model import ConlluSentence
-from llmparser.evidence import TokenEvidence, TrainingEvidence
+from llmparser.evidence import SegmentationEvidence, TokenEvidence, TrainingEvidence
 
 
 class DummyDatabase:
@@ -78,4 +78,29 @@ def test_token_evidence_all_examples_combines_and_deduplicates_sent_ids() -> Non
         "train1",
         "train2",
         "train3",
+    ]
+
+
+def test_training_evidence_builds_segmentation_evidence_bundle() -> None:
+    database = DummyDatabase()
+    evidence = TrainingEvidence(database)
+
+    bundle = evidence.find_segmentation_evidence(
+        surface="وكتابه",
+        pieces=["و", "كتابه"],
+        sentence_text="وكتابه جاء",
+        k=2,
+    )
+
+    assert isinstance(bundle, SegmentationEvidence)
+    assert bundle.surface_examples[0]["sent_id"] == "train1"
+    assert bundle.subform_examples[0][0]["sent_id"] == "train1"
+    assert bundle.sequence_examples[0]["sent_id"] == "train1"
+    assert bundle.similar_sentence_examples[0]["sent_id"] == "train1"
+    assert database.queries == [
+        ("SURFACE وكتابه", 2),
+        ("SUBFORM و", 2),
+        ("SUBFORM كتابه", 2),
+        ("SEQUENCE و كتابه", 2),
+        ("وكتابه جاء", 2),
     ]

@@ -41,6 +41,31 @@ class TokenEvidence(BaseModel):
         return examples
 
 
+class SegmentationEvidence(BaseModel):
+    surface_examples: list[dict[str, Any]] = Field(default_factory=list)
+    subform_examples: list[list[dict[str, Any]]] = Field(default_factory=list)
+    sequence_examples: list[dict[str, Any]] = Field(default_factory=list)
+    similar_sentence_examples: list[dict[str, Any]] = Field(default_factory=list)
+
+    def all_examples(self) -> list[dict[str, Any]]:
+        examples: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        groups = [
+            self.surface_examples,
+            self.sequence_examples,
+            self.similar_sentence_examples,
+        ]
+        groups.extend(self.subform_examples)
+        for group in groups:
+            for example in group:
+                key = _example_key(example)
+                if key in seen:
+                    continue
+                seen.add(key)
+                examples.append(example)
+        return examples
+
+
 class TrainingEvidence:
     def __init__(self, database):
         self.database = database
@@ -56,6 +81,32 @@ class TrainingEvidence:
 
     def find_examples_for_form_upos(self, form: str, upos: str, k: int = 10) -> list[dict[str, Any]]:
         return list(self.database(f"FORM {form} UPOS {upos}", k=k))
+
+    def find_examples_for_surface(self, surface: str, k: int = 10) -> list[dict[str, Any]]:
+        return list(self.database(f"SURFACE {surface}", k=k))
+
+    def find_examples_for_subform(self, subform: str, k: int = 10) -> list[dict[str, Any]]:
+        return list(self.database(f"SUBFORM {subform}", k=k))
+
+    def find_examples_for_sequence(self, pieces: list[str], k: int = 10) -> list[dict[str, Any]]:
+        return list(self.database(f"SEQUENCE {' '.join(pieces)}", k=k))
+
+    def find_segmentation_evidence(
+        self,
+        surface: str,
+        pieces: list[str],
+        sentence_text: str,
+        k: int = 10,
+    ) -> SegmentationEvidence:
+        return SegmentationEvidence(
+            surface_examples=self.find_examples_for_surface(surface, k=k),
+            subform_examples=[
+                self.find_examples_for_subform(piece, k=k)
+                for piece in pieces
+            ],
+            sequence_examples=self.find_examples_for_sequence(pieces, k=k) if pieces else [],
+            similar_sentence_examples=self.find_similar_sentences(sentence_text, k=k),
+        )
 
     def find_token_evidence(
         self,

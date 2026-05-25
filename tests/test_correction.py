@@ -8,6 +8,7 @@ from llmparser.correction import (
     correct_token_column,
 )
 from llmparser.evidence import TrainingEvidence
+from llmparser.segmentation import SegmentationCorrectionResult, TokenSplitPatch
 from llmparser.validation import validate_sentence
 
 
@@ -245,3 +246,71 @@ def test_correct_lemma_skill_file_documents_token_patch_contract() -> None:
     assert "LEMMA" in content
     assert "CorrectionPatch" in content
     assert "Do not modify" in content
+
+
+def test_correct_predictions_runs_segmentation_before_token_checkers(tmp_path: Path) -> None:
+    prediction_path = tmp_path / "predicted.conllu"
+    prediction_path.write_text(
+        """# sent_id = ar1
+# text = وكتابه جاء
+1	وكتابه	وكتابه	NOUN	_	_	2	nsubj	_	_
+2	جاء	جاء	VERB	_	_	0	root	_	_
+"""
+    )
+    database = DummyDatabase()
+    seen_forms = []
+
+    def segmentation_checker(sentence, examples):
+        return SegmentationCorrectionResult(
+            status="patched",
+            patches=[
+                TokenSplitPatch(
+                    token_id=1,
+                    replacement_tokens=[
+                        {
+                            "id": 1,
+                            "form": "و",
+                            "lemma": "و",
+                            "upos": "CCONJ",
+                            "xpos": "_",
+                            "feats": None,
+                            "head": None,
+                            "deprel": None,
+                            "deps": None,
+                            "misc": None,
+                        },
+                        {
+                            "id": 2,
+                            "form": "كتابه",
+                            "lemma": "كتاب",
+                            "upos": "NOUN",
+                            "xpos": "_",
+                            "feats": None,
+                            "head": None,
+                            "deprel": None,
+                            "deps": None,
+                            "misc": None,
+                        },
+                    ],
+                )
+            ],
+            needs_syntax_correction=True,
+        )
+
+    def token_checker(sentence, token, column, examples):
+        seen_forms.append(token.form)
+        return TokenCorrectionResult(token_id=token.id, column=column, status="checked")
+
+    corrected = correct_predictions(
+        prediction_path,
+        database,
+        segmentation_checker=segmentation_checker,
+        token_checkers={"lemma": token_checker},
+        columns=("lemma",),
+    )
+
+    item = corrected["ar1"]
+    assert [token["form"] for token in item["tokens"]] == ["و", "كتابه", "جاء"]
+    assert seen_forms == ["و", "كتابه", "جاء"]
+    assert item["audit"]["segmentation"]["status"] == "patched"
+    assert item["audit"]["segmentation"]["needs_syntax_correction"] is True

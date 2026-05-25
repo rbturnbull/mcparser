@@ -10,6 +10,7 @@ from .conllu_model import CONLLU_COLUMNS
 from .conllu_model import ConlluSentence, ConlluToken
 from .evidence import TokenEvidence, TrainingEvidence
 from .io import write_yaml
+from .segmentation import SegmentationCorrectionResult, apply_segmentation_patch
 from .validation import validate_sentence
 
 
@@ -77,12 +78,32 @@ class TokenCorrectionResult(BaseModel):
         return self.model_dump()
 
 
+class SentenceCorrectionResult(BaseModel):
+    status: str = "checked"
+    patches: list[CorrectionPatch] = Field(default_factory=list)
+    evidence_sent_ids: list[str] = Field(default_factory=list)
+    notes: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return self.model_dump()
+
+
 CorrectionPatchInput = CorrectionPatch | dict[str, Any]
 CorrectionChecker = Callable[[ConlluSentence, str, list[dict[str, Any]]], list[CorrectionPatchInput]]
 TokenCorrectionOutput = TokenCorrectionResult | list[CorrectionPatchInput]
 TokenCorrectionChecker = Callable[
     [ConlluSentence, ConlluToken, str, TokenEvidence],
     TokenCorrectionOutput,
+]
+SentenceCorrectionOutput = SentenceCorrectionResult | list[CorrectionPatchInput]
+SentenceCorrectionChecker = Callable[
+    [ConlluSentence, list[dict[str, Any]]],
+    SentenceCorrectionOutput,
+]
+SegmentationCorrectionOutput = SegmentationCorrectionResult | dict[str, Any]
+SegmentationChecker = Callable[
+    [ConlluSentence, list[dict[str, Any]]],
+    SegmentationCorrectionOutput,
 ]
 
 
@@ -115,6 +136,41 @@ def _normalise_token_result(
         status="patched" if patches else "checked",
         patches=patches,
     )
+
+
+def _normalise_sentence_result(result: SentenceCorrectionOutput) -> SentenceCorrectionResult:
+    if isinstance(result, SentenceCorrectionResult):
+        return result
+
+    patches = [_normalise_patch(patch) for patch in result]
+    return SentenceCorrectionResult(
+        status="patched" if patches else "checked",
+        patches=patches,
+    )
+
+
+def _normalise_segmentation_result(
+    result: SegmentationCorrectionOutput,
+) -> SegmentationCorrectionResult:
+    if isinstance(result, SegmentationCorrectionResult):
+        return result
+    return SegmentationCorrectionResult.model_validate(result)
+
+
+def correct_segmentation(
+    sentence: ConlluSentence,
+    examples: list[dict[str, Any]],
+    checker: SegmentationChecker,
+) -> SegmentationCorrectionResult:
+    result = _normalise_segmentation_result(checker(sentence, examples))
+    if result.status == "patched":
+        applied_patches = []
+        for patch in result.patches:
+            applied = apply_segmentation_patch(sentence, patch)
+            applied_patches.extend(applied.patches)
+        result.patches = applied_patches
+        result.needs_syntax_correction = True
+    return result
 
 
 def correct_token_column(
@@ -151,11 +207,24 @@ def correct_token_column(
     )
 
 
+def correct_sentence(
+    sentence: ConlluSentence,
+    examples: list[dict[str, Any]],
+    checker: SentenceCorrectionChecker,
+) -> SentenceCorrectionResult:
+    result = _normalise_sentence_result(checker(sentence, examples))
+    for patch in result.patches:
+        sentence.apply_patch(patch.to_dict())
+    return result
+
+
 def correct_predictions(
     prediction_path: Path | str,
     database,
     checker: CorrectionChecker | None = None,
+    segmentation_checker: SegmentationChecker | None = None,
     token_checkers: dict[str, TokenCorrectionChecker] | None = None,
+    sentence_checkers: dict[str, SentenceCorrectionChecker] | None = None,
     n_examples: int = 10,
     output: Path | str | None = None,
     columns: tuple[str, ...] = DEFAULT_CORRECTION_COLUMNS,
@@ -164,14 +233,29 @@ def correct_predictions(
     corrected: dict[str, dict[str, Any]] = {}
     evidence = TrainingEvidence(database)
     token_checkers = token_checkers or {}
+    sentence_checkers = sentence_checkers or {}
 
     for index, sentence in enumerate(sentences):
         examples = evidence.find_similar_sentences(sentence.text, k=n_examples)
         audit: dict[str, Any] = {
             "validation": [error.to_dict() for error in validate_sentence(sentence)],
         }
+        if segmentation_checker is not None:
+            audit["segmentation"] = correct_segmentation(
+                sentence=sentence,
+                examples=examples,
+                checker=segmentation_checker,
+            ).to_dict()
 
         for column in columns:
+            if column in sentence_checkers:
+                audit[column] = correct_sentence(
+                    sentence=sentence,
+                    examples=examples,
+                    checker=sentence_checkers[column],
+                ).to_dict()
+                continue
+
             if column in token_checkers:
                 audit[column] = correct_token_column(
                     sentence=sentence,
