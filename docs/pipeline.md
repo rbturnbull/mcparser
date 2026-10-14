@@ -37,10 +37,13 @@ sentences that settle first can serve as evidence (with `min_confidence`) for
 the harder ones. In each sentence, the role agents run in this order:
 
 ```text
-segmentation → upos → xpos → lemma → feats → head → deprel → (deps)
+segmentation → upos → lemma → head → deprel → feats → xpos → (deps)
 ```
 
-Later columns build on earlier ones. A role runs on a sentence only if it has
+Later columns build on earlier ones. Syntax comes before FEATS because case
+and definiteness depend on a word's function, and XPOS comes last because many
+treebanks encode UPOS and FEATS in it. When a model changes UPOS, the word's
+XPOS and FEATS are marked for review; FEATS → XPOS and HEAD → DEPREL likewise. A role runs on a sentence only if it has
 cells below the threshold (default 0.8) or open flags for its column.
 
 **Stop.** The loop ends when no role had anything to do, when a round made no
@@ -68,7 +71,7 @@ request_limit: 60             # model requests per agent task
 cache: true                   # prompt caching
 rules:
   min_count: 5                # examples needed before code settles a cell
-  min_share: 0.95             # share of them that must agree
+  min_share: 0.98             # share of them that must agree
   use_predictions: true       # confident predictions count as evidence for unseen forms
 roles:
   head:

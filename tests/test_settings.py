@@ -20,7 +20,7 @@ def test_defaults():
     assert settings.model_for("upos") == DEFAULT_EFFICIENT_MODEL
     assert settings.model_for("xpos") == DEFAULT_LIGHT_MODEL == "anthropic:claude-haiku-5-5"
     assert (settings.tier("feats"), settings.tier("lemma"), settings.tier("xpos")) == ("efficient", "strong", "light")
-    assert (settings.batch_sentences, settings.rules.min_count, settings.rules.min_share) == (8, 5, 0.95)
+    assert (settings.batch_sentences, settings.rules.min_count, settings.rules.min_share) == (8, 5, 0.98)
     assert settings.thinking_for("head") is None
     assert settings.enabled("lemma") and not settings.enabled("deps")
 

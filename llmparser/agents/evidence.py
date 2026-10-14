@@ -27,6 +27,8 @@ AMBIGUOUS_SHARE = 0.9
 RARE_COUNT = 3
 """With fewer trusted examples than this, word-ending analogies are added."""
 SUFFIX_MINIMUM = 5
+EXAMPLE_MAX_WORDS = 60
+"""Similar trusted sentences longer than this are not shown (too many tokens)."""
 
 
 class EvidenceBuilder:
@@ -158,6 +160,33 @@ class EvidenceBuilder:
         labels = ", ".join(f"{v.value}×{v.count}" for v in stats.deprels[:4])
         return f"arc to {target}: {labels} (by {stats.basis})"
 
+    def fixed(self, sent_id: str) -> list[str]:
+        lines = []
+        for expression in self.store.fixed_expressions(self.target, sent_id, sources=self.trusted):
+            lines.append(
+                f"- {sent_id} words {expression.start}–{expression.end} '{' '.join(expression.forms)}': fixed expression "
+                f"in {expression.fixed} of {expression.occurrences} occurrences (the first word is the head; "
+                f"the others attach to it as fixed)"
+            )
+        return lines
+
+    def examples(self, sentences: list[Sentence], limit: int = 1) -> list[str]:
+        """The most similar trusted sentence for each sentence, as compact CoNLL-U (ID FORM LEMMA UPOS HEAD DEPREL)."""
+        shown: set[tuple[str, str]] = set()
+        lines: list[str] = []
+        for sentence in sentences:
+            hits = self.store.search_sentences(sentence.text, sources=self.trusted, limit=limit + 2)
+            for hit in hits:
+                key = (hit.source, hit.sent_id)
+                example = self.store.source(hit.source).sentence(hit.sent_id)
+                if key in shown or len(example.words) > EXAMPLE_MAX_WORDS:
+                    continue
+                shown.add(key)
+                lines.append(f"## {hit.source}:{hit.sent_id} (like {sentence.sent_id})")
+                lines += [f"{w.id}\t{w.form}\t{w.lemma}\t{w.upos}\t{w.head}\t{w.deprel}" for w in example.words]
+                break
+        return lines
+
     # ------------------------------------------------------------ segmentation
 
     @staticmethod
@@ -211,14 +240,21 @@ class EvidenceBuilder:
                         seen.add(line)
                         lines.append(line)
             lines += self.tagset(role, sentences)
-        elif role.name == "deprel":
+        if role.name in ("head", "deprel"):
+            fixed = [line for sentence in sentences for line in self.fixed(sentence.sent_id)]
+            if fixed:
+                lines += ["Fixed expressions of the treebank in these sentences:", *fixed]
+            examples = self.examples(sentences)
+            if examples:
+                lines += ["Similar sentences from the treebank, to show its conventions (ID FORM LEMMA UPOS HEAD DEPREL):", *examples]
+        if role.name == "deprel":
             lines.append("Relations in the trusted data for arcs like each word's current one:")
             for sentence, (sent_id, cells) in zip(sentences, batch, strict=True):
                 wanted = {cell.token_id for cell in cells}
                 for word in sentence.words:
                     if not wanted or word.id in wanted:
                         lines.append(f"- {sent_id} {word.id} {word.form} ({word.upos}): {self.arc_labels(sentence, word) or 'no head yet'}")
-        else:  # head and deps
+        elif not (role.name in MORPHOLOGY_ROLES or role.is_scorer):  # head and deps
             lines.append("How similar words attach in the trusted data (relation→head UPOS, side of head ×count):")
             for sentence, (_, cells) in zip(sentences, batch, strict=True):
                 wanted = {cell.token_id for cell in cells}

@@ -160,8 +160,11 @@ def test_many_analyses_are_truncated(tmp_path):
 
 
 def test_syntax_evidence(store, builder):
-    lines = builder.build(ROLES["head"], [("p1", []), ("p2", [])]).splitlines()
-    assert lines[0].startswith("How similar words attach")
+    text = builder.build(ROLES["head"], [("p1", []), ("p2", [])])
+    examples, attach = text.split("How similar words attach")
+    assert examples.startswith("Similar sentences from the treebank")
+    assert "## train:t2 (like p1)" in examples and "1\tVino\tvenir\tVERB\t0\troot" in examples
+    lines = attach.splitlines()
     assert lines[1] == "- Vino (VERB): root→ROOT root ×3 (by UPOS, 3 arcs)"
     assert lines[2] == "- al (_): no UPOS or lemma yet"
     assert len(lines) == 7
@@ -210,3 +213,32 @@ def test_segmentation_evidence(store, builder):
     store.set_cell("pred", "p2", "1", "form", "Vino")
     assert "'al'" in builder.build(ROLES["segmentation"], [("p1", []), ("p2", [])])
     assert builder.build(ROLES["segmentation"], [("p2", [])]).endswith("is ever split in the trusted data.")
+
+
+def test_fixed_expressions_and_examples(tmp_path, monkeypatch):
+    rows = lambda words: "\n".join("\t".join(w) for w in words)  # noqa: E731
+    fixed = [("1", "a", "a", "ADP", "_", "_", "4", "case", "_", "_"), ("2", "pesar", "pesar", "NOUN", "_", "_", "1", "fixed", "_", "_"),
+             ("3", "de", "de", "ADP", "_", "_", "1", "fixed", "_", "_"), ("4", "todo", "todo", "PRON", "_", "_", "0", "root", "_", "_")]
+    loose_use = [("1", "a", "a", "ADP", "_", "_", "2", "case", "_", "_"), ("2", "pesar", "pesar", "NOUN", "_", "_", "0", "root", "_", "_"),
+                 ("3", "de", "de", "ADP", "_", "_", "2", "case", "_", "_")]
+    gap = [("1", "ni", "ni", "CCONJ", "_", "_", "0", "root", "_", "_"), ("2", "x", "x", "X", "_", "_", "1", "dep", "_", "_"),
+           ("3", "siquiera", "siquiera", "ADV", "_", "_", "1", "fixed", "_", "_")]
+    train = tmp_path / "train.conllu"
+    blocks = [rows(fixed)] * 3 + [rows(loose_use), rows(gap), rows(gap), rows(gap)]
+    train.write_text("".join(f"# sent_id = t{i}\n{block}\n\n" for i, block in enumerate(blocks)), encoding="utf-8")
+    pred = tmp_path / "pred.conllu"
+    pred.write_text("# sent_id = p\n1\ta\t_\t_\t_\t_\t_\t_\t_\t_\n2\tpesar\t_\t_\t_\t_\t_\t_\t_\t_\n"
+                    "3\tde\t_\t_\t_\t_\t_\t_\t_\t_\n4\ttodo\t_\t_\t_\t_\t_\t_\t_\t_\n\n", encoding="utf-8")
+    store = CorpusStore()
+    store.add_source("train", train)
+    store.add_source("pred", pred, mode="rw")
+    found = store.fixed_expressions("pred", "p")
+    assert [(f.start, f.end, f.forms, f.fixed, f.occurrences) for f in found] == [("1", "3", ["a", "pesar", "de"], 3, 4)]
+    assert store.fixed_expressions("pred", "p", min_share=0.9) == []  # 3 of 4 is below 90%
+    assert store.source("train").index.fixed[("ni", "siquiera")] == 0  # not contiguous: not indexed
+    builder = EvidenceBuilder(store, "pred")
+    text = builder.build(ROLES["deprel"], [("p", [])])
+    assert "- p words 1–3 'a pesar de': fixed expression in 3 of 4 occurrences" in text
+    assert text.count("## train:") == 1  # each similar sentence once
+    monkeypatch.setattr("llmparser.agents.evidence.EXAMPLE_MAX_WORDS", 2)
+    assert "Similar sentences" not in EvidenceBuilder(store, "pred").build(ROLES["deprel"], [("p", [])])

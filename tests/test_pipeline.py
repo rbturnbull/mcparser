@@ -37,9 +37,9 @@ async def test_score_then_refine_until_stable(store):
     assert [(t.round, t.sent_ids, t.role) for t in report.tasks] == [
         (1, ["p1", "p2"], "scorer"),
         (1, ["p1"], "upos"),
-        (1, ["p1"], "xpos"),
         (1, ["p1"], "lemma"),
         (1, ["p1"], "feats"),
+        (1, ["p1"], "xpos"),
         (2, ["p1"], "scorer"),
     ]
     assert store.source("pred").sentence("p1").token("2").upos == "ADP"
@@ -61,7 +61,7 @@ async def test_scorer_sees_only_changed_cells_with_evidence(store):
     models = {"scorer": scripted(score), "upos": scripted(values("upos", "ADP")), "lemma": scripted(values("lemma", "al")), "*": scripted()}
     await pipeline(store, models).run()
     second_round = prompts[1]
-    assert [(c["token_id"], c["column"]) for c in cells(second_round)] == [("2", "upos"), ("2", "xpos"), ("2", "lemma"), ("2", "feats")]
+    assert [(c["token_id"], c["column"]) for c in cells(second_round)] == [("2", "upos"), ("2", "lemma"), ("2", "feats"), ("2", "xpos")]
     assert "Analyses in the trusted data" in second_round
 
 
@@ -181,8 +181,8 @@ async def test_unused_columns_are_settled_without_agents(store, tmp_path):
 
 def test_helpers(store, tmp_path):
     p = Pipeline(store, "pred", AgentTeam(store, "pred", Settings()), Settings(roles={"xpos": {"enabled": False}}))
-    assert p.roles == ["segmentation", "upos", "lemma", "feats", "head", "deprel"]
-    assert [c.column for c in p.cells("p2")][:6] == ["form", "upos", "lemma", "feats", "head", "deprel"]
+    assert p.roles == ["segmentation", "upos", "lemma", "head", "deprel", "feats"]
+    assert [c.column for c in p.cells("p2")][:6] == ["form", "upos", "lemma", "head", "deprel", "feats"]
     assert p.sentences(order="confidence_desc") == ["p1", "p2"]
 
     keys = lambda: [(c.token_id, c.column) for c in p.cells_to_score("p1")]  # noqa: E731

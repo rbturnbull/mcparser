@@ -33,6 +33,7 @@ from .models import (
     GroupCount,
     LinkPage,
     LinkRef,
+    FixedExpression,
     MultiwordAnalysis,
     ParallelView,
     RelationStats,
@@ -693,6 +694,35 @@ class CorpusStore:
         return [ValueCount(value=value, count=count) for value, count in total.most_common()]
 
     @_locked
+    def fixed_expressions(
+        self, source: str, sent_id: str, min_count: int = 3, min_share: float = 0.5, sources: list[str] | None = None
+    ) -> list[FixedExpression]:
+        """Word sequences in a sentence that the trusted data annotates as fixed expressions.
+
+        A sequence is reported if it is fixed at least ``min_count`` times and in
+        at least ``min_share`` of its occurrences.
+        """
+        sentence = self.source(source).sentence(sent_id)
+        forms = [loose_key(word.form) for word in sentence.words]
+        trusted = self._trusted(sources)
+        found = []
+        lengths = sorted({len(seq) for s in trusted for seq in s.index.fixed}, reverse=True)
+        for length in lengths:
+            for start in range(len(forms) - length + 1):
+                sequence = tuple(forms[start : start + length])
+                fixed = sum(s.index.fixed.get(sequence, 0) for s in trusted)
+                occurrences = sum(s.index.fixed_occurrences.get(sequence, 0) for s in trusted)
+                if fixed >= min_count and fixed >= min_share * occurrences:
+                    words = sentence.words[start : start + length]
+                    found.append(
+                        FixedExpression(
+                            start=words[0].id, end=words[-1].id, forms=[w.form for w in words], fixed=fixed,
+                            occurrences=occurrences,
+                        )
+                    )  # fmt: skip
+        return found
+
+    @_locked
     def xpos_for_tags(self, upos: str, feats: str, sources: list[str] | None = None) -> list[ValueCount]:
         """XPOS values used with exactly this UPOS and FEATS (default: read-only sources)."""
         total: Counter[str] = Counter()
@@ -1198,6 +1228,7 @@ class CorpusStore:
             conllu_b=b.to_conllu(),
             links=format_ugarit(links),
             confidence={link.key: alignment.confidence(link) for link in links},
+            agents={link.key: link.agent for link in links if link.agent},
             unaligned_a=[word.id for word in a.words if word.id not in linked_a],
             unaligned_b=[word.id for word in b.words if word.id not in linked_b],
         )
@@ -1226,12 +1257,19 @@ class CorpusStore:
         ``confidence`` applies to links that have none. With ``replace`` the
         pair's links are replaced, otherwise they are added (a link with the
         same word ids is updated). Word ids must exist in both sentences.
+        Each new or changed link records ``agent``; a link sent again unchanged
+        (same S/P and confidence) keeps the agent that last changed it.
         """
         target = self.alignment(alignment)
         target.require_writable()
         a, b = self._pair(target, sent_id)
-        parsed = parse_ugarit(links) if isinstance(links, str) else [Link.model_validate(link) for link in links]
+        parsed = (
+            parse_ugarit(links)
+            if isinstance(links, str)
+            else [Link.model_validate(link.model_dump() if isinstance(link, Link) else link) for link in links]
+        )  # copies: the caller's (or the stored) links are never modified
         ids_a, ids_b = {word.id for word in a.words}, {word.id for word in b.words}
+        previous = {link.key: link for link in target.links(sent_id)}
         for link in parsed:
             if link.source not in ids_a:
                 raise EditError(f"Link {link.key}: no word {link.source} in {target.source_a.name}:{sent_id}.")
@@ -1239,6 +1277,9 @@ class CorpusStore:
                 raise EditError(f"Link {link.key}: no word {link.target} in {target.source_b.name}:{sent_id}.")
             if link.confidence is None and confidence is not None:
                 link.confidence = check_confidence(confidence)
+            old = previous.get(link.key)
+            unchanged = old is not None and (old.sure, old.confidence) == (link.sure, link.confidence)
+            link.agent = old.agent if unchanged else agent
         merged = {} if replace else {link.key: link for link in target.links(sent_id)}
         merged.update({link.key: link for link in parsed})
         new = sorted(merged.values(), key=lambda link: (int(link.source), int(link.target)))

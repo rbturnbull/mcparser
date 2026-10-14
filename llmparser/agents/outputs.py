@@ -26,7 +26,7 @@ from .roles import Role
 
 TREE_ERRORS = frozenset({"cycle", "root-count", "self-loop", "invalid-head"})
 
-DEPENDENT_COLUMNS = {"upos": ("xpos", "feats"), "head": ("deprel",)}
+DEPENDENT_COLUMNS = {"upos": ("xpos", "feats"), "feats": ("xpos",), "head": ("deprel",)}
 """When a model changes the key, the dependent cells of that word are marked for review."""
 
 CLOSED_TAGSETS = ("xpos", "deprel", "feats")

@@ -49,6 +49,9 @@ PREDICTION_EVIDENCE = 0.96
 
 MORPHOLOGY = ("lemma", "upos", "xpos", "feats")
 
+REDERIVE_BELOW = 0.5
+"""An XPOS below this confidence (e.g. marked for review after its FEATS changed) may be re-derived."""
+
 INPUT_CONFIDENCE = 0.9
 FLAG_INPUT_CONFIDENCE = 0.5
 """Cross-checks only raise flags, so a merely plausible relation is enough to check against."""
@@ -58,7 +61,10 @@ fire when those cells are at least this confident, so guesses do not propagate."
 
 class RuleSettings(BaseModel):
     min_count: int = Field(5, ge=1, description="Examples needed before a rule fires.")
-    min_share: float = Field(0.95, gt=0.5, le=1, description="Share of the examples that must agree.")
+    min_share: float = Field(
+        0.98, gt=0.5, le=1,
+        description="Share of the examples that must agree (0.98 had a third of the errors of 0.95 on four treebanks).",
+    )  # fmt: skip
     use_predictions: bool = Field(True, description="Use confident predictions as evidence for forms unseen in the trusted data.")
 
 
@@ -170,9 +176,13 @@ class Rules:
             if not self._confident(word, "upos", "feats"):
                 continue
             counts = Counter({v.value: v.count for v in self.store.xpos_for_tags(word.upos, word.feats)})
-            update = self._settle(
-                word, "xpos", dominant(counts, self.settings), TRUSTED_CONFIDENCE, f"XPOS used with {word.upos} {word.feats}"
-            )
+            value = dominant(counts, self.settings)
+            reason = f"XPOS used with {word.upos} {word.feats}"
+            if value and word.xpos != value and self.source.confidence(word, "xpos") < REDERIVE_BELOW:
+                # XPOS follows from UPOS and FEATS: a doubtful XPOS left over from an earlier analysis is replaced
+                update = CellUpdate(token_id=word.id, column="xpos", value=value, confidence=TRUSTED_CONFIDENCE, reason=reason)
+            else:
+                update = self._settle(word, "xpos", value, TRUSTED_CONFIDENCE, reason)
             if update:
                 updates.append(update)
         return updates

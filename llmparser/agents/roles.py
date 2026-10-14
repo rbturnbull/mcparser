@@ -67,8 +67,10 @@ ROLES: dict[str, Role] = {
     )
 }
 
-REFINE_ORDER = ("segmentation", "upos", "xpos", "lemma", "feats", "head", "deprel", "deps")
-"""Order in which roles work on a sentence: later columns build on earlier ones."""
+REFINE_ORDER = ("segmentation", "upos", "lemma", "head", "deprel", "feats", "xpos", "deps")
+"""Order in which roles work: later columns build on earlier ones. Syntax comes
+before FEATS because case and definiteness depend on a word's function, and XPOS
+comes last because in many treebanks it encodes UPOS and FEATS."""
 
 DEFAULT_DISABLED = frozenset({"deps"})
 """Roles that only run when enabled in the settings (enhanced dependencies are optional in UD)."""

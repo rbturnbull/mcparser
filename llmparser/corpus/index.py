@@ -54,6 +54,10 @@ class SourceIndex:
         """XPOS counts for each (UPOS, FEATS) pair."""
         self.upos_by_function: defaultdict[tuple[str, str], Counter[str]] = defaultdict(Counter)
         """UPOS counts for each (LEMMA, DEPREL without subtype) pair."""
+        self.fixed: Counter[tuple[str, ...]] = Counter()
+        """Word sequences (loose forms) annotated as fixed expressions: a head and its ``fixed`` dependents."""
+        self.fixed_occurrences: Counter[tuple[str, ...]] = Counter()
+        """How often each of those sequences occurs at all (fixed or not)."""
         self.relations: defaultdict[tuple[str, ...], Counter[str]] = defaultdict(Counter)
         """DEPREL counts keyed by :func:`relation_keys` of the dependent and head."""
 
@@ -63,11 +67,28 @@ class SourceIndex:
 
         for s_pos, sentence in enumerate(sentences):
             self._add(s_pos, sentence)
+        self._count_fixed(sentences)
         lengths = [sum(doc.values()) for doc in self.doc_terms]
         self.avg_length = (sum(lengths) / len(lengths)) if lengths else 0.0
 
+    def _count_fixed(self, sentences: list[Sentence]) -> None:
+        lengths = {len(sequence) for sequence in self.fixed}
+        for sentence in sentences:
+            forms = [loose(word.form) for word in sentence.words]
+            for length in lengths:
+                for start in range(len(forms) - length + 1):
+                    sequence = tuple(forms[start : start + length])
+                    if sequence in self.fixed:
+                        self.fixed_occurrences[sequence] += 1
+
     def _add(self, s_pos: int, sentence: Sentence) -> None:
         words = {word.id: word for word in sentence.words}
+        for word in words.values():
+            parts = [w for w in words.values() if w.head == word.id and w.deprel.split(":")[0] == "fixed"]
+            if parts:
+                group = sorted([word, *parts], key=lambda w: int(w.id))
+                if int(group[-1].id) - int(group[0].id) == len(group) - 1:  # contiguous only
+                    self.fixed[tuple(loose(w.form) for w in group)] += 1
         for word in words.values():
             if word.deprel == EMPTY or not (word.head == "0" or word.head in words):
                 continue

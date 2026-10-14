@@ -168,6 +168,16 @@ class ValueCount(BaseModel):
     count: int
 
 
+class FixedExpression(BaseModel):
+    """A word sequence of a sentence that the trusted data annotates as a fixed expression."""
+
+    start: str = Field(description="Id of the first word (the head of the expression in UD).")
+    end: str
+    forms: list[str]
+    fixed: int = Field(description="Times the sequence is annotated as fixed in the trusted data.")
+    occurrences: int = Field(description="Times the sequence occurs in the trusted data at all.")
+
+
 class RelationStats(BaseModel):
     """How the trusted data labels arcs like a given one."""
 
@@ -225,6 +235,7 @@ class ParallelView(BaseModel):
     conllu_b: str
     links: str = Field(description="Ugarit links, e.g. '1-1S 2-3P' (word id in A - word id in B).")
     confidence: dict[str, float] = Field(description="Confidence of each link, keyed 'A-B'.")
+    agents: dict[str, str] = Field(default_factory=dict, description="Who last set or changed each link, keyed 'A-B'.")
     unaligned_a: list[str] = Field(description="Word ids in A without a link.")
     unaligned_b: list[str] = Field(description="Word ids in B without a link.")
 

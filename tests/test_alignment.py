@@ -44,7 +44,7 @@ def test_set_links_and_parallel_view(parallel, tmp_path):
     assert parallel.set_links("verses", "s2", "1-1", dry_run=True).links == "1-1S"
     assert parallel.get_parallel("verses", "s2").links == ""
     lines = (tmp_path / "out" / "verses.jsonl").read_text(encoding="utf-8").splitlines()
-    assert json.loads(lines[0])["links"][0] == {"source": "1", "target": "2", "sure": True, "confidence": 0.9}
+    assert json.loads(lines[0])["links"][0] == {"source": "1", "target": "2", "sure": True, "confidence": 0.9, "agent": "aligner"}
     history = (tmp_path / "out" / "verses.jsonl.history.jsonl").read_text(encoding="utf-8").splitlines()
     assert json.loads(history[0])["agent"] == "aligner" and json.loads(history[0])["new"] == "1-2S 2-3S"
     view = parallel.remove_links("verses", "s1", "3-4 3-5S", reason="wrong")
@@ -179,6 +179,9 @@ async def test_mcp_alignment_tools(parallel):
             return content["result"] if set(content) == {"result"} else content
 
         assert (await call("list_alignments"))[0]["source_b"] == "grc"
+        checked = await call("set_links", alignment="verses", sent_id="s1", links="1-2S", dry_run=True, agent="aligner")
+        assert checked["links"] == "1-2S" and checked["agents"] == {"1-2": "aligner"}
+        assert (await call("get_parallel", alignment="verses", sent_id="s1"))["links"] == ""
         assert (await call("set_links", alignment="verses", sent_id="s1", links="1-2S 2-3P", confidence=0.4))["links"] == "1-2S 2-3P"
         assert (await call("get_parallel", alignment="verses", sent_id="s1"))["unaligned_a"] == ["3"]
         assert (await call("translation_candidates", lemma="amo"))["candidates"][0]["value"] == "ἀγαπάω"
@@ -201,3 +204,18 @@ def test_cli_alignment_option(monkeypatch, tmp_path):
     assert "--alignment" in result.stdout
     result = CliRunner().invoke(app, ["mcp", "serve", *sources, "-a", "bad"])
     assert result.exit_code == 2 and "Alignment spec 'bad'" in result.stderr
+
+
+def test_link_agents(parallel):
+    view = parallel.set_links("verses", "s1", "1-2S 2-3S", confidence=0.95, agent="rules")
+    assert view.agents == {"1-2": "rules", "2-3": "rules"}
+    stored = parallel.alignment("verses").links("s1")
+    # sent again unchanged: keeps its agent; changed or new: the new agent
+    resend = [stored[0], Link(source="2", target="3", confidence=0.5), Link(source="3", target="4", sure=False)]
+    view = parallel.set_links("verses", "s1", resend, agent="scorer", dry_run=True)
+    assert view.agents == {"1-2": "rules", "2-3": "scorer", "3-4": "scorer"}
+    assert stored[0].agent == "rules" and parallel.get_parallel("verses", "s1").agents == {"1-2": "rules", "2-3": "rules"}
+    mine = Link(source="1", target="2")
+    parallel.set_links("verses", "s1", [mine], confidence=0.7, replace=False, agent="aligner")
+    assert mine.confidence is None and mine.agent is None  # the caller's link is not modified
+    assert parallel.get_parallel("verses", "s1").agents["1-2"] == "aligner"

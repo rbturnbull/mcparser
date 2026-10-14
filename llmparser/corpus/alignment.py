@@ -36,6 +36,7 @@ class Link(BaseModel):
     target: str = Field(description="Word id in source B.")
     sure: bool = Field(True, description="S (sure) or P (probable), as in Ugarit.")
     confidence: float | None = Field(None, ge=0, le=1)
+    agent: str | None = Field(None, description="Who last set or changed the link (e.g. rules, aligner, a person).")
 
     @property
     def key(self) -> str:

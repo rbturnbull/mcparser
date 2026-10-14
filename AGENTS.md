@@ -127,7 +127,7 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
 - **Prompt caching** on by default (`ModelSettings(cache=True)`): ~74% of
   input tokens were cache reads in a real run.
 - **Rules before models** (`rules.py`): code settles cells whose evidence is
-  overwhelming (≥ `min_count` examples, ≥ `min_share` agreeing): morphology per
+  overwhelming (≥ `min_count` = 5 examples, ≥ `min_share` = 0.98 agreeing): morphology per
   column by form (or by form after the previous word), XPOS from (UPOS, FEATS),
   DEPREL from `relation_stats` for the actual arc, `root` for HEAD 0, multiword
   splits / confirmations, and (optional) confident predictions as evidence for
@@ -166,8 +166,11 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
 `corpus/alignment.py`: `AlignmentSet` links words of same-`sent_id` sentences in
 two sources (Ugarit `1-2S 3-5P`, per-link confidence, JSONL file, ro/rw,
 history sidecar). Store: `add_alignment`, `get_parallel`, `set_links`
-(validated, `replace`, `dry_run`), `remove_links`, `translation_candidates`
-(lemma → linked lemmas; lemma falls back to form), `low_confidence_links`. MCP
+(validated, `replace`, `dry_run` — also on the MCP tool), `remove_links`, `translation_candidates`
+(lemma → linked lemmas; lemma falls back to form), `low_confidence_links`. Each link
+records `agent` (who last set or changed it; an unchanged link sent again keeps
+its agent; `set_links` copies the links it is given, so callers' and stored
+`Link` objects are never mutated); `get_parallel` returns `agents`. MCP
 tools of the same names; CLI `--alignment NAME=A,B,PATH[:ro|rw[:CONF]]`. The
 llmaligner repo (sibling directory) depends on this package; its handoff
 instructions are in `../llmaligner/INSTRUCTIONS.md`.
@@ -268,6 +271,18 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   on a changed cell are auto-resolved; PROIEL's combined values
   (Gender=Masc,Neut) → FEATS guidance. A lemma-similarity check was tried and
   dropped (8 flags on Greek+Latin, 0 useful).
+
+- Greek batch 2 (sentences 11–30, $3.17) and Arabic PADT (10 sentences,
+  $3.10) error study → changes: rule threshold 0.95 → 0.98 (replaying the
+  morphology rule on blanked dev sentences of 4 treebanks: 53 → 16 wrong of
+  ~5k/4.5k settled; e.g. ل ADP vs CCONJ, αὐτόν PRON vs DET were context
+  readings); role order now segmentation, upos, lemma, head, deprel, feats,
+  xpos (Case errors came from FEATS running before syntax at 0.9 confidence);
+  FEATS → XPOS dependency, and a doubtful XPOS (< 0.5) is re-derived from
+  UPOS+FEATS; HEAD/DEPREL evidence now includes the most similar treebank
+  sentence (BM25) per sentence and the treebank's fixed expressions
+  (≥3 times, ≥50% of occurrences). Several "errors" were gold inconsistencies
+  with train (ἢν δὲ μή is never fixed in grc train; Gender=Masc,Neut usage).
 
 ## Ideas / next steps
 

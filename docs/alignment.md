@@ -17,8 +17,13 @@ Many-to-many alignments are several links (`1-2S 1-3S`). Each link can carry a
 confidence. Sets are JSON Lines files, one sentence pair per line:
 
 ```json
-{"sent_id": "B10K1V1", "links": [{"source": "1", "target": "2", "sure": true, "confidence": 0.95}]}
+{"sent_id": "B10K1V1", "links": [{"source": "1", "target": "2", "sure": true, "confidence": 0.95, "agent": "aligner"}]}
 ```
+
+`agent` records who last set or changed the link (`set_links`' `agent`
+argument): a link sent again unchanged (same S/P and confidence) keeps its
+agent, so a program can tell rule links, model links and links a scorer has
+already rated apart. `get_parallel` shows them as `agents`.
 
 Like sources, a set is read-only (trusted, e.g. gold alignments, default
 confidence 1.0) or writable (default 0.0); a writable file is created when
@@ -47,7 +52,7 @@ Here `verses` is writable (the default) and `gold` is read-only.
 | `get_parallel` | a sentence pair: both CoNLL-U sentences, the links with confidences, unlinked words on each side |
 | `translation_candidates` | what a lemma (of A, or of B with `side="b"`) is linked to, with counts, unaligned occurrences and examples |
 | `low_confidence_links` | links below a threshold, least confident first |
-| `set_links` | set (or with `replace=false` add) the links of a pair; word ids are checked against both sentences |
+| `set_links` | set (or with `replace=false` add) the links of a pair; word ids are checked against both sentences; `dry_run=true` only checks |
 | `remove_links` | remove links from a pair |
 
 ## From Python

@@ -11,7 +11,7 @@ There is one agent per CoNLL-U element, plus the scorer. Each is a
 | `xpos` | XPOS | `allowed_values(column="xpos", upos=...)`, `analyse_form` |
 | `lemma` | LEMMA | `analyse_form`, `find_tokens(suffix=...)` analogies, `find_tokens(root=...)` |
 | `feats` | FEATS | `feature_inventory(upos=...)`, `analyse_form` |
-| `head` | HEAD | `find_arcs`, `search_sentences`, `validate` |
+| `head` | HEAD | similar treebank sentences, fixed expressions, `find_arcs`, `relation_stats` |
 | `deprel` | DEPREL | `relation_stats` for the word's actual head, `find_arcs`, `allowed_values` |
 | `deps` | DEPS (off by default) | `find_arcs`, the trusted data's enhanced graphs |
 | `scorer` | confidences only | all of the above, plus relation counts for each current arc |

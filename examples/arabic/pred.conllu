@@ -1,0 +1,365 @@
+# newdoc id = afp.20000715.0001
+# newpar id = afp.20000715.0001:p1
+# sent_id = afp.20000715.0001:p1u1
+# text = ميراث ب300 الف دولار يقلب حياة متشرد اميركي
+# orig_file_sentence AFP_ARB_20000715.0001#1
+1	ميراث	مِيرَاث	NOUN	N------S1I	Case=Nom|Definite=Ind|Number=Sing	6	nsubj	_	Conf=lemma:0.92,upos:0.95,xpos:0.97,feats:0.90,head:0.88,deprel:0.90
+2	ب	بِ	ADP	P---------	AdpType=Prep	3	case	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.92,deprel:0.97
+3	300	300	NUM	Q---------	NumForm=Digit	1	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.55
+4	الف	أَلف	NUM	QM-----S2R	Case=Gen|Definite=Cons|Number=Sing|NumForm=Word	3	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.93,xpos:0.97,feats:0.90,head:0.88,deprel:0.88
+5	دولار	دُولَار	NOUN	N------S2I	Case=Gen|Definite=Ind|Number=Sing	4	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+6	يقلب	قَلَب	VERB	VIIA-3MS--	Aspect=Imp|Gender=Masc|Mood=Ind|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	0	root	_	Conf=lemma:0.85,upos:0.95,xpos:0.97,feats:0.95,head:0.93,deprel:0.99
+7	حياة	حَيَاة	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	6	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.93,deprel:0.90
+8	متشرد	مُتَشَرِّد	NOUN	N------S2I	Case=Gen|Definite=Ind|Number=Sing	7	nmod	_	Conf=lemma:0.85,upos:0.75,xpos:0.75,feats:0.85,head:0.92,deprel:0.95
+9	اميركي	أَمِيرِكِيّ	ADJ	A-----MS2I	Case=Gen|Definite=Ind|Gender=Masc|Number=Sing	8	amod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.92,head:0.92,deprel:0.95
+
+# newpar id = afp.20000715.0001:p2
+# sent_id = afp.20000715.0001:p2u1
+# text = لونغ بيتش (الولايات المتحدة) 15-7 (اف ب)- كل شيء تغير في حياة المتشرد ستيفن كنت عندما عثرت عليه شقيقته بعد عناء طويل لتبلغه بانه ورث 300 الف دولار وبانه بات قادرا على وضع حد لعشرين سنة من حياة التشرد في شوارع مدينة لونغ بيتش في ولاية كاليفورنيا.
+# orig_file_sentence AFP_ARB_20000715.0001#2
+1	لونغ	لُونغ	X	X---------	Foreign=Yes	0	root	_	Conf=lemma:0.60,upos:0.88,xpos:0.90,feats:0.85,head:0.90,deprel:0.99
+2	بيتش	بِيتش	X	X---------	Foreign=Yes	1	flat	_	Conf=lemma:0.60,upos:0.88,xpos:0.90,feats:0.85,head:0.85,deprel:0.85
+3	(	(	PUNCT	G---------	_	4	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.98
+4	الولايات	وِلَايَة	NOUN	N------P1D	Case=Nom|Definite=Def|Number=Plur	1	appos	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.90
+5	المتحدة	مُتَّحِد	ADJ	A-----FS1D	Case=Nom|Definite=Def|Gender=Fem|Number=Sing	4	amod	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.80,feats:0.80,head:0.95,deprel:0.97
+6	)	)	PUNCT	G---------	_	4	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.98
+7	15	15	NUM	Q---------	NumForm=Digit	1	dep	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.95
+8	-	-	PUNCT	G---------	_	7	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.98
+9	7	7	NUM	Q---------	NumForm=Digit	7	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+10	(	(	PUNCT	G---------	_	12	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.98
+11	اف	اف	X	U---------	_	12	nmod	_	Conf=form:0.97,lemma:0.85,upos:0.97,xpos:0.85,feats:0.80,head:0.85,deprel:0.88
+12	ب	بِ	X	P---------	Abbr=Yes	1	dep	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.88,xpos:0.97,feats:0.97,head:0.60,deprel:0.60
+13	)	)	PUNCT	G---------	_	12	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.98
+14	-	-	PUNCT	G---------	_	17	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.98
+15	كل	كُلّ	NOUN	N------S1R	Case=Nom|Definite=Cons|Number=Sing	17	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.85,feats:0.85,head:0.90,deprel:0.90
+16	شيء	شَيء	NOUN	N------S2I	Case=Gen|Definite=Ind|Number=Sing	15	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+17	تغير	تَغَيَّر	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	1	parataxis	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.95,head:0.90,deprel:0.90
+18	في	فِي	ADP	P---------	AdpType=Prep	19	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+19	حياة	حَيَاة	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	17	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.90,deprel:0.85
+20	المتشرد	مُتَشَرِّد	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	19	nmod	_	Conf=lemma:0.85,upos:0.85,xpos:0.80,feats:0.95,head:0.95,deprel:0.90
+21	ستيفن	ستِيفِن	X	X---------	Foreign=Yes	20	nmod	_	Conf=lemma:0.90,upos:0.80,xpos:0.85,feats:0.90,head:0.75,deprel:0.80
+22	كنت	كنت	X	U---------	_	21	flat	_	Conf=form:0.97,lemma:0.80,upos:0.80,xpos:0.90,feats:0.85,head:0.75,deprel:0.80
+23	عندما	عِندَمَا	CCONJ	C---------	_	24	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+24	عثرت	عَثَر	VERB	VP-A-3FS--	Aspect=Perf|Gender=Fem|Number=Sing|Person=3|Voice=Act	17	advcl	_	Conf=lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.85,deprel:0.85
+25-26	عليه	_	_	_	_	_	_	_	_
+25	علي	عَلَى	ADP	P---------	AdpType=Prep	26	case	_	Conf=lemma:0.95,upos:0.90,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+26	ه	هُوَ	PRON	SP---3MS2-	Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs	24	obl:arg	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.80
+27-28	شقيقته	_	_	_	_	_	_	_	_
+27	شقيقة	شَقِيقَة	NOUN	N------S1R	Case=Nom|Definite=Cons|Number=Sing	24	nsubj	_	Conf=lemma:0.90,upos:0.95,xpos:0.97,feats:0.90,head:0.90,deprel:0.90
+28	ه	هُوَ	PRON	SP---3MS2-	Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs	27	nmod	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+29	بعد	بَعدَ	ADP	PI------4-	AdpType=Prep|Case=Acc	30	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+30	عناء	عَنَاء	NOUN	N------S2I	Case=Gen|Definite=Ind|Number=Sing	24	obl	_	Conf=lemma:0.90,upos:0.95,xpos:0.97,feats:0.90,head:0.85,deprel:0.85
+31	طويل	طَوِيل	ADJ	A-----MS2I	Case=Gen|Definite=Ind|Gender=Masc|Number=Sing	30	amod	_	Conf=lemma:0.95,upos:0.95,xpos:0.97,feats:0.90,head:0.95,deprel:0.97
+32-34	لتبلغه	_	_	_	_	_	_	_	_
+32	ل	لِ	ADP	P---------	AdpType=Prep	33	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+33	تبلغ	بَلَغ	VERB	VISA-3FS--	Aspect=Imp|Gender=Fem|Mood=Sub|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	24	advcl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.80,deprel:0.80
+34	ه	هُوَ	PRON	SP---3MS4-	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	33	obj	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.95,deprel:0.85
+35-37	بانه	_	_	_	_	_	_	_	_
+35	ب	بِ	ADP	P---------	AdpType=Prep	38	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.80
+36	أن	أَنَّ	SCONJ	C---------	_	38	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+37	ه	هُوَ	PRON	SP---3MS4-	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	38	nsubj	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.85
+38	ورث	وَرِث	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	33	ccomp	_	Conf=lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.85,deprel:0.80
+39	300	300	NUM	Q---------	NumForm=Digit	38	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.85
+40	الف	أَلف	NUM	QM-----S2R	Case=Gen|Definite=Cons|Number=Sing|NumForm=Word	39	nmod	_	Conf=form:0.97,lemma:0.95,upos:0.90,xpos:0.97,feats:0.90,head:0.85,deprel:0.90
+41	دولار	دُولَار	NOUN	N------S2I	Case=Gen|Definite=Ind|Number=Sing	40	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
+42-45	وبانه	_	_	_	_	_	_	_	_
+42	و	وَ	CCONJ	C---------	_	46	cc	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+43	ب	بِ	ADP	P---------	AdpType=Prep	46	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.80
+44	أن	أَنَّ	SCONJ	C---------	_	46	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+45	ه	هُوَ	PRON	SP---3MS4-	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	46	nsubj	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.85
+46	بات	بَات	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	38	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.80
+47	قادرا	قَادِر	ADJ	A-----MS4I	Case=Acc|Definite=Ind|Gender=Masc|Number=Sing	46	obj	_	Conf=lemma:0.95,upos:0.90,xpos:0.97,feats:0.95,head:0.85,deprel:0.75
+48	على	عَلَى	ADP	P---------	AdpType=Prep	49	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+49	وضع	وَضع	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	47	obl:arg	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.90,deprel:0.80
+50	حد	حَدّ	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	49	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.90,deprel:0.97
+51-52	لعشرين	_	_	_	_	_	_	_	_
+51	ل	لِ	ADP	P---------	AdpType=Prep	52	case	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+52	عشرين	عِشرُون	NUM	QL------2I	Case=Gen|Definite=Ind|NumForm=Word	50	nmod	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.65,deprel:0.75
+53	سنة	سَنَة	NOUN	N------S4I	Case=Acc|Definite=Ind|Number=Sing	52	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.85
+54	من	مِن	ADP	P---------	AdpType=Prep	55	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+55	حياة	حَيَاة	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	53	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.80,deprel:0.85
+56	التشرد	تَشَرُّد	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	55	nmod	_	Conf=lemma:0.90,upos:0.95,xpos:0.97,feats:0.95,head:0.95,deprel:0.90
+57	في	فِي	ADP	P---------	AdpType=Prep	58	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+58	شوارع	شَارِع	NOUN	N------P2R	Case=Gen|Definite=Cons|Number=Plur	56	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.55,deprel:0.90
+59	مدينة	مَدِينَة	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	58	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.90,deprel:0.90
+60	لونغ	لُونغ	X	X---------	Foreign=Yes	59	nmod	_	Conf=lemma:0.60,upos:0.88,xpos:0.90,feats:0.85,head:0.90,deprel:0.85
+61	بيتش	بِيتش	X	X---------	Foreign=Yes	60	flat	_	Conf=lemma:0.60,upos:0.88,xpos:0.90,feats:0.85,head:0.85,deprel:0.85
+62	في	فِي	ADP	P---------	AdpType=Prep	63	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+63	ولاية	وِلَايَة	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	59	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.70,deprel:0.85
+64	كاليفورنيا	كَالِيفُورنِيَا	X	X---------	Foreign=Yes	63	nmod	_	SpaceAfter=No|Conf=lemma:0.90,upos:0.80,xpos:0.85,feats:0.90,head:0.90,deprel:0.85
+65	.	.	PUNCT	G---------	_	1	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.98
+
+# newpar id = afp.20000715.0001:p3
+# sent_id = afp.20000715.0001:p3u1
+# text = وغادر كنت (45 عاما) مساء الاربعاء المدينة متوجها الى ولاية اوهايو (شمال شرق) بعد ان استقل احد باصات شركة غريهاوند الشهيرة التي تجوب كل الولايات الاميركية.
+# orig_file_sentence AFP_ARB_20000715.0001#3
+1-2	وغادر	_	_	_	_	_	_	_	_
+1	و	وَ	CCONJ	C---------	_	0	root	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.99
+2	غادر	غَادَر	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	1	parataxis	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.97
+3	كنت	كنت	X	U---------	_	2	nsubj	_	Conf=form:0.97,lemma:0.80,upos:0.80,xpos:0.90,feats:0.85,head:0.92,deprel:0.90
+4	(	(	PUNCT	G---------	_	5	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+5	45	45	NUM	Q---------	NumForm=Digit	3	dep	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.70,deprel:0.80
+6	عاما	عَام	NOUN	N------S4I	Case=Acc|Definite=Ind|Number=Sing	5	nmod	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.90
+7	)	)	PUNCT	G---------	_	5	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
+8	مساء	مَسَاء	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	2	obl	_	Conf=form:0.97,lemma:0.88,upos:0.88,xpos:0.80,feats:0.88,head:0.88,deprel:0.88
+9	الاربعاء	أَربِعَاء	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	8	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.80,feats:0.80,head:0.90,deprel:0.90
+10	المدينة	مَدِينَة	NOUN	N------S4D	Case=Acc|Definite=Def|Number=Sing	2	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.90,feats:0.80,head:0.92,deprel:0.65
+11	متوجها	مُتَوَجِّه	ADJ	A-----MS4I	Case=Acc|Definite=Ind|Gender=Masc|Number=Sing	2	advcl:pred	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+12	الى	إِلَى	ADP	P---------	AdpType=Prep	13	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+13	ولاية	وِلَايَة	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	11	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.92,head:0.90,deprel:0.60
+14	اوهايو	أُوهَايُو	X	X---------	Foreign=Yes	13	nmod	_	Conf=lemma:0.60,upos:0.75,xpos:0.80,feats:0.70,head:0.90,deprel:0.90
+15	(	(	PUNCT	G---------	_	16	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
+16	شمال	شَمَال	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	13	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.80,feats:0.82,head:0.75,deprel:0.85
+17	شرق	شَرق	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	16	nmod	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.80,feats:0.82,head:0.90,deprel:0.85
+18	)	)	PUNCT	G---------	_	16	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
+19	بعد	بَعدَ	ADP	PI------4-	AdpType=Prep|Case=Acc	21	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.90
+20	ان	أَن	SCONJ	C---------	_	21	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+21	استقل	اِستَقَلّ	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	2	advcl	_	Conf=form:0.93,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.80,deprel:0.85
+22	احد	أَحَد	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	21	obj	_	Conf=form:0.97,lemma:0.85,upos:0.80,xpos:0.80,feats:0.85,head:0.90,deprel:0.85
+23	باصات	بَاص	NOUN	N------P2R	Case=Gen|Definite=Cons|Number=Plur	22	nmod	_	Conf=form:0.92,lemma:0.92,upos:0.92,xpos:0.97,feats:0.92,head:0.90,deprel:0.95
+24	شركة	شَرِكَة	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	23	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.90,deprel:0.95
+25	غريهاوند	غرِيهَاوند	X	X---------	Foreign=Yes	24	nmod	_	Conf=lemma:0.40,upos:0.85,xpos:0.80,feats:0.70,head:0.85,deprel:0.85
+26	الشهيرة	شَهِير	ADJ	A-----FS2D	Case=Gen|Definite=Def|Gender=Fem|Number=Sing	24	amod	_	Conf=form:0.90,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.80,deprel:0.90
+27	التي	اَلَّذِي	DET	SR----FS2-	Case=Gen|Gender=Fem|Number=Sing|PronType=Rel	28	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.90,deprel:0.90
+28	تجوب	جَاب	VERB	VIIA-3FS--	Aspect=Imp|Gender=Fem|Mood=Ind|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	24	acl:relcl	_	Conf=form:0.93,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.80,deprel:0.85
+29	كل	كُلّ	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	28	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.82,feats:0.85,head:0.90,deprel:0.80
+30	الولايات	وِلَايَة	NOUN	N------P2D	Case=Gen|Definite=Def|Number=Plur	29	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.93,deprel:0.93
+31	الاميركية	أَمِيرِكِيّ	ADJ	A-----FS2D	Case=Gen|Definite=Def|Gender=Fem|Number=Sing	30	amod	_	SpaceAfter=No|Conf=form:0.97,lemma:0.94,upos:0.94,xpos:0.97,feats:0.94,head:0.94,deprel:0.94
+32	.	.	PUNCT	G---------	_	1	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+
+# newpar id = afp.20000715.0001:p4
+# sent_id = afp.20000715.0001:p4u1
+# text = وبدا ستيفن كنت نحيلا جدا، الا انه اغتسل وحلق ذقنه للمرة الاولى منذ فترة لا بد ان تكون طويلة.
+# orig_file_sentence AFP_ARB_20000715.0001#4
+1-2	وبدا	_	_	_	_	_	_	_	_
+1	و	وَ	CCONJ	C---------	_	0	root	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.99
+2	بدا	بَدَا	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	1	parataxis	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+3	ستيفن	ستِيفِن	X	X---------	Foreign=Yes	2	nsubj	_	Conf=lemma:0.90,upos:0.85,xpos:0.88,feats:0.90,head:0.92,deprel:0.92
+4	كنت	كنت	X	U---------	_	3	flat	_	Conf=form:0.97,lemma:0.80,upos:0.80,xpos:0.90,feats:0.85,head:0.88,deprel:0.82
+5	نحيلا	نَحِيل	ADJ	A-----MS4I	Case=Acc|Definite=Ind|Gender=Masc|Number=Sing	2	obj	_	Conf=lemma:0.90,upos:0.92,xpos:0.97,feats:0.92,head:0.85,deprel:0.50
+6	جدا	جِدّ	NOUN	N------S4I	Case=Acc|Definite=Ind|Number=Sing	5	obl	_	SpaceAfter=No|Conf=form:0.97,lemma:0.85,upos:0.70,xpos:0.75,feats:0.88,head:0.90,deprel:0.80
+7	،	،	PUNCT	G---------	_	11	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.70,deprel:0.95
+8	الا	إِلَّا	PART	F---------	_	11	cc	_	Conf=form:0.97,lemma:0.92,upos:0.85,xpos:0.80,feats:0.97,head:0.80,deprel:0.75
+9-10	انه	_	_	_	_	_	_	_	_
+9	أن	أَنَّ	SCONJ	C---------	_	11	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.90
+10	ه	هُوَ	PRON	SP---3MS4-	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	11	nsubj	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.88
+11	اغتسل	اِغتَسَل	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	2	conj	_	Conf=lemma:0.90,upos:0.95,xpos:0.97,feats:0.95,head:0.75,deprel:0.75
+12-13	وحلق	_	_	_	_	_	_	_	_
+12	و	وَ	CCONJ	C---------	_	13	cc	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+13	حلق	حَلَق	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	11	conj	_	Conf=lemma:0.88,upos:0.95,xpos:0.97,feats:0.95,head:0.85,deprel:0.90
+14-15	ذقنه	_	_	_	_	_	_	_	_
+14	ذقن	ذَقن	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	13	obj	_	Conf=lemma:0.85,upos:0.95,xpos:0.97,feats:0.90,head:0.92,deprel:0.92
+15	ه	هُوَ	PRON	SP---3MS2-	Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs	14	nmod	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+16-17	للمرة	_	_	_	_	_	_	_	_
+16	ل	لِ	ADP	P---------	AdpType=Prep	17	case	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+17	المرة	مَرَّة	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	13	obl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.92
+18	الاولى	أَوَّل	ADJ	A-----FS2D	Case=Gen|Definite=Def|Gender=Fem|Number=Sing	17	amod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+19	منذ	مُنذُ	ADP	P---------	AdpType=Prep	20	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+20	فترة	فَترَة	NOUN	N------S2I	Case=Gen|Definite=Ind|Number=Sing	13	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.82,deprel:0.90
+21	لا	لَا	PART	F---------	_	20	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.55,deprel:0.50
+22	بد	بُدّ	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	21	nsubj	_	Conf=form:0.97,lemma:0.95,upos:0.90,xpos:0.97,feats:0.90,head:0.80,deprel:0.80
+23	ان	أَن	SCONJ	C---------	_	25	mark	_	Conf=form:0.97,lemma:0.90,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+24	تكون	كَان	AUX	VISA-3FS--	Aspect=Imp|Gender=Fem|Mood=Sub|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	25	cop	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+25	طويلة	طَوِيل	ADJ	A-----FS4I	Case=Acc|Definite=Ind|Gender=Fem|Number=Sing	21	nsubj	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.85,feats:0.85,head:0.50,deprel:0.50
+26	.	.	PUNCT	G---------	_	1	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+
+# sent_id = afp.20000715.0001:p4u2
+# text = وبما ان المناسبة تستحق العناء اشترى سروالا ازرق وحذاء جديدين ومعطفا خفيفا ليبدا بها حياته الجديدة.
+# orig_file_sentence AFP_ARB_20000715.0001#5
+1-3	وبما	_	_	_	_	_	_	_	_
+1	و	وَ	CCONJ	C---------	_	0	root	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
+2	ب	بِ	ADP	P---------	AdpType=Prep	3	case	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.90,deprel:0.97
+3	ما	مَا	DET	S---------	PronType=Int	8	obl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.85
+4	ان	أَنَّ	SCONJ	C---------	_	6	mark	_	Conf=form:0.97,lemma:0.93,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.92
+5	المناسبة	مُنَاسَبَة	NOUN	N------S4D	Case=Acc|Definite=Def|Number=Sing	6	nsubj	_	Conf=form:0.97,lemma:0.93,upos:0.96,xpos:0.97,feats:0.90,head:0.88,deprel:0.88
+6	تستحق	اِستَحَقّ	VERB	VIIA-3FS--	Aspect=Imp|Gender=Fem|Mood=Ind|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	3	acl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.60,deprel:0.85
+7	العناء	عَنَاء	NOUN	N------S4D	Case=Acc|Definite=Def|Number=Sing	6	obj	_	Conf=lemma:0.88,upos:0.95,xpos:0.97,feats:0.90,head:0.90,deprel:0.90
+8	اشترى	اِشتَرَى	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	1	parataxis	_	Conf=lemma:0.90,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.90
+9	سروالا	سِروَال	NOUN	N------S4I	Case=Acc|Definite=Ind|Number=Sing	8	obj	_	Conf=lemma:0.80,upos:0.95,xpos:0.97,feats:0.95,head:0.92,deprel:0.90
+10	ازرق	أَزرَق	ADJ	A-----MS4I	Case=Acc|Definite=Ind|Gender=Masc|Number=Sing	9	amod	_	Conf=lemma:0.88,upos:0.95,xpos:0.97,feats:0.95,head:0.92,deprel:0.92
+11-12	وحذاء	_	_	_	_	_	_	_	_
+11	و	وَ	CCONJ	C---------	_	12	cc	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+12	حذاء	حِذَاء	NOUN	N------S4I	Case=Acc|Definite=Ind|Number=Sing	9	conj	_	Conf=lemma:0.93,upos:0.97,xpos:0.97,feats:0.92,head:0.85,deprel:0.88
+13	جديدين	جَدِيد	ADJ	A-----MD4I	Case=Acc|Definite=Ind|Gender=Masc|Number=Dual	12	amod	_	Conf=lemma:0.95,upos:0.96,xpos:0.97,feats:0.90,head:0.65,deprel:0.85
+14-15	ومعطفا	_	_	_	_	_	_	_	_
+14	و	وَ	CCONJ	C---------	_	15	cc	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+15	معطفا	مِعطَف	NOUN	N------S4I	Case=Acc|Definite=Ind|Number=Sing	9	conj	_	Conf=lemma:0.85,upos:0.95,xpos:0.97,feats:0.95,head:0.85,deprel:0.88
+16	خفيفا	خَفِيف	ADJ	A-----MS4I	Case=Acc|Definite=Ind|Gender=Masc|Number=Sing	15	amod	_	Conf=lemma:0.92,upos:0.95,xpos:0.97,feats:0.95,head:0.92,deprel:0.92
+17-18	ليبدا	_	_	_	_	_	_	_	_
+17	ل	لِ	ADP	P---------	AdpType=Prep	18	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+18	يبدأ	بَدَأ	VERB	VISA-3MS--	Aspect=Imp|Gender=Masc|Mood=Sub|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	8	advcl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.92,head:0.80,deprel:0.82
+19-20	بها	_	_	_	_	_	_	_	_
+19	ب	بِ	ADP	P---------	AdpType=Prep	20	case	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+20	ها	هُوَ	PRON	SP---3FS2-	Case=Gen|Gender=Fem|Number=Sing|Person=3|PronType=Prs	18	obl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.60
+21-22	حياته	_	_	_	_	_	_	_	_
+21	حياة	حَيَاة	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	18	obj	_	Conf=lemma:0.97,upos:0.97,xpos:0.80,feats:0.88,head:0.88,deprel:0.85
+22	ه	هُوَ	PRON	SP---3MS2-	Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs	21	nmod	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+23	الجديدة	جَدِيد	ADJ	A-----FS4D	Case=Acc|Definite=Def|Gender=Fem|Number=Sing	21	amod	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.82,feats:0.88,head:0.90,deprel:0.97
+24	.	.	PUNCT	G---------	_	1	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.98
+
+# newpar id = afp.20000715.0001:p5
+# sent_id = afp.20000715.0001:p5u1
+# text = ولم يكن من السهل عليه مواجهة كاميرات التلفزيون وعدسات المصورين وهو يصعد الباص.
+# orig_file_sentence AFP_ARB_20000715.0001#6
+1-2	ولم	_	_	_	_	_	_	_	_
+1	و	وَ	CCONJ	C---------	_	0	root	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+2	لم	لَم	PART	F---------	_	5	advmod	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.88
+3	يكن	كَان	AUX	VIJA-3MS--	Aspect=Imp|Gender=Masc|Mood=Jus|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	5	cop	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+4	من	مِن	ADP	P---------	AdpType=Prep	5	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.93,deprel:0.97
+5	السهل	سَهل	ADJ	A-----MS2D	Case=Gen|Definite=Def|Gender=Masc|Number=Sing	1	parataxis	_	Conf=lemma:0.90,upos:0.92,xpos:0.80,feats:0.88,head:0.88,deprel:0.90
+6-7	عليه	_	_	_	_	_	_	_	_
+6	علي	عَلَى	ADP	P---------	AdpType=Prep	7	case	_	Conf=lemma:0.95,upos:0.93,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+7	ه	هُوَ	PRON	SP---3MS2-	Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs	5	nmod	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.50
+8	مواجهة	مُوَاجَهَة	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	5	nsubj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.92,head:0.85,deprel:0.60
+9	كاميرات	كَامِيرَا	NOUN	N------P2R	Case=Gen|Definite=Cons|Number=Plur	8	nmod	_	Conf=lemma:0.80,upos:0.95,xpos:0.97,feats:0.90,head:0.95,deprel:0.92
+10	التلفزيون	تِلفِزيُون	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	9	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.92,head:0.95,deprel:0.92
+11-12	وعدسات	_	_	_	_	_	_	_	_
+11	و	وَ	CCONJ	C---------	_	12	cc	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+12	عدسات	عَدَسَة	NOUN	N------P2R	Case=Gen|Definite=Cons|Number=Plur	9	conj	_	Conf=lemma:0.90,upos:0.95,xpos:0.97,feats:0.90,head:0.85,deprel:0.88
+13	المصورين	مُصَوِّر	NOUN	N------P2D	Case=Gen|Definite=Def|Number=Plur	12	nmod	_	Conf=lemma:0.90,upos:0.88,xpos:0.82,feats:0.90,head:0.95,deprel:0.90
+14-15	وهو	_	_	_	_	_	_	_	_
+14	و	وَ	CCONJ	C---------	_	16	cc	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.80
+15	هو	هُوَ	PRON	SP---3MS1-	Case=Nom|Gender=Masc|Number=Sing|Person=3|PronType=Prs	16	nsubj	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.92
+16	يصعد	صَعِد	VERB	VIIA-3MS--	Aspect=Imp|Gender=Masc|Mood=Ind|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	5	advcl	_	Conf=lemma:0.95,upos:0.96,xpos:0.97,feats:0.95,head:0.70,deprel:0.55
+17	الباص	بَاص	NOUN	N------S4D	Case=Acc|Definite=Def|Number=Sing	16	obj	_	SpaceAfter=No|Conf=lemma:0.95,upos:0.96,xpos:0.90,feats:0.88,head:0.95,deprel:0.88
+18	.	.	PUNCT	G---------	_	1	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+
+# sent_id = afp.20000715.0001:p5u2
+# text = وقال بصوت خافت يكاد لا يسمع "الامر يخيفني بعض الشيء (...) انها مفاجأة بالفعل.
+# orig_file_sentence AFP_ARB_20000715.0001#7
+1-2	وقال	_	_	_	_	_	_	_	_
+1	و	وَ	CCONJ	C---------	_	0	root	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+2	قال	قَال	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	1	parataxis	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+3-4	بصوت	_	_	_	_	_	_	_	_
+3	ب	بِ	ADP	P---------	AdpType=Prep	4	case	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+4	صوت	صَوت	NOUN	N------S2I	Case=Gen|Definite=Ind|Number=Sing	2	obl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.90,deprel:0.85
+5	خافت	خَافِت	ADJ	A-----MS2I	Case=Gen|Definite=Ind|Gender=Masc|Number=Sing	4	amod	_	Conf=lemma:0.80,upos:0.85,xpos:0.85,feats:0.95,head:0.95,deprel:0.90
+6	يكاد	كَاد	VERB	VIIA-3MS--	Aspect=Imp|Gender=Masc|Mood=Ind|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	4	acl	_	Conf=lemma:0.95,upos:0.85,xpos:0.90,feats:0.93,head:0.75,deprel:0.65
+7	لا	لَا	PART	F---------	_	8	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+8	يسمع	سَمِع	VERB	VIIA-3MS--	Aspect=Imp|Gender=Masc|Mood=Ind|Number=Sing|Person=3|VerbForm=Fin|Voice=Pass	6	ccomp	_	Conf=lemma:0.95,upos:0.90,xpos:0.80,feats:0.75,head:0.80,deprel:0.55
+9	"	"	PUNCT	G---------	_	11	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.95
+10	الامر	أَمر	NOUN	N------S1D	Case=Nom|Definite=Def|Number=Sing	11	nsubj	_	Conf=form:0.97,lemma:0.95,upos:0.90,xpos:0.97,feats:0.90,head:0.85,deprel:0.85
+11-12	يخيفني	_	_	_	_	_	_	_	_
+11	يخيف	أَخَاف	VERB	VIIA-3MS--	Aspect=Imp|Gender=Masc|Mood=Ind|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	2	ccomp	_	Conf=lemma:0.85,upos:0.95,xpos:0.97,feats:0.95,head:0.85,deprel:0.85
+12	ني	هُوَ	PRON	SP---1MS4-	Case=Acc|Gender=Masc|Number=Sing|Person=1|PronType=Prs	11	obj	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.90
+13	بعض	بَعض	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	11	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.85,feats:0.85,head:0.85,deprel:0.50
+14	الشيء	شَيء	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	13	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.95,deprel:0.90
+15	(	(	PUNCT	G---------	_	11	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.95
+16	.	.	PUNCT	G---------	_	11	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.95
+17	.	.	PUNCT	G---------	_	11	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.95
+18	.	.	PUNCT	G---------	_	11	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.95
+19	)	)	PUNCT	G---------	_	11	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.95
+20-21	انها	_	_	_	_	_	_	_	_
+20	إن	إِنَّ	SCONJ	C---------	_	22	mark	_	Conf=lemma:0.97,upos:0.80,xpos:0.85,feats:0.90,head:0.90,deprel:0.85
+21	ها	هُوَ	PRON	SP---3FS4-	Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs	22	nsubj	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.80
+22	مفاجأة	مُفَاجَأَة	NOUN	N------S4I	Case=Acc|Definite=Ind|Number=Sing	11	parataxis	_	Conf=lemma:0.95,upos:0.90,xpos:0.97,feats:0.90,head:0.65,deprel:0.60
+23-24	بالفعل	_	_	_	_	_	_	_	SpaceAfter=No
+23	ب	بِ	ADP	P---------	AdpType=Prep	24	case	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+24	الفعل	فِعل	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	22	nmod	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.80
+25	.	.	PUNCT	G---------	_	1	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+
+# sent_id = afp.20000715.0001:p5u3
+# text = لن اكون متشردا بعد اليوم".
+# orig_file_sentence AFP_ARB_20000715.0001#8
+1	لن	لَن	PART	F---------	_	3	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+2	اكون	كَان	AUX	VISA-1MS--	Aspect=Imp|Gender=Masc|Mood=Sub|Number=Sing|Person=1|VerbForm=Fin|Voice=Act	3	cop	_	Conf=lemma:0.95,upos:0.90,xpos:0.85,feats:0.90,head:0.90,deprel:0.95
+3	متشردا	مُتَشَرِّد	ADJ	A-----MS4I	Case=Acc|Definite=Ind|Gender=Masc|Number=Sing	0	root	_	Conf=lemma:0.85,upos:0.70,xpos:0.80,feats:0.90,head:0.90,deprel:0.99
+4	بعد	بَعدَ	ADP	PI------4-	AdpType=Prep|Case=Acc	5	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.95,deprel:0.97
+5	اليوم	يَوم	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	3	obl	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.88,feats:0.80,head:0.85,deprel:0.80
+6	"	"	PUNCT	G---------	_	3	punct	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.95
+7	.	.	PUNCT	G---------	_	3	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
+
+# newpar id = afp.20000715.0001:p6
+# sent_id = afp.20000715.0001:p6u1
+# text = وبعد ان ودع اصحابه وعناصر من الشرطة وابناء الحي الذي كان يبيت في شوارعه في العراء صعد الى الباص ليترك لونغ بيتش الواقعة على بعد ثلاثين كلم جنوب لوس انجليس بعد ان امضى فيها نحو عشرين عاما.
+# orig_file_sentence AFP_ARB_20000715.0001#9
+1-2	وبعد	_	_	_	_	_	_	_	_
+1	و	وَ	CCONJ	C---------	_	0	root	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.99
+2	بعد	بَعدَ	ADP	PI------4-	AdpType=Prep|Case=Acc	4	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.92,head:0.85,deprel:0.90
+3	ان	أَن	SCONJ	C---------	_	4	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+4	ودع	وَدَّع	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	22	advcl	_	Conf=lemma:0.90,upos:0.95,xpos:0.97,feats:0.95,head:0.85,deprel:0.90
+5-6	اصحابه	_	_	_	_	_	_	_	_
+5	أصحاب	صَاحِب	NOUN	N------P4R	Case=Acc|Definite=Cons|Number=Plur	4	obj	_	Conf=lemma:0.97,upos:0.97,xpos:0.80,feats:0.80,head:0.90,deprel:0.85
+6	ه	هُوَ	PRON	SP---3MS2-	Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs	5	nmod	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.95
+7-8	وعناصر	_	_	_	_	_	_	_	_
+7	و	وَ	CCONJ	C---------	_	8	cc	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+8	عناصر	عُنصُر	NOUN	N------P4R	Case=Acc|Definite=Cons|Number=Plur	5	conj	_	Conf=lemma:0.97,upos:0.97,xpos:0.75,feats:0.80,head:0.85,deprel:0.85
+9	من	مِن	ADP	P---------	AdpType=Prep	10	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+10	الشرطة	شُرطَة	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	8	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+11-12	وابناء	_	_	_	_	_	_	_	_
+11	و	وَ	CCONJ	C---------	_	12	cc	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+12	أبناء	اِبن	NOUN	N------P4R	Case=Acc|Definite=Cons|Number=Plur	5	conj	_	Conf=lemma:0.97,upos:0.97,xpos:0.75,feats:0.80,head:0.85,deprel:0.85
+13	الحي	حَيّ	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	12	nmod	_	Conf=form:0.93,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.88,deprel:0.88
+14	الذي	اَلَّذِي	DET	SR----MS2-	Case=Gen|Gender=Masc|Number=Sing|PronType=Rel	16	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.97,feats:0.90,head:0.85,deprel:0.90
+15	كان	كَان	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	16	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.60,xpos:0.97,feats:0.97,head:0.90,deprel:0.85
+16	يبيت	بَات	VERB	VIIA-3MS--	Aspect=Imp|Gender=Masc|Mood=Ind|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	13	acl:relcl	_	Conf=lemma:0.85,upos:0.95,xpos:0.97,feats:0.95,head:0.85,deprel:0.85
+17	في	فِي	ADP	P---------	AdpType=Prep	18	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+18-19	شوارعه	_	_	_	_	_	_	_	_
+18	شوارع	شَارِع	NOUN	N------P2R	Case=Gen|Definite=Cons|Number=Plur	16	obl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.90
+19	ه	هُوَ	PRON	SP---3MS2-	Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs	18	nmod	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+20	في	فِي	ADP	P---------	AdpType=Prep	21	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+21	العراء	عَرَاء	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	16	obl	_	Conf=lemma:0.90,upos:0.95,xpos:0.97,feats:0.95,head:0.80,deprel:0.90
+22	صعد	صَعِد	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	1	parataxis	_	Conf=lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.85,deprel:0.90
+23	الى	إِلَى	ADP	P---------	AdpType=Prep	24	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+24	الباص	بَاص	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	22	obl	_	Conf=form:0.93,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.90,deprel:0.90
+25-26	ليترك	_	_	_	_	_	_	_	_
+25	ل	لِ	ADP	P---------	AdpType=Prep	26	mark	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+26	يترك	تَرَك	VERB	VISA-3MS--	Aspect=Imp|Gender=Masc|Mood=Sub|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	22	advcl	_	Conf=lemma:0.95,upos:0.95,xpos:0.97,feats:0.90,head:0.85,deprel:0.80
+27	لونغ	لُونغ	X	X---------	Foreign=Yes	26	obj	_	Conf=lemma:0.60,upos:0.88,xpos:0.90,feats:0.85,head:0.90,deprel:0.85
+28	بيتش	بِيتش	X	X---------	Foreign=Yes	27	flat	_	Conf=lemma:0.60,upos:0.88,xpos:0.90,feats:0.85,head:0.85,deprel:0.80
+29	الواقعة	وَاقِع	ADJ	A-----FS4D	Case=Acc|Definite=Def|Gender=Fem|Number=Sing	27	amod	_	Conf=form:0.97,lemma:0.95,upos:0.90,xpos:0.80,feats:0.80,head:0.80,deprel:0.80
+30	على	عَلَى	ADP	P---------	AdpType=Prep	31	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+31	بعد	بَعدَ	NOUN	N------S2R	Case=Gen|Definite=Cons|Number=Sing	29	obl	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.97,feats:0.95,head:0.80,deprel:0.70
+32	ثلاثين	ثَلَاثُون	NUM	QL------2I	Case=Gen|Definite=Ind|NumForm=Word	31	nmod	_	Conf=form:0.90,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.85,deprel:0.80
+33	كلم	كلم	X	Y---------	Abbr=Yes	32	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.85
+34	جنوب	جَنُوب	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	29	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.70,feats:0.80,head:0.60,deprel:0.65
+35	لوس	لُوس	X	X---------	Foreign=Yes	34	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.85
+36	انجليس	أَنجِلِيس	X	X---------	Foreign=Yes	35	flat	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+37	بعد	بَعدَ	ADP	PI------4-	AdpType=Prep|Case=Acc	39	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.90
+38	ان	أَن	SCONJ	C---------	_	39	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+39	امضى	أَمضَى	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	26	advcl	_	Conf=lemma:0.90,upos:0.95,xpos:0.97,feats:0.95,head:0.65,deprel:0.85
+40-41	فيها	_	_	_	_	_	_	_	_
+40	في	فِي	ADP	P---------	AdpType=Prep	41	case	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+41	ها	هُوَ	PRON	SP---3FS2-	Case=Gen|Gender=Fem|Number=Sing|Person=3|PronType=Prs	39	obl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.85
+42	نحو	نَحوَ	ADP	PI------4-	AdpType=Prep|Case=Acc	43	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+43	عشرين	عِشرُون	NUM	QL------2I	Case=Gen|Definite=Ind|NumForm=Word	39	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.75
+44	عاما	عَام	NOUN	N------S4I	Case=Acc|Definite=Ind|Number=Sing	43	nmod	_	SpaceAfter=No|Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+45	.	.	PUNCT	G---------	_	1	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+
+# newpar id = afp.20000715.0001:p7
+# sent_id = afp.20000715.0001:p7u1
+# text = وروى الشرطي في لونغ بيتش ديفيد مارندر انها المرة الثانية خلال يومين التي يحاول فيها ستيفن كنت استقلال الباص للحصول على الميراث الموعود.
+# orig_file_sentence AFP_ARB_20000715.0001#10
+1-2	وروى	_	_	_	_	_	_	_	_
+1	و	وَ	CCONJ	C---------	_	0	root	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
+2	روى	رَوَى	VERB	VP-A-3MS--	Aspect=Perf|Gender=Masc|Number=Sing|Person=3|Voice=Act	1	parataxis	_	Conf=lemma:0.85,upos:0.85,xpos:0.90,feats:0.95,head:0.88,deprel:0.92
+3	الشرطي	شُرطِيّ	NOUN	N------S1D	Case=Nom|Definite=Def|Number=Sing	2	nsubj	_	Conf=form:0.90,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.90,deprel:0.90
+4	في	فِي	ADP	P---------	AdpType=Prep	5	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.93,deprel:0.93
+5	لونغ	لُونغ	X	X---------	Foreign=Yes	3	nmod	_	Conf=lemma:0.60,upos:0.85,xpos:0.80,feats:0.85,head:0.80,deprel:0.85
+6	بيتش	بِيتش	X	X---------	Foreign=Yes	5	flat	_	Conf=lemma:0.60,upos:0.85,xpos:0.80,feats:0.85,head:0.80,deprel:0.85
+7	ديفيد	دِيفِيد	X	X---------	Foreign=Yes	3	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.70
+8	مارندر	مَارندَر	X	X---------	Foreign=Yes	7	flat	_	Conf=lemma:0.40,upos:0.85,xpos:0.80,feats:0.85,head:0.80,deprel:0.85
+9-10	انها	_	_	_	_	_	_	_	_
+9	أن	أَنَّ	SCONJ	C---------	_	11	mark	_	Conf=form:0.90,lemma:0.90,upos:0.97,xpos:0.97,feats:0.90,head:0.80,deprel:0.90
+10	ها	هُوَ	PRON	SP---3FS4-	Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs	11	nsubj	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.88
+11	المرة	مَرَّة	NOUN	N------S4D	Case=Acc|Definite=Def|Number=Sing	2	ccomp	_	Conf=form:0.97,lemma:0.95,upos:0.92,xpos:0.97,feats:0.90,head:0.80,deprel:0.85
+12	الثانية	ثَانِي	ADJ	A-----FS4D	Case=Acc|Definite=Def|Gender=Fem|Number=Sing	11	amod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.92,deprel:0.92
+13	خلال	خِلَالَ	ADP	PI------4-	AdpType=Prep|Case=Acc	14	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.92,head:0.92,deprel:0.97
+14	يومين	يَوم	NOUN	N------D4I	Case=Acc|Definite=Ind|Number=Dual	11	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.85,head:0.70,deprel:0.85
+15	التي	اَلَّذِي	DET	SR----FS4-	Case=Acc|Gender=Fem|Number=Sing|PronType=Rel	16	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.88,head:0.80,deprel:0.50
+16	يحاول	حَاوَل	VERB	VIIA-3MS--	Aspect=Imp|Gender=Masc|Mood=Ind|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	11	acl:relcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.75
+17-18	فيها	_	_	_	_	_	_	_	_
+17	في	فِي	ADP	P---------	AdpType=Prep	18	case	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+18	ها	هُوَ	PRON	SP---3FS2-	Case=Gen|Gender=Fem|Number=Sing|Person=3|PronType=Prs	16	obl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.80
+19	ستيفن	ستِيفِن	X	X---------	Foreign=Yes	16	nsubj	_	Conf=lemma:0.90,upos:0.85,xpos:0.88,feats:0.80,head:0.85,deprel:0.85
+20	كنت	كنت	X	U---------	_	19	flat	_	Conf=form:0.97,lemma:0.80,upos:0.80,xpos:0.80,feats:0.85,head:0.80,deprel:0.80
+21	استقلال	اِستِقلَال	NOUN	N------S4R	Case=Acc|Definite=Cons|Number=Sing	16	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.85,feats:0.85,head:0.85,deprel:0.60
+22	الباص	بَاص	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	21	nmod	_	Conf=form:0.93,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.93
+23-24	للحصول	_	_	_	_	_	_	_	_
+23	ل	لِ	ADP	P---------	AdpType=Prep	24	case	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+24	الحصول	حُصُول	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	16	obl	_	Conf=lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.70,deprel:0.60
+25	على	عَلَى	ADP	P---------	AdpType=Prep	26	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+26	الميراث	مِيرَاث	NOUN	N------S2D	Case=Gen|Definite=Def|Number=Sing	24	nmod	_	Conf=lemma:0.95,upos:0.95,xpos:0.97,feats:0.90,head:0.90,deprel:0.65
+27	الموعود	مَوعُود	ADJ	A-----MS2D	Case=Gen|Definite=Def|Gender=Masc|Number=Sing	26	amod	_	SpaceAfter=No|Conf=form:0.85,lemma:0.85,upos:0.85,xpos:0.85,feats:0.85,head:0.90,deprel:0.90
+28	.	.	PUNCT	G---------	_	1	punct	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.98
+

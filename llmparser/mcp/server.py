@@ -381,9 +381,12 @@ def build_server(
         replace: Annotated[bool, Field(description="Replace the pair's links (true) or add to them (false).")] = True,
         reason: Reason = "",
         agent: Agent = "agent",
+        dry_run: Annotated[bool, Field(description="Only check the links and show the result; nothing is saved.")] = False,
     ) -> ParallelView:
         """Set the word links of a sentence pair in a writable alignment set."""
-        return store.set_links(alignment, sent_id, links, confidence=confidence, replace=replace, reason=reason, agent=agent)
+        return store.set_links(
+            alignment, sent_id, links, confidence=confidence, replace=replace, reason=reason, agent=agent, dry_run=dry_run
+        )
 
     @tool(EDIT)
     def remove_links(
