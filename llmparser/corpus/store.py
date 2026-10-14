@@ -341,11 +341,15 @@ class CorpusStore:
         return all(token_feats.get(key) == value for key, value in feats.items())
 
     @staticmethod
-    def _context_matches(sentence: Sentence, token: Token, context: dict[int, str]) -> bool:
-        """Whether the neighbouring words have the given forms (ignoring case and diacritics)."""
-        for offset, wanted in context.items():
+    def _context_matches(sentence: Sentence, token: Token, context: dict[tuple[int, str], str]) -> bool:
+        """Whether the neighbouring words have the given forms (ignoring case and diacritics) or UPOS."""
+        for (offset, column), wanted in context.items():
             neighbour = _neighbour(sentence, token, offset)
-            if neighbour is None or loose_key(neighbour.form) != loose_key(wanted):
+            if neighbour is None:
+                return False
+            if column == "form" and loose_key(neighbour.form) != loose_key(wanted):
+                return False
+            if column == "upos" and neighbour.upos != wanted:
                 return False
         return True
 
@@ -397,6 +401,8 @@ class CorpusStore:
         suffix: str | None = None,
         previous_form: str | None = None,
         next_form: str | None = None,
+        previous_upos: str | None = None,
+        next_upos: str | None = None,
         loose: bool = False,
         sources: list[str] | None = None,
         min_confidence: float = 0.0,
@@ -411,7 +417,7 @@ class CorpusStore:
         the MISC root attribute (``Root=`` by default). ``suffix`` matches word
         endings, for analogy with unseen forms; ``previous_form`` and
         ``next_form`` require the neighbouring words (these three ignore case and
-        diacritics). Hits are ordered by confidence (in LEMMA/UPOS/XPOS/FEATS),
+        diacritics), ``previous_upos`` and ``next_upos`` their UPOS. Hits are ordered by confidence (in LEMMA/UPOS/XPOS/FEATS),
         and ``groups`` counts all matches.
         """
         criteria = {
@@ -421,7 +427,13 @@ class CorpusStore:
             }.items()
             if value
         }  # fmt: skip
-        context = {offset: value for offset, value in ((-1, previous_form), (1, next_form)) if value}
+        context = {
+            key: value
+            for key, value in (
+                ((-1, "form"), previous_form), ((1, "form"), next_form), ((-1, "upos"), previous_upos), ((1, "upos"), next_upos),
+            )
+            if value
+        }  # fmt: skip
         if not criteria and not feats:
             raise EditError("Give at least one search criterion.")
         wanted_feats = parse_pairs(feats) if feats else {}
@@ -459,16 +471,20 @@ class CorpusStore:
         loose: bool = False,
         previous_form: str | None = None,
         next_form: str | None = None,
+        previous_upos: str | None = None,
+        next_upos: str | None = None,
         sources: list[str] | None = None,
         min_confidence: float = 0.0,
         exclude_sentence: str | None = None,
         limit: int = 5,
     ) -> TokenSearch:
-        """How a word form is analysed (optionally next to given words): counts of (lemma, upos, xpos, feats) plus examples."""
+        """How a word form is analysed (optionally next to given words or tags): counts of (lemma, upos, xpos, feats) plus examples."""
         return self.find_tokens(
             form=form,
             previous_form=previous_form,
             next_form=next_form,
+            previous_upos=previous_upos,
+            next_upos=next_upos,
             loose=loose,
             sources=sources,
             min_confidence=min_confidence,

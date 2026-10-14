@@ -88,6 +88,9 @@ class Settings(BaseModel):
     cache: bool = Field(True, description="Use prompt caching (tool definitions, instructions, conversation).")
     batch_sentences: int = Field(8, ge=1, description="Maximum sentences per agent task.")
     batch_cells: int = Field(120, ge=1, description="Maximum cells per agent task (a single sentence may exceed it).")
+    final_scoring: bool = Field(
+        False, description="Score the cells changed in the last round once more (costs scorer tasks, changes no values)."
+    )
     rules: RuleSettings = Field(default_factory=RuleSettings, description="When code settles cells without a model.")
     roles: dict[str, RoleSettings] = Field(default_factory=dict)
 

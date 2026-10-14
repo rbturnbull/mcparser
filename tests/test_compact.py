@@ -146,6 +146,8 @@ def test_context_and_analogy(tmp_path):
     assert builder.context("dixerint", "si") == "after 'si': dico VERB _ Tense=Fut ×2"
     assert builder.context("fecerint", "si") == ""  # unambiguous overall: no context needed
     assert builder.context("dixerint", "nisi") == ""
+    assert builder.context("dixerint", "si", "et", "CCONJ") == "after 'si': dico VERB _ Tense=Fut ×2"  # nothing follows it in t
+    assert builder.context("dixerint", "", "", "NOUN") == ""
     assert builder.analogy("maledixerint") == "words ending '-erint': VERB Tense=Fut ×4; VERB Tense=Past ×2; e.g. dixerint→dico, fecerint→feco"
     assert builder.analogy("dixerint") == ""  # well attested
     assert builder.analogy("zz") == "" and builder.analogy("qqqqqq") == ""

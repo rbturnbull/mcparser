@@ -16,7 +16,7 @@ from pydantic_ai.messages import (
 from pydantic_ai.models.function import AgentInfo, FunctionModel
 
 CELL = re.compile(r"^- word (\S+) \((.*)\): (\w+) = '(.*)', confidence ([\d.]+)$")
-SENTENCE = re.compile(r"^## Sentence (\S+)$")
+SENTENCE = re.compile(r"^## s\d+ = sentence (\S+)$")
 
 ToolCalls = list[tuple[str, dict]]
 

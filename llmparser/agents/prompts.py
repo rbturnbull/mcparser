@@ -48,14 +48,15 @@ How to work:
 ANSWERS = {
     "annotation": (
         "Answer with ONE final result. Put one line per cell in `values`: "
-        '"SENT_ID TOKEN_ID VALUE CONFIDENCE" (e.g. "12841 3 {example} 0.95"), covering every cell listed '
+        '"SENTENCE TOKEN_ID VALUE CONFIDENCE" (e.g. "s1 3 {example} 0.95", where s1 is the sentence label), covering every cell listed '
         "and any other {columns} value you correct. Close each open flag addressed to you in `resolved`: "
         '"resolved" if you changed something, "dismissed" (with a note) if not. Keep `summary` under 15 words.'
     ),
     "scores": (
-        "Answer with ONE final result. Put one line per cell in `scores`: "
-        '"SENT_ID TOKEN_ID COLUMN CONFIDENCE" (e.g. "12841 3 upos 0.95"); "SENT_ID TOKEN_ID * 0.95" scores '
-        "every listed cell of a word, and a later line overrides it for one column. Keep `summary` under 15 words."
+        "Answer with ONE final result: lines \"SENTENCE TOKEN_ID COLUMN CONFIDENCE\" in `scores`, where SENTENCE "
+        'is the label (s1, s2, ...). Be brief: start each sentence with "s1 * * 0.95" (all its listed cells), '
+        'then add a line only for the cells that deserve a different score, e.g. "s1 3 upos 0.4" or "s1 3 * 0.6" '
+        "(all listed cells of word 3). Later lines override earlier ones. Keep `summary` under 15 words."
     ),
     "tools": (
         "Make your changes with the tools (split_word, merge_words, ...; update_cells to set the confidence of "
@@ -196,8 +197,8 @@ def sentence_block(conllu: str) -> str:
 def task_prompt(role: Role, target: str, items: list[TaskItem], evidence: str = "") -> str:
     """The user prompt for one role working on a batch of sentences."""
     lines = [f'Source "{target}". {len(items)} sentence(s).']
-    for item in items:
-        lines.append(f"\n## Sentence {item.sent_id}")
+    for number, item in enumerate(items, start=1):
+        lines.append(f"\n## s{number} = sentence {item.sent_id}")
         if item.conllu:
             lines.append(sentence_block(item.conllu))
         if role.is_scorer:

@@ -401,6 +401,9 @@ def test_find_tokens_by_suffix_and_context(store):
     assert store.find_tokens(form="el", next_form="río", sources=["train"]).total == 1
     assert store.find_tokens(form="Vino", previous_form="x", sources=["train"]).total == 0  # first word
     assert store.analyse_form("el", previous_form="a", sources=["train"]).groups[0].count == 1
+    assert store.find_tokens(form="el", next_upos="NOUN", sources=["train"]).total == 2
+    assert store.find_tokens(form="el", next_upos="VERB", sources=["train"]).total == 0
+    assert store.analyse_form("el", previous_upos="ADP", sources=["train"]).total == 2
 
 
 def test_find_arcs_by_direction(store):

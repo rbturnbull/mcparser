@@ -2,7 +2,7 @@
 
 ```text
                          ┌────────────────────────────── round n ──────────────────────────────┐
-prediction ──▶ rules ──▶ │ score: scorer rates cells a model changed since it last scored them  │──▶ stop? ──▶ final scoring
+prediction ──▶ rules ──▶ │ score: scorer rates cells a model changed since it last scored them  │──▶ stop? ──▶ (final scoring)
 (+ baseline)             │ refine: each role in turn, batches of sentences (most confident      │      │
                          │ first), cells below the threshold + open flags; rules after each role│◀─────┘ next round
                          └──────────────────────────────────────────────────────────────────────┘
@@ -47,8 +47,10 @@ XPOS and FEATS are marked for review; FEATS → XPOS and HEAD → DEPREL likewis
 cells below the threshold (default 0.8) or open flags for its column.
 
 **Stop.** The loop ends when no role had anything to do, when a round made no
-edits, or when the round limit (default 3) is reached. A final scoring pass
-then re-scores whatever the last round changed.
+edits, or when the round limit (default 3) is reached. With `--final-score`
+(setting `final_scoring`), a last scoring pass re-scores whatever the last round
+changed. It changes no annotation and cost 14 of 45 tasks in a Coptic run, so it
+is off by default; the next `run` scores those cells anyway.
 
 ## Settings
 
@@ -102,10 +104,15 @@ effect:
 - **Batches.** Each task covers up to `batch_sentences` sentences, and evidence
   for a repeated form or arc is shown once.
 - **One request per task.** Agents (except segmentation) answer with compact
-  lines (`SENT_ID TOKEN_ID VALUE CONFIDENCE`) that code checks and applies; an
-  invalid answer (unknown tag, broken tree) is sent back to be fixed.
-- **Evidence in the prompt**: the form's analyses, analyses after the previous
-  word when the form is ambiguous, word-ending analogies for unseen forms, and
+  lines (`s1 3 NOUN 0.95`) that code checks and applies; an invalid answer
+  (unknown tag, broken tree) is sent back to be fixed.
+- **Short output.** Output tokens cost five times as much as input. Answers
+  name sentences `s1`, `s2`, ... instead of repeating their `sent_id` (about 20
+  tokens each in Coptic Scriptorium), and the scorer starts with `s1 * * 0.95`
+  and lists only the exceptions.
+- **Evidence in the prompt**: the form's analyses; for an ambiguous form, its
+  analyses after the previous word, before the next word and before a word with
+  the next word's UPOS (Coptic `ⲩ` is DET before a NOUN, PRON before a VERB); word-ending analogies for unseen forms, and
   relation counts for each word's actual head.
 - **Three model tiers**: Haiku for XPOS, Sonnet for UPOS, FEATS and scoring,
   Opus for segmentation, lemmas and syntax.
@@ -121,7 +128,8 @@ effect:
 On 10 Latin sentences the first version cost $2.43; the current one costs
 about $0.08 per sentence of similar length.
 
-Every run's report (rounds, tasks, tokens, cost per model) is appended to
+Every run's report (rounds, tasks, tokens and cost per model, per role and per
+task) is appended to
 `<file>.runs.jsonl` next to the prediction file. Before running a whole file,
 try `--max-sentences` on a few sentences and look at the estimate. `--report run.json` saves the numbers.
 

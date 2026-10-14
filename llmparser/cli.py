@@ -15,7 +15,7 @@ from pydantic import ValidationError
 from pydantic_ai.exceptions import UserError
 
 from .agents.roles import ROLES
-from .agents.team import AgentTeam
+from .agents.team import AgentTeam, ModelUsage
 from .baseline import run_baseline
 from .rules import Rules
 from .corpus import CorpusError, CorpusStore, SourceMode, format_conllu, parse_conllu
@@ -244,17 +244,23 @@ def _print_report(report: RunReport) -> None:
             f"{item.edits} edits, {item.open_flags} open flags, mean confidence {item.confidence:.3f}"
         )
     failures = sum(task.error is not None for task in report.tasks)
-    typer.echo(
-        f"Final mean confidence {report.confidence:.3f} ({report.final_scored} sentences re-scored). "
-        f"{len(report.tasks)} tasks ({failures} failed)."
-    )
+    rescored = f" ({report.final_scored} sentences re-scored)" if report.final_scored else ""
+    typer.echo(f"Final mean confidence {report.confidence:.3f}{rescored}. {len(report.tasks)} tasks ({failures} failed).")
+    typer.echo("By model:")
     for name, usage in [*report.usage.items(), ("total", report.total)]:
-        cost = f", ≈ ${usage.cost:.2f}" if usage.cost is not None else ""
-        typer.echo(
-            f"  {name}: {usage.tasks} tasks, {usage.requests} requests, {usage.input_tokens:,} input tokens "
-            f"({usage.cache_read_tokens:,} cache reads, {usage.cache_write_tokens:,} cache writes), "
-            f"{usage.output_tokens:,} output tokens{cost}"
-        )
+        typer.echo(f"  {name}: {_usage_line(usage)}")
+    typer.echo("By role:")
+    for name, usage in report.roles.items():
+        typer.echo(f"  {name}: {_usage_line(usage)}")
+
+
+def _usage_line(usage: ModelUsage) -> str:
+    cost = f", ≈ ${usage.cost:.2f}" if usage.cost is not None else ""
+    return (
+        f"{usage.tasks} tasks, {usage.requests} requests, {usage.input_tokens:,} input tokens "
+        f"({usage.cache_read_tokens:,} cache reads, {usage.cache_write_tokens:,} cache writes), "
+        f"{usage.output_tokens:,} output tokens{cost}"
+    )
 
 
 def _annotate(
@@ -348,6 +354,10 @@ def run(
     model_for: ModelForOption = None,
     roles: Annotated[str | None, typer.Option(help=f"Comma-separated roles to run: {', '.join(r for r in ROLES if r != 'scorer')}.")] = None,
     rounds: Annotated[int | None, typer.Option(min=1, help="Maximum rounds.")] = None,
+    final_score: Annotated[
+        bool | None,
+        typer.Option("--final-score/--no-final-score", help="Re-score the cells changed in the last round (default off)."),
+    ] = None,
     threshold: Annotated[float | None, typer.Option(min=0, max=1, help="Refine cells below this confidence.")] = None,
     concurrency: Annotated[int | None, typer.Option(min=1, help="Sentences processed at once.")] = None,
     sentence: SentenceOption = None,
@@ -363,6 +373,7 @@ def run(
     settings = _settings(
         config, model, model_for, roles, tiers,
         rounds=rounds, threshold=threshold, concurrency=concurrency, batch_sentences=batch_sentences,
+        final_scoring=final_score,
     )  # fmt: skip
     _annotate(prediction, source, settings, sentence, False, report, max_sentences)
 

@@ -56,8 +56,11 @@ each role:
 ## Answers
 
 Every role except segmentation answers in one request with compact lines,
-`SENT_ID TOKEN_ID VALUE CONFIDENCE` (the scorer: `SENT_ID TOKEN_ID COLUMN
-CONFIDENCE`), plus any flags for other columns and the flags it closed. Code
+`SENTENCE TOKEN_ID VALUE CONFIDENCE`, e.g. `s1 3 NOUN 0.95`. The sentences of a
+task are labelled `s1`, `s2`, ... in the prompt; a full `sent_id` is accepted
+too. The scorer answers `SENTENCE TOKEN_ID COLUMN CONFIDENCE`, where `*` stands
+for all the listed cells of a word (`s1 3 * 0.9`) or of the sentence
+(`s1 * * 0.95`), and later lines override earlier ones. Answers also include any flags for other columns and the flags it closed. Code
 checks the whole answer first: an unknown sentence or word, an invalid tag or,
 for HEAD, a cycle or wrong number of roots is sent back to the model to fix;
 only a valid answer is applied. The segmentation agent still edits through the

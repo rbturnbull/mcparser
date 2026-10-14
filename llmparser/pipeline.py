@@ -53,6 +53,7 @@ class TaskResult(BaseModel):
     role: str
     summary: str | None = None
     error: str | None = None
+    usage: ModelUsage | None = None
 
 
 class RoundReport(BaseModel):
@@ -72,6 +73,8 @@ class RunReport(BaseModel):
     tasks: list[TaskResult]
     total: ModelUsage
     usage: dict[str, ModelUsage]
+    roles: dict[str, ModelUsage] = {}
+    """Token use and estimated cost per role."""
 
 
 @dataclass
@@ -232,7 +235,11 @@ class Pipeline:
             for item in items:
                 item.conllu = self.source.sentence(item.sent_id).to_conllu()
             evidence = self.evidence.build(spec, [(item.sent_id, item.cells) for item in items])
-            answer = await self.team.run(role, task_prompt(spec, self.target, items, evidence), Batch(self.target, sent_ids))
+            batch = Batch(self.target, sent_ids)
+            if spec.is_scorer:
+                batch.cells = {item.sent_id: [(cell.token_id, cell.column) for cell in item.cells] for item in items}
+            result.usage = ModelUsage(cost=0.0)
+            answer = await self.team.run(role, task_prompt(spec, self.target, items, evidence), batch, result.usage)
             result.summary = answer.summary
             self.progress(f"{label}: {result.summary}")
         except UserError:
@@ -300,9 +307,12 @@ class Pipeline:
         return settled
 
     async def run(self, rounds: int | None = None, score_only: bool = False) -> RunReport:
-        """Apply the rules, run up to ``rounds`` rounds (default from the settings), then a final scoring pass.
+        """Apply the rules and run up to ``rounds`` rounds (default from the settings).
 
-        With ``score_only`` only the rules and the scorer run, once.
+        A final scoring pass of the cells changed in the last round follows if
+        ``settings.final_scoring`` is on. It costs a scorer task per changed
+        sentence but changes no annotation, so it is off by default. With
+        ``score_only`` only the rules and the scorer run, once.
         """
         rounds = rounds or self.settings.rounds
         reports: list[RoundReport] = []
@@ -328,7 +338,7 @@ class Pipeline:
                 self.progress(f"Round {number}: {reports[-1].model_dump()}")
                 if score_only or tasks == 0 or reports[-1].edits == 0:
                     break
-            final_scored = 0 if score_only else await self.score()
+            final_scored = await self.score() if self.settings.final_scoring and not score_only else 0
         return RunReport(
             rounds=reports,
             final_scored=final_scored,
@@ -337,4 +347,5 @@ class Pipeline:
             tasks=self.tasks,
             total=self.team.total(),
             usage=self.team.usage,
+            roles=self.team.role_usage,
         )

@@ -199,6 +199,8 @@ def build_server(
         suffix: Annotated[str | None, Field(description="Word ending, e.g. 'erint', for analogy with unseen forms.")] = None,
         previous_form: Annotated[str | None, Field(description="Form of the word just before.")] = None,
         next_form: Annotated[str | None, Field(description="Form of the word just after.")] = None,
+        previous_upos: Annotated[str | None, Field(description="UPOS of the word just before.")] = None,
+        next_upos: Annotated[str | None, Field(description="UPOS of the word just after.")] = None,
         loose: Loose = False,
         sources: Sources = None,
         min_confidence: MinConfidence = 0.0,
@@ -209,7 +211,8 @@ def build_server(
         """Find words matching all the given criteria. Returns counts over all matches plus example hits in context."""
         return store.find_tokens(
             form=form, lemma=lemma, upos=upos, xpos=xpos, feats=feats, deprel=deprel, root=root,
-            suffix=suffix, previous_form=previous_form, next_form=next_form, loose=loose, sources=sources, min_confidence=min_confidence,
+            suffix=suffix, previous_form=previous_form, next_form=next_form, previous_upos=previous_upos, next_upos=next_upos,
+            loose=loose, sources=sources, min_confidence=min_confidence,
             exclude_sentence=exclude_sentence, group_by=group_by, limit=limit,
         )  # fmt: skip
 
@@ -219,6 +222,8 @@ def build_server(
         loose: Loose = False,
         previous_form: Annotated[str | None, Field(description="Only occurrences after this word.")] = None,
         next_form: Annotated[str | None, Field(description="Only occurrences before this word.")] = None,
+        previous_upos: Annotated[str | None, Field(description="Only occurrences after a word with this UPOS.")] = None,
+        next_upos: Annotated[str | None, Field(description="Only occurrences before a word with this UPOS.")] = None,
         sources: Sources = None,
         min_confidence: MinConfidence = 0.0,
         exclude_sentence: Exclude = None,
@@ -226,7 +231,8 @@ def build_server(
     ) -> TokenSearch:
         """How is this word form analysed elsewhere (optionally next to given words)? Counts of (lemma, upos, xpos, feats) with examples."""
         return store.analyse_form(
-            form, loose=loose, previous_form=previous_form, next_form=next_form, sources=sources,
+            form, loose=loose, previous_form=previous_form, next_form=next_form, previous_upos=previous_upos,
+            next_upos=next_upos, sources=sources,
             min_confidence=min_confidence, exclude_sentence=exclude_sentence, limit=limit,
         )  # fmt: skip
 

@@ -116,7 +116,8 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
   scorer pass (from the history: last scorer `confidence` seq vs last edit seq),
   then refine sentences most→least confident, roles in `REFINE_ORDER`, a role
   runs only if its column has cells < threshold or open flags. Stop when no
-  tasks, a round made no edits, or the round limit; then a final scoring pass.
+  tasks, a round made no edits, or the round limit; then, only with
+  `final_scoring` / `--final-score` (off by default), a final scoring pass.
   A failing task is recorded and the run continues; `UserError` (e.g. missing
   API key) aborts. Reported confidence = mean over the enabled roles' columns.
 - **Baseline** fills only cells that are `_` *and* unscored (`_` also means "no
@@ -144,7 +145,10 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
 - Each run appends its report to `<pred>.runs.jsonl`; `evaluate
   --annotated-only` scores only fully parsed sentences.
 - **Compact answers** (`agents/outputs.py`): every role but segmentation
-  returns `Annotation`/`Scores` with `SENT_ID TOKEN_ID VALUE CONFIDENCE` lines;
+  returns `Annotation`/`Scores` with `SENTENCE TOKEN_ID VALUE CONFIDENCE` lines,
+  where SENTENCE is the task label `s1`, `s2`, ... (`Batch.resolve`; full
+  sent_ids also accepted). Scorer wildcards `s1 3 *` / `s1 * *` expand to the
+  cells listed in the task only (`Batch.cells`), so rule-set cells aren't re-scored;
   an output validator dry-runs the edits (`update_cells(dry_run=True)`), sends
   errors (and broken trees for HEAD) back as `ModelRetry`, then applies. These
   roles only see read tools. Segmentation still edits through tools.
@@ -155,7 +159,8 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
 - **Scorer** sees only cells last changed by a model/person (not by `rules` or
   `baseline`), not empty required cells, not XPOS/FEATS of untagged words.
 - **Evidence** (`agents/evidence.py`, deduplicated per batch): form analyses;
-  for ambiguous forms, analyses after the previous word; for rare/unseen forms,
+  for ambiguous forms, analyses after the previous word, before the next word
+  and before the next word's UPOS (`find_tokens(next_upos=...)`); for rare/unseen forms,
   word-ending analogies with form→lemma examples (`find_tokens(suffix=...)`,
   indexed endings of 3–5 letters); for DEPREL and the scorer, `relation_stats`
   for the word's actual head; for HEAD, how similar words attach.
@@ -284,6 +289,21 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   (≥3 times, ≥50% of occurrences). Several "errors" were gold inconsistencies
   with train (ἢν δὲ μή is never fixed in grc train; Gender=Masc,Neut usage).
 
+- Coptic Scriptorium dev, 10 sentences (575 words), 2 rounds, $8.15 (Opus
+  $4.54, Sonnet $3.57, Haiku $0.04; 45 tasks, 91 requests, 3.68M input of which
+  2.28M cache reads and 1.40M cache writes, 293k output): UPOS 94.4, XPOS 93.0,
+  lemma 95.7, UFeats 93.6, UAS 93.6, LAS 87.1. Costs: output ≈ 45% (long
+  sent_ids repeated on every answer line; scorer listed every cell), cache
+  writes ≈ 45% (long Coptic sentences and examples), 14 scorer tasks incl. the
+  final pass. → sentence labels `s1`, scorer `s1 * *` wildcard, final scoring
+  off by default, per-task and per-role usage in the report, examples ≤ 40
+  words. Accuracy: tag errors were context readings of short function words
+  (`ⲩ` DET before a noun vs PRON before a verb; `ⲉ` SCONJ/ADP/PART before
+  `ⲩ`; `ϭⲉ` PART vs DET) → evidence by next form and next UPOS. Several rule
+  "errors" follow train against the dev gold (`ⲉϩⲣⲁⲓ ⲉ` is fixed 1/26 in train,
+  `ⲉⲃⲟⲗ ϩⲓⲧⲟⲟⲧ` 14/15, `ⲉⲧⲃⲉ ϫⲉ` 5/6). Remaining syntax errors: converters
+  `mark` vs `aux`, punctuation attachment.
+
 ## Ideas / next steps
 
 - Calibration report in `evaluate` (accuracy by confidence bucket).
@@ -292,3 +312,4 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   clitics are left to the baseline/segmentation agent).
 - Anthropic Message Batches (50% off) now that most tasks are single requests.
 - Coordination conventions (where shared dependents attach) as a computed hint.
+- A punctuation-attachment rule/hint (UD: attach to the head of the adjacent clause).

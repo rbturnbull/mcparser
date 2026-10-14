@@ -27,7 +27,7 @@ AMBIGUOUS_SHARE = 0.9
 RARE_COUNT = 3
 """With fewer trusted examples than this, word-ending analogies are added."""
 SUFFIX_MINIMUM = 5
-EXAMPLE_MAX_WORDS = 60
+EXAMPLE_MAX_WORDS = 40
 """Similar trusted sentences longer than this are not shown (too many tokens)."""
 
 
@@ -64,18 +64,31 @@ class EvidenceBuilder:
         result = self.store.analyse_form(form, loose=True, sources=self.trusted, limit=1)
         return self._groups(result) + " (ignoring case/diacritics)" if result.total else "no trusted example"
 
-    def context(self, form: str, previous: str) -> str:
-        """Analyses of ``form`` right after ``previous``, when the form is ambiguous."""
-        return self._cached(("context", form, previous), lambda: self._context(form, previous))
+    def context(self, form: str, previous: str = "", following: str = "", following_upos: str = "") -> str:
+        """Analyses of an ambiguous ``form`` next to the neighbouring words.
 
-    def _context(self, form: str, previous: str) -> str:
+        Shown are the analyses right after the previous word, right before the
+        next word, and before a word with the next word's (predicted) UPOS; the
+        last one separates e.g. a Coptic article (before a NOUN) from a pronoun.
+        """
+        key = ("context", form, previous, following, following_upos)
+        return self._cached(key, lambda: self._context(form, previous, following, following_upos))
+
+    def _context(self, form: str, previous: str, following: str, following_upos: str) -> str:
         overall = self.store.analyse_form(form, sources=self.trusted, limit=1)
         if overall.total and overall.groups[0].count / overall.total >= AMBIGUOUS_SHARE:
             return ""
-        after = self.store.analyse_form(form, previous_form=previous, sources=self.trusted, limit=1)
-        if after.total:
-            return f"after '{previous}': {self._groups(after)}"
-        return ""
+        parts = []
+        for label, criterion in (
+            (f"after '{previous}'", {"previous_form": previous}),
+            (f"before '{following}'", {"next_form": following}),
+            (f"before a word tagged {following_upos}", {"next_upos": following_upos}),
+        ):
+            if next(iter(criterion.values())):
+                found = self.store.analyse_form(form, sources=self.trusted, limit=1, **criterion)
+                if found.total:
+                    parts.append(f"{label}: {self._groups(found)}")
+        return " | ".join(parts)
 
     def analogy(self, form: str) -> str:
         """For rare or unseen forms: how words with the same ending are analysed, with examples."""
@@ -100,8 +113,13 @@ class EvidenceBuilder:
         words = sentence.words
         index = next(i for i, w in enumerate(words) if w is word)
         parts = [self.analyses(word.form)]
-        if index:
-            parts.append(self.context(word.form, words[index - 1].form))
+        previous = words[index - 1].form if index else ""
+        following = words[index + 1] if index + 1 < len(words) else None
+        if following is None:
+            parts.append(self.context(word.form, previous))
+        else:
+            upos = following.upos if following.upos != EMPTY else ""
+            parts.append(self.context(word.form, previous, following.form, upos))
         parts.append(self.analogy(word.form))
         if with_arc:
             parts.append(self.arc_labels(sentence, word))

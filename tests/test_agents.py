@@ -31,10 +31,10 @@ def test_roles():
 def test_instructions():
     text = instructions(ROLES["head"], "pred", ["train", "silver"], "Mind the particles.")
     assert "conventions of the trusted treebank\n(train, silver)" in text
-    assert '"12841 3 4 0.95"' in text and "any other HEAD value" in text
+    assert '"s1 3 4 0.95"' in text and "any other HEAD value" in text
     assert text.endswith("Mind the particles.")
     scorer = instructions(ROLES["scorer"], "pred", [])
-    assert "treebank\n(none)" in scorer and '"SENT_ID TOKEN_ID COLUMN CONFIDENCE"' in scorer
+    assert "treebank\n(none)" in scorer and '"s1 * * 0.95"' in scorer
     assert "split_word" in instructions(ROLES["segmentation"], "pred", ["train"])
     assert "Relations used in the treebank (with counts; use its subtypes):\nroot 3" in instructions(ROLES["deprel"], "pred", [], relations="root 3")
     assert "Relations used" not in instructions(ROLES["upos"], "pred", [], relations="root 3")
@@ -51,7 +51,7 @@ def test_task_prompts():
     assert text.splitlines() == [
         'Source "pred". 2 sentence(s).',
         "",
-        "## Sentence s",
+        "## s1 = sentence s",
         "# sent_id = s",
         "1\tVino\tvenir\tVERB\t_\t_\t0\troot\t_\tSpaceAfter=No",
         "UPOS cells to annotate or review (low confidence):",
@@ -60,7 +60,7 @@ def test_task_prompts():
         "- flag 3 (word 2, from lemma): looks like ADP Suggested: 'ADP'.",
         "- flag 4 (whole sentence, from scorer): check all",
         "",
-        "## Sentence t",
+        "## s2 = sentence t",
         "Open flags for UPOS:",
         "- flag 4 (whole sentence, from scorer): check all",
         "",
@@ -129,10 +129,29 @@ def test_parse_values():
     assert [(u.token_id, u.column, u.value, u.confidence) for u in updates["p1"]] == [("2", "lemma", "a el", 0.9)]
     assert updates["p2"][0].confidence == 1.0
     assert errors == [
-        "line 2: expected SENT_ID TOKEN_ID VALUE CONFIDENCE, got 'p1 3 x'",
+        "line 2: expected SENTENCE TOKEN_ID VALUE CONFIDENCE, got 'p1 3 x'",
         "line 3: sentence 'zz' is not in this task",
         "line 4: confidence 'high' is not a number",
     ]
+
+
+def test_batch_labels():
+    labelled = batch("long-id-1", "long-id-2")
+    assert labelled.label("long-id-2") == "s2"
+    assert [labelled.resolve(name) for name in ("s1", "long-id-2", "s3", "s0", "x1", "s")] == [
+        "long-id-1", "long-id-2", None, None, None, None
+    ]
+    updates, errors = parse_values("s2 1 X 0.9", ROLES["upos"], labelled)
+    assert list(updates) == ["long-id-2"] and not errors
+
+
+def test_parse_scores_wildcards_cover_listed_cells():
+    listed = Batch("pred", ["p1", "p2"], cells={"p1": [("1", "upos"), ("1", "lemma"), ("2", "upos")], "p2": [("1", "head")]})
+    scores, errors = parse_scores("s1 * * 0.95\ns1 1 * 0.6\ns1 2 upos 0.3\ns2 * head 0.8\ns2 4 * 0.5", listed)
+    assert scores == {"p1": {"1:upos": 0.6, "1:lemma": 0.6, "2:upos": 0.3}, "p2": {"1:head": 0.8}}
+    assert errors == ["line 5: no listed cell matches 4 *"]
+    scores, errors = parse_scores("p1 * * 0.9", batch("p1"))
+    assert errors == ["line 1: TOKEN_ID * is only allowed for the cells listed in the task"]
 
 
 def test_parse_scores():
@@ -153,6 +172,8 @@ def test_applier_annotation(store):
     assert store.list_flags("pred").flags[0].raised_by == "upos"
     with pytest.raises(ModelRetry, match="sentence p1: 'NOUNY' is not a universal POS tag"):
         applier.annotation(Annotation(values="p1 2 NOUNY 0.9"), batch("p1"))
+    applier.annotation(Annotation(values="", flags=[FlagRequest(sent_id="s1", column="lemma", reason="y")]), batch("p1"))
+    assert store.list_flags("pred").flags[-1].sent_id == "p1"
     with pytest.raises(ModelRetry, match="flag on sentence 'p2', which is not in this task"):
         applier.annotation(Annotation(values="", flags=[FlagRequest(sent_id="p2", column="lemma", reason="x")]), batch("p1"))
     flag = store.flag_issue("pred", "p1", "upos", "check", agent="scorer")
@@ -192,7 +213,7 @@ async def test_team_applies_compact_answers_and_retries(store):
     model = scripted(answer, tools=lambda prompt: [("analyse_form", {"form": "el"})])
     team = AgentTeam(store, "pred", Settings(), models={"upos": model})
     async with team:
-        report = await team.run("upos", "## Sentence p1\n- word 2 (al): UPOS = '_', confidence 0.00", batch("p1"))
+        report = await team.run("upos", "## s1 = sentence p1\n- word 2 (al): UPOS = '_', confidence 0.00", batch("p1"))
     assert report.summary == "tagged al"
     assert attempts == [0, 1]
     assert "not a universal POS tag" in model.retries[0]

@@ -99,9 +99,11 @@ async def test_round_limit_then_final_scoring_and_batches(store):
         return values("lemma", lambda c: f"x{c['token_id']}")(prompt)
 
     models = {"scorer": scripted(scored(lambda c: 0.3 if c["column"] == "lemma" else 0.9)), "lemma": scripted(lemma), "*": scripted()}
-    report = await pipeline(store, models, rounds=1, batch_sentences=1).run()
+    report = await pipeline(store, models, rounds=1, batch_sentences=1, final_scoring=True).run()
     assert len(report.rounds) == 1
     assert report.final_scored == 2
+    assert {"scorer", "lemma"} <= set(report.roles) and report.roles["lemma"].tasks == 2
+    assert all(task.usage is not None and task.usage.requests == 1 for task in report.tasks)
     assert seen == [["p2"], ["p1"]]  # one sentence per task; p2 is more confident, so it goes first
 
 
@@ -139,7 +141,7 @@ async def test_agent_failures_are_recorded_and_the_run_continues(store):
     report = await pipeline(store, {"*": model}, progress=messages.append, rounds=1).run(score_only=True)
     assert len(report.tasks) == 1
     assert report.tasks[0].error.startswith("UnexpectedModelBehavior")
-    assert "expected SENT_ID TOKEN_ID COLUMN CONFIDENCE" in model.retries[0]
+    assert "expected SENTENCE TOKEN_ID COLUMN CONFIDENCE" in model.retries[0]
     assert any("scorer p1, p2 FAILED" in message for message in messages)
 
 

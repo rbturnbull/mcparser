@@ -52,8 +52,8 @@ class Annotation(BaseModel):
 
     values: str = Field(
         description=(
-            'One line per cell you set or confirm: "SENT_ID TOKEN_ID VALUE CONFIDENCE", '
-            'e.g. "12841 3 NOUN 0.95". Use _ for an empty value.'
+            'One line per cell you set or confirm: "SENTENCE TOKEN_ID VALUE CONFIDENCE", '
+            'e.g. "s1 3 NOUN 0.95" (s1 = the first sentence of the task). Use _ for an empty value.'
         )
     )
     flags: list[FlagRequest] = Field(default_factory=list, description="Problems in other columns.")
@@ -66,8 +66,8 @@ class Scores(BaseModel):
 
     scores: str = Field(
         description=(
-            'One line per cell: "SENT_ID TOKEN_ID COLUMN CONFIDENCE", e.g. "12841 3 upos 0.95"; '
-            'COLUMN "*" scores every listed cell of the word.'
+            'Lines "SENTENCE TOKEN_ID COLUMN CONFIDENCE", e.g. "s1 3 upos 0.4". "s1 3 * 0.95" scores every '
+            'listed cell of word 3, "s1 * * 0.95" every listed cell of sentence s1; later lines override earlier ones.'
         )
     )
     flags: list[FlagRequest] = Field(default_factory=list, description="Cells you are fairly sure are wrong, with a fix.")
@@ -76,10 +76,28 @@ class Scores(BaseModel):
 
 @dataclass
 class Batch:
-    """The sentences of one task; passed to the agent run as its dependencies."""
+    """The sentences of one task; passed to the agent run as its dependencies.
+
+    In prompts and answers the sentences are called ``s1``, ``s2``, ... rather
+    than by their ``sent_id``, which can be long (e.g. 20 tokens in Coptic
+    Scriptorium) and would otherwise be repeated on every answer line.
+    """
 
     target: str
     sent_ids: list[str]
+    cells: dict[str, list[tuple[str, str]]] | None = None
+    """For the scorer: the (token_id, column) cells listed per sentence, which wildcards expand to."""
+
+    def label(self, sent_id: str) -> str:
+        return f"s{self.sent_ids.index(sent_id) + 1}"
+
+    def resolve(self, name: str) -> str | None:
+        """The sent_id for a label (``s2``) or a sent_id of this batch, else ``None``."""
+        if name in self.sent_ids:
+            return name
+        if name[:1] == "s" and name[1:].isdigit() and 0 < int(name[1:]) <= len(self.sent_ids):
+            return self.sent_ids[int(name[1:]) - 1]
+        return None
 
 
 def _lines(text: str) -> list[list[str]]:
@@ -92,11 +110,12 @@ def parse_values(text: str, role: Role, batch: Batch) -> tuple[dict[str, list[Ce
     errors = []
     for number, parts in enumerate(_lines(text), start=1):
         if len(parts) < 4:
-            errors.append(f"line {number}: expected SENT_ID TOKEN_ID VALUE CONFIDENCE, got {' '.join(parts)!r}")
+            errors.append(f"line {number}: expected SENTENCE TOKEN_ID VALUE CONFIDENCE, got {' '.join(parts)!r}")
             continue
-        sent_id, token_id, value, confidence = parts[0], parts[1], " ".join(parts[2:-1]), parts[-1]
-        if sent_id not in batch.sent_ids:
-            errors.append(f"line {number}: sentence {sent_id!r} is not in this task")
+        name, token_id, value, confidence = parts[0], parts[1], " ".join(parts[2:-1]), parts[-1]
+        sent_id = batch.resolve(name)
+        if sent_id is None:
+            errors.append(f"line {number}: sentence {name!r} is not in this task")
             continue
         try:
             score = float(confidence)
@@ -115,19 +134,36 @@ def parse_scores(text: str, batch: Batch) -> tuple[dict[str, dict[str, float]], 
     errors = []
     for number, parts in enumerate(_lines(text), start=1):
         if len(parts) != 4:
-            errors.append(f"line {number}: expected SENT_ID TOKEN_ID COLUMN CONFIDENCE, got {' '.join(parts)!r}")
+            errors.append(f"line {number}: expected SENTENCE TOKEN_ID COLUMN CONFIDENCE, got {' '.join(parts)!r}")
             continue
-        sent_id, token_id, column, confidence = parts
-        if sent_id not in batch.sent_ids:
-            errors.append(f"line {number}: sentence {sent_id!r} is not in this task")
+        name, token_id, column, confidence = parts
+        sent_id = batch.resolve(name)
+        if sent_id is None:
+            errors.append(f"line {number}: sentence {name!r} is not in this task")
             continue
         try:
             score = float(confidence)
         except ValueError:
             errors.append(f"line {number}: confidence {confidence!r} is not a number")
             continue
+        score = min(max(score, 0.0), 1.0)
         column = "*" if column == "*" else normalise_column(column)
-        scores.setdefault(sent_id, {})[f"{token_id}:{column}"] = min(max(score, 0.0), 1.0)
+        cells = scores.setdefault(sent_id, {})
+        listed = batch.cells.get(sent_id) if batch.cells else None
+        if listed is not None and "*" in (token_id, column):
+            # Wildcards cover only the listed cells, so they never re-score cells settled by rules.
+            matches = [
+                (token, name) for token, name in listed
+                if token_id in ("*", token) and column in ("*", name)
+            ]  # fmt: skip
+            if not matches:
+                errors.append(f"line {number}: no listed cell matches {token_id} {column}")
+            for token, name in matches:
+                cells[f"{token}:{name}"] = score
+        elif token_id == "*":
+            errors.append(f"line {number}: TOKEN_ID * is only allowed for the cells listed in the task")
+        else:
+            cells[f"{token_id}:{column}"] = score
     return scores, errors
 
 
@@ -144,8 +180,11 @@ class Applier:
 
     def _check_flags(self, flags: list[FlagRequest], batch: Batch, errors: list[str]) -> None:
         for flag in flags:
-            if flag.sent_id not in batch.sent_ids:
+            resolved = batch.resolve(flag.sent_id)
+            if resolved is None:
                 errors.append(f"flag on sentence {flag.sent_id!r}, which is not in this task")
+            else:
+                flag.sent_id = resolved
 
     def _apply_flags(self, flags: list[FlagRequest], batch: Batch) -> None:
         for flag in flags:

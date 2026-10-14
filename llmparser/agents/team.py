@@ -52,6 +52,12 @@ class ModelUsage(BaseModel):
         self.output_tokens += usage.output_tokens
         self.cost = estimate(model, self.input_tokens, self.cache_read_tokens, self.cache_write_tokens, self.output_tokens)
 
+    def merge(self, other: ModelUsage) -> None:
+        """Add another usage (e.g. of a different model); cost is None if either has no price."""
+        for name in ("tasks", "requests", "input_tokens", "cache_read_tokens", "cache_write_tokens", "output_tokens"):
+            setattr(self, name, getattr(self, name) + getattr(other, name))
+        self.cost = None if self.cost is None or other.cost is None else self.cost + other.cost
+
 
 class AgentTeam:
     """Builds and runs the role agents.
@@ -79,6 +85,8 @@ class AgentTeam:
         self._agents: dict[str, Agent[Batch, Answer]] = {}
         self.usage: dict[str, ModelUsage] = {}
         """Token use and estimated cost per model."""
+        self.role_usage: dict[str, ModelUsage] = {}
+        """Token use and estimated cost per role."""
 
     def relations(self) -> str:
         """The trusted DEPREL inventory as one line, for the syntax roles' instructions."""
@@ -138,20 +146,27 @@ class AgentTeam:
     async def __aexit__(self, *args: Any) -> None:
         await self.toolset.__aexit__(*args)
 
-    async def run(self, role: str, prompt: str, batch: Batch) -> Answer:
-        """Run ``role`` on a task; for compact answers, the edits are applied when the answer is accepted."""
+    async def run(self, role: str, prompt: str, batch: Batch, usage: ModelUsage | None = None) -> Answer:
+        """Run ``role`` on a task; for compact answers, the edits are applied when the answer is accepted.
+
+        The task's token use is added to the per-model and per-role totals and,
+        if given, to ``usage``.
+        """
         result = await self.agent(role).run(
             prompt, deps=batch, usage_limits=UsageLimits(request_limit=self.settings.request_limit)
         )
         name = self.model_name(self.model(role))
-        self.usage.setdefault(name, ModelUsage()).add(result.usage, name)
+        task = ModelUsage()
+        task.add(result.usage, name)
+        self.usage.setdefault(name, ModelUsage(cost=0.0)).merge(task)
+        self.role_usage.setdefault(role, ModelUsage(cost=0.0)).merge(task)
+        if usage is not None:
+            usage.merge(task)
         return result.output
 
     def total(self) -> ModelUsage:
         """Usage summed over all models (cost is None if any model has no price)."""
         total = ModelUsage(cost=0.0)
         for usage in self.usage.values():
-            for name in ("tasks", "requests", "input_tokens", "cache_read_tokens", "cache_write_tokens", "output_tokens"):
-                setattr(total, name, getattr(total, name) + getattr(usage, name))
-            total.cost = None if total.cost is None or usage.cost is None else total.cost + usage.cost
+            total.merge(usage)
         return total
