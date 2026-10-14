@@ -17,11 +17,6 @@ EDIT_TOOLS = {
 }  # fmt: skip
 
 
-@pytest.fixture
-def anyio_backend():
-    return "asyncio"
-
-
 async def call(client, name, **arguments):
     result = await client.call_tool(name, arguments)
     assert not result.is_error, result.content[0].text

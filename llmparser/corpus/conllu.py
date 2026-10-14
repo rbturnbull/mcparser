@@ -148,7 +148,7 @@ class Token(BaseModel):
 
 
 class Sentence(BaseModel):
-    """A sentence: its comment lines (without ``# ``) and its token lines."""
+    """A sentence: its comment lines (without the leading ``#``) and its token lines."""
 
     comments: list[str] = Field(default_factory=list)
     tokens: list[Token] = Field(default_factory=list)

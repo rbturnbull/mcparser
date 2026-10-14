@@ -99,13 +99,20 @@ def _guard(function: F) -> F:
     return wrapper  # type: ignore[return-value]
 
 
-def build_server(store: CorpusStore, name: str = "conllu", allow_edits: bool = True) -> MCPServer:
+def build_server(
+    store: CorpusStore,
+    name: str = "conllu",
+    allow_edits: bool = True,
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "WARNING",
+) -> MCPServer:
     """Create an MCP server over ``store``.
 
     With ``allow_edits=False`` only the read-only tools are registered, which is
-    useful for exploring a corpus from Claude Desktop without risk.
+    useful for exploring a corpus from Claude Desktop without risk. The MCP SDK
+    configures the root logger at ``log_level``; the WARNING default keeps
+    per-request logs out of the terminal.
     """
-    server = MCPServer(name, instructions=INSTRUCTIONS)
+    server = MCPServer(name, instructions=INSTRUCTIONS, log_level=log_level)
 
     def tool(annotations: ToolAnnotations) -> Callable[[F], F]:
         def register(function: F) -> F:

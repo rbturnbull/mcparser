@@ -17,12 +17,13 @@ and from other projects (e.g. llmaligner, which aligns parallel corpora).
 |---|---|
 | 1. Corpus store (`llmparser/corpus/`) | done, 100% covered |
 | 2. MCP server + CLI `mcp serve` / `mcp config` / `validate` | done, 100% covered |
-| 3. Agents (pydantic-ai), per-task model config | not started |
-| 4. Pipeline: `init` (raw text / YAML), score, refine rounds, `evaluate` | not started |
-| 5. Sphinx docs | not started |
+| 3. Agents (pydantic-ai), per-role model config | done, 100% covered; verified with Opus 5.5 |
+| 4. Pipeline: `init` (text / YAML) + baseline, score/refine rounds, `evaluate` | done, 100% covered |
+| 5. Sphinx docs (`docs/`) | done; `sphinx-build -W` clean |
 
-The previous implementation lives in `llmparserold/` (untracked; its tests are
-in `llmparserold/tests/`). Reuse ideas from it, but it is not imported.
+The previous implementation lives in `llmparserold/` (its tests in
+`llmparserold/tests/`, its old Markdown/Quarto docs in `llmparserold/docs/`).
+Reuse ideas from it, but it is not imported.
 
 ## Layout
 
@@ -40,8 +41,20 @@ llmparser/
   mcp/
     server.py        # build_server(store, allow_edits=True) -> MCPServer
     config.py        # SourceSpec "[NAME=]PATH[:ro|rw[:CONF]]", Claude Desktop JSON
-  cli.py             # typer app (entry point `llmparser`)
-tests/               # pytest; data in tests/data/{train,pred}.conllu
+  agents/
+    roles.py         # Role per column + scorer; tool sets; REFINE_ORDER
+    prompts.py       # shared + per-role instructions, task prompts
+    toolset.py       # RoleToolset: hides tools/`agent` arg, enforces columns & target
+    team.py          # AgentTeam: one pydantic-ai Agent per role over one MCPToolset
+  pipeline.py        # Pipeline: score -> refine rounds, stop rules, RunReport
+  baseline.py        # frequency baseline (no LLM) used by `init`
+  textinput.py       # raw text / YAML -> unannotated sentences (tokeniser)
+  evaluate.py        # CoNLL 2018-style P/R/F1 with surface-span alignment
+  settings.py        # Settings (YAML): model per role, threshold, rounds, cache
+  cli.py             # typer app: init run score evaluate validate settings mcp
+docs/                # Sphinx (myst-parser + furo); CLI page generated in conf.py
+tests/               # pytest; data in tests/data/{train,pred}.conllu;
+                     # tests/scripted.py = scripted FunctionModels for agent tests
 ```
 
 ## Design decisions (and why)
@@ -84,6 +97,30 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu
   read-only sources by default, so predictions don't define what is allowed.
 - **Thread safety**: MCP runs sync tools in worker threads, so every public
   `CorpusStore` method takes an `RLock`.
+- **One agent per column** (segmentation=form, upos, xpos, lemma, feats, head,
+  deprel, deps [off by default]) + **scorer** (confidences only). Each role's
+  column is also its flag column. Agents edit through MCP tools directly; the
+  structured output is only a `TaskReport(summary)`.
+- **Permissions live in `RoleToolset`** (client side): only the role's tools
+  are listed, the `agent` argument is hidden from the schema and injected,
+  writes must target the prediction source and the role's columns, the scorer
+  may not send values. Refusals are `ModelRetry`s that tell the model to use
+  `flag_issue` instead. It also accepts `updates` sent as a JSON string (Opus
+  did this in a real run).
+- **Pipeline**: per round, score sentences that changed since their last
+  scorer pass (from the history: last scorer `confidence` seq vs last edit seq),
+  then refine sentences most→least confident, roles in `REFINE_ORDER`, a role
+  runs only if its column has cells < threshold or open flags. Stop when no
+  tasks, a round made no edits, or the round limit; then a final scoring pass.
+  A failing task is recorded and the run continues; `UserError` (e.g. missing
+  API key) aborts. Reported confidence = mean over the enabled roles' columns.
+- **Baseline** fills only cells that are `_` *and* unscored (`_` also means "no
+  features"), so it is idempotent; splits use the most frequent multiword
+  analysis when the token is split more often than not; `flag_head=False`.
+- **Evaluation** aligns surface tokens by character span, then words inside a
+  multiword token by form (SequenceMatcher), like the CoNLL 2018 scorer.
+- **Prompt caching** on by default (`ModelSettings(cache=True)`): ~74% of
+  input tokens were cache reads in a real run.
 
 ## MCP tools
 
@@ -100,8 +137,7 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
 
 ## Environment gotchas
 
-- Use **uv**. The installed uv is 0.3.2, which predates PEP 735
-  `[dependency-groups]`, so dev deps are in `[tool.uv] dev-dependencies`.
+- Use **uv** (0.13+). Dev deps are in `[dependency-groups] dev`.
 - Python is pinned to **3.13** (`.python-version`). The uv-managed 3.12 on this
   machine is x86_64 and loads an arm64 `cryptography` wheel → ImportError. If
   the venv breaks: `rm -rf .venv && uv sync --python /opt/homebrew/opt/python@3.13/bin/python3.13`.
@@ -110,34 +146,44 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   client only as a generic message); `mcp.Client(server)` connects in-process
   for tests, `Client(StdioServerParameters(...))` over stdio.
 - pydantic-ai's MCP support uses `fastmcp-slim` 4.x, which requires mcp 2.x — compatible.
+  `MCPToolset(build_server(store))` connects in-process.
+- pydantic-ai 2.x: `result.usage` is a property (not a method); build agents
+  with `defer_model_check=True` so a missing API key only fails at run time.
+- `MCPServer(log_level=...)` configures the *root* logger; `build_server`
+  defaults to WARNING or every Anthropic HTTP request is logged.
+- typer vendors its own click (`typer._click`), so sphinx-click can't render it;
+  `docs/conf.py` writes `--help` output to `docs/_generated/cli.md` instead.
+- `ANTHROPIC_API_KEY` is set on the dev machine: tests set
+  `pydantic_ai.models.ALLOW_MODEL_REQUESTS = False` in `conftest.py`.
+- `PYDANTIC_AI_NO_BANNER=1` is set by the CLI and docs to silence the banner.
 
 ## Conventions
 
 - `uv run pytest` must stay at **100% line+branch coverage** (enforced by
-  `--cov-fail-under=100` in `pyproject.toml`) and fast (~2 s now). No network
-  in tests; use pydantic-ai `TestModel`/`FunctionModel` for agents.
+  `--cov-fail-under=100` in `pyproject.toml`) and fast (~2.5 s without
+  coverage, ~6 s with). No network in tests; use `tests/scripted.py`.
+- Docs: `uv sync --all-groups && uv run sphinx-build -W docs docs/_build/html`.
 - Raise subclasses of `CorpusError` for expected failures; the MCP layer turns
   them into tool errors.
 - Return pydantic models from store methods; they become MCP output schemas.
 - Token ids are strings everywhere (`"3"`, `"3-4"`, `"3.1"`).
 
-## Next steps (agreed plan)
+## Real-model observations (Opus 5.5, Hittite UD demo)
 
-1. **Agents** (`llmparser/agents/`, pydantic-ai, MCP toolset): one per element —
-   segmentation (form + multiword), lemma, upos/xpos, feats, head, deprel (arc
-   labelling), deps optional, plus a scorer. Each sees the whole sentence and
-   file, may only *write* its own columns (filter the MCP toolset), and may
-   flag any column. Typed outputs (edits with confidence + reason). Prompts from
-   `llmparserold`'s `agents/*/SKILL.md` as a starting point.
-2. **Model config**: default `anthropic:claude-opus-5-5`; per-agent override in a
-   config file and CLI (`--model`, `--model-for lemma=...`).
-3. **Pipeline**: round 0 = given predictions or `llmparser init` from raw text
-   (one sentence per line, or YAML like `ArabGr1-Ephesians-Parsed.yaml` with
-   `text` + `verse`/ids; segmentation agent → frequency baseline from training →
-   predict agents). Then score → refine cells below threshold, processing
-   sentences from most to least confident, column order seg → upos/xpos → lemma
-   → feats → head → deprel; then handle open flags; repeat for N rounds or until
-   stable. `store.round` stamps edits with the round.
-4. `llmparser evaluate PRED GOLD` (UPOS/XPOS/lemma/feats accuracy, UAS/LAS,
-   segmentation F1).
-5. Sphinx docs (myst-parser, furo, autodoc, sphinx-click for the typer CLI).
+- Sentence 14.10-2 (6 words), one round, all roles: UPOS/UAS/LAS 100%,
+  lemma 5/6, feats 4/6. The scorer's lowest scores were exactly the two wrong
+  cells (SÍSKUR lemma 0.50, feats 0.45). 28 requests, 377k input tokens before
+  caching was enabled; ~2 minutes.
+- Scorer + upos on a 7-word sentence with caching: 13 requests, 146k input
+  (108k cached). The flag workflow worked (scorer flagged, upos resolved).
+
+## Ideas / next steps
+
+- Auto-disable the `xpos` role when the trusted data has no XPOS (all `_`),
+  and similarly `deps`; saves a task per sentence.
+- Calibration report in `evaluate` (accuracy by confidence bucket).
+- Incremental index updates if prediction files get large.
+- Smarter `init` tokenisation per language (currently whitespace + punctuation;
+  clitics are left to the baseline/segmentation agent).
+- Reduce cost: cheaper models for xpos/feats/scorer via `--model-for`, or
+  batch several sentences per scorer task.

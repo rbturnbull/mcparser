@@ -4,8 +4,11 @@ import shutil
 from pathlib import Path
 
 import pytest
+from pydantic_ai import models
 
 from llmparser.corpus import CorpusStore, parse_conllu
+
+models.ALLOW_MODEL_REQUESTS = False  # never call a real model from the tests
 
 DATA = Path(__file__).parent / "data"
 
@@ -40,3 +43,8 @@ def sentence(text: str):
         lines.append(line if line.startswith("#") else "\t".join(line.split()))
     (parsed,) = parse_conllu("\n".join(lines))
     return parsed
+
+
+@pytest.fixture
+def anyio_backend():
+    return "asyncio"

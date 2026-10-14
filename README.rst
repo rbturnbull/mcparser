@@ -4,9 +4,14 @@ LLM Parser
 
 Uses LLM agents to perform dependency parsing, with CoNLL-U files as examples.
 
-All corpus access goes through an MCP server over CoNLL-U files, which can also
-be used from Claude Desktop or other projects. Agents and the refinement
-pipeline are in progress; see ``AGENTS.md`` for the design and status.
+A team of pydantic-ai agents (one per CoNLL-U column, plus a scorer) annotates
+a prediction file, gives every cell a confidence (stored in MISC as
+``Conf=...``), and refines the least certain cells over several rounds. All
+data access goes through an MCP server over CoNLL-U files, which can also be
+used from Claude Desktop or other projects.
+
+Full documentation: ``uv run sphinx-build docs docs/_build/html`` and open
+``docs/_build/html/index.html``. Design notes for contributors: ``AGENTS.md``.
 
 Installation
 ============
@@ -15,49 +20,39 @@ Installation
 
    uv sync
 
+Annotating
+==========
+
+.. code-block:: bash
+
+   export ANTHROPIC_API_KEY=...
+   # raw text (one sentence per line, or YAML with 'text' fields) -> CoNLL-U + baseline
+   uv run llmparser init input.txt -o pred.conllu -s ud-train.conllu
+   # score and refine with the agents (default model anthropic:claude-opus-5-5)
+   uv run llmparser run pred.conllu -s ud-train.conllu --rounds 3
+   # compare with gold
+   uv run llmparser evaluate pred.conllu gold.conllu
+
+Try ``--sentence ID`` first to see what one sentence costs. ``llmparser settings``
+prints the configurable settings (per-role models, threshold, rounds, ...).
+
 The CoNLL-U MCP server
 ======================
 
-Each source is a CoNLL-U file given as ``[NAME=]PATH[:ro|rw[:CONFIDENCE]]``.
-Read-only (``ro``) sources hold trusted examples; writable (``rw``) sources hold
-predictions that can be edited. Confidence per cell is stored in MISC as
-``Conf=upos:0.95,lemma:0.80,...``.
+Each source is ``[NAME=]PATH[:ro|rw[:CONFIDENCE]]``: read-only (``ro``) sources
+hold trusted examples, writable (``rw``) sources hold predictions.
 
 .. code-block:: bash
 
    uv run llmparser mcp serve -s train=ud-train.conllu -s pred=pred.conllu:rw
-
-To use it from Claude Desktop, print the configuration and add it to
-``claude_desktop_config.json``:
-
-.. code-block:: bash
-
+   # JSON to add to Claude Desktop's claude_desktop_config.json:
    uv run llmparser mcp config -s train=ud-train.conllu -s pred=pred.conllu:rw
-
-Add ``--read-only`` to expose only the search tools.
-
-The same API is available in Python without MCP:
-
-.. code-block:: python
-
-   from llmparser.corpus import CorpusStore
-
-   store = CorpusStore()
-   store.add_source("train", "ud-train.conllu")
-   store.add_source("pred", "pred.conllu", mode="rw")
-   store.analyse_form("al", loose=True)
-
-Validate a file (unseen tags are checked against the trusted sources):
-
-.. code-block:: bash
-
-   uv run llmparser validate pred.conllu -s ud-train.conllu
 
 Development
 ===========
 
 .. code-block:: bash
 
-   uv run pytest
-
-Tests must keep 100% line and branch coverage.
+   uv sync --all-groups
+   uv run pytest                                  # 100% line and branch coverage required
+   uv run sphinx-build -W docs docs/_build/html

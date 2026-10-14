@@ -773,6 +773,7 @@ class CorpusStore:
         agent: str,
         reason: str,
         confidence: float | None,
+        flag_head: bool = True,
         **arguments: Any,
     ) -> EditResult:
         target = self.source(source)
@@ -798,7 +799,7 @@ class CorpusStore:
             reason=reason,
         )
         target.record(edit)
-        if action in WORD_CHANGING_ACTIONS:
+        if flag_head and action in WORD_CHANGING_ACTIONS:
             self._add_flag(
                 target,
                 sent_id=sent_id,
@@ -822,10 +823,15 @@ class CorpusStore:
         confidence: float | None = None,
         reason: str = "",
         agent: str = "agent",
+        flag_head: bool = True,
     ) -> EditResult:
-        """Split a word. See :func:`llmparser.corpus.segmentation.split_word`."""
+        """Split a word. See :func:`llmparser.corpus.segmentation.split_word`.
+
+        Like the other word-changing edits, this raises a sentence-level flag for
+        the head agent unless ``flag_head`` is false.
+        """
         return self._segment(
-            "split_word", segmentation.split_word, source, sent_id, agent, reason, confidence,
+            "split_word", segmentation.split_word, source, sent_id, agent, reason, confidence, flag_head,
             token_id=token_id, forms=forms, multiword=multiword, head_index=head_index,
         )  # fmt: skip
 

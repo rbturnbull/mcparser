@@ -1,0 +1,2082 @@
+# sent_id = 5.7
+# text = ták-ku LÚ.U19.LU-an ku-iš-ki ḫu-ú-ni-ik-zi ta=an iš-tar-ni-ik-zi nu a-pu-u-un ša-a-ak-ta-a-iz-zi
+# translation = If someone injures a person and makes him ill, he will heal that person.
+# source = KBo 6.2 i 16-17 (OH/OS) = Laws §10
+1	ták-ku	takku	SCONJ	_	_	4	mark	_	_
+2	LÚ.U19.LU-an	antuhša-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	4	obj	_	_
+3	ku-iš-ki	kuiški	PRON	_	Case=Nom|Gender=Com|Number=Sing|PronType=Ind	4	nsubj	_	_
+4	ḫu-ú-ni-ik-zi	ḫūnink-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	10	advcl	_	_
+5-6	ta=an	_	_	_	_	_	_	_	_
+5	ta	ta	CCONJ	_	_	7	cc	_	_
+6	an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	7	obj	_	_
+7	iš-tar-ni-ik-zi	ištarnink-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	4	conj	_	_
+8	nu	nu	PART	_	_	10	discourse:conn	_	_
+9	a-pu-u-un	apā-	PRON	_	Case=Acc|Gender=Com|Number=Sing|PronType=Dem	10	obj	_	_
+10	ša-a-ak-ta-a-iz-zi	šāktāi-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 6.2
+# text = LÚ.MEŠ KUR URU-Mi-iz-ra=ma ma-aḫ-ḫa-an ŠA KUR URU-Am-ka GUL-aḫ-ḫu-wa-ar iš-ta-ma-aš-ša-an-zi n=a-at na-aḫ-ša-ri-ya-an-zi
+# translation = When the men of the land of Egypt heard [of] the striking of the men of Amka, they grew afraid.
+# source = KBo 5.6 iii 5-6 (NH)
+1	LÚ.MEŠ	pišna/i-	NOUN	_	Case=Nom|Gender=Com|Number=Plur	12	nsubj	_	_
+2	KUR	utnē-	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	1	nmod	_	_
+3-5	URU-Mi-iz-ra=ma	_	_	_	_	_	_	_	_
+3	URU	URU	NOUN	_	_	4	nmod:det	_	_
+4	Mi-iz-ra	Mizra	PROPN	_	_	2	nmod	_	_
+5	ma	-ma	PART	_	_	12	discourse	_	_
+6	ma-aḫ-ḫa-an	maḫḫan	SCONJ	_	_	12	mark	_	_
+7	ŠA	ŠA	ADP	_	_	8	case	_	_
+8	KUR	utnē-	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	11	nmod	_	_
+9-10	URU-Am-ka	_	_	_	_	_	_	_	_
+9	URU	URU	NOUN	_	_	10	nmod:det	_	_
+10	Am-ka	Amka	PROPN	_	_	8	nmod	_	_
+11	GUL-aḫ-ḫu-wa-ar	walḫ-	VERB	_	VerbForm=Vnoun	12	obj	_	_
+12	iš-ta-ma-aš-ša-an-zi	ištamašš-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	15	advcl	_	_
+13-14	n=a-at	_	_	_	_	_	_	_	_
+13	n	nu	PART	_	_	15	discourse:conn	_	_
+14	a-at	-at	PRON	_	Gender=Com|Number=Plur|Person=3|PronType=Prs	15	nsubj	_	_
+15	na-aḫ-ša-ri-ya-an-zi	naḫšaratt-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 6.4-1
+# text = ták-ku ÌR-aš É-er lu-uk-ke-ez-zi iš-ḫa-a-aš=ši-š=a še-e-er=ši-it šar-ni-ik-zi
+# translation = If a man sets fire to a house, his master will make restitution for it.
+# source = KBo 6.2 iv 56-58 (OS) [restored from KBo 6.3 iv 55-58 (OH/NS)] = Laws §99
+1	ták-ku	takku	SCONJ	_	_	4	mark	_	_
+2	ÌR-aš	ÌR-(n)a/i-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	4	nsubj	_	_
+3	É-er	per	NOUN	_	Case=Nom|Gender=Neut|Number=Sing	4	obj	_	_
+4	lu-uk-ke-ez-zi	lukke-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	10	advcl	_	_
+5-7	iš-ḫa-a-aš=ši-š=a	_	_	_	_	_	_	_	_
+5	iš-ḫa-a-aš	išḫā-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	10	nsubj	_	_
+6	ši-š	-šiš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3|Poss=Yes|PronType=Prs	5	nmod	_	_
+7	a	-ma	PART	_	_	5	discourse	_	_
+8-9	še-e-er=ši-it	_	_	_	_	_	_	_	_
+8	še-e-er	šēr	ADV	_	_	10	advmod	_	_
+9	ši-it	-šiš	PRON	_	Gender=Neut|Number=Sing|Person=3|PronType=Prs	8	obl	_	_
+10	šar-ni-ik-zi	šarnink-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 6.4-2
+# text = ták-ku na-at-ta=ma šar-ni-ik-zi nu a-pu-u-un=pát šu-ú-ez-zi
+# translation = But if he does not make restitution, he will reject that [servant].
+# source = KBo 6.2 iv 56-58 (OS) [restored from KBo 6.3 iv 55-58 (OH/NS)] = Laws §99
+1	ták-ku	takku	SCONJ	_	_	4	mark	_	_
+2-3	na-at-ta=ma	_	_	_	_	_	_	_	_
+2	na-at-ta	natta	PART	_	_	4	advmod	_	_
+3	ma	-ma	PART	_	_	4	discourse	_	_
+4	šar-ni-ik-zi	šarnink-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	8	advcl	_	_
+5	nu	nu	PART	_	_	8	discourse:conn	_	_
+6-7	a-pu-u-un=pát	_	_	_	_	_	_	_	_
+6	a-pu-u-un	apā-	PRON	_	Case=Acc|Gender=Com|Number=Sing|PronType=Dem	8	obj	_	_
+7	pát	-pat	PART	_	_	6	advmod:emph	_	_
+8	šu-ú-ez-zi	šuwe-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 6.7-1
+# text = TI-an-za=aš
+# translation = She is alive
+# source = KBo 4.8 ii 10-12 (NH)
+1-2	TI-an-za=aš	_	_	_	_	_	_	_	_
+1	TI-an-za	ḫuišwant-	ADJ	_	Case=Nom|Gender=Com|Number=Sing	0	root	_	_
+2	aš	-aš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3	1	nsubj	_	_
+
+# sent_id = 6.7-2
+# text = nu d-UTU ŠA-ME-E IGI.ḪI.A-it uš-ke-ez-zi NINDA-an-n=a-a=z TI-an-na-aš az-zi-ik-ke-ez-zi
+# translation = She will continue to see the Sun-God of Heaven with [her] eyes and will continue to eat the bread of life.
+# source = KBo 4.8 ii 10-12 (NH)
+1	nu	nu	CCONJ	_	_	6	cc	_	_
+2-3	d-UTU	_	_	_	_	_	_	_	_
+2	d	d	NOUN	_	_	3	nmod:det	_	_
+3	UTU	Ištanu-	PROPN	_	_	6	obj	_	_
+4	ŠA-ME-E	nepiš-	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	3	nmod	_	_
+5	IGI.ḪI.A-it	šākuwa-	NOUN	_	Case=Ins|Gender=Com|Number=Plur	6	obl	_	_
+6	uš-ke-ez-zi	au(š)-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+7-9	NINDA-an-n=a-a=z	_	_	_	_	_	_	_	_
+7	NINDA-an-n	NINDA-a-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	11	obj	_	_
+8	a-a	-a	CCONJ	_	_	11	cc	_	_
+9	z	-za	PART	_	_	11	expl:pass	_	_
+10	TI-an-na-aš	ḫuišwatar	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	7	nmod	_	_
+11	az-zi-ik-ke-ez-zi	ēd-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	6	conj	_	_
+
+# sent_id = 6.15
+# text = ḫar-na-u-aš=za ku-it MUNUS=za A-NA DINGIR-LIM EN=YA še-er SAG.DU-za šar-ni-in-kán ḫar-mi
+# translation = Since I am a woman of the birthing stool, I have made restitution personally on behalf of the god, my lord.
+# source = KUB 21.27 iv 35-36 (NH)
+1-2	ḫar-na-u-aš=za	_	_	_	_	_	_	_	_
+1	ḫar-na-u-aš	ḫarnau-	NOUN	_	Case=Gen|Gender=Com|Number=Sing	4	nmod	_	_
+2	za	-za	PART	_	_	4	expl:pass	_	_
+3	ku-it	ku-it	SCONJ	_	_	4	mark	_	_
+4-5	MUNUS=za	_	_	_	_	_	_	_	_
+4	MUNUS	MUNUS-n-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	12	advcl	_	_
+5	za	-za	PART	_	_	4	discourse	_	_
+6	A-NA	ANA	ADP	_	_	7	case	_	_
+7	DINGIR-LIM	šiun(i)-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	12	obl	_	_
+8-9	EN=YA	_	_	_	_	_	_	_	_
+8	EN	išḫa-	NOUN	_	Gender=Com|Number=Sing	7	appos	_	_
+9	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	8	nmod	_	_
+10	še-er	šēr	ADP	_	_	7	case	_	_
+11	SAG.DU-za	ḫaršar	NOUN	_	Case=Abl|Gender=Neut|Number=Sing	12	obl	_	_
+12	šar-ni-in-kán	šarnink-	VERB	_	Gender=Neut|VerbForm=Part	0	root	_	_
+13	ḫar-mi	ḫark	AUX	_	Mood=Ind|Number=Sing|Person=1|VerbForm=Fin|Voice=Act	12	aux	_	_
+
+# sent_id = 7.3
+# text = nu=kán LÚ.MEŠ IGI.NU.GÁL.ḪI.A ḫu-u-ma-an-te-eš URU-Ša-pí-nu-wa ša-ra-a pé-ḫu-te-er
+# translation = They led all the blind men up to the city of Šapinuwa.
+# source = HKM 58:6-7 (MH/MS)
+1-2	nu=kán	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	9	cc	_	_
+2	kán	-kan	PART	_	_	9	advmod:loc	_	_
+3	LÚ.MEŠ	pišna/i-	NOUN	_	Case=Acc|Gender=Com|Number=Plur	9	obj	_	_
+4	IGI.NU.GÁL.ḪI.A	IGI.NU.GÁL	ADJ	_	Number=Plur	3	amod	_	_
+5	ḫu-u-ma-an-te-eš	ḫūmant-	DET	_	Case=Acc|Gender=Com|Number=Plur|PronType=Tot	4	det	_	_
+6-7	URU-Ša-pí-nu-wa	_	_	_	_	_	_	_	_
+6	URU	URU	NOUN	_	_	7	nmod:det	_	_
+7	Ša-pí-nu-wa	Šapinuwa	PROPN	_	_	9	obl	_	_
+8	ša-ra-a	šarā	ADV	_	_	9	advmod	_	_
+9	pé-ḫu-te-er	peḫute-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 7.4-1
+# text = ú-i-il-na-aš ÉRIN.MEŠ-an te-eš-šu-um-mi-uš-š=a ta-ak-na-a ḫa-ri-e-mi
+# translation = I buried troops of clay and cups in the earth.
+# source = KBo 17.1 iii 8-9 (OS)
+1	ú-i-il-na-aš	wil(a)n-	NOUN	_	Case=Gen|Gender=Com	2	nmod	_	_
+2	ÉRIN.MEŠ-an	ÉRIN.MEŠ-t-	NOUN	_	Case=Acc|Gender=Com	6	obj	_	_
+3-4	te-eš-šu-um-mi-uš-š=a	_	_	_	_	_	_	_	_
+3	te-eš-šu-um-mi-uš-š	teššummi-	NOUN	_	Case=Acc|Gender=Com|Number=Plur	2	conj	_	_
+4	a	-a	CCONJ	_	_	3	cc	_	_
+5	ta-ak-na-a	tēkan	NOUN	_	Case=All|Gender=Com|Number=Sing	6	obl	_	_
+6	ḫa-ri-e-mi	ḫariya-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 7.4-2
+# text = t=u-uš tar-ma-e-mi
+# translation = And they nailed them down.
+# source = KBo 17.1 iii 8-9 (OS)
+1-2	t=u-uš	_	_	_	_	_	_	_	_
+1	t	ta	CCONJ	_	_	3	cc	_	_
+2	u-uš	-at	PRON	_	Case=Acc|Gender=Com|Number=Plur|Person=3|PronType=Prs	3	obj	_	_
+3	tar-ma-e-mi	tarmāi-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 7.5-1
+# text = a-še-eš-šar ša-ra-a ti-ya-zi
+# translation = The assembly stood up.
+# source = KUB 2.10 v 25-26 (OH/NS)
+1	a-še-eš-šar	ašeššar	NOUN	_	Case=Abs|Gender=Neut|Number=Sing	3	nsubj	_	_
+2	ša-ra-a	šarā	ADV	_	_	3	advmod	_	_
+3	ti-ya-zi	tiya-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 7.5-2
+# text = nu LÚ.MEŠ-ZABAR.DAB a-še-eš-ni a-ku-wa-an-na pí-an-zi
+# translation = And the officials gave to the assembly to drink.
+# source = KUB 2.10 v 25-26 (OH/NS)
+1	nu	nu	CCONJ	_	_	6	cc	_	_
+2-3	LÚ.MEŠ-ZABAR.DAB	_	_	_	_	_	_	_	_
+2	LÚ.MEŠ	LÚ	NOUN	_	Number=Plur	3	nmod:det	_	_
+3	ZABAR.DAB	ZABAR.DAB	NOUN	_	Case=Nom|Gender=Com	6	nsubj	_	_
+4	a-še-eš-ni	ašeššar	NOUN	_	Case=Dat|Gender=Neut|Number=Sing	6	iobj	_	_
+5	a-ku-wa-an-na	eku-	VERB	_	VerbForm=Inf	6	xcomp	_	_
+6	pí-an-zi	pai-#2-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 7.6-1
+# text = URU-Kap-pé-e-ri-in=ma=za URU-Ka-a-ra-aš-šu-wa-an URU-Ḫur-na-an-n=a ar-kam-ma-na-aš i-ya-nu-un
+# translation = I made the city of Kapperi, the city of Karaššuwa and the city of Ḫurna tributary.
+# source = KUB 19.37 iii 46-48 (NH)
+1-4	URU-Kap-pé-e-ri-in=ma=za	_	_	_	_	_	_	_	_
+1	URU	URU	NOUN	_	_	2	nmod:det	_	_
+2	Kap-pé-e-ri-in	Kappēri	PROPN	_	Case=Acc	11	obj	_	_
+3	ma	-ma	PART	_	_	2	discourse	_	_
+4	za	-za	PART	_	_	11	expl:pass	_	_
+5-6	URU-Ka-a-ra-aš-šu-wa-an	_	_	_	_	_	_	_	_
+5	URU	URU	NOUN	_	_	6	nmod:det	_	_
+6	Ka-a-ra-aš-šu-wa-an	Kāraššuwa	PROPN	_	Case=Acc	2	conj	_	_
+7-9	URU-Ḫur-na-an-n=a	_	_	_	_	_	_	_	_
+7	URU	URU	NOUN	_	_	8	nmod:det	_	_
+8	Ḫur-na-an-n	Ḫurna	PROPN	_	Case=Acc	2	conj	_	_
+9	a	-a	CCONJ	_	_	8	cc	_	_
+10	ar-kam-ma-na-aš	arkamman-	NOUN	_	Case=Gen|Gender=Com	11	xcomp	_	_
+11	i-ya-nu-un	iya-#1-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 7.6-2
+# text = nu URU-Ḫa-at-tu-ši GEŠTIN-an ar-kam-ma-na-an-ni pé-e ḫar-ker
+# translation = And they offered wine to the city of Ḫattuša in tribute.
+# source = KUB 19.37 iii 46-48 (NH)
+1	nu	nu	CCONJ	_	_	7	cc	_	_
+2-3	URU-Ḫa-at-tu-ši	_	_	_	_	_	_	_	_
+2	URU	URU	NOUN	_	_	3	nmod:det	_	_
+3	Ḫa-at-tu-ši	Ḫattuša	PROPN	_	Case=Dat	7	iobj	_	_
+4	GEŠTIN-an	wiyana-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	7	obj	_	_
+5	ar-kam-ma-na-an-ni	arkammanātar	NOUN	_	Case=Dat|Gender=Neut|Number=Sing	7	obl	_	_
+6	pé-e	pē	ADV	_	_	7	advmod	_	_
+7	ḫar-ker	ḫar(k)-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 7.7
+# text = GUD-un=aš-ta ḫa-a-li-az a-ap-pa Ú-UL ku-uš-ša-an-ka kar-šu-un UDU-un=aš-ta a-ša-ú-na-az EGIR-pa KI.MIN
+# translation = I have never kept the cattle away from the corral nor the sheep from the sheepfold.
+# source = KUB 30.10 obv. 15 (OH/MS)
+1-2	GUD-un=aš-ta	_	_	_	_	_	_	_	_
+1	GUD-un	GUD-u-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	7	obj	_	_
+2	aš-ta	-ašta	PART	_	_	7	advmod:loc	_	_
+3	ḫa-a-li-az	ḫāli-	NOUN	_	Case=Abl|Gender=Neut|Number=Sing	7	obl	_	_
+4	a-ap-pa	āppa	ADV	_	_	7	advmod	_	_
+5	Ú-UL	natta	PART	_	_	6	advmod	_	_
+6	ku-uš-ša-an-ka	kuššanka	ADV	_	_	7	advmod	_	_
+7	kar-šu-un	karš-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+8-9	UDU-un=aš-ta	_	_	_	_	_	_	_	_
+8	UDU-un	UDU-u-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	7	parataxis	_	_
+9	aš-ta	-ašta	PART	_	_	8	orphan	_	_
+10	a-ša-ú-na-az	ašawar	NOUN	_	Case=Abl|Gender=Neut|Number=Sing	8	orphan	_	_
+11	EGIR-pa	āppa	ADV	_	_	8	orphan	_	_
+12	KI.MIN	KI.MIN	ADV	_	_	8	orphan	_	_
+
+# sent_id = 7.8
+# text = A-NA DUMU.NAM.LÚ.U19.LU=pát=kán an-da me-mi-an kiš-an me-mi-iš-kán-zi ḫar-na-a-u-wa-aš=wa MUNUS-ni-i DINGIR-LUM ka-a-ri ti-ya-zi
+# translation = Among men they say the word as follows: The god accedes to the woman of the birthing stool.
+# source = KUB 21.27 ii 15-16 (NH)
+1	A-NA	ANA	ADP	_	_	2	case	_	_
+2-5	DUMU.NAM.LÚ.U19.LU=pát=kán	_	_	_	_	_	_	_	_
+2	DUMU	DUMU-(l)a-	NOUN	_	Gender=Com	7	obl	_	_
+3	NAM.LÚ.U19.LU	dandukiš(n)-	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	2	nmod	_	_
+4	pát	-pat	PART	_	_	2	advmod:emph	_	_
+5	kán	-kan	PART	_	_	9	advmod:loc	_	_
+6	an-da	anda	ADP	_	_	2	case	_	_
+7	me-mi-an	memian-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	9	obj	_	_
+8	kiš-an	kišan	ADV	_	_	9	advmod	_	_
+9	me-mi-iš-kán-zi	mema/i-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+10-11	ḫar-na-a-u-wa-aš=wa	_	_	_	_	_	_	_	_
+10	ḫar-na-a-u-wa-aš	ḫarnau-	NOUN	_	Case=Gen|Gender=Com|Number=Sing	12	nmod	_	_
+11	wa	-wa	PART	_	_	15	discourse	_	_
+12	MUNUS-ni-i	MUNUS-n-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	15	obj	_	_
+13	DINGIR-LUM	šiun(i)-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	15	nsubj	_	_
+14	ka-a-ri	kāri	ADV	_	_	15	advmod	_	_
+15	ti-ya-zi	tiya-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	9	parataxis	_	_
+
+# sent_id = 7.10-1
+# text = KUR URU-Ḫa-pa-al-la=ma-a=z li-in-ki-ya kat-ta-an ki-iš-ša-an zi-ik-ke-eš
+# translation = Thus you placed the land of Ḫapalla under oath.
+# source = KUB 14.1 rev. 21-23 (MH/MS)
+1	KUR	utnē-	NOUN	_	Gender=Neut	9	obj	_	_
+2-5	URU-Ḫa-pa-al-la=ma-a=z	_	_	_	_	_	_	_	_
+2	URU	URU	NOUN	_	_	3	nmod:det	_	_
+3	Ḫa-pa-al-la	Ḫapalla	PROPN	_	_	1	nmod	_	_
+4	ma-a	-ma	PART	_	_	3	discourse	_	_
+5	z	-za	PART	_	_	9	expl:pass	_	_
+6	li-in-ki-ya	lingai-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	9	obl	_	_
+7	kat-ta-an	kattan	ADP	_	_	6	case	_	_
+8	ki-iš-ša-an	kiššan	ADV	_	_	9	advmod	_	_
+9	zi-ik-ke-eš	zikke-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 7.10-2
+# text = nam-ma=ma=kán KUR URU-Ḫa-pa-a-al-la ku-en-ta=ya Ú-UL e-ep-ta=ya=at Ú-UL
+# translation = And then you neither struck the land of Ḫapalla nor seized it.
+# source = KUB 14.1 rev. 21-23 (MH/MS)
+1-3	nam-ma=ma=kán	_	_	_	_	_	_	_	_
+1	nam-ma	namma	ADV	_	_	7	advmod	_	_
+2	ma	-ma	PART	_	_	7	discourse	_	_
+3	kán	-kan	PART	_	_	7	advmod:loc	_	_
+4	KUR	utnē-	NOUN	_	Gender=Neut	7	obj	_	_
+5-6	URU-Ḫa-pa-a-al-la	_	_	_	_	_	_	_	_
+5	URU	URU	NOUN	_	_	6	nmod:det	_	_
+6	Ḫa-pa-a-al-la	Ḫapalla	PROPN	_	_	4	nmod	_	_
+7-8	ku-en-ta=ya	_	_	_	_	_	_	_	_
+7	ku-en-ta	kuen-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+8	ya	-a	CCONJ	_	_	7	cc	_	_
+9	Ú-UL	natta	PART	_	_	7	advmod	_	_
+10-12	e-ep-ta=ya=at	_	_	_	_	_	_	_	_
+10	e-ep-ta	ēpp-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Past|VerbForm=Fin|Voice=Act	7	conj	_	_
+11	ya	-a	CCONJ	_	_	10	cc	_	_
+12	at	-aš	PRON	_	Case=Acc|Gender=Neut|Number=Sing|Person=3|PronType=Prs	10	obj	_	_
+13	Ú-UL	natta	PART	_	_	10	advmod	_	_
+
+# sent_id = 7.13-1
+# text = n=a-aš-ta É-ri an-da la-aḫ-ḫa-an-za-na-aš-MUŠEN ḫi-<im->mu-uš i-ya-an-zi
+# translation = And they made replicas of shellducks.
+# source = KUB 39.7 ii 7-9 (NH)
+1-2	n=a-aš-ta	_	_	_	_	_	_	_	_
+1	n	nu	CCONJ	_	_	8	cc	_	_
+2	a-aš-ta	-ašta	PART	_	_	8	advmod:loc	_	_
+3	É-ri	per	NOUN	_	Case=Dat|Gender=Neut|Number=Sing	8	obl	_	_
+4	an-da	anda	ADP	_	_	3	case	_	_
+5-6	la-aḫ-ḫa-an-za-na-aš-MUŠEN	_	_	_	_	_	_	_	_
+5	la-aḫ-ḫa-an-za-na-aš	laḫḫanzan-	NOUN	_	Case=Gen|Gender=Com|Number=Plur	7	nmod	_	_
+6	MUŠEN	MUŠEN	NOUN	_	_	5	nmod:det	_	_
+7	ḫi-<im->mu-uš	ḫimma-	NOUN	_	Case=Acc|Gender=Com|Number=Plur	8	obj	_	_
+8	i-ya-an-zi	iya-#1-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 7.13-2
+# text = nu ŠA GIŠ.ḪI.A 10 la-<aḫ->ḫa-an-za-MUŠEN i-ya-an-za nu=uš IŠ-TU KÙ.BABBAR ḫa-liš-ši-ya-an-zi
+# translation = And the 10 shellducks made of wood they coated them with silver.
+# source = KUB 39.7 ii 7-9 (NH)
+1	nu	nu	CCONJ	_	_	7	cc	_	_
+2	ŠA	ŠA	ADP	_	_	3	case	_	_
+3	GIŠ.ḪI.A	tāru-	NOUN	_	Case=Gen|Gender=Neut|Number=Plur	7	obl	_	_
+4	10	10	NUM	_	_	5	nummod	_	_
+5-6	la-<aḫ->ḫa-an-za-MUŠEN	_	_	_	_	_	_	_	_
+5	la-<aḫ->ḫa-an-za	laḫḫanzan-	NOUN	_	Case=Gen|Gender=Com|Number=Plur	12	dislocated	_	_
+6	MUŠEN	MUŠEN	NOUN	_	_	5	nmod:det	_	_
+7	i-ya-an-za	iya-#1-	VERB	_	VerbForm=Part	5	acl	_	_
+8-9	nu=uš	_	_	_	_	_	_	_	_
+8	nu	nu	PART	_	_	12	discourse:conn	_	_
+9	uš	-aš	PRON	_	Case=Acc|Gender=Com|Number=Plur|Person=3|PronType=Prs	12	obj	_	_
+10	IŠ-TU	IŠTU	ADP	_	_	11	case	_	_
+11	KÙ.BABBAR	KÙ.BABBAR-i-	NOUN	_	Gender=Neut	12	obl	_	_
+12	ḫa-liš-ši-ya-an-zi	ḫališšiya-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 8.1-1
+# text = nu=kán A-NA ALAM 1 GUD.NIGA 7 UDU.ḪI.A=ya ši-pa-an-da-an-zi 1 UDU ták-na-aš d-UTU-i 1 UDU d-UTU ŠA-ME-E 2 UDU ḫu-uḫ-ḫa-aš ḫa-an-na-aš 2 UDU 1 GUD.NIGA ak-kán-ta-aš ZI-ni
+# translation = They offer 1 fattened bull and 7 sheep to the statue, 1 sheep to the Sun-God of Earth and 1 sheep to the Sun-God of Heaven, 2 sheep for grandfathers and grandmothers, 2 sheep and 1 fattened bull to the soul of the living.
+# source = KUB 30.21 + KUB 39.7 I 2-4 (NH)
+1-2	nu=kán	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	10	cc	_	_
+2	kán	-kan	PART	_	_	10	advmod:loc	_	_
+3	A-NA	ANA	ADP	_	_	4	case	_	_
+4	ALAM	ešri-	NOUN	_	_	10	obl	_	_
+5	1	1	NUM	_	_	6	nummod	_	_
+6	GUD.NIGA	GUD.NIGA	NOUN	_	Number=Sing	10	obj	_	_
+7	7	7	NUM	_	_	8	nummod	_	_
+8-9	UDU.ḪI.A=ya	_	_	_	_	_	_	_	_
+8	UDU.ḪI.A	UDU-u-	NOUN	_	Gender=Com|Number=Plur	6	conj	_	_
+9	ya	-a	CCONJ	_	_	8	cc	_	_
+10	ši-pa-an-da-an-zi	šipand-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+11	1	1	NUM	_	_	12	nummod	_	_
+12	UDU	UDU-u-	NOUN	_	Gender=Com|Number=Sing	6	conj	_	_
+13	ták-na-aš	tēkan	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	15	nmod	_	_
+14-15	d-UTU-i	_	_	_	_	_	_	_	_
+14	d	d	NOUN	_	_	15	nmod:det	_	_
+15	UTU-i	Ištanu-	PROPN	_	Case=Dat	12	orphan	_	_
+16	1	1	NUM	_	_	17	nummod	_	_
+17	UDU	UDU-u-	NOUN	_	Gender=Com|Number=Sing	6	conj	_	_
+18-19	d-UTU	_	_	_	_	_	_	_	_
+18	d	d	NOUN	_	_	19	nmod:det	_	_
+19	UTU	Ištanu-	PROPN	_	Case=Dat	17	orphan	_	_
+20	ŠA-ME-E	nepiš-	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	19	nmod	_	_
+21	2	2	NUM	_	_	22	nummod	_	_
+22	UDU	UDU-u-	NOUN	_	_	6	conj	_	_
+23	ḫu-uḫ-ḫa-aš	ḫuḫḫa-	NOUN	_	Case=Dat|Gender=Com|Number=Plur	22	orphan	_	_
+24	ḫa-an-na-aš	ḫanna-	NOUN	_	Case=Dat|Gender=Com|Number=Plur	23	conj	_	_
+25	2	2	NUM	_	_	26	nummod	_	_
+26	UDU	UDU-u-	NOUN	_	_	6	conj	_	_
+27	1	1	NUM	_	_	28	nummod	_	_
+28	GUD.NIGA	GUD.NIGA	NOUN	_	_	26	conj	_	_
+29	ak-kán-ta-aš	ak(k)-	VERB	_	Case=Gen|Number=Sing|VerbForm=Part	30	amod	_	_
+30	ZI-ni	ištanzan-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	26	orphan	_	_
+
+# sent_id = 8.1-2
+# text = 1 UDU=ma=kán A-NA d-UD.SIG5 ši-pa-an-da-an-zi
+# translation = and they offer 1 sheep to the God of the Propitious Day.
+# source = KUB 30.21 + KUB 39.7 I 2-4 (NH)
+1	1	1	NUM	_	_	2	nummod	_	_
+2-4	UDU=ma=kán	_	_	_	_	_	_	_	_
+2	UDU	UDU-u-	NOUN	_	_	8	obj	_	_
+3	ma	-ma	PART	_	_	2	discourse	_	_
+4	kán	-kan	PART	_	_	8	advmod:loc	_	_
+5	A-NA	ANA	ADP	_	_	7	case	_	_
+6-7	d-UD.SIG5	_	_	_	_	_	_	_	_
+6	d	d	NOUN	_	_	7	nmod:det	_	_
+7	UD.SIG5	UD.SIG5	PROPN	_	_	8	obl	_	_
+8	ši-pa-an-da-an-zi	šipand-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 8.3*
+# text = LUGAL-uš ḫu-u-up-pa-ri ši-pa-an-ti MUNUS.LUGAL-š=a na-at-ta
+# translation = The king libates in a bowl, but the queen does not.
+# source = KBo 17.74 iii 48 (OH/MS!) [restored from KUB 43.26 iv 7 (OS)]
+1	LUGAL-uš	ḫaššu-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	3	nsubj	_	_
+2	ḫu-u-up-pa-ri	ḫuppar-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	3	obl	_	_
+3	ši-pa-an-ti	šipand-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+4-5	MUNUS.LUGAL-š=a	_	_	_	_	_	_	_	_
+4	MUNUS.LUGAL-š	ḫaššuššara-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	6	nsubj	_	_
+5	a	-ma	PART	_	_	4	discourse	_	_
+6	na-at-ta	natta	PART	_	_	3	conj	_	_
+
+# sent_id = 8.6
+# text = ták-ku MUNUS=[za ḫ]a-a-ši nu an-na-az=pát ŠÀ-az [a-]i-iš ar-ḫa ḫa-a-ši nu me-ma-i d-U-aš KUR-e za-a-ḫi
+# translation = If a woman gives birth and from the heart of the mother he opens his mouth and speaks, the Storm-God will strike the land.
+# source = KBo 6.25 + KBo 13.35 iii 5-7 [restored version]
+1	ták-ku	takku	SCONJ	_	_	4	mark	_	_
+2-3	MUNUS=[za	_	_	_	_	_	_	_	_
+2	MUNUS	MUNUS-n-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	4	nsubj	_	_
+3	[za	-za	PART	_	_	4	expl:pass	_	_
+4	ḫ]a-a-ši	ḫaš(š)-#1-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	17	advcl	_	_
+5	nu	nu	CCONJ	_	_	11	cc	_	_
+6-7	an-na-az=pát	_	_	_	_	_	_	_	_
+6	an-na-az	anna-	NOUN	_	Case=Abl|Gender=Com|Number=Sing	11	obl	_	_
+7	pát	-pat	PART	_	_	6	advmod:emph	_	_
+8	ŠÀ-az	ker	NOUN	_	Case=Abl|Gender=Neut|Number=Sing	11	obl	_	_
+9	[a-]i-iš	aiš-	NOUN	_	Case=Acc|Gender=Neut|Number=Sing	11	obj	_	_
+10	ar-ḫa	arḫa	ADV	_	_	11	advmod	_	_
+11	ḫa-a-ši	ḫaš(š)-#2-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	4	conj	_	_
+12	nu	nu	CCONJ	_	_	13	cc	_	_
+13	me-ma-i	mema/i-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	11	conj	_	_
+14-15	d-U-aš	_	_	_	_	_	_	_	_
+14	d	d	NOUN	_	_	15	nmod:det	_	_
+15	U-aš	U-a-	PROPN	_	Case=Nom	17	nsubj	_	_
+16	KUR-e	utnē-	NOUN	_	Case=Acc|Gender=Neut|Number=Sing	17	obj	_	_
+17	za-a-ḫi	zaḫ(ḫ)-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 8.7
+# text = ták-ku LÚ GIŠ-TUKUL-aš A.ŠÀ.ḪI.A=ŠU ḫu-u-ma-an-da-an ku-iš-ki wa-a-ši lu-uz-zi kar-pí-ez-zi
+# translation = If someone burns all the fields of a man with a Tukul-obligation, he will perform the luzzi-obligation.
+# source = KBo 6.2 ii 45 (OS) = Laws §47B
+1	ták-ku	takku	SCONJ	_	_	9	mark	_	_
+2	LÚ	pišna/i-	NOUN	_	Gender=Com	5	nmod	_	_
+3-4	GIŠ-TUKUL-aš	_	_	_	_	_	_	_	_
+3	GIŠ	GIŠ	NOUN	_	_	4	nmod:det	_	_
+4	TUKUL-aš	TUKUL-(l)i-	NOUN	_	Case=Gen|Gender=Com	2	nmod	_	_
+5-6	A.ŠÀ.ḪI.A=ŠU	_	_	_	_	_	_	_	_
+5	A.ŠÀ.ḪI.A	A.ŠÀ-(n)a	NOUN	_	Gender=Com|Number=Plur	7	nmod	_	_
+6	ŠU	-šiš	PRON	_	Gender=Masc|Number=Sing|Person=3|Poss=Yes|PronType=Prs	5	nmod	_	_
+7	ḫu-u-ma-an-da-an	ḫūmant-	DET	_	Case=Acc|Number=Sing	9	obj	_	_
+8	ku-iš-ki	kuiški	PRON	_	Case=Nom|Number=Sing|PronType=Ind	9	nsubj	_	_
+9	wa-a-ši	waš-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	11	advcl	_	_
+10	lu-uz-zi	luzzi-	NOUN	_	Case=Abs|Gender=Neut|Number=Sing	11	obj	_	_
+11	kar-pí-ez-zi	karp-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 8.8-1
+# text = URU-Kat-ti-ti-mu-wa-aš=ma=mu ták-šu-ul e-eš-ta
+# translation = The city of Kattitimuwa was [at] peace to me
+# source = KBo 5.8 i 26-27 (NH)
+1-4	URU-Kat-ti-ti-mu-wa-aš=ma=mu	_	_	_	_	_	_	_	_
+1	URU	URU	NOUN	_	_	2	nmod:det	_	_
+2	Kat-ti-ti-mu-wa-aš	Kattitimuwa	PROPN	_	Case=Nom	5	nsubj	_	_
+3	ma	-ma	PART	_	_	5	discourse	_	_
+4	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	5	obj	_	_
+5	ták-šu-ul	takšul	NOUN	_	Case=Abs|Gender=Neut|Number=Sing	0	root	_	_
+6	e-eš-ta	ēš	AUX	_	Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	5	cop	_	_
+
+# sent_id = 8.8-2
+# text = n=a-an=kán iš-tar-na ar-ḫa pa-a-un
+# translation = and [so] I went across it
+# source = KBo 5.8 i 26-27 (NH)
+1-3	n=a-an=kán	_	_	_	_	_	_	_	_
+1	n	nu	CCONJ	_	_	6	discourse:conn	_	_
+2	a-an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	6	obj	_	_
+3	kán	-kan	PART	_	_	6	advmod:loc	_	_
+4	iš-tar-na	ištarna	ADV	_	_	6	advmod	_	_
+5	ar-ḫa	arḫa	ADV	_	_	6	advmod	_	_
+6	pa-a-un	pai-#1-	VERB	_	Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 8.8-3
+# text = nu URU-Tág-ga-aš-ta GUL-aḫ-ḫu-un
+# translation = and I struck the city of Taggašta.
+# source = KBo 5.8 i 26-27 (NH)
+1	nu	nu	CCONJ	_	_	4	cc	_	_
+2-3	URU-Tág-ga-aš-ta	_	_	_	_	_	_	_	_
+2	URU	URU	NOUN	_	_	3	nmod:det	_	_
+3	Tág-ga-aš-ta	Taggašta	PROPN	_	_	4	obj	_	_
+4	GUL-aḫ-ḫu-un	walḫ-	VERB	_	Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 8.12-1
+# text = ša-ra-a=kán ú-wa-ši ne-pí-ša-aš d-UTU-uš a-ru-na-az
+# translation = You will come up, Sun-God of Heaven, from the sea.
+# source = KUB 6.45 iii 13-15 = KUB 6.46 iii 53-54 (NH)
+1-2	ša-ra-a=kán	_	_	_	_	_	_	_	_
+1	ša-ra-a	šarā	ADV	_	_	3	advmod	_	_
+2	kán	-kan	PART	_	_	3	advmod:loc	_	_
+3	ú-wa-ši	uwa-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+4	ne-pí-ša-aš	nepiš-	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	6	nmod	_	_
+5-6	d-UTU-uš	_	_	_	_	_	_	_	_
+5	d	d	NOUN	_	_	6	nmod:det	_	_
+6	UTU-uš	Ištanu-	PROPN	_	Case=Voc	3	vocative	_	_
+7	a-ru-na-az	aruna-	NOUN	_	Case=Abl|Gender=Com|Number=Sing	3	obl	_	_
+
+# sent_id = 8.12-2
+# text = nu-u=š-ša-an ne-pí-ši ti-ya-ši
+# translation = And you will step in the sky.
+# source = KUB 6.45 iii 13-15 = KUB 6.46 iii 53-54 (NH)
+1-2	nu-u=š-ša-an	_	_	_	_	_	_	_	_
+1	nu-u	nu	CCONJ	_	_	4	cc	_	_
+2	š-ša-an	-šan	PART	_	_	4	advmod:loc	_	_
+3	ne-pí-ši	nepiš-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	4	obl	_	_
+4	ti-ya-ši	tiya-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 8.13
+# text = nu ZAG še-ek-kán-te-et ZI-it an-da le-e ku-iš-ki za-a-ḫi
+# translation = No one shall penetrate the border with a knowing soul.
+# source = KUB 26.12 ii 15-16 (NH)
+1	nu	nu	CCONJ	_	_	8	cc	_	_
+2	ZAG	irḫa-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	8	obj	_	_
+3	še-ek-kán-te-et	šakk-	VERB	_	Case=Ins|Gender=Com|Number=Sing|VerbForm=Part	4	amod	_	_
+4	ZI-it	ištanzan-	NOUN	_	Case=Ins|Gender=Com|Number=Sing	8	obl	_	_
+5	an-da	anda	ADV	_	_	8	advmod	_	_
+6	le-e	lē	PART	_	_	7	advmod	_	_
+7	ku-iš-ki	kuiški	PRON	_	Case=Nom|Gender=Com|Number=Sing|PronType=Ind	8	nsubj	_	_
+8	za-a-ḫi	zaḫ(ḫ)-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 8.15
+# text = ták-ku ḫa-an-ne-eš-na-aš iš-ḫa-a-aš le-e-la-ni-at-ta šar-ti-an-n=a wa-al-aḫ-zi n=a-aš a-ki šar-ni-ik-zi-il NU.GÁL
+# translation = If the lord of a case becomes angry and strikes a helper such that he dies, there will be no restitution.
+# source = KBo 6.2 ii 14-15 (OS) [restored from KBo 6.3 ii 33 (OH/NS)] = Laws §38
+1	ták-ku	takku	SCONJ	_	_	4	mark	_	_
+2	ḫa-an-ne-eš-na-aš	ḫanneššar	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	3	nmod	_	_
+3	iš-ḫa-a-aš	išḫa-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	4	nsubj	_	_
+4	le-e-la-ni-at-ta	lēlaniatta	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Mid	12	advcl	_	_
+5-6	šar-ti-an-n=a	_	_	_	_	_	_	_	_
+5	šar-ti-an-n	šardi(y)a-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	7	obj	_	_
+6	a	-a	CCONJ	_	_	7	cc	_	_
+7	wa-al-aḫ-zi	walḫ-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	4	conj	_	_
+8-9	n=a-aš	_	_	_	_	_	_	_	_
+8	n	nu	SCONJ	_	_	10	mark	_	_
+9	a-aš	-aš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3|PronType=Prs	10	nsubj	_	_
+10	a-ki	ak(k)-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	7	ccomp	_	_
+11	šar-ni-ik-zi-il	šarnikzil-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	12	nsubj	_	_
+12	NU.GÁL	NUGÁL	VERB	_	_	0	root	_	_
+
+# sent_id = 9.1
+# text = DUMU.É.GAL-iš d-Ḫa-an-ta-še-pa-an LUGAL-i ki-iš-ša-ri-i da-a-i te-eš-šu-um-me-in-n=a pa-a-i
+# translation = The palace official places Ḫantašepa in the hand of the king and gives him the cup.
+# source = KBo 17.1 i 28-29 (OS)
+1	DUMU.É.GAL-iš	DUMU.É.GAL-i	NOUN	_	Case=Nom|Gender=Com|Number=Sing	6	nsubj	_	_
+2-3	d-Ḫa-an-ta-še-pa-an	_	_	_	_	_	_	_	_
+2	d	d	NOUN	_	_	3	nmod:det	_	_
+3	Ḫa-an-ta-še-pa-an	Ḫantašepa	PROPN	_	Case=Acc	6	obj	_	_
+4	LUGAL-i	ḫaššu-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	5	nmod	_	_
+5	ki-iš-ša-ri-i	keššar-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	6	obl	_	_
+6	da-a-i	dai-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+7-8	te-eš-šu-um-me-in-n=a	_	_	_	_	_	_	_	_
+7	te-eš-šu-um-me-in-n	teššummi-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	9	obj	_	_
+8	a	-a	CCONJ	_	_	9	cc	_	_
+9	pa-a-i	pai-#2-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	6	conj	_	_
+
+# sent_id = 9.3
+# text = nu ku-it-ma-an A-NA LÚ-SANGA pa-a-an-zi ku-it-ma-an LÚ-SANGA URU-Aš-ta-ta-za ú-wa-da-an-zi ku-it-ma-an ú-wa-an-zi ŠA DINGIR-LIM ša-ak-la-uš ta-ni-nu-wa-an-zi
+# translation = And as long as they go to the priest, as long as they bring the priest from Aštata, as long as they come, they will arrange the customs of the god.
+# source = KUB 5.6 i 39-41 (NH)
+1	nu	nu	CCONJ	_	_	6	cc	_	_
+2	ku-it-ma-an	kuitman	SCONJ	_	_	6	mark	_	_
+3	A-NA	ANA	ADP	_	_	5	case	_	_
+4-5	LÚ-SANGA	_	_	_	_	_	_	_	_
+4	LÚ	LÚ	NOUN	_	_	5	nmod:det	_	_
+5	SANGA	šankunni-	NOUN	_	Gender=Com|Number=Sing	6	obl	_	_
+6	pa-a-an-zi	pai-#1-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	17	advcl	_	_
+7	ku-it-ma-an	kuitman	SCONJ	_	_	11	mark	_	_
+8-9	LÚ-SANGA	_	_	_	_	_	_	_	_
+8	LÚ	LÚ	NOUN	_	_	9	nmod:det	_	_
+9	SANGA	šankunni-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	11	obj	_	_
+10	URU-Aš-ta-ta-za	Aštata	PROPN	_	Case=Abl	11	obl	_	_
+11	ú-wa-da-an-zi	uwate-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	6	parataxis	_	_
+12	ku-it-ma-an	kuitman	SCONJ	_	_	13	mark	_	_
+13	ú-wa-an-zi	uwa-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	11	parataxis	_	_
+14	ŠA	ŠA	ADP	_	_	15	case	_	_
+15	DINGIR-LIM	šiun(i)-	NOUN	_	Case=Gen	16	nmod	_	_
+16	ša-ak-la-uš	šakl(a)i-	NOUN	_	Case=Acc|Gender=Com|Number=Plur	17	obj	_	_
+17	ta-ni-nu-wa-an-zi	taninu-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 9.4-1
+# text = DUMU.É.GAL LUGAL-i pé-ra-an ḫu-wa-a-i
+# translation = The palace official runs in front of the king
+# source = KBo 17.15 rev. 18 (OS) [restored from KBo 17.40 iv 13 (OS)]
+1	DUMU.É.GAL	DUMU.É.GAL-i-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	4	nsubj	_	_
+2	LUGAL-i	ḫaššu-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	4	obl	_	_
+3	pé-ra-an	peran	ADP	_	_	2	case	_	_
+4	ḫu-wa-a-i	ḫuwai-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 9.4-2
+# text = n=a-aš ú-ez-zi DAM LÚ-GUDU12-aš kat-ta ti-i-e-ez-zi
+# translation = and he goes and stands beside the wife of the Gudu-priest.
+# source = KBo 17.15 rev. 18 (OS) [restored from KBo 17.40 iv 13 (OS)]
+1-2	n=a-aš	_	_	_	_	_	_	_	_
+1	n	nu	CCONJ	_	_	3	cc	_	_
+2	a-aš	-aš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3|PronType=Prs	3	nsubj	_	_
+3	ú-ez-zi	uwa-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+4	DAM	DAM-a-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	8	obl	_	_
+5-6	LÚ-GUDU12-aš	_	_	_	_	_	_	_	_
+5	LÚ	LÚ	NOUN	_	_	6	nmod:det	_	_
+6	GUDU12-aš	kumra-	NOUN	_	Case=Gen|Gender=Com|Number=Sing	4	nmod	_	_
+7	kat-ta	katta	ADP	_	_	4	case	_	_
+8	ti-i-e-ez-zi	tiya-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	3	ccomp	_	_
+
+# sent_id = 9.6*
+# text = ma-a-an=wa-r=a-an Ú-UL=ma e-ep-te-e-ni nu=wa-r=a-an=mu pa-ra-a Ú-UL pé-eš-te-e-ni nu=wa ú-wa-mi nu=wa-a=š-ma-aš QA-DU KUR=KU-NU ar-ḫa ḫar-ni-ik-mi
+# translation = "If you do not seize him, if you do not hand him over to me, I will come and I will destroy you together with your land."
+# source = KBo 5.13 i 7-9 (NH)
+1-3	ma-a-an=wa-r=a-an	_	_	_	_	_	_	_	_
+1	ma-a-an	mān	SCONJ	_	_	6	mark	_	_
+2	wa-r	-wa	PART	_	_	6	discourse	_	_
+3	a-an	-aš	PRON	_	Case=Acc|Number=Sing|Person=3|PronType=Prs	6	obj	_	_
+4-5	Ú-UL=ma	_	_	_	_	_	_	_	_
+4	Ú-UL	natta	PART	_	_	6	advmod	_	_
+5	ma	-ma	PART	_	_	6	discourse	_	_
+6	e-ep-te-e-ni	ēpp-	VERB	_	Mood=Ind|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	16	advcl	_	_
+7-10	nu=wa-r=a-an=mu	_	_	_	_	_	_	_	_
+7	nu	nu	CCONJ	_	_	13	cc	_	_
+8	wa-r	-wa	PART	_	_	13	discourse	_	_
+9	a-an	-aš	PRON	_	Case=Acc|Number=Sing|Person=3|PronType=Prs	13	obj	_	_
+10	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	13	obl	_	_
+11	pa-ra-a	parā	ADV	_	_	13	advmod	_	_
+12	Ú-UL	natta	PART	_	_	13	advmod	_	_
+13	pé-eš-te-e-ni	pai-#2-	VERB	_	Mood=Ind|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	6	conj	_	_
+14-15	nu=wa	_	_	_	_	_	_	_	_
+14	nu	nu	PART	_	_	16	discourse:conn	_	_
+15	wa	-wa	PART	_	_	16	discourse	_	_
+16	ú-wa-mi	uwa-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+17-19	nu=wa-a=š-ma-aš	_	_	_	_	_	_	_	_
+17	nu	nu	CCONJ	_	_	24	cc	_	_
+18	wa-a	-wa	PART	_	_	24	discourse	_	_
+19	š-ma-aš	-šmaš	PRON	_	Number=Plur|Person=2|PronType=Prs	24	obj	_	_
+20	QA-DU	QADU	ADP	_	_	21	case	_	_
+21-22	KUR=KU-NU	_	_	_	_	_	_	_	_
+21	KUR	utnē-	NOUN	_	Gender=Neut|Number=Sing	24	obl	_	_
+22	KU-NU	-šmiš	PRON	_	Gender=Masc|Number=Plur|Person=2|Poss=Yes|PronType=Prs	21	nmod	_	_
+23	ar-ḫa	arḫa	ADV	_	_	24	advmod	_	_
+24	ḫar-ni-ik-mi	ḫarnink-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	16	conj	_	_
+
+# sent_id = 9.7
+# text = [le-e ku-i]š-ki te-ez-zi LUGAL-š=a du-ud-du-mi-li kar-di-ya-aš=ša-aš [i-e-ez-zi]
+# translation = No one will say even the king secretly does his will.
+# source = KUB 1.16 ii 53-54 (OH/NS) [restored version]
+1	[le-e	lē	PART	_	_	2	advmod	_	_
+2	ku-i]š-ki	kuiški	PRON	_	Case=Nom|Gender=Com|Number=Sing|PronType=Ind	3	nsubj	_	_
+3	te-ez-zi	tē-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+4-5	LUGAL-š=a	_	_	_	_	_	_	_	_
+4	LUGAL-š	ḫašsu-	NOUN	_	_	9	nsubj	_	_
+5	a	-ma	PART	_	_	4	discourse	_	_
+6	du-ud-du-mi-li	duddumili	ADV	_	_	9	advmod	_	_
+7-8	kar-di-ya-aš=ša-aš	_	_	_	_	_	_	_	_
+7	kar-di-ya-aš	ker	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	9	obl	_	_
+8	ša-aš	-šiš	PRON	_	Case=Gen|Gender=Neut|Number=Sing|Person=3|Poss=Yes|PronType=Prs	7	nmod	_	_
+9	[i-e-ez-zi]	iya-#1-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	3	parataxis	_	_
+
+# sent_id = 9.12*
+# text = ma-a-an I-NA UD.15.KAM d-SIN-aš a-ki KUR-e an-da ma-ša-aš pa-ra-a-i BURU14.ḪI.A ka-ra-a-pí
+# translation = If the moon dies in 15 days, [a swarm of] locusts will appear in the land and devour the harvest.
+# source = KUB 8.1 ii 16-17 (NH)
+1	ma-a-an	mān	SCONJ	_	_	8	mark	_	_
+2	I-NA	INA	ADP	_	_	3	case	_	_
+3-5	UD.15.KAM	_	_	_	_	_	_	_	_
+3	UD	šiwatt-	NOUN	_	_	8	obl	_	_
+4	15	15	NUM	_	_	3	nummod	_	_
+5	KAM	KAM	NOUN	_	_	3	nmod:det	_	_
+6-7	d-SIN-aš	_	_	_	_	_	_	_	_
+6	d	d	NOUN	_	_	7	nmod:det	_	_
+7	SIN-aš	arma-	PROPN	_	Case=Nom	8	nsubj	_	_
+8	a-ki	ak(k)-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	12	advcl	_	_
+9	KUR-e	utnē-	NOUN	_	Case=Dat|Gender=Neut|Number=Sing	12	obl	_	_
+10	an-da	anda	ADP	_	_	9	case	_	_
+11	ma-ša-aš	maša-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	12	nsubj	_	_
+12	pa-ra-a-i	parai-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+13	BURU14.ḪI.A	BURU14	NOUN	_	Number=Plur	14	obj	_	_
+14	ka-ra-a-pí	karāp-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	12	parataxis	_	_
+
+# sent_id = 9.13-1
+# text = UGULA LÚ GIŠ-BANŠUR GIŠ-BANŠUR GIŠ-AB-ya pé-ra-an da-a-i
+# translation = The chief table-man puts the table in front of the window
+# source = KUB 2.13 iii 9-11 (OH/NS)
+1	UGULA	UGULA	NOUN	_	Gender=Com	10	nsubj	_	_
+2	LÚ	pišna/i-	NOUN	_	Gender=Com	1	compound	_	_
+3-4	GIŠ-BANŠUR	_	_	_	_	_	_	_	_
+3	GIŠ	GIŠ	NOUN	_	_	4	nmod:det	_	_
+4	BANŠUR	BANŠUR-u-	NOUN	_	Gender=Com|Number=Sing	2	compound	_	_
+5-6	GIŠ-BANŠUR	_	_	_	_	_	_	_	_
+5	GIŠ	GIŠ	NOUN	_	_	6	nmod:det	_	_
+6	BANŠUR	BANŠUR-u-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	10	obj	_	_
+7-8	GIŠ-AB-ya	_	_	_	_	_	_	_	_
+7	GIŠ	GIŠ	NOUN	_	_	8	nmod:det	_	_
+8	AB-ya	luttāi-	NOUN	_	Case=Dat|Gender=Neut|Number=Sing	10	obl	_	_
+9	pé-ra-an	peran	ADP	_	_	8	case	_	_
+10	da-a-i	dai-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 9.13-2
+# text = nu-u=š-ša-an 2 NINDA.GUR4.RA.ḪI.A GAL 10 NINDA.GUR4.RA TUR GIŠ-BANŠUR-i da-a-i
+# translation = And [he] places 2 large loaves of leavened bread and 10 small loaves of leavened bread on the table.
+# source = KUB 2.13 iii 9-11 (OH/NS)
+1-2	nu-u=š-ša-an	_	_	_	_	_	_	_	_
+1	nu-u	nu	CCONJ	_	_	11	cc	_	_
+2	š-ša-an	-šan	PART	_	_	11	advmod:loc	_	_
+3	2	2	NUM	_	_	4	nummod	_	_
+4	NINDA.GUR4.RA.ḪI.A	ḫarši-	NOUN	_	Gender=Com|Number=Plur	11	obj	_	_
+5	GAL	šalli-	ADJ	_	_	4	amod	_	_
+6	10	10	NUM	_	_	7	nummod	_	_
+7	NINDA.GUR4.RA	ḫarši-	NOUN	_	Gender=Com	4	conj	_	_
+8	TUR	TUR	ADJ	_	_	7	amod	_	_
+9-10	GIŠ-BANŠUR-i	_	_	_	_	_	_	_	_
+9	GIŠ	GIŠ	NOUN	_	_	10	nmod:det	_	_
+10	BANŠUR-i	BANŠUR-u-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	11	obl	_	_
+11	da-a-i	dai-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 9.14-1
+# text = nu ḫa-aš-ta-a-e [an-d]a li-iš-ša-an-zi
+# translation = They gather up the bones.
+# source = KBo 15.25 rev. 18 (MH/MS)
+1	nu	nu	CCONJ	_	_	4	cc	_	_
+2	ḫa-aš-ta-a-e	ḫaštai-	NOUN	_	Case=Acc|Gender=Neut|Number=Plur	4	obj	_	_
+3	[an-d]a	anda	ADV	_	_	4	advmod	_	_
+4	li-iš-ša-an-zi	lišš-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 9.14-2
+# text = n=a-at ḫa-aš-ši-i a-wa-an kat-ta ti-an-zi
+# translation = and they place them down on the hearth.
+# source = KBo 15.25 rev. 18 (MH/MS)
+1-2	n=a-at	_	_	_	_	_	_	_	_
+1	n	nu	CCONJ	_	_	6	cc	_	_
+2	a-at	-at	PRON	_	Case=Acc|Gender=Neut|Number=Plur|Person=3|PronType=Prs	6	obj	_	_
+3	ḫa-aš-ši-i	ḫašša-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	6	obl	_	_
+4	a-wa-an	awan	ADV	_	_	5	compound	_	_
+5	kat-ta	katta	ADV	_	_	6	advmod	_	_
+6	ti-an-zi	dai-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 9.15
+# text = nu=kán ma-aḫ-ḫa-an [m-Ar-nu-wa-a]n-da-aš m-Zi-ta-aš-š=a KUR-e kat-ta-an-da a-ra-an-zi [nu LÚ.KÚR-aš] za-aḫ-ḫi-ya me-na-aḫ-ḫa-an-da ú-ez-zi
+# translation = When Arnuwanda and Zita arrived down in the land, the enemy came to meet them for battle.
+# source = KBo 5.6 ii 31-33 (NH) [freely restored version]
+1-2	nu=kán	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	11	cc	_	_
+2	kán	-kan	PART	_	_	11	advmod:loc	_	_
+3	ma-aḫ-ḫa-an	maḫḫan	SCONJ	_	_	11	mark	_	_
+4-5	[m-Ar-nu-wa-a]n-da-aš	_	_	_	_	_	_	_	_
+4	[m	m	NOUN	_	_	5	nmod:det	_	_
+5	Ar-nu-wa-a]n-da-aš	Arnuwanda	PROPN	_	Case=Nom	11	nsubj	_	_
+6-8	m-Zi-ta-aš-š=a	_	_	_	_	_	_	_	_
+6	m	m	NOUN	_	_	7	nmod:det	_	_
+7	Zi-ta-aš-š	Zita	PROPN	_	Case=Nom	5	conj	_	_
+8	a	-a	CCONJ	_	_	7	cc	_	_
+9	KUR-e	utnē-	NOUN	_	Case=Dat|Gender=Neut|Number=Sing	11	obl	_	_
+10	kat-ta-an-da	kattanda	ADP	_	_	9	case	_	_
+11	a-ra-an-zi	ar-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	16	advcl	_	_
+12	[nu	nu	PART	_	_	16	discourse:conn	_	_
+13	LÚ.KÚR-aš]	LÚ.KÚR-(n)a-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	16	nsubj	_	_
+14	za-aḫ-ḫi-ya	zaḫḫai-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	16	obl	_	_
+15	me-na-aḫ-ḫa-an-da	menaḫḫanda	ADV	_	_	16	advmod	_	_
+16	ú-ez-zi	uwa-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 10.1-1
+# text = nu A-BU=ŠU ku-e-el wa-aš-ta-i kat-ta-ma DUMU=ŠU Ú-UL wa-aš-du-la-aš=pát
+# translation = He whose father sins, is his son not therefore of sin too?
+# source = KBo 5.13 i 15-16 (NH)
+1	nu	nu	CCONJ	_	_	5	cc	_	_
+2-3	A-BU=ŠU	_	_	_	_	_	_	_	_
+2	A-BU	atta-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	5	nsubj	_	_
+3	ŠU	-šiš	PRON	_	Case=Nom|Gender=Masc|Number=Sing|Person=3|Poss=Yes|PronType=Prs	2	nmod	_	_
+4	ku-e-el	kuiš	PRON	_	Case=Gen|Number=Sing|PronType=Rel	2	nmod	_	_
+5	wa-aš-ta-i	wašta-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	10	dislocated	_	_
+6	kat-ta-ma	kattama	ADV	_	_	10	advmod	_	_
+7-8	DUMU=ŠU	_	_	_	_	_	_	_	_
+7	DUMU	DUMU-(l)a-	NOUN	_	Gender=Com|Number=Sing	10	nsubj	_	_
+8	ŠU	-šiš	PRON	_	Case=Nom|Gender=Masc|Number=Sing|Person=3|Poss=Yes|PronType=Prs	7	nmod	_	_
+9	Ú-UL	natta	PART	_	_	10	advmod	_	_
+10-11	wa-aš-du-la-aš=pát	_	_	_	_	_	_	_	_
+10	wa-aš-du-la-aš	waštul-	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	0	root	_	_
+11	pát	-pat	PART	_	_	10	advmod:emph	_	_
+
+# sent_id = 10.1-2
+# text = nu-u=š-ši=kán É A-BI=ŠU ar-ḫa da-an-zi
+# translation = Will they not take away the house of his father?
+# source = KBo 5.13 i 15-16 (NH)
+1-3	nu-u=š-ši=kán	_	_	_	_	_	_	_	_
+1	nu-u	nu	CCONJ	_	_	8	cc	_	_
+2	š-ši	-aš	PRON	_	Case=Dat|Gender=Com|Number=Sing|Person=3|PronType=Prs	8	obl	_	_
+3	kán	-kan	PART	_	_	8	advmod:loc	_	_
+4	É	per	NOUN	_	Case=Abs|Gender=Neut|Number=Sing	8	obj	_	_
+5-6	A-BI=ŠU	_	_	_	_	_	_	_	_
+5	A-BI	atta-	NOUN	_	Case=Gen|Gender=Com|Number=Sing	4	nmod	_	_
+6	ŠU	-šiš	PRON	_	Case=Nom|Gender=Masc|Number=Sing|Person=3|Poss=Yes|PronType=Prs	5	nmod	_	_
+7	ar-ḫa	arḫa	ADV	_	_	8	advmod	_	_
+8	da-an-zi	dā-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 10.2
+# text = ták-ku ÌR-aš ḫu-wa-a-i n=a-aš A-NA KUR Lu-ú-i-ya pa-iz-zi ku-i-š=a-an a-ap-pa ú-wa-te-ez-zi nu-u=š-še 6 GÍN KÙ.BABBAR pa-a-i
+# translation = If a servant runs and goes to the land of Luwiya, he who brings him back will pay him 6 shekels of silver.
+# source = KBo 6.2 i 51-52 (OH/OS) = Laws §23
+1	ták-ku	takku	SCONJ	_	_	3	mark	_	_
+2	ÌR-aš	ÌR-(n)a/i-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	3	nsubj	_	_
+3	ḫu-wa-a-i	ḫuwai-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	13	advcl	_	_
+4-5	n=a-aš	_	_	_	_	_	_	_	_
+4	n	nu	CCONJ	_	_	9	cc	_	_
+5	a-aš	-aš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3|PronType=Prs	9	nsubj	_	_
+6	A-NA	ANA	ADP	_	_	7	case	_	_
+7	KUR	utnē-	NOUN	_	Gender=Neut|Number=Sing	9	obl	_	_
+8	Lu-ú-i-ya	Luwiya	PROPN	_	_	7	nmod	_	_
+9	pa-iz-zi	pai-#1-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	3	conj	_	_
+10-11	ku-i-š=a-an	_	_	_	_	_	_	_	_
+10	ku-i-š	kuiš	PRON	_	Case=Nom|Number=Sing|PronType=Rel	13	nsubj	_	_
+11	a-an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	13	obj	_	_
+12	a-ap-pa	āppa	ADV	_	_	13	advmod	_	_
+13	ú-wa-te-ez-zi	uwate-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	19	csubj	_	_
+14-15	nu-u=š-še	_	_	_	_	_	_	_	_
+14	nu-u	nu	PART	_	_	19	discourse:conn	_	_
+15	š-še	-aš	PRON	_	Case=Dat|Gender=Com|Number=Sing|Person=3|PronType=Prs	19	iobj	_	_
+16	6	6	NUM	_	_	17	nummod	_	_
+17	GÍN	GÍN	NOUN	_	_	19	obj	_	_
+18	KÙ.BABBAR	KÙ.BABBAR-i-	NOUN	_	Gender=Neut	17	nmod	_	_
+19	pa-a-i	pai-#2-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 10.3*
+# text = d-IŠKUR-aš d-NIN.TU-ni te-e-et ma-a-aḫ-ḫa-an i-ya-u-e-ni ki-iš-ta-an-ti-it ḫar-ku-e-ni
+# translation = Iškur said to Ḫannaḫanna: "What shall we do? We will die of starvation."
+# source = KUB 17.10 i 29-30 (OH/MS)
+1-2	d-IŠKUR-aš	_	_	_	_	_	_	_	_
+1	d	d	NOUN	_	_	2	nmod:det	_	_
+2	IŠKUR-aš	IŠKUR-a-	PROPN	_	Case=Nom	5	nsubj	_	_
+3-4	d-NIN.TU-ni	_	_	_	_	_	_	_	_
+3	d	d	NOUN	_	_	4	nmod:det	_	_
+4	NIN.TU-ni	Ḫannaḫanna-	PROPN	_	Case=Dat	5	obj	_	_
+5	te-e-et	tē-	VERB	_	Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+6	ma-a-aḫ-ḫa-an	maḫḫan	ADV	_	_	7	advmod	_	_
+7	i-ya-u-e-ni	iya-#1-	VERB	_	Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	5	parataxis	_	_
+8	ki-iš-ta-an-ti-it	kištant-	NOUN	_	Case=Ins|Gender=Com|Number=Sing	9	obl	_	_
+9	ḫar-ku-e-ni	ḫark-	VERB	_	Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	7	parataxis	_	_
+
+# sent_id = 10.4
+# text = GUD pu-u-ḫu-ga-ri-in=ma ku-e-da-ni UD-ti ú-nu-e-er nu=za d-UTU-Š=I a-pé-e-da-ni UD-ti wa-ar-ap-ta
+# translation = On which day they furnished the ritual substitute ox, the Sun-God bathed on that day.
+# source = KBo 4.2 iii 56-57 (NH) [restored from KUB 43.50 obv. 18 + KUB 15.36 obv. 10]
+1	GUD	GUD-u-	NOUN	_	Gender=Com	2	compound	_	_
+2-3	pu-u-ḫu-ga-ri-in=ma	_	_	_	_	_	_	_	_
+2	pu-u-ḫu-ga-ri-in	pūḫugari-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	6	obj	_	_
+3	ma	-ma	PART	_	_	2	discourse	_	_
+4	ku-e-da-ni	kuiš	DET	_	Case=Dat|Number=Sing	5	det	_	_
+5	UD-ti	šiwatt-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	6	obl	_	_
+6	ú-nu-e-er	unu-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	14	dislocated	_	_
+7-8	nu=za	_	_	_	_	_	_	_	_
+7	nu	nu	PART	_	_	14	discourse:conn	_	_
+8	za	-za	PART	_	_	14	expl:pass	_	_
+9-11	d-UTU-Š=I	_	_	_	_	_	_	_	_
+9	d	d	NOUN	_	_	10	nmod:det	_	_
+10	UTU-Š	Ištanu-	PROPN	_	_	14	nsubj	_	_
+11	I	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	10	nmod	_	_
+12	a-pé-e-da-ni	apā-	DET	_	Case=Dat|Number=Sing	13	det	_	_
+13	UD-ti	šiwatt-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	14	obl	_	_
+14	wa-ar-ap-ta	warp-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 10.5
+# text = nu ma-aḫ-ḫa-an MU.KAM-za me-ḫur ti-ya-zi še-li-aš šu-un-nu-ma-an-zi nu=kán BI-IB-RU ŠA d-LIŠ URU-Ša-mu-ḫa URU-Ḫa-at-tu-ša-za kat-ta ú-da-an-zi
+# translation = When the year reaches the time for the filling of granary, they will bring the rhyton of Šaušga of Šamuḫa from Ḫattuša.
+# source = KUB 21.17 iii 9-12 (NH)
+1	nu	nu	CCONJ	_	_	5	cc	_	_
+2	ma-aḫ-ḫa-an	maḫḫan	SCONJ	_	_	5	mark	_	_
+3	MU.KAM-za	wētt-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	4	nmod	_	_
+4	me-ḫur	mēḫur	NOUN	_	Case=Abs|Gender=Neut|Number=Sing	5	nsubj	_	_
+5	ti-ya-zi	tiya-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	19	advcl	_	_
+6	še-li-aš	šeli-	NOUN	_	Gender=Com|Number=Plur	7	obj	_	_
+7	šu-un-nu-ma-an-zi	šunna-	VERB	_	VerbForm=Inf	5	xcomp	_	_
+8-9	nu=kán	_	_	_	_	_	_	_	_
+8	nu	nu	PART	_	_	19	discourse:conn	_	_
+9	kán	-kan	PART	_	_	19	advmod:loc	_	_
+10	BI-IB-RU	BIBRU	NOUN	_	_	19	obj	_	_
+11	ŠA	ŠA	ADP	_	_	12	case	_	_
+12-13	d-LIŠ	_	_	_	_	_	_	_	_
+12	d	d	NOUN	_	_	13	nmod:det	_	_
+13	LIŠ	Šaušga	PROPN	_	_	10	nmod	_	_
+14-15	URU-Ša-mu-ḫa	_	_	_	_	_	_	_	_
+14	URU	URU	NOUN	_	_	15	nmod:det	_	_
+15	Ša-mu-ḫa	Šamuḫa	PROPN	_	_	13	nmod	_	_
+16-17	URU-Ḫa-at-tu-ša-za	_	_	_	_	_	_	_	_
+16	URU	URU	NOUN	_	_	17	nmod:det	_	_
+17	Ḫa-at-tu-ša-za	Ḫattuša	PROPN	_	Case=Abl	19	obl	_	_
+18	kat-ta	katta	ADV	_	_	19	advmod	_	_
+19	ú-da-an-zi	uda-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 10.6-1
+# text = nu DUG-ḫar-ši-ya-al-li ḫé-e-ša-an-zi
+# translation = They open the pithoi.
+# source = KUB 21.17 iii 13-17 (NH) [restored version]
+1	nu	nu	CCONJ	_	_	4	cc	_	_
+2-3	DUG-ḫar-ši-ya-al-li	_	_	_	_	_	_	_	_
+2	DUG	DUG	NOUN	_	_	3	nmod:det	_	_
+3	ḫar-ši-ya-al-li	ḫaršiyalli-	NOUN	_	Case=Abs|Gender=Neut|Number=Plur	4	obj	_	_
+4	ḫé-e-ša-an-zi	ḫaš(š)-#2-	VERB	_	Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 10.6-2
+# text = še-li-uš=ma šu-un-na-an[-zi]
+# translation = and they fill the silos.
+# source = KUB 21.17 iii 13-17 (NH) [restored version]
+1-2	še-li-uš=ma	_	_	_	_	_	_	_	_
+1	še-li-uš	šeli-	NOUN	_	Case=Acc|Gender=Com|Number=Plur	3	obj	_	_
+2	ma	-ma	PART	_	_	3	discourse	_	_
+3	šu-un-na-an[-zi]	šunna-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 10.6-3
+# text = nu=kán DUG-ḫar-ši-ya-al-li ḫal-ki-ya-aš-š=a šu-un-na-a[n-zi] ŠA GEŠTIN=ya=kán šu-un-n[a-an-zi]
+# translation = and they fill the pithoi of grain and they fill the ones of wine.
+# source = KUB 21.17 iii 13-17 (NH) [restored version]
+1-2	nu=kán	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	7	cc	_	_
+2	kán	-kan	PART	_	_	7	advmod:loc	_	_
+3-4	DUG-ḫar-ši-ya-al-li	_	_	_	_	_	_	_	_
+3	DUG	DUG	NOUN	_	_	4	nmod:det	_	_
+4	ḫar-ši-ya-al-li	ḫaršiyalli-	NOUN	_	Case=Abs|Gender=Neut|Number=Plur	7	obj	_	_
+5-6	ḫal-ki-ya-aš-š=a	_	_	_	_	_	_	_	_
+5	ḫal-ki-ya-aš-š	ḫalki-	NOUN	_	Case=Gen|Gender=Com|Number=Plur	4	nmod	_	_
+6	a	-a	CCONJ	_	_	5	cc	_	_
+7	šu-un-na-a[n-zi]	šunna-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+8	ŠA	ŠA	ADP	_	_	9	case	_	_
+9-11	GEŠTIN=ya=kán	_	_	_	_	_	_	_	_
+9	GEŠTIN	wiyana-	NOUN	_	_	12	orphan	_	_
+10	ya	-a	CCONJ	_	_	9	cc	_	_
+11	kán	-kan	PART	_	_	12	advmod:loc	_	_
+12	šu-un-n[a-an-zi]	šunna-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	7	conj	_	_
+
+# sent_id = 10.7*
+# text = ÌR=YA=ma=wa nu-u-ma-an da-aḫ-ḫi nu=wa-r=a-an=za=an LÚ-MU-TI4=YA i-ya-mi
+# translation = "I do not want to take my servant and make him my husband."
+# source = KBo 5.6 iv 6-7 (NH)
+1-4	ÌR=YA=ma=wa	_	_	_	_	_	_	_	_
+1	ÌR	ÌR-(n)a/i-	NOUN	_	Gender=Com	6	obj	_	_
+2	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	1	nmod	_	_
+3	ma	-ma	PART	_	_	1	discourse	_	_
+4	wa	-wa	PART	_	_	6	discourse	_	_
+5	nu-u-ma-an	nūman	PART	_	_	6	advmod	_	_
+6	da-aḫ-ḫi	dā-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+7-11	nu=wa-r=a-an=za=an	_	_	_	_	_	_	_	_
+7	nu	nu	CCONJ	_	_	15	cc	_	_
+8	wa-r	-wa	PART	_	_	15	discourse	_	_
+9	a-an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	15	obj	_	_
+10	za	-za	PART	_	_	15	expl:pass	_	_
+11	an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	15	expl	_	_
+12-14	LÚ-MU-TI4=YA	_	_	_	_	_	_	_	_
+12	LÚ	LÚ	NOUN	_	_	13	nmod:det	_	_
+13	MU-TI4	MUTU	NOUN	_	Gender=Com|Number=Sing	15	xcomp	_	_
+14	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	13	nmod	_	_
+15	i-ya-mi	iya-#1-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	6	conj	_	_
+
+# sent_id = 10.9-1
+# text = ku-it=wa-r=a-aš ú-ez-zi AN-aš d-UTU-uš [KUR-e-aš LÚ-SIPA.UDU-aš
+# translation = "Why will he come - The Sun-God of Heaven, shepherd of the lands?"
+# source = KBo 26.58 iv 44-46 (Ullik., NS) [restored version, partly from KUB 36.11:2 and partly from KBo 26.59 iii 32']
+1-3	ku-it=wa-r=a-aš	_	_	_	_	_	_	_	_
+1	ku-it	kuit	ADV	_	_	4	advmod	_	_
+2	wa-r	-wa	PART	_	_	4	discourse	_	_
+3	a-aš	-aš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3|PronType=Prs	4	nsubj	_	_
+4	ú-ez-zi	uwa-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+5	AN-aš	nepiš-	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	7	nmod	_	_
+6-7	d-UTU-uš	_	_	_	_	_	_	_	_
+6	d	d	NOUN	_	_	7	nmod:det	_	_
+7	UTU-uš	Ištanu-	PROPN	_	Case=Nom	3	appos	_	_
+8	[KUR-e-aš	utnē-	NOUN	_	Case=Gen|Gender=Neut|Number=Plur	9	nmod	_	_
+9-10	LÚ-SIPA.UDU-aš	_	_	_	_	_	_	_	_
+9	LÚ	LÚ	NOUN	_	_	10	nmod:det	_	_
+10	SIPA.UDU-aš	wēštara-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	3	appos	_	_
+
+# sent_id = 10.9-2
+# text = ú-ez-zi=m]a=wa-r=a-aš ku-e-da-ni me-mi-ya-ni
+# translation = "And in what matter will he come?"
+# source = KBo 26.58 iv 44-46 (Ullik., NS) [restored version, partly from KUB 36.11:2 and partly from KBo 26.59 iii 32']
+1-4	ú-ez-zi=m]a=wa-r=a-aš	_	_	_	_	_	_	_	_
+1	ú-ez-zi	uwa-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+2	m]a	-ma	PART	_	_	1	discourse	_	_
+3	wa-r	-wa	PART	_	_	1	discourse	_	_
+4	a-aš	-aš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3|PronType=Prs	1	nsubj	_	_
+5	ku-e-da-ni	kuiš	DET	_	Case=Dat|Number=Sing	6	det	_	_
+6	me-mi-ya-ni	memi(y)an-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	1	obl	_	_
+
+# sent_id = 10.10-1
+# text = ki-i=wa ku-it
+# translation = "What is this?"
+# source = KBo 6.34 ii 44-45 (MH/NS)
+1-2	ki-i=wa	_	_	_	_	_	_	_	_
+1	ki-i	kā-	PRON	_	Case=Nom|Gender=Neut|Number=Sing|PronType=Dem	3	nsubj	_	_
+2	wa	-wa	PART	_	_	3	discourse	_	_
+3	ku-it	kuit	PRON	_	Case=Nom|Gender=Neut|Number=Sing|PronType=Int	0	root	_	_
+
+# sent_id = 10.10-2
+# text = Ú-UL=wa ŠA MUNUS TÚG.NÍG.LÁM.MEŠ
+# translation = "Are these not the ceremonial garments of women?"
+# source = KBo 6.34 ii 44-45 (MH/NS)
+1-2	Ú-UL=wa	_	_	_	_	_	_	_	_
+1	Ú-UL	natta	PART	_	_	5	advmod	_	_
+2	wa	-wa	PART	_	_	5	discourse	_	_
+3	ŠA	ŠA	ADP	_	_	4	case	_	_
+4	MUNUS	MUNUS-n-	NOUN	_	Gender=Com	5	nmod	_	_
+5	TÚG.NÍG.LÁM.MEŠ	TÚG.NÍG.LÁM.MEŠ	NOUN	_	Number=Plur	0	root	_	_
+
+# sent_id = 10.11*
+# text = ták-ku LÚ-aš EL-LUM ḫal-ki-aš ÉSAG-an ta-a-i-ez-zi ÉSAG-š=a ḫal-ki-in ú-e-mi-ez-zi ÉSAG-an ḫal-ki-it šu-un-na-i Ù 12 GÍN KÙ.BABBAR pa-a-i
+# translation = If a free man steals a storage pit of grain and finds the grain of the storage pit, he will fill the storage pit with grain and pay 12 shekels of silver.
+# source = KBo 6.2 iv 49-50 (OS) [restored from KBo 6.3 iv 48-49] = Laws §96
+1	ták-ku	takku	SCONJ	_	_	6	mark	_	_
+2	LÚ-aš	pišna/i-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	6	nsubj	_	_
+3	EL-LUM	ELLUM	ADJ	_	Case=Nom|Number=Sing	2	amod	_	_
+4	ḫal-ki-aš	ḫalki-	NOUN	_	Case=Gen|Gender=Com|Number=Sing	5	nmod	_	_
+5	ÉSAG-an	ÉSAG-(n)a-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	6	obj	_	_
+6	ta-a-i-ez-zi	tāye-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	13	advcl	_	_
+7-8	ÉSAG-š=a	_	_	_	_	_	_	_	_
+7	ÉSAG-š	ÉSAG-(n)a-	NOUN	_	Case=Gen|Gender=Com|Number=Sing	9	nmod	_	_
+8	a	-ma	PART	_	_	10	discourse	_	_
+9	ḫal-ki-in	ḫalki-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	10	obj	_	_
+10	ú-e-mi-ez-zi	wemiya-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	6	conj	_	_
+11	ÉSAG-an	ÉSAG-(n)a-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	13	obj	_	_
+12	ḫal-ki-it	ḫalki-	NOUN	_	Case=Ins|Gender=Com|Number=Sing	13	obl	_	_
+13	šu-un-na-i	šunna-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+14	Ù	Ù	CCONJ	_	_	18	cc	_	_
+15	12	12	NUM	_	_	16	nummod	_	_
+16	GÍN	GÍN	NOUN	_	_	18	obj	_	_
+17	KÙ.BABBAR	KÙ.BABBAR-i-	NOUN	_	Gender=Com	16	nmod	_	_
+18	pa-a-i	pai-#2-	VERB	_	Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	13	conj	_	_
+
+# sent_id = 10.13
+# text = f.d-IŠTAR-at-ti-iš ku-wa-at-ta im-ma ku-wa-at-ta še-er TUKU.TUKU-u-an-za n=a-an a-ri-ya-u-e-ni
+# translation = For whatever reason Šaušgatti is angry, we will consult an oracle about it.
+# source = KBo 2.6 iii 17-18 (NH)
+1-2	f.d-IŠTAR-at-ti-iš	_	_	_	_	_	_	_	_
+1	f.d	f.d	NOUN	_	_	2	nmod:det	_	_
+2	IŠTAR-at-ti-iš	Šaušgatti	PROPN	_	Case=Nom	7	nsubj	_	_
+3	ku-wa-at-ta	kuwatta	PRON	_	PronType=Int	7	obl	_	_
+4	im-ma	imma	ADV	_	_	3	advmod	_	_
+5	ku-wa-at-ta	kuwatta	PRON	_	PronType=Int	7	obl	_	_
+6	še-er	šēr	ADP	_	_	5	case	_	_
+7	TUKU.TUKU-u-an-za	kartimmiyawant-	ADJ	_	Case=Nom|Gender=Com|Number=Sing	10	advcl	_	_
+8-9	n=a-an	_	_	_	_	_	_	_	_
+8	n	nu	PART	_	_	10	discourse:conn	_	_
+9	a-an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	10	obj	_	_
+10	a-ri-ya-u-e-ni	ariya-	VERB	_	Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 10.15
+# text = MUNUS.LUGAL f-Pu-du-ḫé-pa-aš=kán ku-wa-pí m-UR.MAḪ.LÚ-in GAL DUB.SAR.MEŠ URU-Ḫa-at-tu-ši A-NA ṬUP-PA-ḪI.A URU-Ki-iz-zu-wa-at-na ša-an-ḫu-u-wa-an-zi ú-e-ri-ya-at n=a-aš-ta ke-e ṬUP-PA-ḪI.A ŠA EZEN4 ḫi-šu-wa-a-aš a-pí-ya UD-at ar-ḫa a-ni-ya-at
+# translation = When Puduḫepa instructed Walwaziti, the chief of the scribes, to search Ḫattuša for the tablets of Kizzuwatna, he copied these tablets of the ḫišuwa-feast on that day.
+# source = KBo 15.52 vi 39-45 (NS)
+1	MUNUS.LUGAL	ḫaššuššara-	NOUN	_	Gender=Com|Number=Sing	17	nsubj	_	_
+2-4	f-Pu-du-ḫé-pa-aš=kán	_	_	_	_	_	_	_	_
+2	f	f	NOUN	_	_	3	nmod:det	_	_
+3	Pu-du-ḫé-pa-aš	Puduḫepa	PROPN	_	Case=Nom	1	flat	_	_
+4	kán	-kan	PART	_	_	17	advmod:loc	_	_
+5	ku-wa-pí	kuwapi	ADV	_	_	17	advmod	_	_
+6-7	m-UR.MAḪ.LÚ-in	_	_	_	_	_	_	_	_
+6	m	m	NOUN	_	_	7	nmod:det	_	_
+7	UR.MAḪ.LÚ-in	Walwaziti	PROPN	_	_	17	obj	_	_
+8	GAL	GAL	NOUN	_	_	7	appos	_	_
+9	DUB.SAR.MEŠ	DUB.SAR	NOUN	_	_	8	nmod	_	_
+10-11	URU-Ḫa-at-tu-ši	_	_	_	_	_	_	_	_
+10	URU	URU	NOUN	_	_	11	nmod:det	_	_
+11	Ḫa-at-tu-ši	Ḫattuša	PROPN	_	Case=Dat	16	obl	_	_
+12	A-NA	ANA	ADP	_	_	13	case	_	_
+13	ṬUP-PA-ḪI.A	tuppi-	NOUN	_	Gender=Neut|Number=Plur	16	obl	_	_
+14-15	URU-Ki-iz-zu-wa-at-na	_	_	_	_	_	_	_	_
+14	URU	URU	NOUN	_	_	15	nmod:det	_	_
+15	Ki-iz-zu-wa-at-na	Kizzuwatna	PROPN	_	_	13	nmod	_	_
+16	ša-an-ḫu-u-wa-an-zi	šanḫ-	VERB	_	VerbForm=Inf	17	xcomp	_	_
+17	ú-e-ri-ya-at	weriya-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	28	dislocated	_	_
+18-19	n=a-aš-ta	_	_	_	_	_	_	_	_
+18	n	nu	PART	_	_	28	discourse:conn	_	_
+19	a-aš-ta	-ašta	PART	_	_	28	advmod:loc	_	_
+20	ke-e	kā-	DET	_	Case=Acc|Gender=Neut|Number=Plur	21	det	_	_
+21	ṬUP-PA-ḪI.A	tuppi-	NOUN	_	Gender=Neut|Number=Plur	28	obj	_	_
+22	ŠA	ŠA	ADP	_	_	23	case	_	_
+23	EZEN4	EZEN4	NOUN	_	Gender=Com	21	nmod	_	_
+24	ḫi-šu-wa-a-aš	ḫišuwa-	NOUN	_	Case=Gen|Gender=Com	23	nmod	_	_
+25	a-pí-ya	apā-	DET	_	Case=Dat|Number=Sing	26	det	_	_
+26	UD-at	šiwatt-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	28	obl	_	_
+27	ar-ḫa	arḫa	ADV	_	_	28	advmod	_	_
+28	a-ni-ya-at	aniya-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.4-1
+# text = zi-ik am-me-el É-na le-e ú-wa-ši
+# translation = You shall not come to my house.
+# source = KUB 29.1 i 19-20 (OH/NS)
+1	zi-ik	zik	PRON	_	Case=Nom|Number=Sing|Person=2	5	nsubj	_	_
+2	am-me-el	uk	PRON	_	Case=Gen|Number=Sing|Person=1|PronType=Prs	3	nmod	_	_
+3	É-na	per	NOUN	_	Case=All|Gender=Neut|Number=Sing	5	obl	_	_
+4	le-e	lē	PART	_	_	5	advmod	_	_
+5	ú-wa-ši	uwa-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.4-2
+# text = ú-g=a tu-e-el pár-na Ú-UL ú-wa-a-mi
+# translation = and I will not come to your house.
+# source = KUB 29.1 i 19-20 (OH/NS)
+1-2	ú-g=a	_	_	_	_	_	_	_	_
+1	ú-g	uk	PRON	_	Case=Nom|Number=Sing|Person=1|PronType=Prs	6	nsubj	_	_
+2	a	-ma	PART	_	_	1	discourse	_	_
+3	tu-e-el	zik	PRON	_	Case=Gen|Number=Sing|Person=2|PronType=Prs	4	nmod	_	_
+4	pár-na	per	NOUN	_	Case=All|Gender=Neut|Number=Sing	6	obl	_	_
+5	Ú-UL	natta	PART	_	_	6	advmod	_	_
+6	ú-wa-a-mi	uwa-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.6
+# text = ma-aḫ-ḫa-an=ma A-BU=YA ŠEŠ=YA ku-in LÚ-tu-u-ḫu-kán-ta-ḫi-ti ti-ya-an ḫar-ta n=a-an ar-ḫa ti-it-ta-nu-ut nu am-mu-uk LUGAL-ez-na-an-ni ti-it-ta-nu-ut
+# translation = When my father deposed my brother whom he had instituted as crown prince and installed me to the kingship...
+# source = BrTabl. ii 43-44 (NH)
+1-2	ma-aḫ-ḫa-an=ma	_	_	_	_	_	_	_	_
+1	ma-aḫ-ḫa-an	maḫḫan	SCONJ	_	_	15	mark	_	_
+2	ma	-ma	PART	_	_	15	discourse	_	_
+3-4	A-BU=YA	_	_	_	_	_	_	_	_
+3	A-BU	atta-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	15	nsubj	_	_
+4	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	3	nmod	_	_
+5-6	ŠEŠ=YA	_	_	_	_	_	_	_	_
+5	ŠEŠ	negna-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	15	dislocated	_	_
+6	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	5	nmod	_	_
+7	ku-in	kuiš	PRON	_	Case=Acc|Gender=Com|Number=Sing	10	obj	_	_
+8-9	LÚ-tu-u-ḫu-kán-ta-ḫi-ti	_	_	_	_	_	_	_	_
+8	LÚ	LÚ	NOUN	_	_	9	nmod:det	_	_
+9	tu-u-ḫu-kán-ta-ḫi-ti	tūḫukantaḫit-	NOUN	_	Case=Dat|Number=Sing	10	iobj	_	_
+10	ti-ya-an	dai-	VERB	_	Gender=Neut|VerbForm=Part	3	acl:relcl	_	_
+11	ḫar-ta	ḫark	AUX	_	Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	10	aux	_	_
+12-13	n=a-an	_	_	_	_	_	_	_	_
+12	n	nu	PART	_	_	15	discourse:conn	_	_
+13	a-an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	15	obj	_	_
+14	ar-ḫa	arḫa	ADV	_	_	15	advmod	_	_
+15	ti-it-ta-nu-ut	tit(ta)nu-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+16	nu	nu	CCONJ	_	_	19	cc	_	_
+17	am-mu-uk	uk	PRON	_	Case=Acc|Number=Sing|Person=1|PronType=Prs	19	obj	_	_
+18	LUGAL-ez-na-an-ni	ḫaššuweznātar	NOUN	_	Case=Dat|Gender=Neut|Number=Sing	19	iobj	_	_
+19	ti-it-ta-nu-ut	tit(ta)nu-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	15	conj	_	_
+
+# sent_id = 11.7
+# text = ták-ku ÌR-na-aš na-aš-ma GÉME-aš QA-AS=SÚ na-aš-ma GÌR=ŠU ku-iš-ki [tu-wa-ar-ni-iz-zi] 10 GÍN KÙ.BABBAR pa-a-i
+# translation = If someone breaks the hand or foot of a servant or servant-woman, he will pay 10 shekels of silver.
+# source = KBo 6.2 i 22-23 (OS) [restored from KBo 6.3 i 31-32] = Laws §12
+1	ták-ku	takku	SCONJ	_	_	11	mark	_	_
+2	ÌR-na-aš	ÌR-(n)a/i-	NOUN	_	Case=Gen|Gender=Com|Number=Sing	5	nmod	_	_
+3	na-aš-ma	našma	CCONJ	_	_	4	cc	_	_
+4	GÉME-aš	GÉME-a-	NOUN	_	Case=Gen|Gender=Com|Number=Sing	2	conj	_	_
+5-6	QA-AS=SÚ	_	_	_	_	_	_	_	_
+5	QA-AS	keššara-	NOUN	_	Gender=Com|Number=Sing	11	obj	_	_
+6	SÚ	-šiš	PRON	_	Gender=Masc|Number=Sing|Person=3|Poss=Yes|PronType=Prs	5	nmod	_	_
+7	na-aš-ma	našma	CCONJ	_	_	8	cc	_	_
+8-9	GÌR=ŠU	_	_	_	_	_	_	_	_
+8	GÌR	pada-	NOUN	_	Gender=Com|Number=Sing	5	conj	_	_
+9	ŠU	-šiš	PRON	_	Gender=Masc|Number=Sing|Person=3|Poss=Yes|PronType=Prs	8	nmod	_	_
+10	ku-iš-ki	kuiški	PRON	_	Case=Nom|Gender=Com|Number=Sing|PronType=Ind	11	nsubj	_	_
+11	[tu-wa-ar-ni-iz-zi]	tuwarne-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	15	advcl	_	_
+12	10	10	NUM	_	_	13	nummod	_	_
+13	GÍN	GÍN	NOUN	_	_	15	obj	_	_
+14	KÙ.BABBAR	KÙ.BABBAR-i-	NOUN	_	Gender=Com	13	nmod	_	_
+15	pa-a-i	pai-#2-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.8
+# text = ták-ku LÚ.U19.LU-an EL-LAM KIR4=še-et ku-iš-ki wa-a-ki 1 MA.NA KÙ.BABBAR pa-a-i
+# translation = If someone bites the nose of a free man, he will pay 1 mana of silver.
+# source = KBo 6.3 i 33 (OH/NS) = Laws §13
+1	ták-ku	takku	SCONJ	_	_	7	mark	_	_
+2	LÚ.U19.LU-an	antuḫša-	NOUN	_	Case=Acc|Gender=Com|Language=Sum|Number=Sing	7	iobj	_	_
+3	EL-LAM	ELLUM	ADJ	_	Case=Acc|Language=Akk|Number=Sing	2	amod	_	_
+4-5	KIR4=še-et	_	_	_	_	_	_	_	_
+4	KIR4	KIR4	NOUN	_	Case=Acc|Gender=Neut|Language=Sum|Number=Sing	7	obj	_	_
+5	še-et	-šiš	PRON	_	Case=Acc|Gender=Neut|Number=Sing|Person=3|Poss=Yes|PronType=Prs	4	nmod	_	_
+6	ku-iš-ki	kuiški	PRON	_	Case=Nom|Gender=Com|Number=Sing|PronType=Ind	7	nsubj	_	_
+7	wa-a-ki	wak(k)-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	11	advcl	_	_
+8	1	1	NUM	_	_	9	nummod	_	_
+9	MA.NA	MANA	NOUN	_	_	11	obj	_	_
+10	KÙ.BABBAR	KÙ.BABBAR-i-	NOUN	_	Gender=Com	9	nmod	_	_
+11	pa-a-i	pai-#2-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.9-1
+# text = zi-g=a-a=z GIŠ-ḫa-tal-ki-iš-na-aš
+# translation = You are like the hawthorne.
+# source = KUB 33.54 ii 13-14 (OH/NS) [restored version]
+1-3	zi-g=a-a=z	_	_	_	_	_	_	_	_
+1	zi-g	zik	PRON	_	Case=Nom|Number=Sing|Person=2|PronType=Prs	5	nsubj	_	_
+2	a-a	-ma	PART	_	_	5	discourse	_	_
+3	z	-za	PART	_	_	5	discourse	_	_
+4-5	GIŠ-ḫa-tal-ki-iš-na-aš	_	_	_	_	_	_	_	_
+4	GIŠ	GIŠ	NOUN	_	_	5	nmod:det	_	_
+5	ḫa-tal-ki-iš-na-aš	ḫatalkiš(n)-	NOUN	_	Case=Nom|Gender=Neut|Number=Sing	0	root	_	_
+
+# sent_id = 11.9-2
+# text = ḫa-me-eš-ḫi-ya-a=z BABBAR-TIM wa-aš-ša[-ši]
+# translation = In spring you wear white.
+# source = KUB 33.54 ii 13-14 (OH/NS) [restored version]
+1-2	ḫa-me-eš-ḫi-ya-a=z	_	_	_	_	_	_	_	_
+1	ḫa-me-eš-ḫi-ya-a	ḫamešḫa-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	4	obl	_	_
+2	z	-za	PART	_	_	4	expl:pass	_	_
+3	BABBAR-TIM	ḫarki-	ADJ	_	_	4	obj	_	_
+4	wa-aš-ša[-ši]	wašše-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.9-3
+# text = BURU14=ma-a=z iš-ḫar-wa-an-d[a w]a-aš-ša-ši
+# translation = but at the harvest you wear brown.
+# source = KUB 33.54 ii 13-14 (OH/NS) [restored version]
+1-3	BURU14=ma-a=z	_	_	_	_	_	_	_	_
+1	BURU14	BURU14	NOUN	_	_	5	obl	_	_
+2	ma-a	-ma	PART	_	_	1	discourse	_	_
+3	z	-za	PART	_	_	5	expl:pass	_	_
+4	iš-ḫar-wa-an-d[a	išḫarwant-	ADJ	_	Case=Acc|Gender=Neut|Number=Plur	5	obj	_	_
+5	w]a-aš-ša-ši	wašše-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.11-1
+# text = LÚ-me-ne-ya-aš ke-e-et-t=a ke-e-et-t=a G[I-an] ḫu-ut-ti-an-na-a-i
+# translation = The hunter draws his bow on both this side and that.
+# source = KBo 17.43 i 10-11 (OS) [restored version]
+1-2	LÚ-me-ne-ya-aš	_	_	_	_	_	_	_	_
+1	LÚ	LÚ	NOUN	_	_	2	nmod:det	_	_
+2	me-ne-ya-aš	mene(y)a-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	8	nsubj	_	_
+3-4	ke-e-et-t=a	_	_	_	_	_	_	_	_
+3	ke-e-et-t	kēt-	ADV	_	_	8	advmod	_	_
+4	a	-a	CCONJ	_	_	3	cc	_	_
+5-6	ke-e-et-t=a	_	_	_	_	_	_	_	_
+5	ke-e-et-t	kēt-	ADV	_	_	3	conj	_	_
+6	a	-a	CCONJ	_	_	5	cc	_	_
+7	G[I-an]	nāta-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	8	obj	_	_
+8	ḫu-ut-ti-an-na-a-i	ḫuitt(iya)-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.11-2
+# text = tar-na-a-i=ma=an na-at-ta i-i ḫal-zi-iš-ša-a-i
+# translation = but he does not release it, he keeps calling out "i-i".
+# source = KBo 17.43 i 10-11 (OS) [restored version]
+1-3	tar-na-a-i=ma=an	_	_	_	_	_	_	_	_
+1	tar-na-a-i	tarna-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+2	ma	-ma	PART	_	_	1	discourse	_	_
+3	an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	1	obj	_	_
+4	na-at-ta	natta	PART	_	_	1	advmod	_	_
+5	i-i	ī	INTJ	_	_	6	discourse	_	_
+6	ḫal-zi-iš-ša-a-i	ḫalzāi-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	4	parataxis	_	_
+
+# sent_id = 11.13-1
+# text = a-du-e-ni a-ku-e-ni
+# translation = We eat, we drink.
+# source = KBo 17.4 ii 8-9 (OS)
+1	a-du-e-ni	ēd-	VERB	_	Number=Plur|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+2	a-ku-e-ni	eku-	VERB	_	Number=Plur|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	1	parataxis	_	_
+
+# sent_id = 11.13-2
+# text = nu URU-Ḫa-at-tu-ša i-ya-an-na-aḫ-ḫé
+# translation = I set out for Ḫattuša.
+# source = KBo 17.4 ii 8-9 (OS)
+1	nu	nu	CCONJ	_	_	4	cc	_	_
+2-3	URU-Ḫa-at-tu-ša	_	_	_	_	_	_	_	_
+2	URU	URU	NOUN	_	_	3	nmod:det	_	_
+3	Ḫa-at-tu-ša	Ḫattuša	PROPN	_	_	4	obl	_	_
+4	i-ya-an-na-aḫ-ḫé	iyanna/i-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.13-3
+# text = LUGAL-š=a URU-A-ri-in-na pa-iz-zi
+# translation = but the King goes to Arinna.
+# source = KBo 17.4 ii 8-9 (OS)
+1-2	LUGAL-š=a	_	_	_	_	_	_	_	_
+1	LUGAL-š	ḫaššu-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	5	nsubj	_	_
+2	a	-ma	PART	_	_	1	discourse	_	_
+3-4	URU-A-ri-in-na	_	_	_	_	_	_	_	_
+3	URU	URU	NOUN	_	_	4	nmod:det	_	_
+4	A-ri-in-na	Arinna	PROPN	_	_	5	obl	_	_
+5	pa-iz-zi	pai-#1-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.14-1
+# text = NAM.RA.ḪI.A=wa me-ek-ki ú-e-da-u-e-ni
+# translation = "We will bring many Arnuwala-people."
+# source = KBo 12.42 rev. 6-8 (MH/NS)
+1-2	NAM.RA.ḪI.A=wa	_	_	_	_	_	_	_	_
+1	NAM.RA.ḪI.A	arnuwala-	NOUN	_	Number=Plur	4	obj	_	_
+2	wa	-wa	PART	_	_	4	discourse	_	_
+3	me-ek-ki	mekki	DET	_	_	1	det	_	_
+4	ú-e-da-u-e-ni	weda-#1-	VERB	_	Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.14-2
+# text = GUD.ḪI.A=wa UDU.ḪI.A ANŠE.KUR.RA.ḪI.A ANŠE.GÌR.NUN.NA.ḪI.A ANŠE.MEŠ me-ek-ki na-an-ni-ya-u-e-ni
+# translation = "We will drive many cattle, sheep, horses, mules, donkeys."
+# source = KBo 12.42 rev. 6-8 (MH/NS)
+1-2	GUD.ḪI.A=wa	_	_	_	_	_	_	_	_
+1	GUD.ḪI.A	GUD-u-	NOUN	_	Gender=Com|Number=Plur	8	obj	_	_
+2	wa	-wa	PART	_	_	8	discourse	_	_
+3	UDU.ḪI.A	UDU-u-	NOUN	_	Gender=Com|Number=Plur	1	conj	_	_
+4	ANŠE.KUR.RA.ḪI.A	ANŠE.KUR.RA-u-	NOUN	_	Gender=Com|Number=Plur	1	conj	_	_
+5	ANŠE.GÌR.NUN.NA.ḪI.A	ANŠE.GÌR.NUN.NA-a-	NOUN	_	Gender=Com|Number=Plur	1	conj	_	_
+6	ANŠE.MEŠ	ANŠE-a/i-	NOUN	_	Gender=Com|Number=Plur	1	conj	_	_
+7	me-ek-ki	mekki	DET	_	_	1	det	_	_
+8	na-an-ni-ya-u-e-ni	nanna/i-	VERB	_	Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.15-1
+# text = ták-ku GUD.ḪI.A A.ŠÀ-ni pa-a-an-zi Ù BE-EL A.ŠÀ ú-e-mi-<ez->zi UD.1.KAM tu-u-ri-ez-zi
+# translation = If cattle go into a field and the owner of the field finds them, he [may] tie them up for one day
+# source = KBo 6.2 iv 12-13 (OS) = Laws §79
+1	ták-ku	takku	SCONJ	_	_	4	mark	_	_
+2	GUD.ḪI.A	GUD-u-	NOUN	_	Case=Nom|Gender=Com|Number=Plur	4	nsubj	_	_
+3	A.ŠÀ-ni	A.ŠÀ-(n)a-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	4	obj	_	_
+4	pa-a-an-zi	pai-#1-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	12	advcl	_	_
+5	Ù	Ù	CCONJ	_	_	8	cc	_	_
+6	BE-EL	išḫā-	NOUN	_	Definite=Cons|Gender=Com|Number=Sing	8	nsubj	_	_
+7	A.ŠÀ	A.ŠÀ-(n)a-	NOUN	_	Gender=Com|Number=Sing	6	nmod	_	_
+8	ú-e-mi-<ez->zi	wemiya-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	4	conj	_	_
+9-11	UD.1.KAM	_	_	_	_	_	_	_	_
+9	UD	šiwatt-	NOUN	_	Gender=Com|Number=Sing	12	obl	_	_
+10	1	1	NUM	_	_	9	nummod	_	_
+11	KAM	KAM	NOUN	_	_	9	nmod:det	_	_
+12	tu-u-ri-ez-zi	turiya-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 11.15-2
+# text = ma-a-n=a-aš-ta MUL.ḪI.A-eš ú-en-zi nu=uš a-ap-pa iš-ḫi-i=š-ši pé-en-na-i
+# translation = when the stars come out, he will drive them back to their master.
+# source = KBo 6.2 iv 12-13 (OS) = Laws §79
+1-2	ma-a-n=a-aš-ta	_	_	_	_	_	_	_	_
+1	ma-a-n	mān	SCONJ	_	_	4	mark	_	_
+2	a-aš-ta	-ašta	PART	_	_	4	advmod:loc	_	_
+3	MUL.ḪI.A-eš	ḫašter-	NOUN	_	Case=Nom|Gender=Com|Number=Plur	4	nsubj	_	_
+4	ú-en-zi	uwa-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	10	advcl	_	_
+5-6	nu=uš	_	_	_	_	_	_	_	_
+5	nu	nu	PART	_	_	10	discourse:conn	_	_
+6	uš	-at	PRON	_	Case=Acc|Gender=Com|Number=Plur|Person=3|PronType=Prs	10	obj	_	_
+7	a-ap-pa	āppa	ADV	_	_	10	advmod	_	_
+8-9	iš-ḫi-i=š-ši	_	_	_	_	_	_	_	_
+8	iš-ḫi-i	išḫā-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	10	iobj	_	_
+9	š-ši	-šiš	PRON	_	Case=Dat|Number=Sing|Person=3|Poss=Yes|PronType=Prs	8	nmod	_	_
+10	pé-en-na-i	penna/i-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.2-1
+# text = nu=mu NAM.RA ku-in pa-ra-a pí-i-e-er n=a-aš 4 LI-IM NAM.RA e-eš-ta
+# translation = And the Arnuwala-people that they handed over to me, there were 4000 Arnuwala-people
+# source = KBo 3.4 iii 19-21 (NH)
+1-2	nu=mu	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	6	cc	_	_
+2	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	6	iobj	_	_
+3	NAM.RA	arnuwala-	NOUN	_	Gender=Com|Number=Sing	11	dislocated	_	_
+4	ku-in	kuiš	PRON	_	Case=Acc|Gender=Com|Number=Sing|PronType=Rel	6	obj	_	_
+5	pa-ra-a	parā	ADV	_	_	6	advmod	_	_
+6	pí-i-e-er	pai-#2-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	3	acl:relcl	_	_
+7-8	n=a-aš	_	_	_	_	_	_	_	_
+7	n	nu	PART	_	_	11	discourse:conn	_	_
+8	a-aš	-aš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3|PronType=Prs	11	nsubj	_	_
+9	4	4	NUM	_	_	10	compound	_	_
+10	LI-IM	LĪM	NUM	_	_	11	nummod	_	_
+11	NAM.RA	arnuwala-	NOUN	_	Gender=Com|Number=Sing	0	root	_	_
+12	e-eš-ta	ēš	AUX	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	11	cop	_	_
+
+# sent_id = 12.2-2
+# text = n=a-an=kán URU-KÙ.BABBAR-ši pa-ra-a ne-eḫ-ḫu-un
+# translation = and I sent them over to Ḫattuša
+# source = KBo 3.4 iii 19-21 (NH)
+1-3	n=a-an=kán	_	_	_	_	_	_	_	_
+1	n	nu	CCONJ	_	_	7	cc	_	_
+2	a-an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	7	obj	_	_
+3	kán	-kan	PART	_	_	7	advmod:loc	_	_
+4-5	URU-KÙ.BABBAR-ši	_	_	_	_	_	_	_	_
+4	URU	URU	NOUN	_	_	5	nmod:det	_	_
+5	KÙ.BABBAR-ši	Ḫattuša	PROPN	_	Case=Dat	7	iobj	_	_
+6	pa-ra-a	parā	ADV	_	_	7	advmod	_	_
+7	ne-eḫ-ḫu-un	nai-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.2-3
+# text = n=a-an ar-ḫa ú-wa-te-er
+# translation = and they brought them away.
+# source = KBo 3.4 iii 19-21 (NH)
+1-2	n=a-an	_	_	_	_	_	_	_	_
+1	n	nu	CCONJ	_	_	4	cc	_	_
+2	a-an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	4	obj	_	_
+3	ar-ḫa	arḫa	ADV	_	_	4	advmod	_	_
+4	ú-wa-te-er	uwate-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.3-1
+# text = d-IŠTAR=ma=mu GAŠAN=YA Ù-at
+# translation = Ištar, my lady, appeared to me in a dream
+# source = KUB 1.1 i 36-38 (Ḫatt., NH)
+1-4	d-IŠTAR=ma=mu	_	_	_	_	_	_	_	_
+1	d	d	NOUN	_	_	2	nmod:det	_	_
+2	IŠTAR	Šaušga	PROPN	_	_	7	nsubj	_	_
+3	ma	-ma	PART	_	_	7	discourse	_	_
+4	mu	-mu	PRON	_	Number=Sing|Person=1|PronType=Prs	7	obj	_	_
+5-6	GAŠAN=YA	_	_	_	_	_	_	_	_
+5	GAŠAN	GAŠAN	NOUN	_	Case=Nom|Gender=Com|Number=Sing	2	appos	_	_
+6	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	5	nmod	_	_
+7	Ù-at	zašḫiya-	VERB	_	Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.3-2
+# text = nu=mu Ù-it ki-i me-mi-iš-ta DINGIR-LIM-ni=wa-a=t-ta am-mu-uk tar-na-aḫ-ḫi
+# translation = and she said this to me in the dream: "I will release you to the god"
+# source = KUB 1.1 i 36-38 (Ḫatt., NH)
+1-2	nu=mu	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	5	cc	_	_
+2	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	5	iobj	_	_
+3	Ù-it	zašḫai-	NOUN	_	Case=Ins|Gender=Com|Number=Sing	5	obl	_	_
+4	ki-i	kā-	PRON	_	Case=Acc|Gender=Neut|Number=Sing|PronType=Dem	5	obj	_	_
+5	me-mi-iš-ta	mema/i-	VERB	_	Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+6-8	DINGIR-LIM-ni=wa-a=t-ta	_	_	_	_	_	_	_	_
+6	DINGIR-LIM-ni	šiun(i)-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	10	iobj	_	_
+7	wa-a	-wa	PART	_	_	10	discourse	_	_
+8	t-ta	-ta	PRON	_	Case=Acc|Number=Sing|Person=2|PronType=Prs	10	obj	_	_
+9	am-mu-uk	ūk	PRON	_	Case=Nom|Number=Sing|Person=1|PronType=Prs	10	nsubj	_	_
+10	tar-na-aḫ-ḫi	tarna-	VERB	_	Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	5	parataxis	_	_
+
+# sent_id = 12.3-3
+# text = nu=wa le-e na-aḫ-ti
+# translation = "do not fear"
+# source = KUB 1.1 i 36-38 (Ḫatt., NH)
+1-2	nu=wa	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	4	cc	_	_
+2	wa	-wa	PART	_	_	4	discourse	_	_
+3	le-e	lē	PART	_	_	4	advmod	_	_
+4	na-aḫ-ti	naḫ(ḫ)-	VERB	_	Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.5-1
+# text = ka-ru-ú m-U-uḫ-na-aš LUGAL URU-Za-a-al-pu-wa d-ši-ú=šum-m[i-in] [UR]U-Ne-e-ša-az URU-Za-a-al-pu-wa pé-e-d[a-aš]
+# translate = Before, Uḫna king of Zalpuwa brought our god from Neša to Zalpuwa.
+# source = KBo 3.22 obv. 39-42 (OS) [freely restored version]
+1	ka-ru-ú	karū	ADV	_	_	14	advmod	_	_
+2-3	m-U-uḫ-na-aš	_	_	_	_	_	_	_	_
+2	m	m	NOUN	_	_	3	nmod:det	_	_
+3	U-uḫ-na-aš	Uḫna	PROPN	_	Case=Nom	14	nsubj	_	_
+4	LUGAL	ḫaššu-	NOUN	_	Case=Nom	3	appos	_	_
+5-6	URU-Za-a-al-pu-wa	_	_	_	_	_	_	_	_
+5	URU	URU	NOUN	_	_	6	nmod:det	_	_
+6	Za-a-al-pu-wa	Zalpuwa	PROPN	_	_	4	nmod	_	_
+7-9	d-ši-ú=šum-m[i-in]	_	_	_	_	_	_	_	_
+7	d	d	NOUN	_	_	8	nmod:det	_	_
+8	ši-ú	šiun(i)-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	14	obj	_	_
+9	šum-m[i-in]	-šummiš	PRON	_	Case=Acc|Gender=Com|Number=Plur|Person=1|Poss=Yes|PronType=Prs	8	nmod	_	_
+10-11	[UR]U-Ne-e-ša-az	_	_	_	_	_	_	_	_
+10	[UR]U	URU	NOUN	_	_	11	nmod:det	_	_
+11	Ne-e-ša-az	Neša	PROPN	_	Case=Abl	14	obl	_	_
+12-13	URU-Za-a-al-pu-wa	_	_	_	_	_	_	_	_
+12	URU	URU	NOUN	_	_	13	nmod:det	_	_
+13	Za-a-al-pu-wa	Zalpuwa	PROPN	_	Case=All	14	obl	_	_
+14	pé-e-d[a-aš]	pēda-	VERB	_	Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.5-2
+# text = [ap-pé]-ez-zi-ya-n=a m-A-ni-it-ta-aš LUGAL.GAL d-ši-ú=šu[m-(mi-in U)RU-Z]a-a-al-pu-wa-az a-ap-pa URU-Ne-e-ša pé-e-[da-aḫ-ḫu-un]
+# translate = but afterward I, Anita, brought our god back from Zalpuwa to Neša.
+# source = KBo 3.22 obv. 39-42 (OS) [freely restored version]
+1-2	[ap-pé]-ez-zi-ya-n=a	_	_	_	_	_	_	_	_
+1	[ap-pé]-ez-zi-ya-n	appezzian	ADV	_	_	14	advmod	_	_
+2	a	-ma	PART	_	_	14	discourse	_	_
+3-4	m-A-ni-it-ta-aš	_	_	_	_	_	_	_	_
+3	m	m	NOUN	_	_	4	nmod:det	_	_
+4	A-ni-it-ta-aš	Anita	PROPN	_	Case=Nom	14	nsubj	_	_
+5	LUGAL.GAL	LUGAL.GAL	NOUN	_	_	4	appos	_	_
+6-8	d-ši-ú=šu[m-(mi-in	_	_	_	_	_	_	_	_
+6	d	d	NOUN	_	_	7	nmod:det	_	_
+7	ši-ú	šiun(i)-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	14	obj	_	_
+8	šu[m-(mi-in	-šummiš	PRON	_	Case=Acc|Gender=Com|Number=Plur|Person=1|Poss=Yes|PronType=Prs	7	nmod	_	_
+9-10	U)RU-Z]a-a-al-pu-wa-az	_	_	_	_	_	_	_	_
+9	U)RU	URU	NOUN	_	_	10	nmod:det	_	_
+10	Z]a-a-al-pu-wa-az	Zalpuwa	PROPN	_	Case=Abl	14	obl	_	_
+11	a-ap-pa	āppa	ADV	_	_	14	advmod	_	_
+12-13	URU-Ne-e-ša	_	_	_	_	_	_	_	_
+12	URU	URU	NOUN	_	_	13	nmod:det	_	_
+13	Ne-e-ša	Neša	PROPN	_	Case=Abl	14	obl	_	_
+14	pé-e-[da-aḫ-ḫu-un]	pēda-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.6
+# text = BE-LÍ=NI=wa-a=n-na-aš ŠA URU-A-ri-ip-ša-a i-wa-ar URU-Ḫa-at-tu-ši ša-a-ru-wa-u-wa-an-zi le-e ma-ni-ya-aḫ-ti
+# translation = "Our lord, you shall not hand us over to Hattuša for plundering like Aripša."
+# source = KBo 4.4 iv 20-21 (NH)
+1-4	BE-LÍ=NI=wa-a=n-na-aš	_	_	_	_	_	_	_	_
+1	BE-LÍ	išḫā-	NOUN	_	Gender=Com|Number=Sing	13	vocative	_	_
+2	NI	-šummiš	PRON	_	Number=Plur|Person=1|Poss=Yes|PronType=Prs	1	nmod	_	_
+3	wa-a	-wa	PART	_	_	13	discourse	_	_
+4	n-na-aš	-naš	PRON	_	Case=Acc|Number=Plur|Person=1|PronType=Prs	13	obj	_	_
+5	ŠA	ŠA	ADP	_	_	7	case	_	_
+6-7	URU-A-ri-ip-ša-a	_	_	_	_	_	_	_	_
+6	URU	URU	NOUN	_	_	7	nmod:det	_	_
+7	A-ri-ip-ša-a	Aripša	PROPN	_	_	13	obl	_	_
+8	i-wa-ar	iwar	ADP	_	_	7	case	_	_
+9-10	URU-Ḫa-at-tu-ši	_	_	_	_	_	_	_	_
+9	URU	URU	NOUN	_	_	10	nmod:det	_	_
+10	Ḫa-at-tu-ši	Ḫattuša	PROPN	_	Case=Dat	13	iobj	_	_
+11	ša-a-ru-wa-u-wa-an-zi	šaruwāi-	VERB	_	VerbForm=Inf	13	xcomp	_	_
+12	le-e	lē	PART	_	_	13	advmod	_	_
+13	ma-ni-ya-aḫ-ti	maniyaḫḫ-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.7*
+# text = ták-ku LÚ.U19.LU-an EL-LA-AM ku-iš-ki da-šu-wa-aḫ-ḫi na-aš-ma ZU19=ŠU la-a-ki ka-ru-ú 1 MA.NA KÙ.BABBAR pí-iš-ker ki-nu-n=a 20 GÍN KÙ.BABBAR pa-a-i
+# translation = If someone blinds a free man or knocks out his tooth, before he used to pay 1 mana of silver but now he will pay 20 shekels of silver.
+# source = KBo 6.2 i 9-10 (OS) = Laws §7
+1	ták-ku	takku	SCONJ	_	_	5	mark	_	_
+2	LÚ.U19.LU-an	antuḫša-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	5	obj	_	_
+3	EL-LA-AM	ELLUM	ADJ	_	Case=Acc|Number=Sing	2	amod	_	_
+4	ku-iš-ki	kuiški	PRON	_	Case=Nom|Number=Sing|PronType=Ind	5	nsubj	_	_
+5	da-šu-wa-aḫ-ḫi	dašuwaḫḫ-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	14	advcl	_	_
+6	na-aš-ma	našma	CCONJ	_	_	9	cc	_	_
+7-8	ZU19=ŠU	_	_	_	_	_	_	_	_
+7	ZU19	kaka-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	9	obj	_	_
+8	ŠU	-šiš	PRON	_	Gender=Masc|Number=Sing|Person=3|Poss=Yes|PronType=Prs	7	nmod	_	_
+9	la-a-ki	lak-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	5	conj	_	_
+10	ka-ru-ú	karū	ADV	_	_	14	advmod	_	_
+11	1	1	NUM	_	_	12	nummod	_	_
+12	MA.NA	MANA	NOUN	_	_	14	obj	_	_
+13	KÙ.BABBAR	KÙ.BABBAR-i-	NOUN	_	Gender=Com	12	nmod	_	_
+14	pí-iš-ker	pai-#2-	VERB	_	Aspect=Imp|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+15-16	ki-nu-n=a	_	_	_	_	_	_	_	_
+15	ki-nu-n	kinun	ADV	_	_	20	advmod	_	_
+16	a	-ma	PART	_	_	20	discourse	_	_
+17	20	20	NUM	_	_	18	nummod	_	_
+18	GÍN	GÍN	NOUN	_	_	20	obj	_	_
+19	KÙ.BABBAR	KÙ.BABBAR-i-	NOUN	_	Gender=Com	18	nmod	_	_
+20	pa-a-i	pai-#2-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	14	conj	_	_
+
+# sent_id = 12.8*
+# text = nu URU-Ne-e-ša-an iš-pa-an-di na-ak-ki-it da-a-aš URU-Ne-e-ša-aš LUGAL-un IṢ-BAT Ù DUMU.MEŠ URU-Ne-e-ša i-da-a-lu na-at-ta ku-e-da-ni-ik-ki ták-ki-iš-ta
+# translation = He took the city of Neša at night by force, seized the king of Neša but did not inflict any harm on the sons of Neša.
+# source = KBo 3.22 obv. 6-8 (OS)
+1	nu	nu	CCONJ	_	_	6	cc	_	_
+2-3	URU-Ne-e-ša-an	_	_	_	_	_	_	_	_
+2	URU	URU	NOUN	_	_	3	nmod:det	_	_
+3	Ne-e-ša-an	Neša	PROPN	_	Case=Acc	6	obj	_	_
+4	iš-pa-an-di	išpant-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	6	obl	_	_
+5	na-ak-ki-it	nakki-	NOUN	_	Case=Ins|Gender=Neut|Number=Sing	6	obl	_	_
+6	da-a-aš	dā-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+7-8	URU-Ne-e-ša-aš	_	_	_	_	_	_	_	_
+7	URU	URU	NOUN	_	_	8	nmod:det	_	_
+8	Ne-e-ša-aš	Neša	PROPN	_	Case=Gen	9	nmod	_	_
+9	LUGAL-un	ḫaššu-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	10	obj	_	_
+10	IṢ-BAT	ēpp-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	6	parataxis	_	_
+11	Ù	Ù	CCONJ	_	_	18	cc	_	_
+12	DUMU.MEŠ	DUMU-(l)a-	NOUN	_	Gender=Com|Number=Plur	17	nmod	_	_
+13-14	URU-Ne-e-ša	_	_	_	_	_	_	_	_
+13	URU	URU	NOUN	_	_	14	nmod:det	_	_
+14	Ne-e-ša	Neša	PROPN	_	_	12	nmod	_	_
+15	i-da-a-lu	idālu-	NOUN	_	Case=Acc|Gender=Neut|Number=Sing	18	obj	_	_
+16	na-at-ta	natta	PART	_	_	17	advmod	_	_
+17	ku-e-da-ni-ik-ki	kuiški	PRON	_	Case=Dat|Gender=Com|Number=Sing|PronType=Ind	18	iobj	_	_
+18	ták-ki-iš-ta	tak(ki)š-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	10	conj	_	_
+
+# sent_id = 12.9-1
+# text = nu ke-e KUR.KUR.MEŠ ḫar-ni-in-ku-un
+# translation = I destroyed these lands
+# source = KBo 10.2 i 19-21 (OH/NS)
+1	nu	nu	CCONJ	_	_	4	cc	_	_
+2	ke-e	kā-	DET	_	Case=Acc|Gender=Neut|Number=Plur	3	det	_	_
+3	KUR.KUR.MEŠ	utnē-	NOUN	_	Case=Acc|Gender=Neut|Number=Plur	4	obj	_	_
+4	ḫar-ni-in-ku-un	ḫarnink-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.9-2
+# text = a-aš-šu=ma-a=š-ši ša-ra-a da-aḫ-ḫu-un
+# translation = and I took their goods as possession
+# source = KBo 10.2 i 19-21 (OH/NS)
+1-3	a-aš-šu=ma-a=š-ši	_	_	_	_	_	_	_	_
+1	a-aš-šu	aššu-	NOUN	_	Case=Acc|Gender=Neut	5	obj	_	_
+2	ma-a	-ma	PART	_	_	1	discourse	_	_
+3	š-ši	-ši	PRON	_	Case=Dat|Number=Sing|Person=3|PronType=Prs	1	nmod	_	_
+4	ša-ra-a	šarā	ADV	_	_	5	advmod	_	_
+5	da-aḫ-ḫu-un	dā-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.9-3
+# text = nu É-er=mi-it a-aš-ša-u-i-it ša-ra-a šu-un-na-aḫ-ḫu-un
+# translation = and I filled up my house with the goods.
+# source = KBo 10.2 i 19-21 (OH/NS)
+1	nu	nu	CCONJ	_	_	6	cc	_	_
+2-3	É-er=mi-it	_	_	_	_	_	_	_	_
+2	É-er	per	NOUN	_	Case=Acc|Gender=Neut|Number=Sing	6	obj	_	_
+3	mi-it	-miš	PRON	_	Case=Acc|Gender=Neut|Number=Sing|Person=1|Poss=Yes|PronType=Prs	2	nmod	_	_
+4	a-aš-ša-u-i-it	aššu-	NOUN	_	Case=Ins|Gender=Neut	6	obl	_	_
+5	ša-ra-a	šarā	ADV	_	_	6	advmod	_	_
+6	šu-un-na-aḫ-ḫu-un	šunna-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.10-1
+# text = nam-ma-a=š-ma-aš=kán ÉRIN.MEŠ iš-ḫi-iḫ-ḫu-un
+# translation = Then I committed troops to them
+# source = KBo 5.8 ii 3-5 (NH)
+1-3	nam-ma-a=š-ma-aš=kán	_	_	_	_	_	_	_	_
+1	nam-ma-a	namma	ADV	_	_	5	advmod	_	_
+2	š-ma-aš	-šmaš	PRON	_	Case=Dat|Number=Plur|Person=3|PronType=Prs	5	iobj	_	_
+3	kán	-kan	PART	_	_	5	advmod:loc	_	_
+4	ÉRIN.MEŠ	ÉRIN.MEŠ-t-	NOUN	_	Gender=Com	5	obj	_	_
+5	iš-ḫi-iḫ-ḫu-un	išḫi(ya)-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.10-2
+# text = nu=mu ÉRIN.MEŠ pí-iš-ke-u-an da-a-er
+# translation = and they began to regularly give troops to me
+# source = KBo 5.8 ii 3-5 (NH)
+1-2	nu=mu	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	5	cc	_	_
+2	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	4	iobj	_	_
+3	ÉRIN.MEŠ	ÉRIN.MEŠ-t-	NOUN	_	Gender=Com	4	obj	_	_
+4	pí-iš-ke-u-an	pai-#2-	VERB	_	VerbForm=Sup	5	xcomp	_	_
+5	da-a-er	dai-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.10-3
+# text = n=a-at=mu la-aḫ-ḫi kat-ta-an pa-iš-ga-u-wa-an ti-i-e-er
+# translation = and they began to go on a campaign with me.
+# source = KBo 5.8 ii 3-5 (NH)
+1-3	n=a-at=mu	_	_	_	_	_	_	_	_
+1	n	nu	CCONJ	_	_	7	cc	_	_
+2	a-at	-at	PRON	_	Case=Nom|Number=Plur|Person=3|PronType=Prs	7	nsubj	_	_
+3	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	6	obl	_	_
+4	la-aḫ-ḫi	laḫḫa-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	6	obl	_	_
+5	kat-ta-an	kattan	ADP	_	_	3	case	_	_
+6	pa-iš-ga-u-wa-an	pai-#1-	VERB	_	VerbForm=Sup	7	xcomp	_	_
+7	ti-i-e-er	dai-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.11
+# text = up-pé-eš-šar-MEŠ=ma-a=t-ta ku-e up-pa-aḫ-ḫu-un nu ḫu-u-ma-an LÚ ṬE4-ME=KA ma-ni-ya-[aḫ-ḫu-un]
+# translation = The gifts that I sent to you, I handed all over to your messenger.
+# source = KUB 23.101 ii 19-20 (NH) [restored version]
+1-3	up-pé-eš-šar-MEŠ=ma-a=t-ta	_	_	_	_	_	_	_	_
+1	up-pé-eš-šar-MEŠ	uppeššar	NOUN	_	Gender=Neut|Number=Plur	11	dislocated	_	_
+2	ma-a	-ma	PART	_	_	5	discourse	_	_
+3	t-ta	-ta	PRON	_	Case=Dat|Number=Sing|Person=2|PronType=Prs	5	iobj	_	_
+4	ku-e	kuiš	PRON	_	Case=Acc|Gender=Neut|Number=Plur|PronType=Rel	5	obj	_	_
+5	up-pa-aḫ-ḫu-un	uppa/i-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	1	acl:relcl	_	_
+6	nu	nu	PART	_	_	11	discourse:conn	_	_
+7	ḫu-u-ma-an	ḫūmant-	PRON	_	Case=Acc|Gender=Neut|Number=Plur	11	obj	_	_
+8	LÚ	pišna/i-	NOUN	_	Gender=Com	11	iobj	_	_
+9-10	ṬE4-ME=KA	_	_	_	_	_	_	_	_
+9	ṬE4-ME	ṬĒME	NOUN	_	_	8	compound	_	_
+10	KA	KA	PRON	_	Gender=Fem|Number=Sing|Person=3|Poss=Yes|PronType=Prs	9	nmod	_	_
+11	ma-ni-ya-[aḫ-ḫu-un]	maniyaḫḫ-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.12
+# text = ki-nu-n=a d-UTU-Š=I tu-uk m-Ku-pa-an-ta-d-LAMMA-an Ú-UL ku-it-ki i-da-la-u-wa-aḫ-ḫu-un
+# translation = Now, your majesty, I have never mistreated you, Kupanta-Kurunta.
+# source = KBo 4.3 i 12 (NH)
+1-2	ki-nu-n=a	_	_	_	_	_	_	_	_
+1	ki-nu-n	kinun	ADV	_	_	11	advmod	_	_
+2	a	-ma	PART	_	_	1	discourse	_	_
+3-5	d-UTU-Š=I	_	_	_	_	_	_	_	_
+3	d	d	NOUN	_	_	4	nmod:det	_	_
+4	UTU-Š	Ištanu-	PROPN	_	_	11	vocative	_	_
+5	I	-miš	PRON	_	Poss=Yes|PronType=Prs	4	nmod	_	_
+6	tu-uk	zik	PRON	_	Case=Acc|Number=Sing|Person=2|PronType=Prs	11	obj	_	_
+7-8	m-Ku-pa-an-ta-d-LAMMA-an	_	_	_	_	_	_	_	_
+7	m	m	NOUN	_	_	8	nmod:det	_	_
+8	Ku-pa-an-ta-d-LAMMA-an	Kupanta-Kurunta	PROPN	_	Case=Acc	6	appos	_	_
+9	Ú-UL	natta	PART	_	_	10	advmod	_	_
+10	ku-it-ki	kuitki	ADV	_	_	11	advmod	_	_
+11	i-da-la-u-wa-aḫ-ḫu-un	idālawaḫḫ-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.13
+# text = nu URU-Ne-ri-iq-qa-aš ku-it IŠ-TU UD-UM m-Ḫa-an-ti-li ar-ḫa ḫar-ga-an-za e-ešta n=a-an EGIR-pa ú-e-da-[aḫ-ḫu-un]
+# translation = And because the city of Neriq had been destroyed from the days of Ḫantili, I built it again.
+# source = KUB 19.65 + KUB 31.13, 6-7 (NH) = Ḫatt. iii 46'-47' [restored from KUB 19.64, 20-21]
+1	nu	nu	CCONJ	_	_	10	cc	_	_
+2-3	URU-Ne-ri-iq-qa-aš	_	_	_	_	_	_	_	_
+2	URU	URU	NOUN	_	_	3	nmod:det	_	_
+3	Ne-ri-iq-qa-aš	Neriqqa	PROPN	_	Case=Nom	10	nsubj	_	_
+4	ku-it	kuit	SCONJ	_	_	10	mark	_	_
+5	IŠ-TU	IŠTU	ADP	_	_	6	case	_	_
+6	UD-UM	šiwatt-	NOUN	_	Gender=Com	10	obl	_	_
+7-8	m-Ḫa-an-ti-li	_	_	_	_	_	_	_	_
+7	m	m	NOUN	_	_	8	nmod:det	_	_
+8	Ḫa-an-ti-li	Ḫantili	PROPN	_	_	6	nmod	_	_
+9	ar-ḫa	arḫa	ADV	_	_	10	advmod	_	_
+10	ḫar-ga-an-za	ḫark-	VERB	_	VerbForm=Part	15	advcl	_	_
+11	e-ešta	ēš	AUX	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	10	aux	_	_
+12-13	n=a-an	_	_	_	_	_	_	_	_
+12	n	nu	PART	_	_	15	discourse:conn	_	_
+13	a-an	-aš	PRON	_	Case=Acc|Gender=Com|Number=Sing|Person=3|PronType=Prs	15	obj	_	_
+14	EGIR-pa	āppa	ADV	_	_	15	advmod	_	_
+15	ú-e-da-[aḫ-ḫu-un]	weda-#2-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 12.15
+# text = nu=kán A-BU=YA ku-e-da-aš A-NA URU.DIDLI.ḪI.A da-an-na-at-t[a-aš EGIR-an A]N.ZA.GÀR ú-e-te-et n=a-aš LÚ.KÚR da-a-an nam-ma ḫar-ni-[ik-ta]
+# translation = The empty cities behind which my father built a tower, the enemy then destroyed them a second time.
+# source = KUB 19.10 i 18-19 (NH) = DŠ 13 [restored version]
+1-2	nu=kán	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	11	cc	_	_
+2	kán	-kan	PART	_	_	11	advmod:loc	_	_
+3-4	A-BU=YA	_	_	_	_	_	_	_	_
+3	A-BU	atta-	NOUN	_	Gender=Com	11	nsubj	_	_
+4	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	3	nmod	_	_
+5	ku-e-da-aš	kuiš	DET	_	Case=Dat|Number=Plur	7	det	_	_
+6	A-NA	ANA	ADP	_	_	7	case	_	_
+7	URU.DIDLI.ḪI.A	ḫappiriya-	NOUN	_	Number=Plur	11	obl	_	_
+8	da-an-na-at-t[a-aš	dannatta-	ADJ	_	Case=Dat|Gender=Com|Number=Plur	7	amod	_	_
+9	EGIR-an	āppan	ADP	_	_	7	case	_	_
+10	A]N.ZA.GÀR	AN.ZA.GÀR	NOUN	_	_	11	obj	_	_
+11	ú-e-te-et	weda-#2-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	17	dislocated	_	_
+12-13	n=a-aš	_	_	_	_	_	_	_	_
+12	n	nu	PART	_	_	17	discourse:conn	_	_
+13	a-aš	-aš	PRON	_	Case=Acc|Gender=Com|Number=Plur|Person=3|PronType=Prs	17	obj	_	_
+14	LÚ.KÚR	LÚ.KÚR-(n)a-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	17	nsubj	_	_
+15	da-a-an	dān	ADV	_	NumType=Ord	17	advmod	_	_
+16	nam-ma	namma	ADV	_	_	17	advmod	_	_
+17	ḫar-ni-[ik-ta]	ḫarnink-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 13.2
+# text = ma-a-an=wa A-NA URU-Ne-ri-iq-qa pa-i-wa-ni nu=wa-a=š-šan ku-wa-pí e-šu-wa-aš-ta
+# translation = If we go to the city of Neriq, where will we sit?
+# source = KUB 12.66 iv 9-10 (OH/NS)
+1-2	ma-a-an=wa	_	_	_	_	_	_	_	_
+1	ma-a-an	mān	SCONJ	_	_	6	mark	_	_
+2	wa	-wa	PART	_	_	6	discourse	_	_
+3	A-NA	ANA	ADP	_	_	5	case	_	_
+4-5	URU-Ne-ri-iq-qa	_	_	_	_	_	_	_	_
+4	URU	URU	NOUN	_	_	5	nmod:det	_	_
+5	Ne-ri-iq-qa	Neriqqa	PROPN	_	_	6	obl	_	_
+6	pa-i-wa-ni	pai-#1-	VERB	_	Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	11	advcl	_	_
+7-9	nu=wa-a=š-šan	_	_	_	_	_	_	_	_
+7	nu	nu	PART	_	_	11	discourse:conn	_	_
+8	wa-a	-wa	PART	_	_	11	discourse	_	_
+9	š-šan	-šan	PART	_	_	11	advmod:loc	_	_
+10	ku-wa-pí	kuwapi	ADV	_	_	11	advmod	_	_
+11	e-šu-wa-aš-ta	ēš-	VERB	_	Mood=Ind|Number=Plur|Person=1|Tense=Pres|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 13.4-1
+# text = d-A-la-lu-uš=ša-an GIŠ-ŠÚ.A-ki e-eš-zi
+# translation = Alalu sits on the throne.
+# source = KUB 33.120 i 8-10 (NS)
+1-3	d-A-la-lu-uš=ša-an	_	_	_	_	_	_	_	_
+1	d	d	NOUN	_	_	2	nmod:det	_	_
+2	A-la-lu-uš	Alalu	PROPN	_	Case=Nom	6	nsubj	_	_
+3	ša-an	-šan	PART	_	_	6	advmod:loc	_	_
+4-5	GIŠ-ŠÚ.A-ki	_	_	_	_	_	_	_	_
+4	GIŠ	GIŠ	NOUN	_	_	5	nmod:det	_	_
+5	ŠÚ.A-ki	GIŠ-ŠÚ.A-ki(t)-	NOUN	_	Case=Dat|Gender=Com|Number=Sing	6	obl	_	_
+6	e-eš-zi	ēš-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 13.4-2
+# text = da-aš-šu-š=a-a=š-ši d-A-nu-uš DINGIR.MEŠ-aš ḫa-an-te-ez-zi-ya-a=š-me-iš pé-ra-an=še-et ar-ta
+# translation = and Anu the mighty, the foremost of the gods, stands in front of him.
+# source = KUB 33.120 i 8-10 (NS)
+1-3	da-aš-šu-š=a-a=š-ši	_	_	_	_	_	_	_	_
+1	da-aš-šu-š	daššu-	ADJ	_	Case=Nom|Gender=Com|Number=Sing	5	amod	_	_
+2	a-a	-ma	PART	_	_	11	discourse	_	_
+3	š-ši	-aš	PRON	_	Case=Dat|Gender=Com|Number=Sing|Person=3|PronType=Prs	9	expl	_	_
+4-5	d-A-nu-uš	_	_	_	_	_	_	_	_
+4	d	d	NOUN	_	_	5	nmod:det	_	_
+5	A-nu-uš	Anu	PROPN	_	Case=Nom	11	nsubj	_	_
+6	DINGIR.MEŠ-aš	šiun(i)-	NOUN	_	Case=Gen|Gender=Com|Language=Sum|Number=Plur	7	nmod	_	_
+7-8	ḫa-an-te-ez-zi-ya-a=š-me-iš	_	_	_	_	_	_	_	_
+7	ḫa-an-te-ez-zi-ya-a	ḫantezziya-	ADJ	_	Case=Nom|Gender=Com|Number=Sing	5	amod	_	_
+8	š-me-iš	-šmiš	PRON	_	Case=Nom|Gender=Com|Number=Plur|Person=3|Poss=Yes|PronType=Prs	7	nmod	_	_
+9-10	pé-ra-an=še-et	_	_	_	_	_	_	_	_
+9	pé-ra-an	peran	ADV	_	_	11	advmod	_	_
+10	še-et	-šet	PRON	_	Number=Sing|Person=3	11	obl	_	_
+11	ar-ta	ar-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 13.5
+# text = nu-u=š-ma-aš=kán d-U-aš d-Da-aš-mi-šu-uš-š=a ŠU-za ap-pa-an-da-at
+# translation = The Storm-God and Dašmišu held each other by the hand.
+# source = KUB 36.12 i 15 + KUB 33.113 i 3 (Ullik., NS)
+1-3	nu-u=š-ma-aš=kán	_	_	_	_	_	_	_	_
+1	nu-u	nu	CCONJ	_	_	10	cc	_	_
+2	š-ma-aš	-šmaš	PRON	_	Case=Dat|Number=Plur|Person=3|PronType=Prs	10	obj	_	_
+3	kán	-kan	PART	_	_	10	advmod:loc	_	_
+4-5	d-U-aš	_	_	_	_	_	_	_	_
+4	d	d	NOUN	_	_	5	nmod:det	_	_
+5	U-aš	U-a-	PROPN	_	Case=Nom	10	nsubj	_	_
+6-8	d-Da-aš-mi-šu-uš-š=a	_	_	_	_	_	_	_	_
+6	d	d	NOUN	_	_	7	nmod:det	_	_
+7	Da-aš-mi-šu-uš-š	Dašmišu	PROPN	_	Case=Nom	5	conj	_	_
+8	a	-a	CCONJ	_	_	7	cc	_	_
+9	ŠU-za	keššara-	NOUN	_	Case=Abl|Gender=Com	10	obl	_	_
+10	ap-pa-an-da-at	ēpp-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 13.6
+# text = ma-aḫ-ḫa-an=mu=kán LÚ.MEŠ URU-Du-uq-qa-am-ma me-na-aḫ-ḫa<-an>-da a-ú-e-er n=a-at=mu me-na-aḫ-ḫa-an-da ú-e-er
+# translation = When the men of Duqqamma caught sight of me, they came out to meet me.
+# source = KBo 4.4 iv 18-19 (NH)
+1-3	ma-aḫ-ḫa-an=mu=kán	_	_	_	_	_	_	_	_
+1	ma-aḫ-ḫa-an	maḫḫan	SCONJ	_	_	8	mark	_	_
+2	mu	-mu	PRON	_	Case=Acc|Number=Sing|Person=1|PronType=Prs	8	obj	_	_
+3	kán	-kan	PART	_	_	8	advmod:loc	_	_
+4	LÚ.MEŠ	pišna/i-	NOUN	_	Case=Nom|Gender=Com|Number=Plur	8	nsubj	_	_
+5-6	URU-Du-uq-qa-am-ma	_	_	_	_	_	_	_	_
+5	URU	URU	NOUN	_	_	6	nmod:det	_	_
+6	Du-uq-qa-am-ma	Duqqamma	PROPN	_	_	4	nmod	_	_
+7	me-na-aḫ-ḫa<-an>-da	menaḫḫanda	ADV	_	_	8	advmod	_	_
+8	a-ú-e-er	au(š)-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	13	advcl	_	_
+9-11	n=a-at=mu	_	_	_	_	_	_	_	_
+9	n	nu	PART	_	_	13	discourse:conn	_	_
+10	a-at	-at	PRON	_	Case=Nom|Gender=Com|Number=Plur|Person=3|PronType=Prs	13	nsubj	_	_
+11	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	13	obl	_	_
+12	me-na-aḫ-ḫa-an-da	menaḫḫanda	ADP	_	_	11	case	_	_
+13	ú-e-er	uwa-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 13.7-1
+# text = [nu=za ŠA KUR URU]-Dur-mi-it-ta URU-Ga-aš-ga-aš da-a-an EGIR-pa ÌR-aḫ-ta-at
+# translation = The Kaška of the land of Durmitta were subjugated a second time.
+# source = KBo 3.4 i 41-42 (NH) [freely restored version]
+1-2	[nu=za	_	_	_	_	_	_	_	_
+1	[nu	nu	CCONJ	_	_	11	cc	_	_
+2	za	-za	PART	_	_	11	expl:pass	_	_
+3	ŠA	ŠA	ADP	_	_	4	case	_	_
+4	KUR	utnē-	NOUN	_	Gender=Neut	8	nmod	_	_
+5-6	URU]-Dur-mi-it-ta	_	_	_	_	_	_	_	_
+5	URU]	URU	NOUN	_	_	6	nmod:det	_	_
+6	Dur-mi-it-ta	Durmitta	PROPN	_	_	4	nmod	_	_
+7-8	URU-Ga-aš-ga-aš	_	_	_	_	_	_	_	_
+7	URU	URU	NOUN	_	_	8	nmod:det	_	_
+8	Ga-aš-ga-aš	Gašga	PROPN	_	Case=Nom	11	nsubj	_	_
+9	da-a-an	dān	ADV	_	_	11	advmod	_	_
+10	EGIR-pa	āppa	ADV	_	_	11	advmod	_	_
+11	ÌR-aḫ-ta-at	ÌR-(n)aḫḫ-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 13.7-2
+# text = nu=mu ÉRIN.MEŠ pé-eš-ke-u-an da-a-ir
+# translation = and they began to regularly give me troops.
+# source = KBo 3.4 i 41-42 (NH) [freely restored version]
+1-2	nu=mu	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	5	cc	_	_
+2	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	4	iobj	_	_
+3	ÉRIN.MEŠ	ÉRIN.MEŠ-t-	NOUN	_	Case=Acc|Gender=Com	4	obj	_	_
+4	pé-eš-ke-u-an	pai-#2-	VERB	_	VerbForm=Sup	5	xcomp	_	_
+5	da-a-ir	dai-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 13.9
+# text = nu ak-kán-za ku-e-da-aš uk-tu-ri-ya-aš wa-ra-a-ni nu a-pé-e-da-aš uk-tu-ri-ya-aš a-ra-aḫ-za-an-da 12 NINDA.GUR4.RA.MEŠ GAM ti-ya-an-zi
+# translation = On which pyre the dead person will be burned, they put 12 loaves of leavened bread down around that pyre.
+# source = KUB 30.15 i 10-11 (NH)
+1	nu	nu	CCONJ	_	_	5	cc	_	_
+2	ak-kán-za	ak(k)-	VERB	_	Case=Nom|Gender=Com|Number=Sing|VerbForm=Part	5	nsubj	_	_
+3	ku-e-da-aš	kuiš	DET	_	Case=Dat|Number=Plur	4	det	_	_
+4	uk-tu-ri-ya-aš	uktūri-	NOUN	_	Case=Dat|Number=Plur	5	obl	_	_
+5	wa-ra-a-ni	war-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Mid	13	dislocated	_	_
+6	nu	nu	PART	_	_	13	discourse:conn	_	_
+7	a-pé-e-da-aš	apā-	DET	_	Case=Dat|Number=Plur	8	det	_	_
+8	uk-tu-ri-ya-aš	uktūri-	NOUN	_	Case=Dat|Number=Plur	13	obl	_	_
+9	a-ra-aḫ-za-an-da	araḫzanda	ADP	_	_	8	case	_	_
+10	12	12	NUM	_	_	11	nummod	_	_
+11	NINDA.GUR4.RA.MEŠ	ḫarši-	NOUN	_	Gender=Com|Number=Plur	13	obj	_	_
+12	GAM	katta	ADV	_	_	13	advmod	_	_
+13	ti-ya-an-zi	tiya-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 13.12-1
+# text = [ú-g=a A-NA] DINGIR=YA ku-it i-ya-nu-un
+# translation = What, my god, have I done?
+# source = KUB 30.10 rev. 13-14 (OH/MS) [restored version]
+1-2	[ú-g=a	_	_	_	_	_	_	_	_
+1	[ú-g	uk	PRON	_	Case=Nom|Number=Sing|Person=1|PronType=Prs	7	nsubj	_	_
+2	a	-ma	PART	_	_	1	discourse	_	_
+3	A-NA]	ANA	ADP	_	_	4	case	_	_
+4-5	DINGIR=YA	_	_	_	_	_	_	_	_
+4	DINGIR	šiun(i)-	NOUN	_	Case=Dat|Gender=Com	7	obl	_	_
+5	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	4	nmod	_	_
+6	ku-it	kuiš	PRON	_	Case=Acc|Gender=Neut|Number=Sing|PronType=Int	7	obj	_	_
+7	i-ya-nu-un	iya-#1-	VERB	_	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 13.12-2
+# text = nu=mu É=YA i-na-ni pé-ra-an pít-tu-li-ya-aš É-er ki-ša-at
+# translation = My house has become a house of worry for me on account of my disease.
+# source = KUB 30.10 rev. 13-14 (OH/MS) [restored version]
+1-2	nu=mu	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	9	cc	_	_
+2	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	3	nmod	_	_
+3-4	É=YA	_	_	_	_	_	_	_	_
+3	É	per	NOUN	_	Case=Nom|Gender=Neut|Number=Sing	9	nsubj	_	_
+4	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	3	nmod	_	_
+5	i-na-ni	inan-	NOUN	_	Case=Dat|Gender=Neut|Number=Sing	9	obl	_	_
+6	pé-ra-an	peran	ADP	_	_	5	case	_	_
+7	pít-tu-li-ya-aš	pittuliya-	NOUN	_	Case=Gen|Gender=Com|Number=Sing	8	nmod	_	_
+8	É-er	per	NOUN	_	Case=Nom|Gender=Neut|Number=Sing	9	xcomp	_	_
+9	ki-ša-at	kiš-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 13.13-1
+# text = nu=kán d-Ḫé-pa-du-uš šu-uḫ-ḫa-az kat-ta ma-uš-šu-u-wa-an-zi wa-aq-qa-re-eš
+# translation = And Ḫepadu almost [lit. failed to] fall down from the roof
+# source = KUB 33.106 ii 8-9 (Ullik., NS)
+1-2	nu=kán	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	8	cc	_	_
+2	kán	-kan	PART	_	_	8	advmod:loc	_	_
+3-4	d-Ḫé-pa-du-uš	_	_	_	_	_	_	_	_
+3	d	d	NOUN	_	_	4	nmod:det	_	_
+4	Ḫé-pa-du-uš	Ḫepadu	PROPN	_	Case=Nom	8	nsubj	_	_
+5	šu-uḫ-ḫa-az	šuḫḫa-	NOUN	_	Case=Abl|Gender=Com|Number=Sing	7	obl	_	_
+6	kat-ta	katta	ADV	_	_	7	advmod	_	_
+7	ma-uš-šu-u-wa-an-zi	mau(š)-	VERB	_	VerbForm=Inf	8	xcomp	_	_
+8	wa-aq-qa-re-eš	waqqar-	VERB	_	Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 13.13-2
+# text = ma-an ti-ya-at ma-n=a-aš=kán šu-uḫ-ḫa-az kat-ta ma-uš-ta-at
+# translation = if she had stepped, she would have fallen down from the roof.
+# source = KUB 33.106 ii 8-9 (Ullik., NS)
+1	ma-an	mān	SCONJ	_	_	2	mark	_	_
+2	ti-ya-at	tiya-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	8	advcl	_	_
+3-5	ma-n=a-aš=kán	_	_	_	_	_	_	_	_
+3	ma-n	mān	ADV	_	_	8	advmod	_	_
+4	a-aš	-aš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3|PronType=Prs	8	nsubj	_	_
+5	kán	-kan	PART	_	_	8	advmod:loc	_	_
+6	šu-uḫ-ḫa-az	šuḫḫa-	NOUN	_	Case=Abl|Gender=Com|Number=Sing	8	obl	_	_
+7	kat-ta	katta	ADV	_	_	8	advmod	_	_
+8	ma-uš-ta-at	mau(š)-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 13.14
+# text = UDU.ŠIR=ma ma-a-an ḫar-ga-eš … ma-a-an da-an-ku-wa-e-eš Ú-UL ku-it-ki du-uq-qa-a-ri
+# translation = But whether the bulls are white ... or black it does not matter at all.
+# source = KUB 9.32 obv. 6-7 (NS)
+1-2	UDU.ŠIR=ma	_	_	_	_	_	_	_	_
+1	UDU.ŠIR	UDU.ŠIR-a/i-	NOUN	_	Case=Nom|Gender=Com	4	nsubj	_	_
+2	ma	-ma	PART	_	_	10	discourse	_	_
+3	ma-a-an	mān	SCONJ	_	_	4	mark	_	_
+4	ḫar-ga-eš	ḫarki-	ADJ	_	Case=Nom|Gender=Com|Number=Plur	10	csubj	_	_
+5	…	…	X	_	_	10	dep	_	_
+6	ma-a-an	mān	CCONJ	_	_	7	cc	_	_
+7	da-an-ku-wa-e-eš	dankui-	ADJ	_	Case=Nom|Gender=Com|Number=Plur	4	conj	_	_
+8	Ú-UL	natta	PART	_	_	9	advmod	_	_
+9	ku-it-ki	kuitki	ADV	_	_	10	advmod	_	_
+10	du-uq-qa-a-ri	tuqq-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 13.15
+# text = ma-a-an=wa=mu 1-an DUMU=KA pa-iš-ti ma-an=wa-r=a-aš=mu LÚ-MU-TI=YA ki-ša-ri
+# translation = If you give me one of your sons, he will become my husband.
+# source = KBo 5.6 iii 12-13 (NH)
+1-3	ma-a-an=wa=mu	_	_	_	_	_	_	_	_
+1	ma-a-an	mān	SCONJ	_	_	7	mark	_	_
+2	wa	-wa	PART	_	_	7	discourse	_	_
+3	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	7	iobj	_	_
+4	1-an	šia-	NUM	_	Case=Acc|Gender=Com|Number=Sing	7	obj	_	_
+5-6	DUMU=KA	_	_	_	_	_	_	_	_
+5	DUMU	DUMU-(l)a-	NOUN	_	Gender=Com	4	nmod	_	_
+6	KA	-tiš	PRON	_	Gender=Masc|Number=Sing|Person=2|Poss=Yes|PronType=Prs	5	nmod	_	_
+7	pa-iš-ti	pai-#2-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	15	advcl	_	_
+8-11	ma-an=wa-r=a-aš=mu	_	_	_	_	_	_	_	_
+8	ma-an	mān	ADV	_	_	15	advmod	_	_
+9	wa-r	-wa	PART	_	_	15	discourse	_	_
+10	a-aš	-aš	PRON	_	Case=Nom|Gender=Com|Number=Sing|Person=3|PronType=Prs	15	nsubj	_	_
+11	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	13	nmod	_	_
+12-14	LÚ-MU-TI=YA	_	_	_	_	_	_	_	_
+12	LÚ	LÚ	NOUN	_	_	13	nmod:det	_	_
+13	MU-TI	MUTU	NOUN	_	Gender=Com|Number=Sing	15	xcomp	_	_
+14	YA	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	13	nmod	_	_
+15	ki-ša-ri	kiš-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 14.1
+# text = nu-u=š-ša-an d-Te-li-pí-nu-uš Ì.DÙG.GA-it pa-ap-pár-ša-an-ta KASKAL-ša i-ya-an-ni
+# translation = Telipinu, set out on the path sprinkled with fine oil.
+# source = KUB 17.10 ii 29-30 (OH/MS)
+1-2	nu-u=š-ša-an	_	_	_	_	_	_	_	_
+1	nu-u	nu	CCONJ	_	_	8	cc	_	_
+2	š-ša-an	-šan	PART	_	_	8	advmod:loc	_	_
+3-4	d-Te-li-pí-nu-uš	_	_	_	_	_	_	_	_
+3	d	d	NOUN	_	_	4	nmod:det	_	_
+4	Te-li-pí-nu-uš	Telipinu	PROPN	_	Case=Voc	8	vocative	_	_
+5	Ì.DÙG.GA-it	Ì.DÙG.GA	NOUN	_	Case=Ins	6	obl	_	_
+6	pa-ap-pár-ša-an-ta	papparš-	VERB	_	Number=Plur|VerbForm=Part	7	amod	_	_
+7	KASKAL-ša	palša-	NOUN	_	Case=Dat|Number=Plur	8	obl	_	_
+8	i-ya-an-ni	iyanna/i-	VERB	_	Mood=Imp|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 14.2-1
+# text = nu=mu LÚ.MEŠ URU-Tap-ti-na … me-na-aḫ-ḫa-an-da ú-e-er
+# translation = And the men of Taptina came to meet me
+# source = KBo 4.4 iii 45-47 (NH)
+1-2	nu=mu	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	8	cc	_	_
+2	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	8	obl	_	_
+3	LÚ.MEŠ	pišna/i-	NOUN	_	Case=Nom|Gender=Com|Number=Plur	8	nsubj	_	_
+4-5	URU-Tap-ti-na	_	_	_	_	_	_	_	_
+4	URU	URU	NOUN	_	_	5	nmod:det	_	_
+5	Tap-ti-na	Taptina	PROPN	_	_	3	nmod	_	_
+6	…	…	X	_	_	8	dep	_	_
+7	me-na-aḫ-ḫa-an-da	menaḫḫanda	ADP	_	_	2	case	_	_
+8	ú-e-er	uwa-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 14.2-2
+# text = n=a-at=mu GÌR.MEŠ-aš kat-ta-an ḫa-a-li-ya-an-da-at
+# translation = and they bowed down to me at my feet.
+# source = KBo 4.4 iii 45-47 (NH)
+1-3	n=a-at=mu	_	_	_	_	_	_	_	_
+1	n	nu	CCONJ	_	_	6	cc	_	_
+2	a-at	-at	PRON	_	Case=Nom|Gender=Com|Number=Plur|Person=3|PronType=Prs	6	nsubj	_	_
+3	mu	-mu	PRON	_	Case=Dat|Number=Sing|Person=1|PronType=Prs	6	obl	_	_
+4	GÌR.MEŠ-aš	pada-	NOUN	_	Case=Dat|Gender=Com|Number=Plur	6	obl	_	_
+5	kat-ta-an	kattan	ADP	_	_	3	case	_	_
+6	ḫa-a-li-ya-an-da-at	ḫaliya-	VERB	_	Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 14.3-1
+# text = nu ki-iš-ša-an me-mi-er BE-LÍ=NI=wa-a=n-na-aš le-e ḫar-ni-ik-ti
+# translation = They said thus: "Our lord, you shall not destroy us"
+# source = KBo 4.4 iii 47-48 (NH)
+1	nu	nu	CCONJ	_	_	3	cc	_	_
+2	ki-iš-ša-an	kiššan	ADV	_	_	3	advmod	_	_
+3	me-mi-er	mema/i-	VERB	_	Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+4-7	BE-LÍ=NI=wa-a=n-na-aš	_	_	_	_	_	_	_	_
+4	BE-LÍ	išḫā-	NOUN	_	Gender=Com|Number=Sing	9	vocative	_	_
+5	NI	NI	PRON	_	Number=Plur|Person=1|Poss=Yes|PronType=Prs	4	nmod	_	_
+6	wa-a	-wa	PART	_	_	9	discourse	_	_
+7	n-na-aš	-naš	PRON	_	Case=Acc|Number=Plur|Person=1|PronType=Prs	9	obj	_	_
+8	le-e	lē	PART	_	_	9	advmod	_	_
+9	ḫar-ni-ik-ti	ḫarnink-	VERB	_	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	3	parataxis	_	_
+
+# sent_id = 14.3-2
+# text = nu=wa-a=n-na-aš=za ÌR-an-ni da-a
+# translation = "Take us into servitude."
+# source = KBo 4.4 iii 47-48 (NH)
+1-4	nu=wa-a=n-na-aš=za	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	6	cc	_	_
+2	wa-a	-wa	PART	_	_	6	discourse	_	_
+3	n-na-aš	-naš	PRON	_	Case=Acc|Number=Plur|Person=1|PronType=Prs	6	obj	_	_
+4	za	-za	PART	_	_	6	expl:pass	_	_
+5	ÌR-an-ni	ÌR-(n)ātar	PRON	_	Case=Dat|Gender=Neut|Number=Sing	6	iobj	_	_
+6	da-a	dā-	VERB	_	Mood=Imp|Number=Sing|Person=2|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 14.3-3
+# text = nu=wa-a=n-na-aš=za ÉRIN.MEŠ ANŠE.KUR.RA.ḪI.A i-ya
+# translation = "make us troops of horses."
+# source = KBo 4.4 iii 47-48 (NH)
+1-4	nu=wa-a=n-na-aš=za	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	7	cc	_	_
+2	wa-a	-wa	PART	_	_	7	discourse	_	_
+3	n-na-aš	-naš	PRON	_	Case=Acc|Number=Plur|Person=1|PronType=Prs	7	obj	_	_
+4	za	-za	PART	_	_	7	expl:pass	_	_
+5	ÉRIN.MEŠ	ÉRIN.MEŠ-t-	NOUN	_	Gender=Com	7	xcomp	_	_
+6	ANŠE.KUR.RA.ḪI.A	ANŠE.KUR.RA-u-	NOUN	_	Number=Plur	5	nmod	_	_
+7	i-ya	iya-#1-	VERB	_	Mood=Imp|Number=Sing|Person=2|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 14.4-1
+# text = nu-u=š-ma-aš ḪUR.SAG.MEŠ pé-ra-an ták-ša-at-ni-ya-an-ta-ru
+# translation = May the mountains be leveled before you
+# source = KUB 15.34 i 45-46 (MH/MS)
+1-2	nu-u=š-ma-aš	_	_	_	_	_	_	_	_
+1	nu-u	nu	CCONJ	_	_	5	cc	_	_
+2	š-ma-aš	-šmaš	PRON	_	Case=Dat|Number=Plur|Person=2|PronType=Prs	5	obj	_	_
+3	ḪUR.SAG.MEŠ	ḪUR.SAG-(r)a-	NOUN	_	Case=Nom|Gender=Com|Number=Plur	5	nsubj	_	_
+4	pé-ra-an	peran	ADP	_	_	2	case	_	_
+5	ták-ša-at-ni-ya-an-ta-ru	takšatniya-	VERB	_	Mood=Imp|Number=Plur|Person=3|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 14.4-2
+# text = ÍD.ḪI.A=ma-a=š-ma-aš pé-ra-an ar-mi-iz-zi-ya-an-ta-ru
+# translation = and may the rivers be bridged over before you.
+# source = KUB 15.34 i 45-46 (MH/MS)
+1-3	ÍD.ḪI.A=ma-a=š-ma-aš	_	_	_	_	_	_	_	_
+1	ÍD.ḪI.A	ḫapan-	NOUN	_	Case=Nom|Gender=Com|Number=Plur	5	nsubj	_	_
+2	ma-a	-ma	PART	_	_	1	discourse	_	_
+3	š-ma-aš	-šmaš	PRON	_	Case=Dat|Number=Plur|Person=2|PronType=Prs	5	obl	_	_
+4	pé-ra-an	peran	ADP	_	_	3	case	_	_
+5	ar-mi-iz-zi-ya-an-ta-ru	armizziya-	VERB	_	Mood=Imp|Number=Plur|Person=3|VerbForm=Fin|Voice=Mid	0	root	_	_
+
+# sent_id = 14.5-1
+# text = nu=mu-u=š-ša-an ḫu-u-ma-an-da-az pa-aḫ-ši
+# translation = Protect me from everything
+# source = KBo 5.3 ii 22-23 (MH/NS)
+1-3	nu=mu-u=š-ša-an	_	_	_	_	_	_	_	_
+1	nu	nu	CCONJ	_	_	5	cc	_	_
+2	mu-u	-mu	PRON	_	Case=Acc|Number=Sing|Person=1|PronType=Prs	5	obj	_	_
+3	š-ša-an	-šan	PART	_	_	5	advmod:loc	_	_
+4	ḫu-u-ma-an-da-az	ḫūmant-	PRON	_	Case=Abl|PronType=Tot	5	obl	_	_
+5	pa-aḫ-ši	paḫ(ḫa)š-	VERB	_	Mood=Imp|Number=Sing|Person=2|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 14.5-2
+# text = nu ku-iš A-NA d-UTU-Š=I i-da-a-lu-uš tu-uq-q=a a-pa-a-aš i-da-a-lu-uš e-eš-du
+# translation = who is evil to His Majesty, may he be evil to you.
+# source = KBo 5.3 ii 22-23 (MH/NS)
+1	nu	nu	CCONJ	_	_	11	cc	_	_
+2	ku-iš	kuiš	PRON	_	Case=Nom|Gender=Com|Number=Sing|PronType=Rel	7	nsubj	_	_
+3	A-NA	ANA	ADP	_	_	5	case	_	_
+4-6	d-UTU-Š=I	_	_	_	_	_	_	_	_
+4	d	d	NOUN	_	_	5	nmod:det	_	_
+5	UTU-Š	Ištanu-	PROPN	_	_	7	obl	_	_
+6	I	-miš	PRON	_	Number=Sing|Person=1|Poss=Yes|PronType=Prs	5	nmod	_	_
+7	i-da-a-lu-uš	idālu-	ADJ	_	Case=Nom|Gender=Com|Number=Sing	11	dislocated	_	_
+8-9	tu-uq-q=a	_	_	_	_	_	_	_	_
+8	tu-uq-q	zik	PRON	_	Case=Dat|Number=Sing|Person=2|PronType=Prs	11	obj	_	_
+9	a	-a	PART	_	_	11	discourse	_	_
+10	a-pa-a-aš	apā-	PRON	_	Case=Nom|Gender=Com|Number=Sing|PronType=Dem	11	nsubj	_	_
+11	i-da-a-lu-uš	idālu-	ADJ	_	Case=Nom|Gender=Com|Number=Sing	0	root	_	_
+12	e-eš-du	ēš	AUX	_	Mood=Imp|Number=Sing|Person=3|VerbForm=Fin|Voice=Act	11	cop	_	_
+
+# sent_id = 14.7*
+# text = LÚ.MEŠ URU-Nu-ḫaš-ši=wa ku-it ku-u-ru-ur nu=wa-a=š-ma-aš i-it ḫal-ki-ḪI.A-uš ar-ḫa ḫar-ni-ik nu=wa-r=a-aš=kán an-da ḫa-at-ke-eš-nu-ut
+# translation = "Because the men of Nuḫašši are hostile, go to them, destroy the grain, and besiege them."
+# source = KBo 4.4 i 41-42 (NH)
+1	LÚ.MEŠ	pišna/i-	NOUN	_	Case=Nom|Gender=Com|Number=Plur	6	nsubj	_	_
+2-4	URU-Nu-ḫaš-ši=wa	_	_	_	_	_	_	_	_
+2	URU	URU	NOUN	_	_	3	nmod:det	_	_
+3	Nu-ḫaš-ši	Nuḫašši	PROPN	_	_	1	nmod	_	_
+4	wa	-wa	PART	_	_	6	discourse	_	_
+5	ku-it	kuit	SCONJ	_	_	6	mark	_	_
+6	ku-u-ru-ur	kūrur-	ADJ	_	Case=Nom	10	advcl	_	_
+7-9	nu=wa-a=š-ma-aš	_	_	_	_	_	_	_	_
+7	nu	nu	PART	_	_	10	discourse:conn	_	_
+8	wa-a	-wa	PART	_	_	10	discourse	_	_
+9	š-ma-aš	-at	PRON	_	Case=Dat|Number=Plur|Person=3|PronType=Prs	10	iobj	_	_
+10	i-it	pai-#1-	VERB	_	Mood=Imp|Number=Sing|Person=2|VerbForm=Fin|Voice=Act	0	root	_	_
+11	ḫal-ki-ḪI.A-uš	ḫalki-	NOUN	_	Case=Acc|Gender=Com|Number=Plur	13	obj	_	_
+12	ar-ḫa	arḫa	ADV	_	_	13	advmod	_	_
+13	ḫar-ni-ik	ḫarnink-	VERB	_	Mood=Imp|Number=Sing|Person=2|VerbForm=Fin|Voice=Act	10	conj	_	_
+14-17	nu=wa-r=a-aš=kán	_	_	_	_	_	_	_	_
+14	nu	nu	CCONJ	_	_	19	cc	_	_
+15	wa-r	-wa	PART	_	_	19	discourse	_	_
+16	a-aš	-aš	PRON	_	Case=Acc|Gender=Com|Number=Plur|Person=3|PronType=Prs	19	obj	_	_
+17	kán	-kan	PART	_	_	19	advmod:loc	_	_
+18	an-da	anda	ADV	_	_	19	advmod	_	_
+19	ḫa-at-ke-eš-nu-ut	ḫatkešnu-	VERB	_	Mood=Imp|Number=Sing|Person=2|VerbForm=Fin|Voice=Act	10	conj	_	_
+
+# sent_id = 14.8-1
+# text = nu mi-e-ú-uš ku-i-uš d-UTU-uš tu-u-ri-ya-an ḫar-ši nu-u=š-ma-aš ka-a-ša DUMU.NAM.LÚ.U19.LU-aš ḫal-ki-in šu-uḫ-ḫa-aš
+# translated = And the four which you, Ištanu, have hitched up, the human just poured out grain for them
+# source = KUB 31.127 i 52-56 (OH/NS)
+1	nu	nu	CCONJ	_	_	6	cc	_	_
+2	mi-e-ú-uš	me(i)u-	NUM	_	Gender=Com|NumType=Card	14	dislocated	_	_
+3	ku-i-uš	kuiš	PRON	_	Case=Acc|Gender=Com|Number=Plur|PronType=Rel	6	obj	_	_
+4-5	d-UTU-uš	_	_	_	_	_	_	_	_
+4	d	d	NOUN	_	_	5	nmod:det	_	_
+5	UTU-uš	Ištanu-	PROPN	_	_	6	vocative	_	_
+6	tu-u-ri-ya-an	turiya-	VERB	_	VerbForm=Part	2	acl:relcl	_	_
+7	ḫar-ši	ḫark	AUX	_	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	6	aux	_	_
+8-9	nu-u=š-ma-aš	_	_	_	_	_	_	_	_
+8	nu-u	nu	PART	_	_	14	discourse:conn	_	_
+9	š-ma-aš	-at	PRON	_	Case=Dat|Gender=Com|Number=Plur|Person=3|PronType=Prs	14	iobj	_	_
+10	ka-a-ša	kāša	ADV	_	_	14	advmod	_	_
+11-12	DUMU.NAM.LÚ.U19.LU-aš	_	_	_	_	_	_	_	_
+11	DUMU	DUMU-(l)a-	NOUN	_	Case=Nom|Gender=Com|Number=Sing	14	nsubj	_	_
+12	NAM.LÚ.U19.LU-aš	dandukiš(n)-	NOUN	_	Case=Gen|Gender=Neut|Number=Sing	11	nmod	_	_
+13	ḫal-ki-in	ḫalki-	NOUN	_	Case=Acc|Gender=Com|Number=Sing	14	obj	_	_
+14	šu-uḫ-ḫa-aš	šuḫḫa-	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	_
+
+# sent_id = 14.8-2
+# text = nu mi-e-wa-aš=ti-iš ka-ri-ip-pa-an-du
+# translated = may your four devour it
+1	nu	nu	CCONJ	_	_	4	cc	_	_
+2-3	mi-e-wa-aš=ti-iš	_	_	_	_	_	_	_	_
+2	mi-e-wa-aš	me(i)u-	NUM	_	Case=Nom|Gender=Com	4	nsubj	_	_
+3	ti-iš	-tiš	PRON	_	Case=Nom|Number=Sing|Person=2|Poss=Yes|PronType=Prs	2	nmod	_	_
+4	ka-ri-ip-pa-an-du	karāp-	VERB	_	Mood=Imp|Number=Plur|Person=3|VerbForm=Fin|Voice=Act	0	root	_	_
+

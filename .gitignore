@@ -12,3 +12,6 @@ __pycache__/
 *.review.json
 *.history.jsonl
 llmparserold
+docs/_build/
+docs/_generated/
+mk-demo.py

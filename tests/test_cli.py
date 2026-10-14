@@ -85,3 +85,125 @@ def test_module_entry_point(monkeypatch, capsys):
         runpy.run_module("llmparser", run_name="__main__")
     assert exit_info.value.code == 0
     assert "Usage: llmparser" in capsys.readouterr().out
+
+
+# ---------------------------------------------------------------- annotation commands
+
+
+@pytest.fixture
+def scripted_team(monkeypatch):
+    """Replace the agent team with scripted models: the scorer rates everything 0.9."""
+    from llmparser import cli
+    from llmparser.agents.team import AgentTeam
+    from scripted import cells, nothing, scripted, sent_id
+
+    def score(prompt):
+        updates = [{"token_id": c["token_id"], "column": c["column"], "confidence": 0.9} for c in cells(prompt)]
+        return [("update_cells", {"source": "pred", "sent_id": sent_id(prompt), "updates": updates})]
+
+    created = []
+
+    def make_team(store, target, settings):
+        created.append(settings)
+        return AgentTeam(store, target, settings, models={"scorer": scripted(score), "*": scripted(nothing)})
+
+    monkeypatch.setattr(cli, "make_team", make_team)
+    return created
+
+
+def test_run_command(scripted_team, train_path, pred_path, tmp_path):
+    config = tmp_path / "settings.yaml"
+    config.write_text("rounds: 2\nroles:\n  head:\n    model: big\n", encoding="utf-8")
+    report = tmp_path / "report.json"
+    args = [
+        "run", str(pred_path), "-s", str(train_path), "-c", str(config), "--model", "m", "--model-for", "lemma=small",
+        "--roles", "lemma,head", "--threshold", "0.5", "--sentence", "p2", "--report", str(report),
+    ]  # fmt: skip
+    result = runner.invoke(app, args)
+    assert result.exit_code == 0, result.output
+    settings = scripted_team[0]
+    assert (settings.model, settings.model_for("lemma"), settings.model_for("head"), settings.rounds, settings.threshold) == ("m", "small", "big", 2, 0.5)
+    assert not settings.enabled("upos")
+    assert "Round 1: scored 1 sentences, 0 agent tasks" in result.stdout
+    assert "Final mean confidence 0.900" in result.stdout
+    assert "[round 1] p2 scorer: done" in result.stderr
+    assert json.loads(report.read_text())["rounds"][0]["scored"] == 1
+    assert "Conf=" in pred_path.read_text(encoding="utf-8")
+
+
+def test_score_command_and_missing_sources(scripted_team, pred_path):
+    result = runner.invoke(app, ["score", str(pred_path), "--concurrency", "2"])
+    assert result.exit_code == 0, result.output
+    assert "no trusted --source" in result.stderr
+    assert "Round 1: scored 2 sentences, 0 agent tasks" in result.stdout
+    assert scripted_team[0].concurrency == 2
+
+
+@pytest.mark.parametrize(
+    ("args", "message"),
+    [
+        (["--model-for", "syntax=x"], "Expected ROLE=MODEL"),
+        (["--model-for", "lemma"], "Expected ROLE=MODEL"),
+        (["--roles", "lemma,syntax"], "Roles must be among"),
+        (["-c", "missing.yaml"], "No such file"),
+    ],
+)
+def test_run_rejects_bad_options(pred_path, args, message):
+    result = runner.invoke(app, ["run", str(pred_path), *args])
+    assert result.exit_code == 2
+    assert message in result.stderr
+
+
+def test_run_reports_configuration_errors(monkeypatch, pred_path):
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    result = runner.invoke(app, ["score", str(pred_path), "--model", "anthropic:claude-opus-5-5"])
+    assert result.exit_code == 1
+    assert "ANTHROPIC_API_KEY" in result.stderr
+    result = runner.invoke(app, ["run", str(pred_path), "--sentence", "nope"])
+    assert result.exit_code == 1
+    assert "No sentence 'nope'" in result.stderr
+
+
+def test_init_command(tmp_path, train_path):
+    raw = tmp_path / "raw.txt"
+    raw.write_text("Vino al mercado.\nthe dogs\n", encoding="utf-8")
+    output = tmp_path / "out.conllu"
+    result = runner.invoke(app, ["init", str(raw), "-o", str(output), "-s", str(train_path)])
+    assert result.exit_code == 0, result.output
+    assert "Wrote 2 sentences" in result.stdout
+    assert "Baseline: 1 multiword splits, 7 words analysed, 0 words not found" in result.stdout
+    assert "2-3\tal" in output.read_text(encoding="utf-8")
+
+    result = runner.invoke(app, ["init", str(raw), "-o", str(output)])
+    assert result.exit_code == 1 and "use --force" in result.stderr
+    result = runner.invoke(app, ["init", str(raw), "-o", str(output), "--force", "--no-baseline", "-s", str(train_path)])
+    assert result.exit_code == 0
+    assert "Baseline" not in result.stdout
+    assert not output.with_name("out.conllu.history.jsonl").exists()
+
+    bad = tmp_path / "bad.yaml"
+    bad.write_text("- {verse: 1}\n", encoding="utf-8")
+    result = runner.invoke(app, ["init", str(bad), "-o", str(tmp_path / "x.conllu")])
+    assert result.exit_code == 1 and "no 'text'" in result.stderr
+
+
+def test_evaluate_command(tmp_path, train_path, pred_path):
+    result = runner.invoke(app, ["evaluate", str(pred_path), str(train_path)])
+    assert result.exit_code == 0, result.output
+    assert "0 sentences matched." in result.stdout
+    assert "Missing from the predictions: t1, t2, t3" in result.stdout
+    assert "Not in the gold file: p1, p2" in result.stdout
+    result = runner.invoke(app, ["evaluate", str(train_path), str(train_path), "--json"])
+    assert json.loads(result.stdout)["scores"][0]["f1"] == 1.0
+    result = runner.invoke(app, ["evaluate", str(train_path), str(train_path)])
+    assert "Missing" not in result.stdout and "Words      100.00%" in result.stdout
+    result = runner.invoke(app, ["evaluate", str(tmp_path / "missing.conllu"), str(train_path)])
+    assert result.exit_code == 1 and "Error" in result.stderr
+
+
+def test_settings_command(tmp_path):
+    result = runner.invoke(app, ["settings"])
+    assert result.stdout.startswith("model: anthropic:claude-opus-5-5\n")
+    config = tmp_path / "s.yaml"
+    config.write_text("rounds: 7\n", encoding="utf-8")
+    assert "rounds: 7" in runner.invoke(app, ["settings", "-c", str(config)]).stdout
