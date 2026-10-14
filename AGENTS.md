@@ -137,6 +137,12 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
   produced a wrong XPOS). On Latin PROIEL: 265/265 morphology cells and 21/21
   relations correct. Rules run after `init`, at the start of `run`, and after
   each role on the sentences it touched.
+- **Cross-check flags** (`Rules.cross_check`): after syntax, a UPOS whose share
+  for (lemma, deprel) in the treebank is ≤ 1−min_share is flagged for the upos
+  agent (deprel confidence ≥ 0.5 is enough, since it only flags). Needs ≥ 2
+  rounds to take effect.
+- Each run appends its report to `<pred>.runs.jsonl`; `evaluate
+  --annotated-only` scores only fully parsed sentences.
 - **Compact answers** (`agents/outputs.py`): every role but segmentation
   returns `Annotation`/`Scores` with `SENT_ID TOKEN_ID VALUE CONFIDENCE` lines;
   an output validator dry-runs the edits (`update_cells(dry_run=True)`), sends
@@ -233,6 +239,12 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   Masc; `corde` nsubj) and genuinely ambiguous `-erint` forms (after `cum`: 9 Sub
   vs 7 Ind in train). New design on sentences 11–13: $0.25 for 3 sentences
   (13 requests), UPOS/lemma 100%, FEATS 96%, UAS 96%, LAS 91%.
+
+- User run on Latin dev (sentences 1–30 parsed, 1 round): on those 30
+  sentences UPOS 98.7, XPOS 98.4, lemma 99.3, UFeats 95.7, UAS 95.4, LAS 93.4
+  (gold sentences + tokenisation). CoNLL 2018 best on la_proiel test (raw
+  text, sentence segmentation ~39% F1): UPOS 96.86, UFeats 91.46, lemma 97.15,
+  UAS 77.62, LAS 73.61 — not directly comparable.
 
 ## Ideas / next steps
 

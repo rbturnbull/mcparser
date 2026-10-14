@@ -141,7 +141,12 @@ responsible column with your suggestion.""",
 }
 
 
-def instructions(role: Role, target: str, trusted: Iterable[str], extra: str | None = None) -> str:
+SYNTAX_ROLES = frozenset({"head", "deprel", "deps", "scorer"})
+
+
+def instructions(
+    role: Role, target: str, trusted: Iterable[str], extra: str | None = None, relations: str | None = None
+) -> str:
     columns = "the confidence of cells" if role.is_scorer else " and ".join(c.upper() for c in role.columns)
     kind = "scores" if role.is_scorer else "tools" if role.edits_with_tools else "annotation"
     answer = ANSWERS[kind].format(example=EXAMPLES.get(role.name, ""), columns=columns)
@@ -149,6 +154,8 @@ def instructions(role: Role, target: str, trusted: Iterable[str], extra: str | N
         COMMON.format(title=role.title, target=target, trusted=", ".join(trusted) or "none", answer=answer),
         GUIDANCE[role.name],
     ]
+    if relations and role.name in SYNTAX_ROLES:
+        parts.append(f"Relations used in the treebank (with counts; use its subtypes):\n{relations}")
     if extra:
         parts.append(extra)
     return "\n\n".join(parts)

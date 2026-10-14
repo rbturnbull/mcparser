@@ -36,6 +36,8 @@ def test_instructions():
     scorer = instructions(ROLES["scorer"], "pred", [])
     assert "treebank\n(none)" in scorer and '"SENT_ID TOKEN_ID COLUMN CONFIDENCE"' in scorer
     assert "split_word" in instructions(ROLES["segmentation"], "pred", ["train"])
+    assert "Relations used in the treebank (with counts; use its subtypes):\nroot 3" in instructions(ROLES["deprel"], "pred", [], relations="root 3")
+    assert "Relations used" not in instructions(ROLES["upos"], "pred", [], relations="root 3")
 
 
 def test_task_prompts():
@@ -236,4 +238,5 @@ def test_team_models_and_agents(store):
     assert team.model_settings("lemma") == {"cache": True}
     assert AgentTeam(store, "pred", Settings(strong_thinking="low")).model_settings("head") == {"cache": True, "thinking": "low"}
     assert team.model_name(TestModel()) == "test"
+    assert team.relations().startswith("det 3, root 3")
     assert values("upos", "X")("") == {"values": ""}

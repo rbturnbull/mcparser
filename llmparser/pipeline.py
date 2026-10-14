@@ -206,6 +206,7 @@ class Pipeline:
         for column, count in report.cells.items():
             self.rules_report.cells[column] = self.rules_report.cells.get(column, 0) + count
         self.rules_report.splits += report.splits
+        self.rules_report.flags += report.flags
 
     async def _each(self, batches: list[list[TaskItem]], work: Callable[[list[TaskItem]], Awaitable[None]]) -> None:
         if self.settings.concurrency == 1:

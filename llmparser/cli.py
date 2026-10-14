@@ -217,7 +217,10 @@ def make_team(store: CorpusStore, target: str, settings: Settings) -> AgentTeam:
 
 
 def _print_report(report: RunReport) -> None:
-    typer.echo(f"Rules settled {report.rules.total} cells without a model: {report.rules.cells}.")
+    typer.echo(
+        f"Rules settled {report.rules.total} cells without a model: {report.rules.cells}; "
+        f"{report.rules.flags} cross-check flags."
+    )
     for item in report.rounds:
         typer.echo(
             f"Round {item.round}: scored {item.scored} sentences, {item.tasks} agent tasks, "
@@ -262,6 +265,9 @@ def _annotate(
         typer.echo(f"Error: {error}", err=True)
         raise typer.Exit(1) from error
     _print_report(report)
+    log = prediction.with_name(prediction.name + ".runs.jsonl")
+    with log.open("a", encoding="utf-8") as stream:
+        stream.write(report.model_dump_json() + "\n")
     if report_path:
         report_path.write_text(report.model_dump_json(indent=1), encoding="utf-8")
 
@@ -393,7 +399,7 @@ def init(
         raise typer.Exit(1) from error
     sentences = sentences[:max_sentences] if max_sentences else sentences
     output.write_text(format_conllu(sentences), encoding="utf-8")
-    for sidecar in (".review.json", ".history.jsonl"):
+    for sidecar in (".review.json", ".history.jsonl", ".runs.jsonl"):
         output.with_name(output.name + sidecar).unlink(missing_ok=True)
     typer.echo(f"Wrote {len(sentences)} sentences to {output}.")
     if baseline and source:
@@ -415,6 +421,9 @@ def evaluate(
     predicted_only: Annotated[
         bool, typer.Option("--predicted-only", help="Ignore gold sentences that are not in the predictions.")
     ] = False,
+    annotated_only: Annotated[
+        bool, typer.Option("--annotated-only", help="Only score predicted sentences that have been parsed (every HEAD set).")
+    ] = False,
 ) -> None:
     """Compare predictions with gold annotation (precision, recall and F1 per metric)."""
     try:
@@ -422,6 +431,7 @@ def evaluate(
             parse_conllu(prediction.read_text(encoding="utf-8")),
             parse_conllu(gold.read_text(encoding="utf-8")),
             predicted_only=predicted_only,
+            annotated_only=annotated_only,
         )
     except (CorpusError, OSError) as error:
         typer.echo(f"Error: {error}", err=True)

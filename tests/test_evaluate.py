@@ -91,3 +91,11 @@ def test_tokenisation_and_tag_errors():
     assert result.score("UPOS").correct == 4 and result.score("AllTags").correct == 4
     merged = parse_conllu("# sent_id = a\n1\tVinodel\tx\tX\t_\t_\t0\troot\t_\t_\n2\tmercado\tmercado\tNOUN\tN\t_\t1\tobl\t_\t_\n\n")
     assert evaluate(merged, gold).score("Words").correct == 1
+
+
+def test_annotated_only():
+    gold = parse_conllu(GOLD)
+    unparsed = parse_conllu(GOLD.replace("\t0\troot", "\t_\troot", 1))
+    result = evaluate(unparsed, gold, annotated_only=True)
+    assert (result.sentences, result.missing) == (1, [])  # sentence a has no root head any more: left out
+    assert result.score("LAS").f1 == 1.0

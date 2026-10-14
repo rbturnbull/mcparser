@@ -672,6 +672,14 @@ class CorpusStore:
         return RelationStats(basis="none", total=0, deprels=[])
 
     @_locked
+    def upos_for_function(self, lemma: str, deprel: str, sources: list[str] | None = None) -> list[ValueCount]:
+        """UPOS values used for ``lemma`` in relation ``deprel`` (subtype ignored); default: read-only sources."""
+        total: Counter[str] = Counter()
+        for source in self._trusted(sources):
+            total.update(source.index.upos_by_function.get((lemma, deprel.split(":")[0]), Counter()))
+        return [ValueCount(value=value, count=count) for value, count in total.most_common()]
+
+    @_locked
     def xpos_for_tags(self, upos: str, feats: str, sources: list[str] | None = None) -> list[ValueCount]:
         """XPOS values used with exactly this UPOS and FEATS (default: read-only sources)."""
         total: Counter[str] = Counter()

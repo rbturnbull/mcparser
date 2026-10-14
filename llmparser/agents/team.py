@@ -80,6 +80,11 @@ class AgentTeam:
         self.usage: dict[str, ModelUsage] = {}
         """Token use and estimated cost per model."""
 
+    def relations(self) -> str:
+        """The trusted DEPREL inventory as one line, for the syntax roles' instructions."""
+        values = self.store.allowed_values("deprel", limit=200)
+        return ", ".join(f"{v.value} {v.count}" for v in values)
+
     @property
     def trusted(self) -> list[str]:
         return [info.name for info in self.store.list_sources() if info.mode == "ro"]
@@ -95,7 +100,9 @@ class AgentTeam:
                 self.model(role),
                 name=role,
                 deps_type=Batch,
-                instructions=instructions(spec, self.target, self.trusted, self.settings.role(role).instructions),
+                instructions=instructions(
+                    spec, self.target, self.trusted, self.settings.role(role).instructions, self.relations()
+                ),
                 output_type=output_type,
                 toolsets=[role_toolset(self.toolset, spec, self.target)],
                 retries=3,

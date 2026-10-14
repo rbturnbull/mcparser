@@ -1,426 +1,426 @@
 # source = Jerome's Vulgate, Matthew 5
 # text = videns autem turbas ascendit in montem et cum sedisset accesserunt ad eum discipuli eius et aperiens os suum docebat eos dicens
 # sent_id = 12841
-1	videns	video	VERB	V-	Case=Nom|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Act	4	advcl	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.93,deprel:0.94
-2	autem	autem	ADV	Df	_	4	discourse	_	Conf=form:0.99,lemma:0.98,upos:0.98,xpos:0.98,feats:0.98,head:0.92,deprel:0.96
+1	videns	video	VERB	V-	Case=Nom|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Act	4	advcl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.93,deprel:0.94
+2	autem	autem	ADV	Df	_	4	discourse	_	Conf=form:0.99,lemma:0.98,upos:0.98,xpos:0.98,feats:0.98,head:0.92,deprel:0.97
 3	turbas	turba	NOUN	Nb	Case=Acc|Gender=Fem|Number=Plur	1	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.96
-4	ascendit	ascendo	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.99,lemma:0.85,upos:0.85,xpos:0.85,feats:0.85,head:0.96,deprel:0.97
+4	ascendit	ascendo	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.85,head:0.96,deprel:0.99
 5	in	in	ADP	R-	_	6	case	_	Conf=form:0.99,lemma:0.98,upos:0.98,xpos:0.98,feats:0.98,head:0.98,deprel:0.98
 6	montem	mons	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	4	obl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.92
-7	et	et	CCONJ	C-	_	10	cc	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.90,deprel:0.96
-8	cum	cum	SCONJ	G-	_	9	mark	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.97,deprel:0.97
+7	et	et	CCONJ	C-	_	10	cc	_	Conf=form:0.99,lemma:0.97,upos:0.96,xpos:0.96,feats:0.97,head:0.90,deprel:0.97
+8	cum	cum	SCONJ	G-	_	9	mark	_	Conf=form:0.99,lemma:0.97,upos:0.93,xpos:0.93,feats:0.97,head:0.97,deprel:0.97
 9	sedisset	sedeo	VERB	V-	Mood=Sub|Number=Sing|Person=3|Tense=Pqp|VerbForm=Fin|Voice=Act	10	advcl	_	Conf=form:0.99,lemma:0.96,upos:0.97,xpos:0.97,feats:0.95,head:0.94,deprel:0.95
 10	accesserunt	accedo	VERB	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	4	conj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.92
 11	ad	ad	ADP	R-	_	12	case	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.98,deprel:0.97
-12	eum	is	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	10	obl	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.88
-13	discipuli	discipulus	NOUN	Nb	Case=Nom|Gender=Masc|Number=Plur	10	nsubj	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.95,deprel:0.96
-14	eius	is	PRON	Pp	Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs	13	det	_	Conf=form:0.99,lemma:0.92,upos:0.92,xpos:0.92,feats:0.92,head:0.96,deprel:0.92
-15	et	et	CCONJ	C-	_	19	cc	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.90,deprel:0.95
+12	eum	is	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	10	obl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+13	discipuli	discipulus	NOUN	Nb	Case=Nom|Gender=Masc|Number=Plur	10	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+14	eius	is	PRON	Pp	Case=Gen|Gender=Masc|Number=Sing|Person=3|PronType=Prs	13	det	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.97
+15	et	et	CCONJ	C-	_	19	cc	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
 16	aperiens	aperio	VERB	V-	Case=Nom|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Act	19	advcl	_	Conf=form:0.99,lemma:0.96,upos:0.97,xpos:0.97,feats:0.95,head:0.90,deprel:0.92
-17	os	os	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	16	obj	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.96,deprel:0.95
-18	suum	suus	DET	Pt	Case=Acc|Gender=Neut|Number=Sing|Person=3|Poss=Yes|Reflex=Yes	17	det	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.90,head:0.97,deprel:0.97
+17	os	os	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	16	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.96,deprel:0.95
+18	suum	suus	DET	Pt	Case=Acc|Gender=Neut|Number=Sing|Person=3|Poss=Yes|Reflex=Yes	17	det	_	Conf=form:0.99,lemma:0.97,upos:0.95,xpos:0.97,feats:0.90,head:0.97,deprel:0.97
 19	docebat	doceo	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	4	conj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.86,deprel:0.91
-20	eos	is	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=3|PronType=Prs	19	obj	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.95
-21	dicens	dico	VERB	V-	Case=Nom|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Act	19	advcl	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.90,deprel:0.93
+20	eos	is	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=3|PronType=Prs	19	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+21	dicens	dico	VERB	V-	Case=Nom|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Act	19	advcl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.96,head:0.90,deprel:0.93
 
 # source = Jerome's Vulgate, Matthew 5
 # text = beati pauperes spiritu quoniam ipsorum est regnum caelorum
 # sent_id = 12842
-1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:1.00,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.96
-2	pauperes	pauper	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	1	nsubj	_	Conf=form:1.00,lemma:0.95,upos:0.95,xpos:0.95,feats:0.93,head:0.93,deprel:0.90
-3	spiritu	spiritus	NOUN	Nb	Case=Abl|Gender=Masc|Number=Sing	2	obl	_	Conf=form:1.00,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.88,deprel:0.82
-4	quoniam	quoniam	SCONJ	G-	_	5	mark	_	Conf=form:1.00,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.93,deprel:0.96
-5	ipsorum	ipse	PRON	Pp	Case=Gen|Gender=Masc|Number=Plur|Person=3|PronType=Prs	1	advcl	_	Conf=form:1.00,lemma:0.88,upos:0.88,xpos:0.88,feats:0.88,head:0.90,deprel:0.88
-6	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	5	cop	_	Conf=form:1.00,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.95,deprel:0.95
-7	regnum	regnum	NOUN	Nb	Case=Nom|Gender=Neut|Number=Sing	5	nsubj	_	Conf=form:1.00,lemma:0.96,upos:0.96,xpos:0.96,feats:0.95,head:0.94,deprel:0.94
-8	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	7	nmod	_	Conf=form:1.00,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.96
+1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:1.00,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.99
+2	pauperes	pauper	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	1	nsubj	_	Conf=form:1.00,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.93,deprel:0.90
+3	spiritu	spiritus	NOUN	Nb	Case=Abl|Gender=Masc|Number=Sing	2	obl	_	Conf=form:1.00,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.82
+4	quoniam	quoniam	SCONJ	G-	_	5	mark	_	Conf=form:1.00,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.93,deprel:0.96
+5	ipsorum	ipse	PRON	Pp	Case=Gen|Gender=Masc|Number=Plur|Person=3|PronType=Prs	1	advcl	_	Conf=form:1.00,lemma:0.97,upos:0.88,xpos:0.88,feats:0.88,head:0.90,deprel:0.88
+6	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	5	cop	_	Conf=form:1.00,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+7	regnum	regnum	NOUN	Nb	Case=Nom|Gender=Neut|Number=Sing	5	nsubj	_	Conf=form:1.00,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.94,deprel:0.94
+8	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	7	nmod	_	Conf=form:1.00,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
 
 # source = Jerome's Vulgate, Matthew 5
 # text = beati mites quoniam ipsi possidebunt terram
 # sent_id = 12844
-1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.96,deprel:0.96
+1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.99
 2	mites	mitis	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	1	nsubj	_	Conf=form:0.99,lemma:0.95,upos:0.85,xpos:0.85,feats:0.88,head:0.93,deprel:0.92
-3	quoniam	quoniam	SCONJ	G-	_	5	mark	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.96
-4	ipsi	ipse	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs	5	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.75,xpos:0.70,feats:0.85,head:0.95,deprel:0.95
-5	possidebunt	possideo	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	1	advcl	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.90,deprel:0.90
+3	quoniam	quoniam	SCONJ	G-	_	5	mark	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.96
+4	ipsi	ipse	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs	5	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.65,xpos:0.70,feats:0.85,head:0.95,deprel:0.95
+5	possidebunt	possideo	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	1	advcl	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.90,deprel:0.90
 6	terram	terra	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	5	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
 
 # source = Jerome's Vulgate, Matthew 5
 # text = beati qui lugent quoniam ipsi consolabuntur
 # sent_id = 12846
-1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.97,deprel:0.97
-2	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Plur|PronType=Rel	3	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.95,xpos:0.93,feats:0.95,head:0.96,deprel:0.96
+1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.99
+2	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Plur|PronType=Rel	3	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.96,deprel:0.96
 3	lugent	lugeo	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	1	nsubj	_	Conf=form:0.99,lemma:0.96,upos:0.97,xpos:0.97,feats:0.96,head:0.93,deprel:0.92
-4	quoniam	quoniam	SCONJ	G-	_	6	mark	_	Conf=form:0.99,lemma:0.94,upos:0.94,xpos:0.94,feats:0.94,head:0.96,deprel:0.96
-5	ipsi	ipse	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs	6	nsubj:pass	_	Conf=form:0.99,lemma:0.97,upos:0.70,xpos:0.85,feats:0.85,head:0.95,deprel:0.60
+4	quoniam	quoniam	SCONJ	G-	_	6	mark	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.96
+5	ipsi	ipse	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs	6	nsubj:pass	_	Conf=form:0.99,lemma:0.97,upos:0.65,xpos:0.85,feats:0.85,head:0.95,deprel:0.85
 6	consolabuntur	consolor	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	1	advcl	_	Conf=form:0.99,lemma:0.95,upos:0.97,xpos:0.97,feats:0.95,head:0.90,deprel:0.88
 
 # source = Jerome's Vulgate, Matthew 5
 # text = beati qui esuriunt et sitiunt iustitiam quoniam ipsi saturabuntur
 # sent_id = 12848
-1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
-2	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Plur|PronType=Rel	3	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.95,xpos:0.93,feats:0.93,head:0.95,deprel:0.95
+1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.99
+2	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Plur|PronType=Rel	3	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.95,deprel:0.95
 3	esuriunt	esurio	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	1	nsubj	_	Conf=form:0.99,lemma:0.95,upos:0.97,xpos:0.97,feats:0.96,head:0.93,deprel:0.92
 4	et	et	CCONJ	C-	_	5	cc	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.97
 5	sitiunt	sitio	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	3	conj	_	Conf=form:0.99,lemma:0.95,upos:0.97,xpos:0.97,feats:0.96,head:0.94,deprel:0.95
-6	iustitiam	iustitia	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	3	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.55,deprel:0.88
-7	quoniam	quoniam	SCONJ	G-	_	9	mark	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.96
-8	ipsi	ipse	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs	9	nsubj:pass	_	Conf=form:0.99,lemma:0.97,upos:0.93,xpos:0.70,feats:0.90,head:0.94,deprel:0.90
+6	iustitiam	iustitia	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	3	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.50,deprel:0.88
+7	quoniam	quoniam	SCONJ	G-	_	9	mark	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.96
+8	ipsi	ipse	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs	9	nsubj:pass	_	Conf=form:0.99,lemma:0.97,upos:0.93,xpos:0.97,feats:0.90,head:0.94,deprel:0.90
 9	saturabuntur	saturo	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	1	advcl	_	Conf=form:0.98,lemma:0.95,upos:0.97,xpos:0.97,feats:0.96,head:0.88,deprel:0.90
 
 # source = Jerome's Vulgate, Matthew 5
 # text = beati misericordes quia ipsi misericordiam consequentur
 # sent_id = 12850
-1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.97,deprel:0.97
-2	misericordes	misericors	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	1	nsubj	_	Conf=form:0.99,lemma:0.92,upos:0.92,xpos:0.92,feats:0.92,head:0.93,deprel:0.92
-3	quia	quia	SCONJ	G-	_	6	mark	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.96,deprel:0.97
+1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.99
+2	misericordes	misericors	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	1	nsubj	_	Conf=form:0.99,lemma:0.92,upos:0.92,xpos:0.97,feats:0.92,head:0.93,deprel:0.92
+3	quia	quia	SCONJ	G-	_	6	mark	_	Conf=form:0.99,lemma:0.97,upos:0.95,xpos:0.95,feats:0.97,head:0.96,deprel:0.97
 4	ipsi	ipse	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs	6	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.88,xpos:0.80,feats:0.85,head:0.95,deprel:0.94
-5	misericordiam	misericordia	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	6	obj	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.96,deprel:0.95
-6	consequentur	consequor	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	1	advcl	_	Conf=form:0.99,lemma:0.92,upos:0.92,xpos:0.92,feats:0.92,head:0.90,deprel:0.90
+5	misericordiam	misericordia	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	6	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.95
+6	consequentur	consequor	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	1	advcl	_	Conf=form:0.99,lemma:0.92,upos:0.92,xpos:0.97,feats:0.92,head:0.90,deprel:0.90
 
 # source = Jerome's Vulgate, Matthew 5
 # text = beati mundo corde quoniam ipsi Deum videbunt
 # sent_id = 12852
-1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.96
-2	mundo	mundus	ADJ	A-	Case=Abl|Degree=Pos|Gender=Neut|Number=Sing	3	amod	_	Conf=form:0.99,lemma:0.93,upos:0.88,xpos:0.88,feats:0.85,head:0.90,deprel:0.88
-3	corde	cor	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	1	obl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.55
-4	quoniam	quoniam	SCONJ	G-	_	7	mark	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.96,deprel:0.97
-5	ipsi	ipse	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs	7	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.85,xpos:0.60,feats:0.85,head:0.95,deprel:0.95
+1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+2	mundo	mundus	ADJ	A-	Case=Abl|Degree=Pos|Gender=Neut|Number=Sing	3	amod	_	Conf=form:0.99,lemma:0.97,upos:0.88,xpos:0.88,feats:0.85,head:0.90,deprel:0.88
+3	corde	cor	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	1	obl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.55
+4	quoniam	quoniam	SCONJ	G-	_	7	mark	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.97
+5	ipsi	ipse	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=3|PronType=Prs	7	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.85,xpos:0.70,feats:0.85,head:0.95,deprel:0.95
 6	Deum	deus	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	7	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
 7	videbunt	video	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	1	advcl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.88
 
 # source = Jerome's Vulgate, Matthew 5
 # text = beati pacifici quoniam filii Dei vocabuntur
 # sent_id = 12854
-1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.96
+1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.99
 2	pacifici	pacificus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	1	nsubj	_	Conf=form:0.99,lemma:0.90,upos:0.85,xpos:0.87,feats:0.88,head:0.93,deprel:0.93
-3	quoniam	quoniam	SCONJ	G-	_	6	mark	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.95,deprel:0.96
-4	filii	filius	NOUN	Nb	Case=Nom|Gender=Masc|Number=Plur	6	xcomp	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.92,deprel:0.86
-5	Dei	deus	NOUN	Nb	Case=Gen|Gender=Masc|Number=Sing	4	nmod	_	Conf=form:0.99,lemma:0.98,upos:0.98,xpos:0.98,feats:0.98,head:0.96,deprel:0.95
-6	vocabuntur	voco	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	1	advcl	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.92,deprel:0.90
+3	quoniam	quoniam	SCONJ	G-	_	6	mark	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.96
+4	filii	filius	NOUN	Nb	Case=Nom|Gender=Masc|Number=Plur	6	xcomp	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.92,deprel:0.86
+5	Dei	deus	NOUN	Nb	Case=Gen|Gender=Masc|Number=Sing	4	nmod	_	Conf=form:0.99,lemma:0.98,upos:0.98,xpos:0.98,feats:0.98,head:0.96,deprel:0.97
+6	vocabuntur	voco	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	1	advcl	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.92,deprel:0.90
 
 # source = Jerome's Vulgate, Matthew 5
 # text = beati qui persecutionem patiuntur propter iustitiam quoniam ipsorum est regnum caelorum
 # sent_id = 12856
-1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.97
-2	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Plur|PronType=Rel	4	nsubj	_	Conf=form:0.99,lemma:0.95,upos:0.95,xpos:0.95,feats:0.93,head:0.95,deprel:0.93
+1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.99
+2	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Plur|PronType=Rel	4	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.95,deprel:0.93
 3	persecutionem	persecutio	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	4	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.95
-4	patiuntur	patior	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Pass	1	nsubj	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.92,deprel:0.90
+4	patiuntur	patior	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Pass	1	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.90
 5	propter	propter	ADP	R-	_	6	case	_	Conf=form:0.99,lemma:0.98,upos:0.98,xpos:0.98,feats:0.98,head:0.97,deprel:0.98
 6	iustitiam	iustitia	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	4	obl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.92
-7	quoniam	quoniam	SCONJ	G-	_	8	mark	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.90,deprel:0.96
-8	ipsorum	ipse	PRON	Pp	Case=Gen|Gender=Masc|Number=Plur|Person=3|PronType=Prs	1	advcl	_	Conf=form:0.99,lemma:0.90,upos:0.90,xpos:0.90,feats:0.90,head:0.88,deprel:0.87
-9	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	8	cop	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.94
-10	regnum	regnum	NOUN	Nb	Case=Nom|Gender=Neut|Number=Sing	8	nsubj	_	Conf=form:0.99,lemma:0.96,upos:0.96,xpos:0.96,feats:0.95,head:0.92,deprel:0.92
-11	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	10	nmod	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.96
+7	quoniam	quoniam	SCONJ	G-	_	8	mark	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+8	ipsorum	ipse	PRON	Pp	Case=Gen|Gender=Masc|Number=Plur|Person=3|PronType=Prs	1	advcl	_	Conf=form:0.99,lemma:0.97,upos:0.90,xpos:0.97,feats:0.90,head:0.88,deprel:0.87
+9	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	8	cop	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+10	regnum	regnum	NOUN	Nb	Case=Nom|Gender=Neut|Number=Sing	8	nsubj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.92
+11	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	10	nmod	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.97
 
 # source = Jerome's Vulgate, Matthew 5
 # text = beati estis cum maledixerint vobis et persecuti vos fuerint et dixerint omne malum adversum vos mentientes propter me
 # sent_id = 12858
-1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.96
-2	estis	sum	AUX	V-	Mood=Ind|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	1	cop	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.96
-3	cum	cum	SCONJ	G-	_	4	mark	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.96,deprel:0.96
-4	maledixerint	maledico	VERB	V-	Aspect=Perf|Mood=Sub|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	1	advcl	_	Conf=form:0.99,lemma:0.95,upos:0.96,xpos:0.96,feats:0.75,head:0.90,deprel:0.90
-5	vobis	vos	PRON	Pp	Case=Dat|Gender=Masc|Number=Plur|Person=2|PronType=Prs	4	obl:arg	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.95,deprel:0.82
+1	beati	beatus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	0	root	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.99
+2	estis	sum	AUX	V-	Mood=Ind|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	1	cop	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.97
+3	cum	cum	SCONJ	G-	_	4	mark	_	Conf=form:0.99,lemma:0.97,upos:0.93,xpos:0.93,feats:0.97,head:0.96,deprel:0.96
+4	maledixerint	maledico	VERB	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	1	advcl	_	Conf=form:0.99,lemma:0.95,upos:0.96,xpos:0.96,feats:0.70,head:0.90,deprel:0.90
+5	vobis	vos	PRON	Pp	Case=Dat|Gender=Masc|Number=Plur|Person=2|PronType=Prs	4	obl:arg	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.95,deprel:0.82
 6	et	et	CCONJ	C-	_	7	cc	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.93,deprel:0.97
-7	persecuti	persequor	VERB	V-	Aspect=Perf|Case=Nom|Gender=Masc|Number=Plur|Tense=Past|VerbForm=Part|Voice=Pass	4	conj	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.90,deprel:0.92
-8	vos	vos	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=2|PronType=Prs	7	obj	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.95,deprel:0.94
-9	fuerint	sum	AUX	V-	Aspect=Perf|Mood=Sub|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	7	aux	_	Conf=form:0.99,lemma:0.85,upos:0.85,xpos:0.85,feats:0.85,head:0.93,deprel:0.92
+7	persecuti	persequor	VERB	V-	Aspect=Perf|Case=Nom|Gender=Masc|Number=Plur|Tense=Past|VerbForm=Part|Voice=Pass	4	conj	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.90,deprel:0.92
+8	vos	vos	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=2|PronType=Prs	7	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.95,deprel:0.94
+9	fuerint	sum	AUX	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	7	aux	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.65,head:0.93,deprel:0.97
 10	et	et	CCONJ	C-	_	11	cc	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.93,deprel:0.97
-11	dixerint	dico	VERB	V-	Aspect=Perf|Mood=Sub|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	4	conj	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.75,head:0.90,deprel:0.92
-12	omne	omnis	DET	Px	Case=Acc|Gender=Neut|Number=Sing	13	det	_	Conf=form:0.99,lemma:0.85,upos:0.85,xpos:0.85,feats:0.85,head:0.92,deprel:0.90
-13	malum	malus	ADJ	A-	Case=Acc|Degree=Pos|Gender=Neut|Number=Sing	11	obj	_	Conf=form:0.99,lemma:0.85,upos:0.85,xpos:0.85,feats:0.85,head:0.90,deprel:0.88
-14	adversum	adversus	ADP	R-	_	15	case	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.95,deprel:0.97
-15	vos	vos	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=2|PronType=Prs	11	obl	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.78,deprel:0.85
-16	mentientes	mentior	VERB	V-	Case=Nom|Gender=Masc|Number=Plur|Tense=Pres|VerbForm=Part|Voice=Act	11	advcl	_	Conf=form:0.99,lemma:0.96,upos:0.93,xpos:0.95,feats:0.93,head:0.82,deprel:0.85
+11	dixerint	dico	VERB	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	4	conj	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.70,head:0.90,deprel:0.92
+12	omne	omnis	DET	Px	Case=Acc|Gender=Neut|Number=Sing	13	det	_	Conf=form:0.99,lemma:0.97,upos:0.85,xpos:0.85,feats:0.85,head:0.92,deprel:0.90
+13	malum	malus	ADJ	A-	Case=Acc|Degree=Pos|Gender=Neut|Number=Sing	11	obj	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.85,head:0.90,deprel:0.88
+14	adversum	adversus	ADP	R-	_	15	case	_	Conf=form:0.99,lemma:0.97,upos:0.93,xpos:0.93,feats:0.93,head:0.95,deprel:0.97
+15	vos	vos	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=2|PronType=Prs	11	obl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.80,deprel:0.85
+16	mentientes	mentior	VERB	V-	Case=Nom|Gender=Masc|Number=Plur|Tense=Pres|VerbForm=Part|Voice=Act	11	advcl	_	Conf=form:0.99,lemma:0.96,upos:0.93,xpos:0.97,feats:0.93,head:0.82,deprel:0.85
 17	propter	propter	ADP	R-	_	18	case	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
-18	me	ego	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=1|PronType=Prs	11	obl	_	Conf=form:0.99,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.65,deprel:0.85
+18	me	ego	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=1|PronType=Prs	11	obl	_	Conf=form:0.99,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.55,deprel:0.85
 
 # source = Jerome's Vulgate, Matthew 5
 # text = gaudete et exultate quoniam merces vestra copiosa est in caelis
 # sent_id = 12859
-1	gaudete	gaudeo	VERB	V-	Mood=Imp|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	et	et	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	exultate	_	_	_	_	_	_	_	_
-4	quoniam	quoniam	SCONJ	G-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	merces	merces	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.75,upos:0.75,xpos:0.75,feats:0.75
-6	vestra	vester	DET	Ps	Case=Nom|Gender=Fem|Number=Sing|Person=2|Poss=Yes	_	_	_	Conf=lemma:0.39,upos:0.39,xpos:0.39,feats:0.39
-7	copiosa	copiosus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.75,upos:0.75,xpos:0.75,feats:0.75
-8	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-9	in	in	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-10	caelis	caelum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Plur	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	gaudete	gaudeo	VERB	V-	Mood=Imp|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.99
+2	et	et	CCONJ	C-	_	3	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.90,feats:0.97,head:0.95,deprel:0.97
+3	exultate	exsulto	VERB	V-	Mood=Imp|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	1	conj	_	Conf=form:0.95,lemma:0.88,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.95
+4	quoniam	quoniam	SCONJ	G-	_	7	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+5	merces	merces	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	7	nsubj	_	Conf=form:0.95,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.95
+6	vestra	vester	DET	Ps	Case=Nom|Gender=Fem|Number=Sing|Person=2|Poss=Yes	5	det	_	Conf=form:0.93,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.93,deprel:0.93
+7	copiosa	copiosus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Fem|Number=Sing	1	advcl	_	Conf=form:0.94,lemma:0.94,upos:0.94,xpos:0.94,feats:0.94,head:0.82,deprel:0.90
+8	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	7	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+9	in	in	ADP	R-	_	10	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+10	caelis	caelum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Plur	7	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.50
 
 # source = Jerome's Vulgate, Matthew 5
 # text = sic enim persecuti sunt prophetas qui fuerunt ante vos
 # sent_id = 12860
-1	sic	sic	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	enim	enim	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	persecuti	persequor	VERB	V-	Aspect=Perf|Case=Nom|Gender=Masc|Number=Plur|Tense=Past|VerbForm=Part|Voice=Pass	_	_	_	Conf=lemma:0.67,upos:0.67,xpos:0.67,feats:0.67
-4	sunt	sum	AUX	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	prophetas	propheta	NOUN	Nb	Case=Acc|Gender=Masc|Number=Plur	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-6	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	_	_	_	Conf=lemma:0.62,upos:0.62,xpos:0.62,feats:0.62
-7	fuerunt	sum	AUX	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-8	ante	ante	ADP	R-	_	_	_	_	Conf=lemma:0.62,upos:0.62,xpos:0.62,feats:0.62
-9	vos	vos	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=2|PronType=Prs	_	_	_	Conf=lemma:0.59,upos:0.59,xpos:0.59,feats:0.59
+1	sic	sic	ADV	Df	_	3	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.95
+2	enim	enim	ADV	Df	_	3	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+3	persecuti	persequor	VERB	V-	Aspect=Perf|Case=Nom|Gender=Masc|Number=Plur|Tense=Past|VerbForm=Part|Voice=Pass	0	root	_	Conf=form:0.93,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.97,deprel:0.93
+4	sunt	sum	AUX	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	3	aux	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+5	prophetas	propheta	NOUN	Nb	Case=Acc|Gender=Masc|Number=Plur	3	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+6	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Plur|PronType=Rel	9	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.70,deprel:0.88
+7	fuerunt	sum	AUX	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	9	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.70,deprel:0.90
+8	ante	ante	ADP	R-	_	9	case	_	Conf=form:0.92,lemma:0.92,upos:0.92,xpos:0.92,feats:0.92,head:0.92,deprel:0.92
+9	vos	vos	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=2|PronType=Prs	5	acl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.75,deprel:0.80
 
 # source = Jerome's Vulgate, Matthew 5
 # text = vos estis sal terrae
 # sent_id = 12861
-1	vos	vos	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=2|PronType=Prs	_	_	_	Conf=lemma:0.59,upos:0.59,xpos:0.59,feats:0.59
-2	estis	sum	AUX	V-	Mood=Ind|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	sal	sal	NOUN	Nb	Case=Nom|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.80,upos:0.80,xpos:0.80,feats:0.80
-4	terrae	terra	NOUN	Nb	Case=Gen|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.88,upos:0.88,xpos:0.88,feats:0.88
+1	vos	vos	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=2|PronType=Prs	3	nsubj	_	Conf=form:0.95,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.95
+2	estis	sum	AUX	V-	Mood=Ind|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	3	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+3	sal	sal	NOUN	Nb	Case=Nom|Gender=Neut|Number=Sing	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.80,head:0.95,deprel:0.99
+4	terrae	terra	NOUN	Nb	Case=Gen|Gender=Fem|Number=Sing	3	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.88,head:0.93,deprel:0.95
 
 # source = Jerome's Vulgate, Matthew 5
 # text = quod si sal evanuerit in quo sallietur ad nihilum valet ultra nisi ut mittatur foras et conculcetur ab hominibus
 # sent_id = 12862
-1	quod	quod	SCONJ	G-	_	_	_	_	Conf=lemma:0.40,upos:0.40,xpos:0.40,feats:0.40
-2	si	si	SCONJ	G-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	sal	sal	NOUN	Nb	Case=Nom|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.80,upos:0.80,xpos:0.80,feats:0.80
-4	evanuerit	evanesco	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.33,upos:0.33,xpos:0.33,feats:0.33
-5	in	in	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-6	quo	qui	PRON	Pr	Case=Abl|Gender=Neut|Number=Sing|PronType=Rel	_	_	_	Conf=lemma:0.32,upos:0.32,xpos:0.32,feats:0.32
-7	sallietur	sal(l)io	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	_	_	_	Conf=lemma:0.67,upos:0.67,xpos:0.67,feats:0.67
-8	ad	ad	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-9	nihilum	nihilum	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.67,upos:0.67,xpos:0.67,feats:0.67
-10	valet	valeo	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-11	ultra	ultra	ADV	Df	_	_	_	_	Conf=lemma:0.59,upos:0.59,xpos:0.59,feats:0.59
-12	nisi	nisi	ADV	Df	_	_	_	_	Conf=lemma:0.61,upos:0.61,xpos:0.61,feats:0.61
-13	ut	ut	SCONJ	G-	_	_	_	_	Conf=lemma:0.81,upos:0.81,xpos:0.81,feats:0.81
-14	mittatur	mitto	VERB	V-	Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Pass	_	_	_	Conf=lemma:0.67,upos:0.67,xpos:0.67,feats:0.67
-15	foras	foras	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-16	et	et	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-17	conculcetur	_	_	_	_	_	_	_	_
-18	ab	ab	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-19	hominibus	homo	NOUN	Nb	Case=Abl|Gender=Masc|Number=Plur	_	_	_	Conf=lemma:0.54,upos:0.54,xpos:0.54,feats:0.54
+1	quod	quod	SCONJ	G-	_	4	mark	_	Conf=form:0.97,lemma:0.90,upos:0.60,xpos:0.75,feats:0.80,head:0.60,deprel:0.50
+2	si	si	SCONJ	G-	_	4	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+3	sal	sal	NOUN	Nb	Case=Nom|Gender=Neut|Number=Sing	4	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.80,head:0.90,deprel:0.90
+4	evanuerit	evanesco	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	7	advcl	_	Conf=form:0.90,lemma:0.90,upos:0.90,xpos:0.90,feats:0.85,head:0.80,deprel:0.90
+5	in	in	ADP	R-	_	6	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+6	quo	qui	PRON	Pr	Case=Abl|Gender=Neut|Number=Sing|PronType=Rel	7	obl	_	Conf=form:0.97,lemma:0.93,upos:0.97,xpos:0.90,feats:0.85,head:0.90,deprel:0.85
+7	sallietur	sal(l)io	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	0	root	_	Conf=form:0.93,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.75,deprel:0.95
+8	ad	ad	ADP	R-	_	9	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+9	nihilum	nihilum	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	10	obl	_	Conf=form:0.93,lemma:0.93,upos:0.93,xpos:0.93,feats:0.93,head:0.85,deprel:0.85
+10	valet	valeo	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	7	parataxis	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.60,deprel:0.50
+11	ultra	ultra	ADV	Df	_	10	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.80,xpos:0.75,feats:0.97,head:0.80,deprel:0.85
+12	nisi	nisi	ADV	Df	_	14	mark	_	Conf=form:0.97,lemma:0.97,upos:0.50,xpos:0.55,feats:0.97,head:0.70,deprel:0.70
+13	ut	ut	SCONJ	G-	_	14	mark	_	Conf=form:0.97,lemma:0.97,upos:0.81,xpos:0.81,feats:0.81,head:0.90,deprel:0.90
+14	mittatur	mitto	VERB	V-	Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Pass	10	advcl	_	Conf=form:0.95,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.75,deprel:0.75
+15	foras	foras	ADV	Df	_	14	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.90,feats:0.97,head:0.85,deprel:0.90
+16	et	et	CCONJ	C-	_	17	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.90,feats:0.97,head:0.90,deprel:0.97
+17	conculcetur	conculco	VERB	V-	Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Pass	14	conj	_	Conf=form:0.95,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.85,deprel:0.90
+18	ab	ab	ADP	R-	_	19	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+19	hominibus	homo	NOUN	Nb	Case=Abl|Gender=Masc|Number=Plur	17	obl:agent	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.85
 
 # source = Jerome's Vulgate, Matthew 5
 # text = vos estis lux mundi
 # sent_id = 12864
-1	vos	vos	PRON	Pp	Case=Acc|Gender=Masc|Number=Plur|Person=2|PronType=Prs	_	_	_	Conf=lemma:0.59,upos:0.59,xpos:0.59,feats:0.59
-2	estis	sum	AUX	V-	Mood=Ind|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	lux	lux	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-4	mundi	mundus	NOUN	Nb	Case=Gen|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	vos	vos	PRON	Pp	Case=Nom|Gender=Masc|Number=Plur|Person=2|PronType=Prs	3	nsubj	_	Conf=form:0.95,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.95
+2	estis	sum	AUX	V-	Mood=Ind|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	3	cop	_	Conf=form:0.95,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.95
+3	lux	lux	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	0	root	_	Conf=form:0.95,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.95
+4	mundi	mundus	NOUN	Nb	Case=Gen|Gender=Masc|Number=Sing	3	nmod	_	Conf=form:0.95,lemma:0.95,upos:0.95,xpos:0.95,feats:0.95,head:0.95,deprel:0.95
 
 # source = Jerome's Vulgate, Matthew 5
 # text = non potest civitas abscondi supra montem posita ne que accendunt lucernam et ponunt eam sub modio sed super candelabrum ut luceat omnibus qui in domo sunt
 # sent_id = 12865
-1	non	non	ADV	Df	Polarity=Neg	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	potest	possum	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	civitas	civitas	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-4	abscondi	abscondo	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.33,upos:0.33,xpos:0.33,feats:0.33
-5	supra	supra	ADP	R-	_	_	_	_	Conf=lemma:0.79,upos:0.79,xpos:0.79,feats:0.79
-6	montem	mons	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-7	posita	pono	VERB	V-	Aspect=Perf|Case=Nom|Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part|Voice=Pass	_	_	_	Conf=lemma:0.60,upos:0.60,xpos:0.60,feats:0.60
-8	ne	ne	ADV	Df	Polarity=Neg	_	_	_	Conf=lemma:0.67,upos:0.67,xpos:0.67,feats:0.67
-9	que	que	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-10	accendunt	_	_	_	_	_	_	_	_
-11	lucernam	lucerna	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.67,upos:0.67,xpos:0.67,feats:0.67
-12	et	et	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-13	ponunt	pono	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.33,upos:0.33,xpos:0.33,feats:0.33
-14	eam	is	PRON	Pp	Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs	_	_	_	Conf=lemma:0.66,upos:0.66,xpos:0.66,feats:0.66
-15	sub	sub	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-16	modio	modius	NOUN	Nb	Case=Abl|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-17	sed	sed	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-18	super	super	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-19	candelabrum	candelabrum	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-20	ut	ut	SCONJ	G-	_	_	_	_	Conf=lemma:0.81,upos:0.81,xpos:0.81,feats:0.81
-21	luceat	_	_	_	_	_	_	_	_
-22	omnibus	omnis	DET	Px	Case=Abl|Number=Plur	_	_	_	Conf=lemma:0.37,upos:0.37,xpos:0.37,feats:0.37
-23	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	_	_	_	Conf=lemma:0.62,upos:0.62,xpos:0.62,feats:0.62
-24	in	in	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-25	domo	domus	NOUN	Nb	Case=Abl|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-26	sunt	sum	AUX	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	non	non	ADV	Df	Polarity=Neg	2	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.97
+2	potest	possum	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.99
+3	civitas	civitas	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	2	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.88,deprel:0.88
+4	abscondi	abscondo	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Pass	2	xcomp	_	Conf=form:0.97,lemma:0.95,upos:0.93,xpos:0.97,feats:0.92,head:0.90,deprel:0.70
+5	supra	supra	ADP	R-	_	6	case	_	Conf=form:0.97,lemma:0.97,upos:0.92,xpos:0.92,feats:0.88,head:0.95,deprel:0.97
+6	montem	mons	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	7	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+7	posita	pono	VERB	V-	Aspect=Perf|Case=Nom|Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part|Voice=Pass	3	acl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.85,deprel:0.90
+8	ne	ne	ADV	Df	Polarity=Neg	10	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.82,xpos:0.72,feats:0.90,head:0.65,deprel:0.82
+9	que	que	CCONJ	C-	_	10	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.72,deprel:0.90
+10	accendunt	accendo	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	2	conj	_	Conf=form:0.97,lemma:0.96,upos:0.97,xpos:0.97,feats:0.95,head:0.65,deprel:0.80
+11	lucernam	lucerna	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	10	obj	_	Conf=form:0.96,lemma:0.96,upos:0.96,xpos:0.96,feats:0.96,head:0.96,deprel:0.96
+12	et	et	CCONJ	C-	_	13	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.90,feats:0.97,head:0.95,deprel:0.97
+13	ponunt	pono	VERB	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	10	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.90,deprel:0.90
+14	eam	is	PRON	Pp	Case=Acc|Gender=Fem|Number=Sing|Person=3|PronType=Prs	13	obj	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.85,feats:0.90,head:0.95,deprel:0.95
+15	sub	sub	ADP	R-	_	16	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+16	modio	modius	NOUN	Nb	Case=Abl|Gender=Masc|Number=Sing	13	obl	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.90,deprel:0.90
+17	sed	sed	CCONJ	C-	_	19	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+18	super	super	ADP	R-	_	19	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+19	candelabrum	candelabrum	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	16	conj	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.75,deprel:0.85
+20	ut	ut	SCONJ	G-	_	21	mark	_	Conf=form:0.97,lemma:0.97,upos:0.81,xpos:0.81,feats:0.81,head:0.95,deprel:0.95
+21	luceat	luceo	VERB	V-	Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	13	advcl	_	Conf=form:0.97,lemma:0.95,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.85
+22	omnibus	omnis	DET	Px	Case=Dat|Number=Plur	21	obl	_	Conf=form:0.97,lemma:0.97,upos:0.55,xpos:0.97,feats:0.85,head:0.90,deprel:0.60
+23	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Plur|PronType=Rel	25	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.88,head:0.80,deprel:0.90
+24	in	in	ADP	R-	_	25	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+25	domo	domus	NOUN	Nb	Case=Abl|Gender=Fem|Number=Sing	22	acl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.85
+26	sunt	sum	AUX	V-	Mood=Ind|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	25	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
 
 # source = Jerome's Vulgate, Matthew 5
 # text = sic luceat lux vestra coram hominibus ut videant vestra bona opera et glorificent Patrem vestrum qui in caelis est
 # sent_id = 12866
-1	sic	sic	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	luceat	_	_	_	_	_	_	_	_
-3	lux	lux	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-4	vestra	vester	DET	Ps	Case=Nom|Gender=Fem|Number=Sing|Person=2|Poss=Yes	_	_	_	Conf=lemma:0.39,upos:0.39,xpos:0.39,feats:0.39
-5	coram	coram	ADP	R-	_	_	_	_	Conf=lemma:0.81,upos:0.81,xpos:0.81,feats:0.81
-6	hominibus	homo	NOUN	Nb	Case=Abl|Gender=Masc|Number=Plur	_	_	_	Conf=lemma:0.54,upos:0.54,xpos:0.54,feats:0.54
-7	ut	ut	SCONJ	G-	_	_	_	_	Conf=lemma:0.81,upos:0.81,xpos:0.81,feats:0.81
-8	videant	video	VERB	V-	Mood=Sub|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-9	vestra	vester	DET	Ps	Case=Nom|Gender=Fem|Number=Sing|Person=2|Poss=Yes	_	_	_	Conf=lemma:0.39,upos:0.39,xpos:0.39,feats:0.39
-10	bona	bonus	ADJ	A-	Case=Acc|Degree=Pos|Gender=Neut|Number=Plur	_	_	_	Conf=lemma:0.48,upos:0.48,xpos:0.48,feats:0.48
-11	opera	opus	NOUN	Nb	Case=Acc|Gender=Neut|Number=Plur	_	_	_	Conf=lemma:0.49,upos:0.49,xpos:0.49,feats:0.49
-12	et	et	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-13	glorificent	_	_	_	_	_	_	_	_
-14	Patrem	pater	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-15	vestrum	vos	PRON	Pp	Case=Gen|Gender=Masc|Number=Plur|Person=2|PronType=Prs	_	_	_	Conf=lemma:0.36,upos:0.36,xpos:0.36,feats:0.36
-16	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	_	_	_	Conf=lemma:0.62,upos:0.62,xpos:0.62,feats:0.62
-17	in	in	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-18	caelis	caelum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Plur	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-19	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	sic	sic	ADV	Df	_	2	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.95
+2	luceat	luceo	VERB	V-	Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.94,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.99
+3	lux	lux	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	2	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.93
+4	vestra	vester	DET	Ps	Case=Nom|Gender=Fem|Number=Sing|Person=2|Poss=Yes	3	det	_	Conf=form:0.97,lemma:0.97,upos:0.88,xpos:0.97,feats:0.92,head:0.95,deprel:0.95
+5	coram	coram	ADP	R-	_	6	case	_	Conf=form:0.97,lemma:0.97,upos:0.81,xpos:0.81,feats:0.97,head:0.95,deprel:0.95
+6	hominibus	homo	NOUN	Nb	Case=Abl|Gender=Masc|Number=Plur	2	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.85
+7	ut	ut	SCONJ	G-	_	8	mark	_	Conf=form:0.97,lemma:0.97,upos:0.81,xpos:0.81,feats:0.81,head:0.95,deprel:0.95
+8	videant	video	VERB	V-	Mood=Sub|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	2	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+9	vestra	vester	DET	Ps	Case=Acc|Gender=Neut|Number=Plur|Person=2|Poss=Yes	11	det	_	Conf=form:0.97,lemma:0.97,upos:0.88,xpos:0.97,feats:0.93,head:0.95,deprel:0.95
+10	bona	bonus	ADJ	A-	Case=Acc|Degree=Pos|Gender=Neut|Number=Plur	11	amod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.95,deprel:0.97
+11	opera	opus	NOUN	Nb	Case=Acc|Gender=Neut|Number=Plur	8	obj	_	Conf=form:0.97,lemma:0.96,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.95
+12	et	et	CCONJ	C-	_	13	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.90,feats:0.97,head:0.95,deprel:0.97
+13	glorificent	glorifico	VERB	V-	Mood=Sub|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	8	conj	_	Conf=form:0.97,lemma:0.96,upos:0.97,xpos:0.97,feats:0.95,head:0.90,deprel:0.90
+14	Patrem	pater	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	13	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+15	vestrum	vester	DET	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=2|Poss=Yes	14	det	_	Conf=form:0.97,lemma:0.92,upos:0.85,xpos:0.20,feats:0.92,head:0.95,deprel:0.95
+16	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	18	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.80,deprel:0.95
+17	in	in	ADP	R-	_	18	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+18	caelis	caelum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Plur	14	acl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.82,deprel:0.90
+19	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	18	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
 
 # source = Jerome's Vulgate, Matthew 5
 # text = nolite putare quoniam veni solvere legem aut prophetas
 # sent_id = 12868
-1	nolite	nolo	VERB	V-	Mood=Imp|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	putare	puto	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	quoniam	quoniam	SCONJ	G-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-4	veni	venio	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.71,upos:0.71,xpos:0.71,feats:0.71
-5	solvere	solvo	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-6	legem	lex	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-7	aut	aut	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-8	prophetas	propheta	NOUN	Nb	Case=Acc|Gender=Masc|Number=Plur	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	nolite	nolo	VERB	V-	Mood=Imp|Number=Plur|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+2	putare	puto	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	1	xcomp	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.90
+3	quoniam	quoniam	SCONJ	G-	_	4	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+4	veni	venio	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	2	ccomp	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.85
+5	solvere	solvo	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	4	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.85
+6	legem	lex	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	5	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.90
+7	aut	aut	CCONJ	C-	_	8	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+8	prophetas	propheta	NOUN	Nb	Case=Acc|Gender=Masc|Number=Plur	6	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
 
 # source = Jerome's Vulgate, Matthew 5
 # text = non veni solvere sed adimplere
 # sent_id = 12869
-1	non	non	ADV	Df	Polarity=Neg	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	veni	venio	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.71,upos:0.71,xpos:0.71,feats:0.71
-3	solvere	solvo	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-4	sed	sed	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	adimplere	_	_	_	_	_	_	_	_
+1	non	non	ADV	Df	Polarity=Neg	2	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+2	veni	venio	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.99
+3	solvere	solvo	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	2	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.85
+4	sed	sed	CCONJ	C-	_	5	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+5	adimplere	adimpleo	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	3	conj	_	Conf=form:0.97,lemma:0.95,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.85
 
 # source = Jerome's Vulgate, Matthew 5
 # text = amen quippe dico vobis
 # sent_id = 12870
-1	amen	amen	INTJ	I-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	quippe	quippe	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	dico	dico	VERB	V-	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-4	vobis	vos	PRON	Pp	Case=Dat|Gender=Masc|Number=Plur|Person=2|PronType=Prs	_	_	_	Conf=lemma:0.57,upos:0.57,xpos:0.57,feats:0.57
+1	amen	amen	INTJ	I-	_	3	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+2	quippe	quippe	ADV	Df	_	3	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.95
+3	dico	dico	VERB	V-	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+4	vobis	vos	PRON	Pp	Case=Dat|Gender=Masc|Number=Plur|Person=2|PronType=Prs	3	obl:arg	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.95,deprel:0.95
 
 # source = Jerome's Vulgate, Matthew 5
 # text = donec transeat caelum et terra iota unum aut unus apex non praeteribit a lege donec omnia fiant
 # sent_id = 62914
-1	donec	donec	SCONJ	G-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	transeat	transeo	VERB	V-	Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	caelum	caelum	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.79,upos:0.79,xpos:0.79,feats:0.79
-4	et	et	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	terra	terra	NOUN	Nb	Case=Abl|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.70,upos:0.70,xpos:0.70,feats:0.70
-6	iota	_	_	_	_	_	_	_	_
-7	unum	unus	NUM	Ma	Case=Acc|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.32,upos:0.32,xpos:0.32,feats:0.32
-8	aut	aut	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-9	unus	unus	NUM	Ma	Case=Nom|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-10	apex	_	_	_	_	_	_	_	_
-11	non	non	ADV	Df	Polarity=Neg	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-12	praeteribit	praetereo	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.67,upos:0.67,xpos:0.67,feats:0.67
-13	a	ab	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-14	lege	lex	NOUN	Nb	Case=Abl|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-15	donec	donec	SCONJ	G-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-16	omnia	omnis	PRON	Px	Case=Acc|Gender=Neut|Number=Plur	_	_	_	Conf=lemma:0.46,upos:0.46,xpos:0.46,feats:0.46
-17	fiant	fio	VERB	V-	Mood=Sub|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	donec	donec	SCONJ	G-	_	2	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+2	transeat	transeo	VERB	V-	Mood=Sub|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	12	advcl	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.85,deprel:0.85
+3	caelum	caelum	NOUN	Nb	Case=Nom|Gender=Neut|Number=Sing	2	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.88,head:0.92,deprel:0.95
+4	et	et	CCONJ	C-	_	5	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+5	terra	terra	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	3	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.92,head:0.90,deprel:0.97
+6	iota	iota	NOUN	F-	Case=Nom|Gender=Neut|Number=Sing	12	nsubj	_	Conf=form:0.97,lemma:0.80,upos:0.85,xpos:0.40,feats:0.60,head:0.85,deprel:0.90
+7	unum	unus	NUM	Ma	Case=Nom|Gender=Neut|Number=Sing	6	nummod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.70,head:0.92,deprel:0.88
+8	aut	aut	CCONJ	C-	_	10	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+9	unus	unus	NUM	Ma	Case=Nom|Gender=Masc|Number=Sing	10	nummod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.92,deprel:0.90
+10	apex	apex	NOUN	Nb	Case=Nom|Gender=Masc|Number=Sing	6	conj	_	Conf=form:0.97,lemma:0.90,upos:0.93,xpos:0.97,feats:0.90,head:0.85,deprel:0.90
+11	non	non	ADV	Df	Polarity=Neg	12	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+12	praeteribit	praetereo	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.96,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.99
+13	a	ab	ADP	R-	_	14	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+14	lege	lex	NOUN	Nb	Case=Abl|Gender=Fem|Number=Sing	12	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.85
+15	donec	donec	SCONJ	G-	_	17	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+16	omnia	omnis	PRON	Px	Case=Nom|Gender=Neut|Number=Plur	17	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.55,xpos:0.97,feats:0.90,head:0.90,deprel:0.90
+17	fiant	fio	VERB	V-	Mood=Sub|Number=Plur|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	12	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.85
 
 # source = Jerome's Vulgate, Matthew 5
 # text = qui ergo solverit unum de mandatis istis minimis et docuerit sic homines minimus vocabitur in regno caelorum
 # sent_id = 12871
-1	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	_	_	_	Conf=lemma:0.62,upos:0.62,xpos:0.62,feats:0.62
-2	ergo	ergo	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	solverit	_	_	_	_	_	_	_	_
-4	unum	unus	NUM	Ma	Case=Acc|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.32,upos:0.32,xpos:0.32,feats:0.32
-5	de	de	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-6	mandatis	mandatum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Plur	_	_	_	Conf=lemma:0.71,upos:0.71,xpos:0.71,feats:0.71
-7	istis	iste	DET	Pd	Case=Abl|Gender=Masc|Number=Plur	_	_	_	Conf=lemma:0.30,upos:0.30,xpos:0.30,feats:0.30
-8	minimis	parvus	ADJ	A-	Case=Abl|Degree=Sup|Gender=Masc|Number=Plur	_	_	_	Conf=lemma:0.50,upos:0.50,xpos:0.50,feats:0.50
-9	et	et	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-10	docuerit	doceo	VERB	V-	Aspect=Perf|Mood=Sub|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.33,upos:0.33,xpos:0.33,feats:0.33
-11	sic	sic	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-12	homines	homo	NOUN	Nb	Case=Acc|Gender=Masc|Number=Plur	_	_	_	Conf=lemma:0.59,upos:0.59,xpos:0.59,feats:0.59
-13	minimus	parvus	ADJ	A-	Case=Nom|Degree=Sup|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.33,upos:0.33,xpos:0.33,feats:0.33
-14	vocabitur	voco	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-15	in	in	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-16	regno	regnum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-17	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	3	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.90
+2	ergo	ergo	ADV	Df	_	14	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.90
+3	solverit	solvo	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	14	nsubj:pass	_	Conf=form:0.97,lemma:0.96,upos:0.97,xpos:0.95,feats:0.80,head:0.70,deprel:0.50
+4	unum	unus	NUM	Ma	Case=Acc|Gender=Neut|Number=Sing	3	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.60,head:0.90,deprel:0.90
+5	de	de	ADP	R-	_	6	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+6	mandatis	mandatum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Plur	4	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.90
+7	istis	iste	DET	Pd	Case=Abl|Gender=Neut|Number=Plur	6	det	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.97,feats:0.55,head:0.90,deprel:0.95
+8	minimis	parvus	ADJ	A-	Case=Abl|Degree=Sup|Gender=Neut|Number=Plur	6	amod	_	Conf=form:0.97,lemma:0.93,upos:0.90,xpos:0.95,feats:0.55,head:0.85,deprel:0.90
+9	et	et	CCONJ	C-	_	10	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.90,feats:0.97,head:0.90,deprel:0.97
+10	docuerit	doceo	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	3	conj	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.90,feats:0.80,head:0.90,deprel:0.90
+11	sic	sic	ADV	Df	_	10	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+12	homines	homo	NOUN	Nb	Case=Acc|Gender=Masc|Number=Plur	10	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.95
+13	minimus	parvus	ADJ	A-	Case=Nom|Degree=Sup|Gender=Masc|Number=Sing	14	xcomp	_	Conf=form:0.97,lemma:0.93,upos:0.90,xpos:0.90,feats:0.85,head:0.85,deprel:0.85
+14	vocabitur	voco	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+15	in	in	ADP	R-	_	16	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+16	regno	regnum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	14	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+17	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	16	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
 
 # source = Jerome's Vulgate, Matthew 5
 # text = qui autem fecerit et docuerit hic magnus vocabitur in regno caelorum
 # sent_id = 12872
-1	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	_	_	_	Conf=lemma:0.62,upos:0.62,xpos:0.62,feats:0.62
-2	autem	autem	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	fecerit	facio	VERB	V-	Aspect=Perf|Mood=Sub|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.69,upos:0.69,xpos:0.69,feats:0.69
-4	et	et	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	docuerit	doceo	VERB	V-	Aspect=Perf|Mood=Sub|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.33,upos:0.33,xpos:0.33,feats:0.33
-6	hic	hic	PRON	Pd	Case=Nom|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.52,upos:0.52,xpos:0.52,feats:0.52
-7	magnus	magnus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-8	vocabitur	voco	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-9	in	in	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-10	regno	regnum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-11	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	3	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.90
+2	autem	autem	ADV	Df	_	8	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.60,deprel:0.95
+3	fecerit	facio	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	6	acl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.65,head:0.60,deprel:0.80
+4	et	et	CCONJ	C-	_	5	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.90,feats:0.97,head:0.90,deprel:0.97
+5	docuerit	doceo	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	3	conj	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.90,feats:0.65,head:0.90,deprel:0.90
+6	hic	hic	PRON	Pd	Case=Nom|Gender=Masc|Number=Sing	8	nsubj:pass	_	Conf=form:0.97,lemma:0.97,upos:0.70,xpos:0.85,feats:0.90,head:0.85,deprel:0.85
+7	magnus	magnus	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Sing	8	xcomp	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.85
+8	vocabitur	voco	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Pass	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+9	in	in	ADP	R-	_	10	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+10	regno	regnum	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	8	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+11	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	10	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
 
 # source = Jerome's Vulgate, Matthew 5
 # text = dico enim vobis quia nisi abundaverit iustitia vestra plus quam scribarum et Pharisaeorum non intrabitis in regnum caelorum
 # sent_id = 12873
-1	dico	dico	VERB	V-	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	enim	enim	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	vobis	vos	PRON	Pp	Case=Dat|Gender=Masc|Number=Plur|Person=2|PronType=Prs	_	_	_	Conf=lemma:0.57,upos:0.57,xpos:0.57,feats:0.57
-4	quia	quia	SCONJ	G-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	nisi	nisi	ADV	Df	_	_	_	_	Conf=lemma:0.61,upos:0.61,xpos:0.61,feats:0.61
-6	abundaverit	_	_	_	_	_	_	_	_
-7	iustitia	iustitia	NOUN	Nb	Case=Abl|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.50,upos:0.50,xpos:0.50,feats:0.50
-8	vestra	vester	DET	Ps	Case=Nom|Gender=Fem|Number=Sing|Person=2|Poss=Yes	_	_	_	Conf=lemma:0.39,upos:0.39,xpos:0.39,feats:0.39
-9	plus	multum	ADV	Df	Degree=Cmp	_	_	_	Conf=lemma:0.46,upos:0.46,xpos:0.46,feats:0.46
-10	quam	quam	ADV	Df	_	_	_	_	Conf=lemma:0.57,upos:0.57,xpos:0.57,feats:0.57
-11	scribarum	scriba	NOUN	Nb	Case=Gen|Gender=Masc|Number=Plur	_	_	_	Conf=lemma:0.33,upos:0.33,xpos:0.33,feats:0.33
-12	et	et	CCONJ	C-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-13	Pharisaeorum	Pharisaeus	NOUN	Nb	Case=Gen|Gender=Masc|Number=Plur	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-14	non	non	ADV	Df	Polarity=Neg	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-15	intrabitis	intro	VERB	V-	Mood=Ind|Number=Plur|Person=2|Tense=Fut|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.33,upos:0.33,xpos:0.33,feats:0.33
-16	in	in	ADP	R-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-17	regnum	regnum	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.53,upos:0.53,xpos:0.53,feats:0.53
-18	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	dico	dico	VERB	V-	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+2	enim	enim	ADV	Df	_	1	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+3	vobis	vos	PRON	Pp	Case=Dat|Gender=Masc|Number=Plur|Person=2|PronType=Prs	1	obl:arg	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.88,head:0.95,deprel:0.93
+4	quia	quia	SCONJ	G-	_	15	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.85
+5	nisi	nisi	SCONJ	Df	_	6	mark	_	Conf=form:0.97,lemma:0.97,upos:0.75,xpos:0.40,feats:0.97,head:0.92,deprel:0.92
+6	abundaverit	abundo	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	15	advcl	_	Conf=form:0.97,lemma:0.93,upos:0.97,xpos:0.95,feats:0.75,head:0.90,deprel:0.90
+7	iustitia	iustitia	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	6	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.92,head:0.92,deprel:0.90
+8	vestra	vester	DET	Ps	Case=Nom|Gender=Fem|Number=Sing|Person=2|Poss=Yes	7	det	_	Conf=form:0.97,lemma:0.97,upos:0.88,xpos:0.97,feats:0.93,head:0.95,deprel:0.95
+9	plus	multum	ADV	Df	Degree=Cmp	6	advmod	_	Conf=form:0.97,lemma:0.88,upos:0.80,xpos:0.80,feats:0.85,head:0.85,deprel:0.85
+10	quam	quam	ADV	Df	_	9	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.78
+11	scribarum	scriba	NOUN	Nb	Case=Gen|Gender=Masc|Number=Plur	9	obl	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.93,head:0.60,deprel:0.55
+12	et	et	CCONJ	C-	_	13	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.90,feats:0.97,head:0.95,deprel:0.97
+13	Pharisaeorum	Pharisaeus	NOUN	Nb	Case=Gen|Gender=Masc|Number=Plur	11	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+14	non	non	ADV	Df	Polarity=Neg	15	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+15	intrabitis	intro	VERB	V-	Mood=Ind|Number=Plur|Person=2|Tense=Fut|VerbForm=Fin|Voice=Act	1	ccomp	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.88,deprel:0.88
+16	in	in	ADP	R-	_	17	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+17	regnum	regnum	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	15	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+18	caelorum	caelum	NOUN	Nb	Case=Gen|Gender=Neut|Number=Plur	17	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
 
 # source = Jerome's Vulgate, Matthew 5
 # text = audistis quia dictum est antiquis
 # sent_id = 12874
-1	audistis	audio	VERB	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=2|Tense=Past|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	quia	quia	SCONJ	G-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	dictum	dico	VERB	V-	Aspect=Perf|Case=Nom|Gender=Neut|Number=Sing|Tense=Past|VerbForm=Part|Voice=Pass	_	_	_	Conf=lemma:0.82,upos:0.82,xpos:0.82,feats:0.82
-4	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	antiquis	antiquus	ADJ	A-	Case=Abl|Degree=Pos|Number=Plur	_	_	_	Conf=lemma:0.75,upos:0.75,xpos:0.75,feats:0.75
+1	audistis	audio	VERB	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=2|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+2	quia	quia	SCONJ	G-	_	3	mark	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.90,feats:0.97,head:0.95,deprel:0.60
+3	dictum	dico	VERB	V-	Aspect=Perf|Case=Nom|Gender=Neut|Number=Sing|Tense=Past|VerbForm=Part|Voice=Pass	1	ccomp	_	Conf=form:0.97,lemma:0.82,upos:0.82,xpos:0.82,feats:0.82,head:0.90,deprel:0.85
+4	est	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	3	aux:pass	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.90
+5	antiquis	antiquus	ADJ	A-	Case=Dat|Degree=Pos|Gender=Masc|Number=Plur	3	obl:arg	_	Conf=form:0.97,lemma:0.95,upos:0.85,xpos:0.95,feats:0.70,head:0.90,deprel:0.70
 
 # source = Jerome's Vulgate, Matthew 5
 # text = non occides
 # sent_id = 12875
-1	non	non	ADV	Df	Polarity=Neg	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	occides	occido	VERB	V-	Mood=Ind|Number=Sing|Person=2|Tense=Fut|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.67,upos:0.67,xpos:0.67,feats:0.67
+1	non	non	ADV	Df	Polarity=Neg	2	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.98,deprel:0.97
+2	occides	occido	VERB	V-	Mood=Ind|Number=Sing|Person=2|Tense=Fut|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.95,upos:0.97,xpos:0.97,feats:0.90,head:0.98,deprel:0.99
 
 # source = Jerome's Vulgate, Matthew 5
 # text = qui autem occiderit reus erit iudicio
 # sent_id = 12876
-1	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	_	_	_	Conf=lemma:0.62,upos:0.62,xpos:0.62,feats:0.62
-2	autem	autem	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	occiderit	occido	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-4	reus	reus	NOUN	Nb	Case=Nom|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	erit	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-6	iudicio	iudicium	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	3	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.90
+2	autem	autem	ADV	Df	_	4	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.70,deprel:0.95
+3	occiderit	occido	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	4	nsubj	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.70,deprel:0.75
+4	reus	reus	NOUN	Nb	Case=Nom|Gender=Masc|Number=Sing	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.97
+5	erit	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	4	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.97
+6	iudicio	iudicium	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	4	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.65
 
 # source = Jerome's Vulgate, Matthew 5
 # text = ego autem dico vobis quia
 # sent_id = 12877
-1	ego	ego	PRON	Pp	Case=Nom|Gender=Masc|Number=Sing|Person=1|PronType=Prs	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-2	autem	autem	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	dico	dico	VERB	V-	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-4	vobis	vos	PRON	Pp	Case=Dat|Gender=Masc|Number=Plur|Person=2|PronType=Prs	_	_	_	Conf=lemma:0.57,upos:0.57,xpos:0.57,feats:0.57
-5	quia	quia	SCONJ	G-	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	ego	ego	PRON	Pp	Case=Nom|Gender=Masc|Number=Sing|Person=1|PronType=Prs	3	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.95,deprel:0.90
+2	autem	autem	ADV	Df	_	3	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+3	dico	dico	VERB	V-	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+4	vobis	vos	PRON	Pp	Case=Dat|Gender=Masc|Number=Plur|Person=2|PronType=Prs	3	obl:arg	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.95,deprel:0.95
+5	quia	quia	SCONJ	G-	_	3	ccomp	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.75
 
 # source = Jerome's Vulgate, Matthew 5
 # text = omnis qui irascitur fratri suo reus erit iudicio
 # sent_id = 12878
-1	omnis	omnis	DET	Px	Case=Nom|Gender=Fem|Number=Sing	_	_	_	Conf=lemma:0.24,upos:0.24,xpos:0.24,feats:0.24
-2	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	_	_	_	Conf=lemma:0.62,upos:0.62,xpos:0.62,feats:0.62
-3	irascitur	_	_	_	_	_	_	_	_
-4	fratri	frater	NOUN	Nb	Case=Dat|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	suo	suus	DET	Pt	Case=Abl|Gender=Masc,Neut|Number=Sing|Person=3|Poss=Yes|Reflex=Yes	_	_	_	Conf=lemma:0.36,upos:0.36,xpos:0.36,feats:0.36
-6	reus	reus	NOUN	Nb	Case=Nom|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-7	erit	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-8	iudicio	iudicium	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	omnis	omnis	DET	Px	Case=Nom|Gender=Masc|Number=Sing	6	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.55,xpos:0.80,feats:0.65,head:0.75,deprel:0.85
+2	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	3	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+3	irascitur	irascor	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Pass	1	acl	_	Conf=form:0.97,lemma:0.96,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.85
+4	fratri	frater	NOUN	Nb	Case=Dat|Gender=Masc|Number=Sing	3	obl:arg	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.75
+5	suo	suus	DET	Pt	Case=Dat|Gender=Masc|Number=Sing|Person=3|Poss=Yes|Reflex=Yes	4	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+6	reus	reus	NOUN	Nb	Case=Nom|Gender=Masc|Number=Sing	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.97
+7	erit	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	6	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+8	iudicio	iudicium	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	6	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.65
 
 # source = Jerome's Vulgate, Matthew 5
 # text = qui autem dixerit fratri suo racha reus erit concilio
 # sent_id = 12879
-1	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	_	_	_	Conf=lemma:0.62,upos:0.62,xpos:0.62,feats:0.62
-2	autem	autem	ADV	Df	_	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-3	dixerit	dico	VERB	V-	Aspect=Perf|Mood=Sub|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.70,upos:0.70,xpos:0.70,feats:0.70
-4	fratri	frater	NOUN	Nb	Case=Dat|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-5	suo	suus	DET	Pt	Case=Abl|Gender=Masc,Neut|Number=Sing|Person=3|Poss=Yes|Reflex=Yes	_	_	_	Conf=lemma:0.36,upos:0.36,xpos:0.36,feats:0.36
-6	racha	_	_	_	_	_	_	_	_
-7	reus	reus	NOUN	Nb	Case=Nom|Gender=Masc|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-8	erit	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
-9	concilio	concilium	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	_	_	_	Conf=lemma:0.90,upos:0.90,xpos:0.90,feats:0.90
+1	qui	qui	PRON	Pr	Case=Nom|Gender=Masc|Number=Sing|PronType=Rel	3	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.85,deprel:0.90
+2	autem	autem	ADV	Df	_	7	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.55,deprel:0.95
+3	dixerit	dico	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	7	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.75,head:0.70,deprel:0.50
+4	fratri	frater	NOUN	Nb	Case=Dat|Gender=Masc|Number=Sing	3	obl:arg	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.75
+5	suo	suus	DET	Pt	Case=Dat|Gender=Masc|Number=Sing|Person=3|Poss=Yes|Reflex=Yes	4	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+6	racha	racha	INTJ	I-	_	3	obj	_	Conf=form:0.97,lemma:0.85,upos:0.50,xpos:0.75,feats:0.90,head:0.75,deprel:0.40
+7	reus	reus	NOUN	Nb	Case=Nom|Gender=Masc|Number=Sing	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.97
+8	erit	sum	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Act	7	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+9	concilio	concilium	NOUN	Nb	Case=Abl|Gender=Neut|Number=Sing	7	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.80,deprel:0.40
 
 # source = Jerome's Vulgate, Matthew 5
 # text = qui autem dixerit fatue reus erit gehennae ignis

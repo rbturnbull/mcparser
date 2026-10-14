@@ -3,7 +3,14 @@
 ```bash
 uv run llmparser evaluate pred.conllu gold.conllu          # table
 uv run llmparser evaluate pred.conllu gold.conllu --json   # machine-readable
+uv run llmparser evaluate pred.conllu gold.conllu --annotated-only  # only parsed sentences
 ```
+
+`--predicted-only` ignores gold sentences missing from the predictions;
+`--annotated-only` also leaves out predicted sentences that have not been
+parsed yet (some HEAD still `_`), e.g. the rest of a file after
+`run --max-sentences 30`. Without it, unparsed sentences count as wrong
+attachments and pull UAS/LAS down.
 
 Sentences are matched by `sent_id`. The metrics follow the CoNLL 2018 shared
 task:

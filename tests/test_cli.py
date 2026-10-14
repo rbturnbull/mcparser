@@ -132,6 +132,8 @@ def test_run_command(scripted_team, train_path, pred_path, tmp_path):
     assert "[round 1] scorer p2: done" in result.stderr
     assert "Rules settled" in result.stdout
     assert json.loads(report.read_text())["rounds"][0]["scored"] == 1
+    log = pred_path.with_name("pred.conllu.runs.jsonl").read_text(encoding="utf-8").splitlines()
+    assert len(log) == 1 and json.loads(log[0])["total"]["tasks"] == 1
     assert "Conf=" in pred_path.read_text(encoding="utf-8")
 
 
@@ -230,3 +232,5 @@ def test_init_from_conllu_and_max_sentences(tmp_path, train_path, scripted_team)
     assert "scored 1 sentences" in result.stdout
     result = runner.invoke(app, ["evaluate", str(output), str(train_path), "--predicted-only"])
     assert "2 sentences matched." in result.stdout and "Missing" not in result.stdout
+    result = runner.invoke(app, ["evaluate", str(output), str(train_path), "--annotated-only"])
+    assert "0 sentences matched." in result.stdout

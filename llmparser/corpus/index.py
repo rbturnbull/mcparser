@@ -52,6 +52,8 @@ class SourceIndex:
         self.suffixes: defaultdict[str, list[Location]] = defaultdict(list)
         self.xpos_by_tags: defaultdict[tuple[str, str], Counter[str]] = defaultdict(Counter)
         """XPOS counts for each (UPOS, FEATS) pair."""
+        self.upos_by_function: defaultdict[tuple[str, str], Counter[str]] = defaultdict(Counter)
+        """UPOS counts for each (LEMMA, DEPREL without subtype) pair."""
         self.relations: defaultdict[tuple[str, ...], Counter[str]] = defaultdict(Counter)
         """DEPREL counts keyed by :func:`relation_keys` of the dependent and head."""
 
@@ -70,6 +72,8 @@ class SourceIndex:
             if word.deprel == EMPTY or not (word.head == "0" or word.head in words):
                 continue
             head = words.get(word.head)
+            if word.upos != EMPTY:
+                self.upos_by_function[(word.lemma, word.deprel.split(":")[0])][word.upos] += 1
             for key in relation_keys(word.lemma, word.upos, head.lemma if head else None, head.upos if head else None, direction_of(word.id, word.head)):
                 self.relations[key][word.deprel] += 1
         for t_pos, token in enumerate(sentence.tokens):

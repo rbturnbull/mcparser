@@ -106,6 +106,10 @@ effect:
   relation counts for each word's actual head.
 - **Three model tiers**: Haiku for XPOS, Sonnet for UPOS, FEATS and scoring,
   Opus for segmentation, lemmas and syntax.
+- **Cross-checks** flag (never change) a UPOS that the treebank almost never
+  uses for that lemma in that relation, once the syntax is known, so the next
+  round can fix it (PROIEL's *omnis* is DET as `det`, PRON as a subject).
+  This, and the scorer's low scores, only pay off with at least two rounds.
 - **The scorer only judges what a model or person wrote**, never cells set by
   code, unannotated cells, or XPOS/FEATS of untagged words.
 - **Compact tool results**, **prompt caching**, and columns the treebank never
@@ -114,8 +118,9 @@ effect:
 On 10 Latin sentences the first version cost $2.43; the current one costs
 about $0.08 per sentence of similar length.
 
-Before running a whole file, try `--sentence` on a few sentences and look at
-the estimate. `--report run.json` saves the numbers.
+Every run's report (rounds, tasks, tokens, cost per model) is appended to
+`<file>.runs.jsonl` next to the prediction file. Before running a whole file,
+try `--max-sentences` on a few sentences and look at the estimate. `--report run.json` saves the numbers.
 
 With `concurrency` above 1, several sentences are worked on at once. That is
 faster, but a sentence can then no longer rely on the more confident sentences

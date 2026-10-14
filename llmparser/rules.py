@@ -17,6 +17,10 @@ The rules are:
 * **segmentation** — surface tokens that the trusted data overwhelmingly
   splits (split them) or leaves whole (confirm them); if the trusted data has no
   multiword tokens at all, every word is confirmed;
+* **cross-checks** — once a word's relation is confident, a UPOS that the
+  treebank (almost) never uses for that lemma in that relation is flagged for
+  the UPOS agent (e.g. PROIEL's *omnis* is DET as ``det`` but PRON as a
+  subject or object). Cross-checks only flag; they never change a value.
 * optionally, **the predictions themselves**: for a form the trusted data never
   has, analyses given with high confidence elsewhere in the prediction file
   (from agents or people, not from rules) count as evidence.
@@ -46,6 +50,8 @@ PREDICTION_EVIDENCE = 0.96
 MORPHOLOGY = ("lemma", "upos", "xpos", "feats")
 
 INPUT_CONFIDENCE = 0.9
+FLAG_INPUT_CONFIDENCE = 0.5
+"""Cross-checks only raise flags, so a merely plausible relation is enough to check against."""
 """Rules that build on other cells (XPOS from UPOS+FEATS, DEPREL from the arc) only
 fire when those cells are at least this confident, so guesses do not propagate."""
 
@@ -59,6 +65,7 @@ class RuleSettings(BaseModel):
 class RulesReport(BaseModel):
     cells: dict[str, int] = Field(default_factory=dict, description="Cells settled per column.")
     splits: int = 0
+    flags: int = 0
 
     @property
     def total(self) -> int:
@@ -192,6 +199,24 @@ class Rules:
                 updates.append(update)
         return updates
 
+    def cross_check(self, sentence: Sentence) -> list[tuple[str, str, str]]:
+        """``(token_id, current UPOS, expected UPOS)`` for words whose UPOS (almost) never has their relation.
+
+        Flags only ask for a review, so a plausible relation (confidence at
+        least 0.5) is enough to check against.
+        """
+        mismatches = []
+        for word in sentence.words:
+            if word.upos == EMPTY or word.lemma == EMPTY or word.deprel == EMPTY:
+                continue
+            if self.source.confidence(word, "deprel") < FLAG_INPUT_CONFIDENCE:
+                continue
+            counts = Counter({v.value: v.count for v in self.store.upos_for_function(word.lemma, word.deprel)})
+            total = sum(counts.values())
+            if total >= self.settings.min_count and counts[word.upos] / total <= 1 - self.settings.min_share:
+                mismatches.append((word.id, word.upos, counts.most_common(1)[0][0]))
+        return mismatches
+
     def segmentation(self, sentence: Sentence) -> tuple[list[CellUpdate], list[tuple[str, list[str], int]]]:
         """Confirmations of unsplit words, and splits ``(token_id, pieces, head_index)`` to make."""
         trusted_has_multiwords = any(
@@ -251,7 +276,26 @@ class Rules:
                 self._write(sent_id, self.xpos_from_tags(self.source.sentence(sent_id)), report)
             if "deprel" in wanted:
                 self._write(sent_id, self.deprel(self.source.sentence(sent_id)), report)
+                self._flag(sent_id, report)
         return report
+
+    def _flag(self, sent_id: str, report: RulesReport) -> None:
+        sentence = self.source.sentence(sent_id)
+        flagged = {
+            flag.token_id
+            for flag in self.store.list_flags(self.target, column="upos", sent_id=sent_id, status="all", limit=10_000).flags
+            if flag.raised_by == RULE_AGENT
+        }
+        for token_id, current, expected in self.cross_check(sentence):
+            if token_id in flagged:
+                continue  # raised before (and possibly dismissed): do not repeat
+            word = sentence.token(token_id)
+            self.store.flag_issue(
+                self.target, sent_id, "upos",
+                f"In the treebank, '{word.lemma}' as {word.deprel} is {expected}, not {current}.",
+                token_id=token_id, suggestion=expected, agent=RULE_AGENT,
+            )  # fmt: skip
+            report.flags += 1
 
     def _write(self, sent_id: str, updates: list[CellUpdate], report: RulesReport) -> None:
         if updates:

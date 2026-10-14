@@ -103,12 +103,25 @@ def _compare(pred: Token, gold: Token, pred_to_gold: dict[str, str]) -> set[str]
     return correct
 
 
-def evaluate(predicted: list[Sentence], gold: list[Sentence], predicted_only: bool = False) -> Evaluation:
+def is_annotated(sentence: Sentence) -> bool:
+    """Whether every word has a HEAD, i.e. the sentence has been parsed."""
+    return bool(sentence.words) and all(word.head != "_" for word in sentence.words)
+
+
+def evaluate(
+    predicted: list[Sentence], gold: list[Sentence], predicted_only: bool = False, annotated_only: bool = False
+) -> Evaluation:
     """Score ``predicted`` against ``gold`` for every metric in :data:`METRICS`.
 
     With ``predicted_only``, gold sentences missing from the predictions are
-    ignored (useful when only part of a test set was annotated).
+    ignored (useful when only part of a test set was annotated). With
+    ``annotated_only``, only predicted sentences that have been parsed (every
+    word has a HEAD) are scored, so unparsed sentences do not hide the accuracy
+    of the parsed ones.
     """
+    if annotated_only:
+        predicted = [sentence for sentence in predicted if is_annotated(sentence)]
+        predicted_only = True
     by_id = {sentence.sent_id: sentence for sentence in predicted}
     if predicted_only:
         gold = [sentence for sentence in gold if sentence.sent_id in by_id]

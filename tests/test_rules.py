@@ -144,3 +144,23 @@ def test_confident_predictions_are_evidence(make, tmp_path):
     assert (word.upos, read_confidence(word)["upos"]) == ("X", 0.95)
     store2, rules2 = make([DOG], pred, use_predictions=False)
     assert rules2.apply(sent_ids=["p3"], columns=["upos"]).total == 0
+
+
+def test_cross_check_flags_upos_that_does_not_fit_the_relation(make):
+    det = [("omnis", "omnis", "DET", "_", "_", "2", "det"), ("homo", "homo", "NOUN", "_", "_", "0", "root")]
+    pron = [("omnis", "omnis", "PRON", "_", "_", "2", "nsubj"), ("venit", "venio", "VERB", "_", "_", "0", "root")]
+    store, rules = make([det] * 3 + [pron] * 3, blank(["omnis", "venit"], ["omnis", "homo"]))
+    for sent_id, deprel in (("p0", "nsubj"), ("p1", "det")):
+        store.update_cells("pred", sent_id, [
+            {"token_id": "1", "column": "lemma", "value": "omnis", "confidence": 0.97},
+            {"token_id": "1", "column": "upos", "value": "DET", "confidence": 0.6},
+            {"token_id": "1", "column": "deprel", "value": deprel, "confidence": 0.6},
+        ], agent="deprel")  # fmt: skip
+    report = rules.apply(columns=["deprel"])
+    flags = store.list_flags("pred").flags
+    assert report.flags == 1
+    assert [(f.sent_id, f.token_id, f.column, f.suggestion, f.raised_by) for f in flags] == [("p0", "1", "upos", "PRON", "rules")]
+    assert flags[0].reason == "In the treebank, 'omnis' as nsubj is PRON, not DET."
+    assert rules.apply(columns=["deprel"]).flags == 0  # not raised twice
+    store.update_cells("pred", "p1", [{"token_id": "1", "column": "deprel", "value": "nsubj", "confidence": 0.3}], agent="deprel")
+    assert rules.cross_check(store.source("pred").sentence("p1")) == []  # relation too uncertain to check against
