@@ -1,0 +1,13 @@
+# sent_id = s1
+# text = ὁ θεὸς ἀγαπᾷ τὸν κόσμον
+1	ὁ	ὁ	DET	_	_	2	det	_	_
+2	θεὸς	θεός	NOUN	_	_	3	nsubj	_	_
+3	ἀγαπᾷ	ἀγαπάω	VERB	_	_	0	root	_	_
+4	τὸν	ὁ	DET	_	_	5	det	_	_
+5	κόσμον	κόσμος	NOUN	_	_	3	obj	_	_
+
+# sent_id = s2
+# text = θεὸς ὁρᾷ
+1	θεὸς	θεός	NOUN	_	_	2	nsubj	_	_
+2	ὁρᾷ	ὁράω	VERB	_	_	0	root	_	_
+

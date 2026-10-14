@@ -276,26 +276,24 @@ class Rules:
                 self._write(sent_id, self.xpos_from_tags(self.source.sentence(sent_id)), report)
             if "deprel" in wanted:
                 self._write(sent_id, self.deprel(self.source.sentence(sent_id)), report)
-                self._flag(sent_id, report)
+            self._flag(sent_id, report, wanted)
         return report
 
-    def _flag(self, sent_id: str, report: RulesReport) -> None:
+    def _raise(self, sent_id: str, column: str, token_id: str, reason: str, suggestion: str, report: RulesReport) -> None:
+        """Raise a flag unless the rules raised one for this cell before (it may have been dismissed)."""
+        previous = self.store.list_flags(self.target, column=column, sent_id=sent_id, status="all", limit=10_000).flags
+        if any(flag.token_id == token_id and flag.raised_by == RULE_AGENT for flag in previous):
+            return
+        self.store.flag_issue(self.target, sent_id, column, reason, token_id=token_id, suggestion=suggestion, agent=RULE_AGENT)
+        report.flags += 1
+
+    def _flag(self, sent_id: str, report: RulesReport, columns: set[str]) -> None:
         sentence = self.source.sentence(sent_id)
-        flagged = {
-            flag.token_id
-            for flag in self.store.list_flags(self.target, column="upos", sent_id=sent_id, status="all", limit=10_000).flags
-            if flag.raised_by == RULE_AGENT
-        }
-        for token_id, current, expected in self.cross_check(sentence):
-            if token_id in flagged:
-                continue  # raised before (and possibly dismissed): do not repeat
+        checks = self.cross_check(sentence) if "deprel" in columns else []
+        for token_id, current, expected in checks:
             word = sentence.token(token_id)
-            self.store.flag_issue(
-                self.target, sent_id, "upos",
-                f"In the treebank, '{word.lemma}' as {word.deprel} is {expected}, not {current}.",
-                token_id=token_id, suggestion=expected, agent=RULE_AGENT,
-            )  # fmt: skip
-            report.flags += 1
+            reason = f"In the treebank, '{word.lemma}' as {word.deprel} is {expected}, not {current}."
+            self._raise(sent_id, "upos", token_id, reason, expected, report)
 
     def _write(self, sent_id: str, updates: list[CellUpdate], report: RulesReport) -> None:
         if updates:

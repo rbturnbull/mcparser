@@ -26,6 +26,12 @@ from .roles import Role
 
 TREE_ERRORS = frozenset({"cycle", "root-count", "self-loop", "invalid-head"})
 
+DEPENDENT_COLUMNS = {"upos": ("xpos", "feats"), "head": ("deprel",)}
+"""When a model changes the key, the dependent cells of that word are marked for review."""
+
+CLOSED_TAGSETS = ("xpos", "deprel", "feats")
+"""Columns whose values must occur in the trusted data (FEATS: each Feature=Value pair)."""
+
 
 class FlagRequest(BaseModel):
     sent_id: str
@@ -148,8 +154,48 @@ class Applier:
                 suggestion=flag.suggestion, agent=self.role.name,
             )  # fmt: skip
 
+    def _unseen(self, updates: dict[str, list[CellUpdate]]) -> list[str]:
+        """Values the trusted data never uses (only for closed tagsets, and only if there is trusted data)."""
+        column = self.role.column
+        known = self.store.known_values().get(column) if column in CLOSED_TAGSETS else None
+        if not known:
+            return []
+        errors = []
+        for sent_id, cells in updates.items():
+            for cell in cells:
+                value = cell.value or "_"
+                parts = value.split("|") if column == "feats" else [value]
+                unseen = [part for part in parts if part != "_" and part not in known]
+                if unseen:
+                    errors.append(
+                        f"sentence {sent_id} word {cell.token_id}: {', '.join(unseen)} never occurs in the treebank's "
+                        f"{column.upper()}; use the treebank's values (see allowed_values / feature_inventory)."
+                    )
+        return errors
+
+    def _follow_up(self, sent_id: str, changed: list[tuple[str, str]], batch: Batch) -> None:
+        """Mark dependent cells for review and close flags that this change answers."""
+        dependents = DEPENDENT_COLUMNS.get(self.role.column, ())
+        if dependents and changed:
+            sentence = self.store.source(batch.target).sentence(sent_id)
+            review = [
+                CellUpdate(token_id=token_id, column=column, confidence=0.0, reason=f"{self.role.column.upper()} changed")
+                for token_id, _ in changed
+                for column in dependents
+                if sentence.token(token_id).get(column) != "_"
+            ]
+            if review:
+                self.store.update_cells(batch.target, sent_id, review, agent=self.role.name)
+        values = dict(changed)
+        for flag in self.store.list_flags(batch.target, column=self.role.column, sent_id=sent_id, limit=10_000).flags:
+            if flag.token_id in values:
+                self.store.resolve_flag(
+                    batch.target, flag.id, "resolved", f"{self.role.name} changed it to {values[flag.token_id]}", agent=self.role.name
+                )
+
     def annotation(self, answer: Annotation, batch: Batch) -> Annotation:
         updates, errors = parse_values(answer.values, self.role, batch)
+        errors += self._unseen(updates)
         for sent_id, cells in updates.items():
             try:
                 result = self.store.update_cells(batch.target, sent_id, cells, agent=self.role.name, dry_run=True)
@@ -162,14 +208,16 @@ class Applier:
                 ]
         self._check_flags(answer.flags, batch, errors)
         self._retry(errors)
-        for sent_id, cells in updates.items():
-            self.store.update_cells(batch.target, sent_id, cells, agent=self.role.name)
-        self._apply_flags(answer.flags, batch)
         for resolution in answer.resolved:
             try:
                 self.store.resolve_flag(batch.target, resolution.flag_id, resolution.status, resolution.note, agent=self.role.name)
             except CorpusError:
                 pass  # an unknown or already closed flag is harmless
+        for sent_id, cells in updates.items():
+            result = self.store.update_cells(batch.target, sent_id, cells, agent=self.role.name)
+            changed = [(edit.token_id, edit.new) for edit in result.edits if edit.old != edit.new]
+            self._follow_up(sent_id, changed, batch)
+        self._apply_flags(answer.flags, batch)
         return answer
 
     def scores(self, answer: Scores, batch: Batch) -> Scores:

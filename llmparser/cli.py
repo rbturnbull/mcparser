@@ -20,7 +20,7 @@ from .baseline import run_baseline
 from .rules import Rules
 from .corpus import CorpusError, CorpusStore, SourceMode, format_conllu, parse_conllu
 from .evaluate import evaluate as evaluate_predictions
-from .mcp.config import SourceSpec, claude_desktop_config, load_store
+from .mcp.config import AlignmentSpec, SourceSpec, claude_desktop_config, load_store
 from .mcp.server import build_server
 from .pipeline import Pipeline, RunReport
 from .settings import (
@@ -73,6 +73,14 @@ SourceOption = Annotated[
     ),
 ]
 RootKeyOption = Annotated[str, typer.Option(help="MISC attribute holding the word's root.")]
+AlignmentOption = Annotated[
+    list[str] | None,
+    typer.Option(
+        "--alignment",
+        "-a",
+        help="NAME=SOURCE_A,SOURCE_B,PATH[:ro|rw[:CONFIDENCE]]: word alignments between two sources. Repeatable.",
+    ),
+]
 NameOption = Annotated[str, typer.Option(help="Server name shown to MCP clients.")]
 
 
@@ -83,9 +91,16 @@ def _specs(sources: list[str]) -> list[SourceSpec]:
         raise typer.BadParameter(str(error), param_hint="--source") from error
 
 
-def _load(specs: list[SourceSpec], root_key: str) -> CorpusStore:
+def _alignments(alignments: list[str] | None) -> list[AlignmentSpec]:
     try:
-        return load_store(specs, root_key=root_key)
+        return [AlignmentSpec.parse(spec) for spec in alignments or []]
+    except CorpusError as error:
+        raise typer.BadParameter(str(error), param_hint="--alignment") from error
+
+
+def _load(specs: list[SourceSpec], root_key: str, alignments: list[AlignmentSpec] | None = None) -> CorpusStore:
+    try:
+        return load_store(specs, root_key=root_key, alignments=alignments)
     except CorpusError as error:
         typer.echo(f"Error: {error}", err=True)
         raise typer.Exit(1) from error
@@ -100,9 +115,10 @@ def serve(
     read_only: Annotated[bool, typer.Option("--read-only", help="Register only the read-only tools.")] = False,
     root_key: RootKeyOption = "Root",
     name: NameOption = "conllu",
+    alignment: AlignmentOption = None,
 ) -> None:
     """Serve CoNLL-U sources over MCP (stdio for Claude Desktop, or streamable HTTP)."""
-    store = _load(_specs(source), root_key)
+    store = _load(_specs(source), root_key, _alignments(alignment))
     server = build_server(store, name=name, allow_edits=not read_only)
     if transport is Transport.STDIO:
         server.run("stdio")
@@ -116,13 +132,14 @@ def config(
     read_only: Annotated[bool, typer.Option("--read-only", help="Register only the read-only tools.")] = False,
     root_key: RootKeyOption = "Root",
     name: NameOption = "conllu",
+    alignment: AlignmentOption = None,
 ) -> None:
     """Print the JSON to add to Claude Desktop's claude_desktop_config.json."""
     specs = _specs(source)
     for spec in specs:
         if not spec.path.is_file():
             typer.echo(f"Warning: {spec.path} does not exist.", err=True)
-    typer.echo(json.dumps(claude_desktop_config(specs, name=name, read_only=read_only, root_key=root_key), indent=2))
+    typer.echo(json.dumps(claude_desktop_config(specs, name=name, read_only=read_only, root_key=root_key, alignments=_alignments(alignment)), indent=2))
 
 
 @app.command()
@@ -269,6 +286,7 @@ def _annotate(
     with log.open("a", encoding="utf-8") as stream:
         stream.write(report.model_dump_json() + "\n")
     if report_path:
+        report_path.parent.mkdir(parents=True, exist_ok=True)
         report_path.write_text(report.model_dump_json(indent=1), encoding="utf-8")
 
 
@@ -384,6 +402,7 @@ def init(
     baseline: Annotated[bool, typer.Option(help="Fill in what the trusted sources make obvious (no LLM).")] = True,
     force: Annotated[bool, typer.Option("--force", help="Overwrite OUTPUT and its review/history files.")] = False,
     max_sentences: MaxSentencesOption = None,
+    skip: Annotated[int, typer.Option(min=0, help="Skip the first N sentences of INPUT (e.g. to start a new batch).")] = 0,
 ) -> None:
     """Create a prediction file from raw text or a gold CoNLL-U file, then apply the frequency baseline."""
     if output.exists() and not force:
@@ -397,7 +416,9 @@ def init(
     except (CorpusError, OSError) as error:
         typer.echo(f"Error: {error}", err=True)
         raise typer.Exit(1) from error
+    sentences = sentences[skip:]
     sentences = sentences[:max_sentences] if max_sentences else sentences
+    output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(format_conllu(sentences), encoding="utf-8")
     for sidecar in (".review.json", ".history.jsonl", ".runs.jsonl"):
         output.with_name(output.name + sidecar).unlink(missing_ok=True)

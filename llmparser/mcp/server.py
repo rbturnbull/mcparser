@@ -17,6 +17,7 @@ from mcp.types import ToolAnnotations
 from pydantic import Field
 
 from ..corpus import CorpusError, CorpusStore
+from ..corpus.alignment import AlignmentInfo
 from ..corpus.models import (
     ArcSearch,
     CellPage,
@@ -25,7 +26,9 @@ from ..corpus.models import (
     EditResult,
     Flag,
     FlagPage,
+    LinkPage,
     MultiwordSearch,
+    ParallelView,
     RelationStats,
     SentenceHit,
     SentencePage,
@@ -34,6 +37,7 @@ from ..corpus.models import (
     SourceInfo,
     TokenSearch,
     TokenView,
+    TranslationSearch,
     ValidationReport,
     ValueCount,
 )
@@ -62,6 +66,12 @@ editing.
 Review: if you notice a likely mistake in a column you are not responsible for,
 call flag_issue with that column so the responsible agent reviews it; use
 list_flags to find work flagged for you and resolve_flag when done.
+
+Alignments: an alignment set links the words of sentence pairs (same sent_id)
+in two sources, e.g. a translation and its original, as Ugarit links
+"1-3S 2-5P" (word in A - word in B; S sure, P probable). Use get_parallel to
+see a pair, translation_candidates for what a lemma is usually aligned to, and
+set_links / remove_links to edit writable sets.
 
 Token ids are strings: "3" for a word, "3-4" for a multiword token, "3.1" for
 an empty node. Segmentation edits renumber words and keep heads consistent;
@@ -320,8 +330,71 @@ def build_server(
         return store.get_history(source, sent_id=sent_id, token_id=token_id, limit=limit)
 
     _add_resources(server, store)
+    @tool(READ)
+    def list_alignments() -> list[AlignmentInfo]:
+        """List the alignment sets: the two sources they link, mode (ro/rw) and size."""
+        return store.list_alignments()
+
+    @tool(READ)
+    def get_parallel(
+        alignment: Annotated[str, Field(description="Name of an alignment set (see list_alignments).")],
+        sent_id: SentId,
+    ) -> ParallelView:
+        """A sentence pair: both sentences as CoNLL-U, the Ugarit links with confidences, and unlinked words."""
+        return store.get_parallel(alignment, sent_id)
+
+    @tool(READ)
+    def translation_candidates(
+        lemma: str,
+        side: Annotated[Literal["a", "b"], Field(description="Which source the lemma belongs to.")] = "a",
+        alignments: Annotated[list[str] | None, Field(description="Alignment sets to use; default all.")] = None,
+        loose: Loose = False,
+        min_confidence: MinConfidence = 0.0,
+        exclude_sentence: Annotated[str | None, Field(description='Skip this pair, as "alignment:sent_id".')] = None,
+        limit: Limit = 10,
+    ) -> TranslationSearch:
+        """What is this lemma aligned to in the other source? Counts of linked lemmas, unaligned occurrences, examples."""
+        return store.translation_candidates(
+            lemma, side=side, alignments=alignments, loose=loose, min_confidence=min_confidence,
+            exclude_sentence=exclude_sentence, limit=limit,
+        )  # fmt: skip
+
+    @tool(READ)
+    def low_confidence_links(
+        alignment: str,
+        threshold: Annotated[float, Field(ge=0, le=1)] = 0.5,
+        sent_id: str | None = None,
+        limit: Limit = 50,
+    ) -> LinkPage:
+        """List links below a confidence threshold, least confident first."""
+        return store.low_confidence_links(alignment, threshold=threshold, sent_id=sent_id, limit=limit)
+
     if not allow_edits:
         return server
+
+    @tool(EDIT)
+    def set_links(
+        alignment: str,
+        sent_id: SentId,
+        links: Annotated[str, Field(description='Ugarit links, e.g. "1-1S 2-3P 4-4S" (word in A - word in B).')],
+        confidence: Confidence = None,
+        replace: Annotated[bool, Field(description="Replace the pair's links (true) or add to them (false).")] = True,
+        reason: Reason = "",
+        agent: Agent = "agent",
+    ) -> ParallelView:
+        """Set the word links of a sentence pair in a writable alignment set."""
+        return store.set_links(alignment, sent_id, links, confidence=confidence, replace=replace, reason=reason, agent=agent)
+
+    @tool(EDIT)
+    def remove_links(
+        alignment: str,
+        sent_id: SentId,
+        links: Annotated[str, Field(description='Links to remove, e.g. "1-1 2-3".')],
+        reason: Reason = "",
+        agent: Agent = "agent",
+    ) -> ParallelView:
+        """Remove word links from a sentence pair."""
+        return store.remove_links(alignment, sent_id, links, reason=reason, agent=agent)
 
     # ------------------------------------------------------------ editing
 

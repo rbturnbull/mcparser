@@ -4,7 +4,7 @@ from llmparser.corpus.confidence import read_confidence
 
 def test_evidence_confidence():
     assert evidence_confidence(1, 1) == 0.33
-    assert evidence_confidence(3, 3) == 0.9
+    assert evidence_confidence(3, 3) == 0.7  # a candidate only: always reviewed by an agent
     assert evidence_confidence(3, 6) == 0.5
 
 

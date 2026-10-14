@@ -38,6 +38,7 @@ concepts
 pipeline
 agents
 mcp
+alignment
 evaluation
 ```
 

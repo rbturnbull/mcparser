@@ -9,6 +9,7 @@
 .. automodule:: llmparser.corpus.confidence
 .. automodule:: llmparser.corpus.segmentation
 .. automodule:: llmparser.corpus.validation
+.. automodule:: llmparser.corpus.alignment
 .. automodule:: llmparser.corpus.index
 .. automodule:: llmparser.corpus.models
 .. automodule:: llmparser.corpus.errors

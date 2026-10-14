@@ -161,6 +161,17 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
   for the word's actual head; for HEAD, how similar words attach.
 - Runs print tokens and an estimated price per model (`pricing.py`; update the
   table when prices change).
+## Alignment (for llmaligner)
+
+`corpus/alignment.py`: `AlignmentSet` links words of same-`sent_id` sentences in
+two sources (Ugarit `1-2S 3-5P`, per-link confidence, JSONL file, ro/rw,
+history sidecar). Store: `add_alignment`, `get_parallel`, `set_links`
+(validated, `replace`, `dry_run`), `remove_links`, `translation_candidates`
+(lemma → linked lemmas; lemma falls back to form), `low_confidence_links`. MCP
+tools of the same names; CLI `--alignment NAME=A,B,PATH[:ro|rw[:CONF]]`. The
+llmaligner repo (sibling directory) depends on this package; its handoff
+instructions are in `../llmaligner/INSTRUCTIONS.md`.
+
 ## MCP tools
 
 Read: `list_sources list_sentences get_sentence get_context get_token
@@ -245,6 +256,18 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   (gold sentences + tokenisation). CoNLL 2018 best on la_proiel test (raw
   text, sentence segmentation ~39% F1): UPOS 96.86, UFeats 91.46, lemma 97.15,
   UAS 77.62, LAS 73.61 — not directly comparable.
+
+- Ancient Greek PROIEL dev, first 10 sentences, 2 rounds, $1.36: UPOS 98.5,
+  XPOS 94.1, lemma 98.5, UFeats 92.6, UAS 94.1, LAS 87.4 (CoNLL 2018 best, raw
+  text: 97.75 / 97.91 / 97.27 / 91.98 / 82.76 / 79.25). Findings → fixes:
+  baseline guesses (≤0.9 conf) were never reviewed → baseline capped at 0.7;
+  Haiku wrote a UPOS tag into XPOS → closed-tagset values (XPOS, DEPREL, FEATS
+  pairs) not in the treebank are rejected with a retry; after a UPOS change the
+  old XPOS stayed → changing UPOS (HEAD) marks XPOS/FEATS (DEPREL) of that word
+  for review (confidence 0); agents did not close flags they acted on → flags
+  on a changed cell are auto-resolved; PROIEL's combined values
+  (Gender=Masc,Neut) → FEATS guidance. A lemma-similarity check was tried and
+  dropped (8 flags on Greek+Latin, 0 useful).
 
 ## Ideas / next steps
 

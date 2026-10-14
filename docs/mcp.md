@@ -92,6 +92,10 @@ A relation without a subtype (`nmod`) also matches its subtypes (`nmod:gen`).
 | `flag_issue`, `resolve_flag` | review flags |
 | `save`, `reload` | normally not needed; edits save automatically |
 
+**Alignment** (see [Word alignment](alignment.md)): `list_alignments`,
+`get_parallel`, `translation_candidates`, `low_confidence_links`, and (writable
+sets) `set_links`, `remove_links`.
+
 **Resources:** `conllu://sources` and `conllu://{source}/{sent_id}`.
 
 ## Using the corpus from another project

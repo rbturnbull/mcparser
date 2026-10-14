@@ -26,9 +26,15 @@ class BaselineReport(BaseModel):
     unknown: int = 0
 
 
+BASELINE_MAX_CONFIDENCE = 0.7
+"""Below the default refinement threshold: a most-frequent analysis is only a
+candidate, so an agent always reviews it. Near-certain cells are settled by
+:mod:`llmparser.rules` instead (at 0.97)."""
+
+
 def evidence_confidence(count: int, total: int) -> float:
-    """Agreement among the examples, discounted when there are few (max 0.9)."""
-    return round(min(0.9, count / total * min(1.0, total / 3)), 2)
+    """Agreement among the examples, discounted when there are few (at most 0.7)."""
+    return round(min(BASELINE_MAX_CONFIDENCE, count / total * min(1.0, total / 3)), 2)
 
 
 def run_baseline(store: CorpusStore, target: str, agent: str = "baseline") -> BaselineReport:

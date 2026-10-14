@@ -240,3 +240,38 @@ def test_team_models_and_agents(store):
     assert team.model_name(TestModel()) == "test"
     assert team.relations().startswith("det 3, root 3")
     assert values("upos", "X")("") == {"values": ""}
+
+
+def test_applier_rejects_values_the_treebank_never_uses(store):
+    with pytest.raises(ModelRetry, match="SCONJ never occurs in the treebank's XPOS"):
+        Applier(store, ROLES["xpos"]).annotation(Annotation(values="p2 1 SCONJ 0.9"), batch("p2"))
+    with pytest.raises(ModelRetry, match="Case=Abl never occurs in the treebank's FEATS"):
+        Applier(store, ROLES["feats"]).annotation(Annotation(values="p2 1 Case=Abl|Number=Sing 0.9"), batch("p2"))
+    Applier(store, ROLES["xpos"]).annotation(Annotation(values="p2 1 DT 0.9\np2 2 _ 0.9"), batch("p2"))
+    assert store.source("pred").sentence("p2").token("1").xpos == "DT"
+
+
+def test_applier_accepts_any_value_without_trusted_data(pred_path):
+    from llmparser.corpus import CorpusStore
+
+    only = CorpusStore()
+    only.add_source("pred", pred_path, mode="rw")
+    Applier(only, ROLES["xpos"]).annotation(Annotation(values="p2 1 ANYTHING 0.9"), batch("p2"))
+
+
+def test_changing_a_key_marks_dependents_and_closes_flags(store):
+    store.update_cells("pred", "p2", [
+        {"token_id": "1", "column": "xpos", "value": "DT", "confidence": 0.97},
+        {"token_id": "1", "column": "feats", "value": "Definite=Def", "confidence": 0.97},
+        {"token_id": "2", "column": "xpos", "value": "NN", "confidence": 0.97},
+    ], agent="rules")  # fmt: skip
+    flag = store.flag_issue("pred", "p2", "upos", "should be PRON", token_id="1", agent="rules")
+    other = store.flag_issue("pred", "p2", "upos", "check", token_id="2", agent="rules")
+    Applier(store, ROLES["upos"]).annotation(Annotation(values="p2 1 PRON 0.9\np2 2 NOUN 0.9"), batch("p2"))
+    sentence = store.source("pred").sentence("p2")
+    assert read_confidence(sentence.token("1")) == {"upos": 0.9, "xpos": 0.0, "feats": 0.0}
+    assert read_confidence(sentence.token("2"))["xpos"] == 0.97  # unchanged UPOS: dependents keep their scores
+    flags = {f.id: f for f in store.list_flags("pred", status="all").flags}
+    assert (flags[flag.id].status, flags[flag.id].note) == ("resolved", "upos changed it to PRON")
+    assert flags[other.id].status == "open"
+    Applier(store, ROLES["head"]).annotation(Annotation(values="p2 2 0 0.9\np2 1 2 0.9"), batch("p2"))  # no change

@@ -110,7 +110,7 @@ def scripted_team(monkeypatch):
 def test_run_command(scripted_team, train_path, pred_path, tmp_path):
     config = tmp_path / "settings.yaml"
     config.write_text("rounds: 2\nroles:\n  head:\n    model: big\n", encoding="utf-8")
-    report = tmp_path / "report.json"
+    report = tmp_path / "reports" / "report.json"
     args = [
         "run", str(pred_path), "-s", str(train_path), "-c", str(config), "--model", "m", "--model-for", "lemma=small",
         "--roles", "lemma,head", "--threshold", "0.5", "--sentence", "p2", "--report", str(report),
@@ -221,11 +221,14 @@ def test_settings_command(tmp_path):
 
 
 def test_init_from_conllu_and_max_sentences(tmp_path, train_path, scripted_team):
-    output = tmp_path / "blank.conllu"
+    output = tmp_path / "new" / "dirs" / "blank.conllu"  # parent directories are created
     result = runner.invoke(app, ["init", str(train_path), "-o", str(output), "--max-sentences", "2", "--no-baseline"])
     assert result.exit_code == 0, result.output
     text = output.read_text(encoding="utf-8")
     assert text.count("# sent_id") == 2 and "\tdog\t" not in text and "2-3\tdel\t_" in text
+    later = tmp_path / "later.conllu"
+    result = runner.invoke(app, ["init", str(train_path), "-o", str(later), "--skip", "1", "--max-sentences", "1", "--no-baseline"])
+    assert result.exit_code == 0 and later.read_text(encoding="utf-8").startswith("# sent_id = t2")
     result = runner.invoke(app, ["score", str(output), "-s", str(train_path), "--max-sentences", "1"])
     assert "Round 1: scored 1 sentences" in result.stdout
     result = runner.invoke(app, ["run", str(output), "-s", str(train_path), "--sentence", "t2", "--max-sentences", "5", "--rounds", "1"])

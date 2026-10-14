@@ -10,10 +10,12 @@ READ_TOOLS = {
     "list_sources", "list_sentences", "get_sentence", "get_context", "get_token", "search_sentences",
     "find_tokens", "analyse_form", "find_multiword", "find_arcs", "relation_stats", "allowed_values", "feature_inventory",
     "validate", "low_confidence", "list_flags", "get_history",
+    "list_alignments", "get_parallel", "translation_candidates", "low_confidence_links",
 }  # fmt: skip
 EDIT_TOOLS = {
     "set_cell", "update_cells", "score_cells", "split_word", "merge_words", "delete_word", "insert_word",
     "add_multiword", "remove_multiword", "flag_issue", "resolve_flag", "save", "reload",
+    "set_links", "remove_links",
 }  # fmt: skip
 
 

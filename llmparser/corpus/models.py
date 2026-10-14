@@ -214,6 +214,46 @@ class ValidationReport(BaseModel):
     issues: list[SentenceIssue]
 
 
+class ParallelView(BaseModel):
+    """A sentence pair of an alignment set, with its links."""
+
+    alignment: str
+    sent_id: str
+    source_a: str
+    source_b: str
+    conllu_a: str
+    conllu_b: str
+    links: str = Field(description="Ugarit links, e.g. '1-1S 2-3P' (word id in A - word id in B).")
+    confidence: dict[str, float] = Field(description="Confidence of each link, keyed 'A-B'.")
+    unaligned_a: list[str] = Field(description="Word ids in A without a link.")
+    unaligned_b: list[str] = Field(description="Word ids in B without a link.")
+
+
+class TranslationSearch(BaseModel):
+    """What a lemma is aligned to in the other source."""
+
+    lemma: str
+    side: str
+    occurrences: int = Field(description="Words with this lemma in aligned sentence pairs.")
+    unaligned: int = Field(description="Of those, how many have no link.")
+    candidates: list[ValueCount] = Field(description="Lemmas on the other side, most often linked first.")
+    examples: list[str] = Field(description="'alignment:sent_id form→form' references.")
+
+
+class LinkRef(BaseModel):
+    alignment: str
+    sent_id: str
+    link: str
+    form_a: str
+    form_b: str
+    confidence: float
+
+
+class LinkPage(BaseModel):
+    total: int
+    links: list[LinkRef]
+
+
 class CellUpdate(BaseModel):
     """A change to one cell: a new value, a new confidence, or both."""
 

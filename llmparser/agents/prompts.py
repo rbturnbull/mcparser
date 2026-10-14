@@ -102,7 +102,10 @@ Give the UD features as Feature=Value pairs, sorted alphabetically and joined
 with "|", or "_" if none. Only use features and values that occur in the trusted
 data for that UPOS: feature_inventory upos=<UPOS>. Evidence: analyse_form for
 the form; agreement with the head and dependents (gender, number, case,
-definiteness); the verb's tense, mood, voice and person.""",
+definiteness); the verb's tense, mood, voice and person.
+Where the treebank leaves an ambiguous form unresolved with a combined value
+(e.g. Gender=Masc,Neut for an article form), use the combined value exactly as
+the treebank does rather than choosing one.""",
     "head": """\
 Give every word its head so the sentence forms a single tree: exactly one word
 has HEAD 0, every other word points to a word id, no cycles. Follow UD: content

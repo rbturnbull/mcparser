@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 from . import segmentation
-from .confidence import check_confidence_column, set_confidence, strip_confidence
+from .confidence import check_confidence, check_confidence_column, set_confidence, strip_confidence
 from .conllu import ANNOTATION_COLUMNS, EDITABLE_COLUMNS, EMPTY, UPOS_TAGS, Sentence, Token, check_cell, parse_pairs
 from .errors import CorpusError, EditError, NotFoundError
 from .index import loose as loose_key
@@ -31,7 +31,10 @@ from .models import (
     Flag,
     FlagPage,
     GroupCount,
+    LinkPage,
+    LinkRef,
     MultiwordAnalysis,
+    ParallelView,
     RelationStats,
     MultiwordSearch,
     SentenceHit,
@@ -44,9 +47,11 @@ from .models import (
     TokenRef,
     TokenSearch,
     TokenView,
+    TranslationSearch,
     ValidationReport,
     ValueCount,
 )
+from .alignment import AlignmentInfo, AlignmentSet, Link, format_ugarit, parse_ugarit
 from .source import REQUIRED_COLUMNS, SCORED_COLUMNS, CorpusSource, SourceMode
 from .validation import validate_sentence
 
@@ -141,6 +146,7 @@ class CorpusStore:
 
     def __init__(self, autosave: bool = True):
         self.sources: dict[str, CorpusSource] = {}
+        self.alignments: dict[str, AlignmentSet] = {}
         self.autosave = autosave
         self.round: int | None = None
         self._lock = threading.RLock()
@@ -187,8 +193,15 @@ class CorpusStore:
 
     @_locked
     def save(self, source: str | None = None) -> list[str]:
-        """Save one writable source, or all of them. Returns the names saved."""
-        targets = [self.source(source)] if source else [s for s in self.sources.values() if s.writable]
+        """Save one writable source or alignment set, or all of them. Returns the names saved."""
+        if source in self.alignments:
+            self.alignments[source].save()
+            return [source]
+        targets: list[CorpusSource | AlignmentSet] = (
+            [self.source(source)]
+            if source
+            else [s for s in self.sources.values() if s.writable] + [a for a in self.alignments.values() if a.writable]
+        )
         for target in targets:
             target.save()
         return [target.name for target in targets]
@@ -1136,3 +1149,203 @@ class CorpusStore:
         )
         self._autosave(target)
         return flag
+
+    # ------------------------------------------------------------------ alignments
+
+    @_locked
+    def add_alignment(
+        self,
+        name: str,
+        source_a: str,
+        source_b: str,
+        path: Path | str,
+        mode: SourceMode | str = SourceMode.READ_WRITE,
+        default_confidence: float | None = None,
+    ) -> AlignmentInfo:
+        """Add word alignments between two loaded sources (sentences paired by ``sent_id``)."""
+        if name in self.alignments or name in self.sources:
+            raise CorpusError(f"A source or alignment named {name!r} already exists.")
+        alignment = AlignmentSet(
+            name, self.source(source_a), self.source(source_b), path, mode=mode, default_confidence=default_confidence
+        )
+        self.alignments[name] = alignment
+        return alignment.info()
+
+    def alignment(self, name: str) -> AlignmentSet:
+        try:
+            return self.alignments[name]
+        except KeyError:
+            available = ", ".join(self.alignments) or "none"
+            raise NotFoundError(f"No alignment named {name!r}; available: {available}.") from None
+
+    @_locked
+    def list_alignments(self) -> list[AlignmentInfo]:
+        return [alignment.info() for alignment in self.alignments.values()]
+
+    def _pair(self, alignment: AlignmentSet, sent_id: str) -> tuple[Sentence, Sentence]:
+        return alignment.source_a.sentence(sent_id), alignment.source_b.sentence(sent_id)
+
+    def _parallel(self, alignment: AlignmentSet, sent_id: str, links: list[Link]) -> ParallelView:
+        a, b = self._pair(alignment, sent_id)
+        linked_a = {link.source for link in links}
+        linked_b = {link.target for link in links}
+        return ParallelView(
+            alignment=alignment.name,
+            sent_id=sent_id,
+            source_a=alignment.source_a.name,
+            source_b=alignment.source_b.name,
+            conllu_a=a.to_conllu(),
+            conllu_b=b.to_conllu(),
+            links=format_ugarit(links),
+            confidence={link.key: alignment.confidence(link) for link in links},
+            unaligned_a=[word.id for word in a.words if word.id not in linked_a],
+            unaligned_b=[word.id for word in b.words if word.id not in linked_b],
+        )
+
+    @_locked
+    def get_parallel(self, alignment: str, sent_id: str) -> ParallelView:
+        """A sentence pair: both sentences as CoNLL-U, the links, and the words without links."""
+        target = self.alignment(alignment)
+        return self._parallel(target, sent_id, target.links(sent_id))
+
+    @_locked
+    def set_links(
+        self,
+        alignment: str,
+        sent_id: str,
+        links: str | list[Link | dict[str, Any]],
+        confidence: float | None = None,
+        replace: bool = True,
+        reason: str = "",
+        agent: str = "agent",
+        dry_run: bool = False,
+    ) -> ParallelView:
+        """Set the links of a sentence pair.
+
+        ``links`` is Ugarit text (``"1-1S 2-3P"``) or a list of links;
+        ``confidence`` applies to links that have none. With ``replace`` the
+        pair's links are replaced, otherwise they are added (a link with the
+        same word ids is updated). Word ids must exist in both sentences.
+        """
+        target = self.alignment(alignment)
+        target.require_writable()
+        a, b = self._pair(target, sent_id)
+        parsed = parse_ugarit(links) if isinstance(links, str) else [Link.model_validate(link) for link in links]
+        ids_a, ids_b = {word.id for word in a.words}, {word.id for word in b.words}
+        for link in parsed:
+            if link.source not in ids_a:
+                raise EditError(f"Link {link.key}: no word {link.source} in {target.source_a.name}:{sent_id}.")
+            if link.target not in ids_b:
+                raise EditError(f"Link {link.key}: no word {link.target} in {target.source_b.name}:{sent_id}.")
+            if link.confidence is None and confidence is not None:
+                link.confidence = check_confidence(confidence)
+        merged = {} if replace else {link.key: link for link in target.links(sent_id)}
+        merged.update({link.key: link for link in parsed})
+        new = sorted(merged.values(), key=lambda link: (int(link.source), int(link.target)))
+        if not dry_run:
+            old = format_ugarit(target.links(sent_id))
+            target.pairs[sent_id] = new
+            target.record(self._edit(agent, sent_id=sent_id, action="align", column="alignment", old=old, new=format_ugarit(new), confidence=confidence, reason=reason))
+            if self.autosave:
+                target.save()
+        return self._parallel(target, sent_id, new)
+
+    @_locked
+    def remove_links(self, alignment: str, sent_id: str, links: str, reason: str = "", agent: str = "agent") -> ParallelView:
+        """Remove links (Ugarit text; S/P suffixes are ignored) from a sentence pair."""
+        target = self.alignment(alignment)
+        target.require_writable()
+        self._pair(target, sent_id)
+        keys = {link.key for link in parse_ugarit(links)}
+        old = target.links(sent_id)
+        new = [link for link in old if link.key not in keys]
+        target.pairs[sent_id] = new
+        target.record(self._edit(agent, sent_id=sent_id, action="unalign", column="alignment", old=format_ugarit(old), new=format_ugarit(new), reason=reason))
+        if self.autosave:
+            target.save()
+        return self._parallel(target, sent_id, new)
+
+    @staticmethod
+    def _lemma(word: Token) -> str:
+        return word.lemma if word.lemma != EMPTY else word.form
+
+    @_locked
+    def translation_candidates(
+        self,
+        lemma: str,
+        side: Literal["a", "b"] = "a",
+        alignments: list[str] | None = None,
+        loose: bool = False,
+        min_confidence: float = 0.0,
+        exclude_sentence: str | None = None,
+        limit: int = 10,
+    ) -> TranslationSearch:
+        """What ``lemma`` (of source A, or B with ``side="b"``) is linked to, over the aligned sentence pairs.
+
+        A word's lemma falls back to its form when the lemma is empty. Only
+        links with at least ``min_confidence`` count.
+        """
+        sets = [self.alignment(name) for name in alignments] if alignments else list(self.alignments.values())
+        wanted = loose_key(lemma) if loose else lemma
+        exclude = self._parse_exclude(exclude_sentence)
+        occurrences = unaligned = 0
+        counts: Counter[str] = Counter()
+        examples: list[str] = []
+        for aset in sets:
+            for sent_id, links in aset.pairs.items():
+                if not links or (exclude is not None and exclude[1] == sent_id and exclude[0] in (None, aset.name)):
+                    continue
+                try:
+                    a, b = self._pair(aset, sent_id)
+                except NotFoundError:
+                    continue
+                here, there = (a, b) if side == "a" else (b, a)
+                other = {word.id: word for word in there.words}
+                linked: dict[str, list[str]] = {}
+                for link in links:
+                    if aset.confidence(link) >= min_confidence:
+                        mine, theirs = (link.source, link.target) if side == "a" else (link.target, link.source)
+                        linked.setdefault(mine, []).append(theirs)
+                for word in here.words:
+                    key = loose_key(self._lemma(word)) if loose else self._lemma(word)
+                    if key != wanted:
+                        continue
+                    occurrences += 1
+                    partners = [other[i] for i in linked.get(word.id, []) if i in other]
+                    if not partners:
+                        unaligned += 1
+                    for partner in partners:
+                        counts[self._lemma(partner)] += 1
+                        if len(examples) < 5:
+                            examples.append(f"{aset.name}:{sent_id} {word.form}→{partner.form}")
+        return TranslationSearch(
+            lemma=lemma,
+            side=side,
+            occurrences=occurrences,
+            unaligned=unaligned,
+            candidates=[ValueCount(value=value, count=count) for value, count in counts.most_common(limit)],
+            examples=examples,
+        )
+
+    @_locked
+    def low_confidence_links(
+        self, alignment: str, threshold: float = 0.5, sent_id: str | None = None, limit: int = 50
+    ) -> LinkPage:
+        """Links below ``threshold``, least confident first."""
+        target = self.alignment(alignment)
+        found = []
+        for pair_id, links in target.pairs.items():
+            if sent_id is not None and pair_id != sent_id:
+                continue
+            a, b = self._pair(target, pair_id)
+            for link in links:
+                confidence = target.confidence(link)
+                if confidence < threshold:
+                    found.append(
+                        LinkRef(
+                            alignment=target.name, sent_id=pair_id, link=link.ugarit(),
+                            form_a=a.token(link.source).form, form_b=b.token(link.target).form, confidence=confidence,
+                        )
+                    )  # fmt: skip
+        found.sort(key=lambda ref: ref.confidence)
+        return LinkPage(total=len(found), links=found[:limit])
