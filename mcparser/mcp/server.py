@@ -1,6 +1,6 @@
-"""MCP server exposing a :class:`~llmparser.corpus.CorpusStore`.
+"""MCP server exposing a :class:`~mcparser.corpus.CorpusStore`.
 
-The same server is used by the llmparser agents (in-process or over stdio), by
+The same server is used by the mcparser agents (in-process or over stdio), by
 Claude Desktop, and by other projects such as llmaligner.
 """
 

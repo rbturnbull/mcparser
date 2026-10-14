@@ -1,4 +1,4 @@
-"""Sphinx configuration for llmparser."""
+"""Sphinx configuration for mcparser."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from pathlib import Path
 
 os.environ.setdefault("PYDANTIC_AI_NO_BANNER", "1")
 
-project = "llmparser"
+project = "MCParser"
 author = "Robert Turnbull"
 copyright = "2026, Robert Turnbull"
 
@@ -22,7 +22,7 @@ myst_heading_anchors = 3
 source_suffix = {".md": "markdown"}
 exclude_patterns = ["_build"]
 html_theme = "furo"
-html_title = "llmparser"
+html_title = "MCParser"
 html_static_path = ["_static"]
 autodoc_member_order = "bysource"
 autodoc_typehints = "description"
@@ -38,13 +38,13 @@ def write_cli_reference(app) -> None:
     """Render ``--help`` for every command into ``_generated/cli.md``."""
     from typer.testing import CliRunner
 
-    from llmparser.cli import app as cli
+    from mcparser.cli import app as cli
 
     runner = CliRunner()
     parts = ["# CLI reference\n", "Generated from the command-line help at build time.\n"]
     for command in CLI_COMMANDS:
-        result = runner.invoke(cli, [*command, "--help"], prog_name="llmparser", env={"COLUMNS": "100", "NO_COLOR": "1", "TERM": "dumb"})
-        title = " ".join(["llmparser", *command])
+        result = runner.invoke(cli, [*command, "--help"], prog_name="mcparser", env={"COLUMNS": "100", "NO_COLOR": "1", "TERM": "dumb"})
+        title = " ".join(["mcparser", *command])
         parts.append(f"## `{title}`\n\n```text\n{result.output.strip()}\n```\n")
     target = Path(app.srcdir) / "_generated" / "cli.md"
     target.parent.mkdir(exist_ok=True)

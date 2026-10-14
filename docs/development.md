@@ -17,7 +17,7 @@ uv run sphinx-build -W docs docs/_build/html           # these docs
 ## Layout
 
 ```text
-llmparser/
+mcparser/
   corpus/      CoNLL-U model, confidence, segmentation, validation, search, store
   mcp/         the MCP server and source specs
   agents/      roles, prompts, permission wrapper, agent team

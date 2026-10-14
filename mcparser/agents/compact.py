@@ -8,7 +8,7 @@ warnings for columns other agents are responsible for.
 
 The MCP server itself still returns structured JSON (for Claude Desktop and
 other clients); only the agents' view is compacted, in
-:class:`~llmparser.agents.toolset.RoleToolset`.
+:class:`~mcparser.agents.toolset.RoleToolset`.
 """
 
 from __future__ import annotations

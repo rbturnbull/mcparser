@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from llmparser.settings import (
+from mcparser.settings import (
     DEFAULT_EFFICIENT_MODEL,
     DEFAULT_LIGHT_MODEL,
     DEFAULT_STRONG_MODEL,

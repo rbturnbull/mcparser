@@ -1,7 +1,7 @@
 import pytest
 
-from llmparser.agents.team import ModelUsage
-from llmparser.pricing import estimate, price_for
+from mcparser.agents.team import ModelUsage
+from mcparser.pricing import estimate, price_for
 
 
 def test_prices():

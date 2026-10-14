@@ -2,8 +2,8 @@ import os
 
 import pytest
 
-from llmparser.corpus import ConflictError, CorpusError, CorpusSource, NotFoundError, ReadOnlyError
-from llmparser.corpus.models import Edit, Flag
+from mcparser.corpus import ConflictError, CorpusError, CorpusSource, NotFoundError, ReadOnlyError
+from mcparser.corpus.models import Edit, Flag
 
 
 def test_read_only_defaults(train_path):

@@ -80,6 +80,6 @@ automatically.
 
 Writable sources are saved after every edit, using an atomic rename. If the
 file changes on disk underneath the store (for example, Claude Desktop and a
-`llmparser run` editing the same file), the next save is refused with a
+`mcparser run` editing the same file), the next save is refused with a
 conflict error rather than overwriting the other change. Call `reload` to pick
 up the file's current state.

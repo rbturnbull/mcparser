@@ -3,37 +3,37 @@
 ## Corpus
 
 ```{eval-rst}
-.. automodule:: llmparser.corpus.store
-.. automodule:: llmparser.corpus.source
-.. automodule:: llmparser.corpus.conllu
-.. automodule:: llmparser.corpus.confidence
-.. automodule:: llmparser.corpus.segmentation
-.. automodule:: llmparser.corpus.validation
-.. automodule:: llmparser.corpus.alignment
-.. automodule:: llmparser.corpus.index
-.. automodule:: llmparser.corpus.models
-.. automodule:: llmparser.corpus.errors
+.. automodule:: mcparser.corpus.store
+.. automodule:: mcparser.corpus.source
+.. automodule:: mcparser.corpus.conllu
+.. automodule:: mcparser.corpus.confidence
+.. automodule:: mcparser.corpus.segmentation
+.. automodule:: mcparser.corpus.validation
+.. automodule:: mcparser.corpus.alignment
+.. automodule:: mcparser.corpus.index
+.. automodule:: mcparser.corpus.models
+.. automodule:: mcparser.corpus.errors
 ```
 
 ## MCP server
 
 ```{eval-rst}
-.. automodule:: llmparser.mcp.server
+.. automodule:: mcparser.mcp.server
    :members: build_server
-.. automodule:: llmparser.mcp.config
+.. automodule:: mcparser.mcp.config
 ```
 
 ## Agents and pipeline
 
 ```{eval-rst}
-.. automodule:: llmparser.agents.roles
-.. automodule:: llmparser.agents.team
-.. automodule:: llmparser.agents.toolset
-.. automodule:: llmparser.agents.prompts
+.. automodule:: mcparser.agents.roles
+.. automodule:: mcparser.agents.team
+.. automodule:: mcparser.agents.toolset
+.. automodule:: mcparser.agents.prompts
    :members: instructions, task_prompt
-.. automodule:: llmparser.pipeline
-.. automodule:: llmparser.settings
-.. automodule:: llmparser.baseline
-.. automodule:: llmparser.textinput
-.. automodule:: llmparser.evaluate
+.. automodule:: mcparser.pipeline
+.. automodule:: mcparser.settings
+.. automodule:: mcparser.baseline
+.. automodule:: mcparser.textinput
+.. automodule:: mcparser.evaluate
 ```

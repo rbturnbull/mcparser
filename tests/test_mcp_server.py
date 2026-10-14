@@ -4,7 +4,7 @@ import pytest
 from mcp import Client
 from mcp.shared.exceptions import MCPError
 
-from llmparser.mcp import build_server
+from mcparser.mcp import build_server
 
 READ_TOOLS = {
     "list_sources", "list_sentences", "get_sentence", "get_context", "get_token", "search_sentences",

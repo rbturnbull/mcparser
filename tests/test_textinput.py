@@ -1,7 +1,7 @@
 import pytest
 
-from llmparser.corpus import CorpusError, format_conllu, parse_conllu
-from llmparser.textinput import InputSentence, blank_sentences, build_sentences, read_input, tokenise
+from mcparser.corpus import CorpusError, format_conllu, parse_conllu
+from mcparser.textinput import InputSentence, blank_sentences, build_sentences, read_input, tokenise
 
 
 def test_tokenise_detaches_punctuation():

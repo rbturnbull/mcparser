@@ -27,6 +27,11 @@ AMBIGUOUS_SHARE = 0.9
 RARE_COUNT = 3
 """With fewer trusted examples than this, word-ending analogies are added."""
 SUFFIX_MINIMUM = 5
+INFORMATIVE_GAIN = 0.15
+"""A context reading is shown only if it changes the commonest analysis or raises its share by this much."""
+ANALYSIS_COLUMNS = {"upos": ("lemma", "upos", "xpos"), "lemma": ("lemma", "upos")}
+"""Columns of the analyses shown to a role (default: lemma, upos, xpos, feats)."""
+FULL_ANALYSIS = ("lemma", "upos", "xpos", "feats")
 EXAMPLE_MAX_WORDS = 40
 """Similar trusted sentences longer than this are not shown (too many tokens)."""
 
@@ -53,41 +58,64 @@ class EvidenceBuilder:
         more = len(result.groups) - shown
         return text + (f"; +{more} rarer" if more > 0 else "")
 
-    def analyses(self, form: str) -> str:
-        """``lemma upos xpos feats ×count`` for the commonest analyses of ``form``."""
-        return self._cached(("analyses", form), lambda: self._analyses(form))
+    def _search(self, form: str, columns: tuple[str, ...], loose: bool = False, **context: str) -> TokenSearch:
+        return self.store.find_tokens(
+            form=form, loose=loose, sources=self.trusted, group_by=list(columns), limit=1, **context
+        )
 
-    def _analyses(self, form: str) -> str:
-        result = self.store.analyse_form(form, sources=self.trusted, limit=1)
+    def analyses(self, form: str, columns: tuple[str, ...] = FULL_ANALYSIS) -> str:
+        """``lemma upos xpos feats ×count`` (or fewer columns) for the commonest analyses of ``form``."""
+        return self._cached(("analyses", form, columns), lambda: self._analyses(form, columns))
+
+    def _analyses(self, form: str, columns: tuple[str, ...]) -> str:
+        result = self._search(form, columns)
         if result.total:
             return self._groups(result)
-        result = self.store.analyse_form(form, loose=True, sources=self.trusted, limit=1)
+        result = self._search(form, columns, loose=True)
         return self._groups(result) + " (ignoring case/diacritics)" if result.total else "no trusted example"
 
-    def context(self, form: str, previous: str = "", following: str = "", following_upos: str = "") -> str:
-        """Analyses of an ambiguous ``form`` next to the neighbouring words.
+    def context(
+        self,
+        form: str,
+        previous: str = "",
+        following: str = "",
+        previous_upos: str = "",
+        following_upos: str = "",
+        columns: tuple[str, ...] = FULL_ANALYSIS,
+    ) -> str:
+        """Analyses of an ambiguous ``form`` next to the neighbouring words and tags.
 
-        Shown are the analyses right after the previous word, right before the
-        next word, and before a word with the next word's (predicted) UPOS; the
-        last one separates e.g. a Coptic article (before a NOUN) from a pronoun.
+        Considered are the analyses after the previous word, before the next
+        word, after a word with the previous word's UPOS and before one with the
+        next word's UPOS (e.g. Coptic ``ⲛ`` is the plural article after a
+        preposition, ``ⲩ`` an article before a NOUN but a pronoun before a
+        VERB). Only readings that change the picture are shown.
         """
-        key = ("context", form, previous, following, following_upos)
-        return self._cached(key, lambda: self._context(form, previous, following, following_upos))
+        key = ("context", form, previous, following, previous_upos, following_upos, columns)
+        return self._cached(key, lambda: self._context(form, previous, following, previous_upos, following_upos, columns))
 
-    def _context(self, form: str, previous: str, following: str, following_upos: str) -> str:
-        overall = self.store.analyse_form(form, sources=self.trusted, limit=1)
-        if overall.total and overall.groups[0].count / overall.total >= AMBIGUOUS_SHARE:
+    def _context(
+        self, form: str, previous: str, following: str, previous_upos: str, following_upos: str, columns: tuple[str, ...]
+    ) -> str:
+        overall = self._search(form, columns)
+        if not overall.total or overall.groups[0].count / overall.total >= AMBIGUOUS_SHARE:
             return ""
+        share = overall.groups[0].count / overall.total
         parts = []
-        for label, criterion in (
-            (f"after '{previous}'", {"previous_form": previous}),
-            (f"before '{following}'", {"next_form": following}),
-            (f"before a word tagged {following_upos}", {"next_upos": following_upos}),
+        for label, name, value in (
+            (f"after '{previous}'", "previous_form", previous),
+            (f"before '{following}'", "next_form", following),
+            (f"after {previous_upos}", "previous_upos", previous_upos),
+            (f"before {following_upos}", "next_upos", following_upos),
         ):
-            if next(iter(criterion.values())):
-                found = self.store.analyse_form(form, sources=self.trusted, limit=1, **criterion)
-                if found.total:
-                    parts.append(f"{label}: {self._groups(found)}")
+            if not value:
+                continue
+            found = self._search(form, columns, **{name: value})
+            if found.total and (
+                found.groups[0].values != overall.groups[0].values
+                or found.groups[0].count / found.total >= share + INFORMATIVE_GAIN
+            ):
+                parts.append(f"{label}: {self._groups(found)}")
         return " | ".join(parts)
 
     def analogy(self, form: str) -> str:
@@ -109,21 +137,19 @@ class EvidenceBuilder:
                 return f"words ending '-{key[-length:]}': {self._groups(result)}; e.g. {', '.join(pairs)}"
         return ""
 
-    def morphology_line(self, sentence: Sentence, word: Token, with_arc: bool) -> str:
+    def word_context(self, sentence: Sentence, word: Token, columns: tuple[str, ...] = FULL_ANALYSIS) -> str:
+        """:meth:`context` for a word of a sentence, from its neighbours' forms and UPOS."""
         words = sentence.words
         index = next(i for i, w in enumerate(words) if w is word)
-        parts = [self.analyses(word.form)]
-        previous = words[index - 1].form if index else ""
-        following = words[index + 1] if index + 1 < len(words) else None
-        if following is None:
-            parts.append(self.context(word.form, previous))
-        else:
-            upos = following.upos if following.upos != EMPTY else ""
-            parts.append(self.context(word.form, previous, following.form, upos))
-        parts.append(self.analogy(word.form))
-        if with_arc:
-            parts.append(self.arc_labels(sentence, word))
-        return f"- {word.form}: " + " | ".join(part for part in parts if part)
+        before = words[index - 1] if index else None
+        after = words[index + 1] if index + 1 < len(words) else None
+
+        def upos(neighbour: Token | None) -> str:
+            return neighbour.upos if neighbour is not None and neighbour.upos != EMPTY else ""
+
+        return self.context(
+            word.form, before.form if before else "", after.form if after else "", upos(before), upos(after), columns
+        )
 
     def tagset(self, role: Role, sentences: list[Sentence]) -> list[str]:
         tags = sorted({word.upos for sentence in sentences for word in sentence.words if word.upos != EMPTY})
@@ -178,17 +204,17 @@ class EvidenceBuilder:
         labels = ", ".join(f"{v.value}×{v.count}" for v in stats.deprels[:4])
         return f"arc to {target}: {labels} (by {stats.basis})"
 
-    def fixed(self, sent_id: str) -> list[str]:
+    def fixed(self, sent_id: str, label: str | None = None) -> list[str]:
         lines = []
         for expression in self.store.fixed_expressions(self.target, sent_id, sources=self.trusted):
             lines.append(
-                f"- {sent_id} words {expression.start}–{expression.end} '{' '.join(expression.forms)}': fixed expression "
+                f"- {label or sent_id} words {expression.start}–{expression.end} '{' '.join(expression.forms)}': fixed expression "
                 f"in {expression.fixed} of {expression.occurrences} occurrences (the first word is the head; "
                 f"the others attach to it as fixed)"
             )
         return lines
 
-    def examples(self, sentences: list[Sentence], limit: int = 1) -> list[str]:
+    def examples(self, sentences: list[Sentence], labels: dict[str, str] | None = None, limit: int = 1) -> list[str]:
         """The most similar trusted sentence for each sentence, as compact CoNLL-U (ID FORM LEMMA UPOS HEAD DEPREL)."""
         shown: set[tuple[str, str]] = set()
         lines: list[str] = []
@@ -200,7 +226,7 @@ class EvidenceBuilder:
                 if key in shown or len(example.words) > EXAMPLE_MAX_WORDS:
                     continue
                 shown.add(key)
-                lines.append(f"## {hit.source}:{hit.sent_id} (like {sentence.sent_id})")
+                lines.append(f"## example like {(labels or {}).get(sentence.sent_id, sentence.sent_id)}")
                 lines += [f"{w.id}\t{w.form}\t{w.lemma}\t{w.upos}\t{w.head}\t{w.deprel}" for w in example.words]
                 break
         return lines
@@ -241,28 +267,42 @@ class EvidenceBuilder:
         sentences = [source.sentence(sent_id) for sent_id, _ in batch]
         if role.name == "segmentation":
             return "\n".join(["Multiword evidence (surface token: splits in the trusted data):", *self.segmentation(sentences)])
+        labels = {sent_id: f"s{number}" for number, (sent_id, _) in enumerate(batch, start=1)}
         lines: list[str] = []
         seen: set[str] = set()
         if role.name in MORPHOLOGY_ROLES or role.is_scorer:
-            lines.append(
-                "Analyses in the trusted data (lemma upos xpos feats ×count; then after the previous word, "
-                "word-ending analogies" + (", relations for the current arc" if role.is_scorer else "") + "):"
-            )
-            for sentence, (_, cells) in zip(sentences, batch, strict=True):
+            columns = ANALYSIS_COLUMNS.get(role.name, FULL_ANALYSIS)
+            forms: dict[str, None] = {}
+            occurrences: list[str] = []
+            for sentence, (sent_id, cells) in zip(sentences, batch, strict=True):
                 wanted = {cell.token_id for cell in cells}
                 for word in sentence.words:
                     if wanted and word.id not in wanted:
                         continue
-                    line = self.morphology_line(sentence, word, with_arc=role.is_scorer)
-                    if role.is_scorer or line not in seen:
-                        seen.add(line)
-                        lines.append(line)
+                    forms[word.form] = None
+                    parts = [self.word_context(sentence, word, columns)]
+                    if role.is_scorer:
+                        parts.append(self.arc_labels(sentence, word))
+                    detail = " | ".join(part for part in parts if part)
+                    if detail:
+                        occurrences.append(f"- {labels[sent_id]} {word.id} {word.form}: {detail}")
+            lines.append(f"Analyses in the trusted data ({' '.join(columns)} ×count; word-ending analogies for rare forms):")
+            for form in forms:
+                analogy = self.analogy(form)
+                lines.append(f"- {form}: {self.analyses(form, columns)}" + (f" | {analogy}" if analogy else ""))
+            if occurrences:
+                lines.append(
+                    "Per word: readings of ambiguous forms in this context (after/before the neighbouring word or tag)"
+                    + (", and relations for the current arc" if role.is_scorer else "")
+                    + ":"
+                )
+                lines += occurrences
             lines += self.tagset(role, sentences)
         if role.name in ("head", "deprel"):
-            fixed = [line for sentence in sentences for line in self.fixed(sentence.sent_id)]
+            fixed = [line for sentence in sentences for line in self.fixed(sentence.sent_id, labels[sentence.sent_id])]
             if fixed:
                 lines += ["Fixed expressions of the treebank in these sentences:", *fixed]
-            examples = self.examples(sentences)
+            examples = self.examples(sentences, labels)
             if examples:
                 lines += ["Similar sentences from the treebank, to show its conventions (ID FORM LEMMA UPOS HEAD DEPREL):", *examples]
         if role.name == "deprel":
@@ -271,7 +311,7 @@ class EvidenceBuilder:
                 wanted = {cell.token_id for cell in cells}
                 for word in sentence.words:
                     if not wanted or word.id in wanted:
-                        lines.append(f"- {sent_id} {word.id} {word.form} ({word.upos}): {self.arc_labels(sentence, word) or 'no head yet'}")
+                        lines.append(f"- {labels[sent_id]} {word.id} {word.form} ({word.upos}): {self.arc_labels(sentence, word) or 'no head yet'}")
         elif not (role.name in MORPHOLOGY_ROLES or role.is_scorer):  # head and deps
             lines.append("How similar words attach in the trusted data (relation→head UPOS, side of head ×count):")
             for sentence, (_, cells) in zip(sentences, batch, strict=True):

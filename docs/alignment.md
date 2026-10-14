@@ -33,7 +33,7 @@ first saved, edits are saved immediately, and every change is appended to
 ## On the command line
 
 ```bash
-uv run llmparser mcp serve \
+uv run mcparser mcp serve \
     -s arabic=arabic.conllu -s greek=greek.conllu \
     -a verses=arabic,greek,alignments/verses.jsonl \
     -a gold=arabic,greek,alignments/gold.jsonl:ro
@@ -58,7 +58,7 @@ Here `verses` is writable (the default) and `gold` is read-only.
 ## From Python
 
 ```python
-from llmparser.corpus import CorpusStore
+from mcparser.corpus import CorpusStore
 
 store = CorpusStore()
 store.add_source("arabic", "arabic.conllu")

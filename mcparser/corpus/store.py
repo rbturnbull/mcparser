@@ -739,6 +739,27 @@ class CorpusStore:
         return found
 
     @_locked
+    def single_relations(
+        self, min_heads: int = 20, max_share: float = 0.01, sources: list[str] | None = None
+    ) -> dict[str, tuple[int, int]]:
+        """Relations a word almost never has twice (e.g. ``nsubj``), from the trusted data.
+
+        Returns ``{deprel: (words with such a dependent, words with two or more)}``
+        for relations seen on at least ``min_heads`` words and repeated on at most
+        ``max_share`` of them.
+        """
+        dependents: Counter[str] = Counter()
+        repeated: Counter[str] = Counter()
+        for source in self._trusted(sources):
+            dependents.update(source.index.dependents)
+            repeated.update(source.index.repeated)
+        return {
+            deprel: (count, repeated[deprel])
+            for deprel, count in dependents.items()
+            if count >= min_heads and repeated[deprel] <= max_share * count
+        }
+
+    @_locked
     def xpos_for_tags(self, upos: str, feats: str, sources: list[str] | None = None) -> list[ValueCount]:
         """XPOS values used with exactly this UPOS and FEATS (default: read-only sources)."""
         total: Counter[str] = Counter()
@@ -1024,7 +1045,7 @@ class CorpusStore:
         agent: str = "agent",
         flag_head: bool = True,
     ) -> EditResult:
-        """Split a word. See :func:`llmparser.corpus.segmentation.split_word`.
+        """Split a word. See :func:`mcparser.corpus.segmentation.split_word`.
 
         Like the other word-changing edits, this raises a sentence-level flag for
         the head agent unless ``flag_head`` is false.
@@ -1044,7 +1065,7 @@ class CorpusStore:
         reason: str = "",
         agent: str = "agent",
     ) -> EditResult:
-        """Merge adjacent words. See :func:`llmparser.corpus.segmentation.merge_words`."""
+        """Merge adjacent words. See :func:`mcparser.corpus.segmentation.merge_words`."""
         return self._segment(
             "merge_words", segmentation.merge_words, source, sent_id, agent, reason, confidence,
             token_ids=token_ids, form=form,

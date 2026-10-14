@@ -14,7 +14,7 @@ fully valid answer is applied, all at once.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -87,6 +87,8 @@ class Batch:
     sent_ids: list[str]
     cells: dict[str, list[tuple[str, str]]] | None = None
     """For the scorer: the (token_id, column) cells listed per sentence, which wildcards expand to."""
+    warned: set[tuple[str, str, str]] = field(default_factory=set)
+    """Doubled relations already pointed out to the model, which may confirm them by answering again."""
 
     def label(self, sent_id: str) -> str:
         return f"s{self.sent_ids.index(sent_id) + 1}"
@@ -212,6 +214,39 @@ class Applier:
                     )
         return errors
 
+    def _doubled(self, updates: dict[str, list[CellUpdate]], batch: Batch) -> list[str]:
+        """Warn (once) when the answer leaves a word with two dependents of a relation the treebank almost never repeats.
+
+        In Coptic, a noun subject before a verb that also has a pronoun subject
+        is ``dislocated``; in most treebanks a word has one ``nsubj`` and one ``obj``.
+        """
+        if self.role.column not in ("head", "deprel"):
+            return []
+        single = self.store.single_relations()
+        warnings = []
+        for sent_id, cells in updates.items():
+            words = {w.id: [w.form, w.head, w.deprel] for w in self.store.source(batch.target).sentence(sent_id).words}
+            for cell in cells:  # ids and values were checked by the dry run
+                words[cell.token_id][1 if cell.column == "head" else 2] = cell.value or "_"
+            groups: dict[tuple[str, str], list[str]] = {}
+            for token_id, (_, head, deprel) in words.items():
+                if deprel in single:
+                    groups.setdefault((head, deprel), []).append(token_id)
+            for (head, deprel), ids in groups.items():
+                key = (sent_id, head, deprel)
+                if len(ids) < 2 or key in batch.warned:
+                    continue
+                batch.warned.add(key)
+                heads, repeated = single[deprel]
+                dependents = ", ".join(f"{token_id} {words[token_id][0]}" for token_id in ids)
+                warnings.append(
+                    f"sentence {batch.label(sent_id)}: word {head} would have {len(ids)} '{deprel}' dependents ({dependents}), "
+                    f"but in the treebank only {repeated} of {heads} words have more than one. Check whether one of them "
+                    "has another relation (e.g. dislocated, conj, appos, det) or another head. If the answer is right, "
+                    "send it again unchanged."
+                )
+        return warnings
+
     def _follow_up(self, sent_id: str, changed: list[tuple[str, str]], batch: Batch) -> None:
         """Mark dependent cells for review and close flags that this change answers."""
         dependents = DEPENDENT_COLUMNS.get(self.role.column, ())
@@ -247,6 +282,7 @@ class Applier:
                 ]
         self._check_flags(answer.flags, batch, errors)
         self._retry(errors)
+        self._retry(self._doubled(updates, batch))
         for resolution in answer.resolved:
             try:
                 self.store.resolve_flag(batch.target, resolution.flag_id, resolution.status, resolution.note, agent=self.role.name)

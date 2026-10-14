@@ -60,7 +60,7 @@ jobs:
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: a23131bdd656358f346385f451cdd3ec
-          filename: llmparser-coverage-badge.json
+          filename: mcparser-coverage-badge.json
           label: coverage
           message: ${{ env.COVERAGE }}
           color: green

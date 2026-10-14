@@ -2,9 +2,9 @@ from collections import Counter
 
 import pytest
 
-from llmparser.corpus import CorpusStore
-from llmparser.corpus.confidence import read_confidence
-from llmparser.rules import Rules, RuleSettings, dominant
+from mcparser.corpus import CorpusStore
+from mcparser.corpus.confidence import read_confidence
+from mcparser.rules import Rules, RuleSettings, dominant
 
 ROW = "{id}\t{form}\t{lemma}\t{upos}\t{xpos}\t{feats}\t{head}\t{deprel}\t_\t{misc}"
 

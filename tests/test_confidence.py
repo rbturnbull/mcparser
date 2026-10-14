@@ -1,14 +1,14 @@
 import pytest
 
-from llmparser.corpus.confidence import (
+from mcparser.corpus.confidence import (
     check_confidence,
     read_confidence,
     set_confidence,
     strip_confidence,
     write_confidence,
 )
-from llmparser.corpus.conllu import Token
-from llmparser.corpus.errors import EditError
+from mcparser.corpus.conllu import Token
+from mcparser.corpus.errors import EditError
 
 
 def test_read_ignores_malformed_entries():

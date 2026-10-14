@@ -59,6 +59,10 @@ class SourceIndex:
         self.fixed_occurrences: Counter[tuple[str, ...]] = Counter()
         """How often each of those sequences occurs at all (fixed or not)."""
         self.relations: defaultdict[tuple[str, ...], Counter[str]] = defaultdict(Counter)
+        self.dependents: Counter[str] = Counter()
+        """Per DEPREL, the number of words with at least one dependent of that relation."""
+        self.repeated: Counter[str] = Counter()
+        """Per DEPREL, the number of words with two or more dependents of that relation."""
         """DEPREL counts keyed by :func:`relation_keys` of the dependent and head."""
 
         self.k1, self.b = bm25_k1, bm25_b
@@ -89,6 +93,13 @@ class SourceIndex:
                 group = sorted([word, *parts], key=lambda w: int(w.id))
                 if int(group[-1].id) - int(group[0].id) == len(group) - 1:  # contiguous only
                     self.fixed[tuple(loose(w.form) for w in group)] += 1
+        children: defaultdict[str, Counter[str]] = defaultdict(Counter)
+        for word in words.values():
+            if word.deprel != EMPTY and word.head in words:
+                children[word.head][word.deprel] += 1
+        for counts in children.values():
+            self.dependents.update(counts.keys())
+            self.repeated.update(deprel for deprel, count in counts.items() if count > 1)
         for word in words.values():
             if word.deprel == EMPTY or not (word.head == "0" or word.head in words):
                 continue

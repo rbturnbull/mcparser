@@ -4,7 +4,7 @@ set -eu
 
 cd "$(dirname "$0")"
 
-# The docs import llmparser (API reference, generated CLI page), so build in the
+# The docs import mcparser (API reference, generated CLI page), so build in the
 # project environment with the docs dependency group rather than `uv tool run`.
 uv run --group docs sphinx-build -E -W -b html "$@" docs docs/_build/html
 

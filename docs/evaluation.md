@@ -1,9 +1,9 @@
 # Evaluation
 
 ```bash
-uv run llmparser evaluate pred.conllu gold.conllu          # table
-uv run llmparser evaluate pred.conllu gold.conllu --json   # machine-readable
-uv run llmparser evaluate pred.conllu gold.conllu --annotated-only  # only parsed sentences
+uv run mcparser evaluate pred.conllu gold.conllu          # table
+uv run mcparser evaluate pred.conllu gold.conllu --json   # machine-readable
+uv run mcparser evaluate pred.conllu gold.conllu --annotated-only  # only parsed sentences
 ```
 
 `--predicted-only` ignores gold sentences missing from the predictions;

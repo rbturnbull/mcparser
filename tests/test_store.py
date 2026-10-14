@@ -2,9 +2,9 @@ import threading
 
 import pytest
 
-from llmparser.corpus import CellUpdate, CorpusError, CorpusStore, EditError, NotFoundError, ReadOnlyError
-from llmparser.corpus.confidence import read_confidence
-from llmparser.corpus.store import normalise_column
+from mcparser.corpus import CellUpdate, CorpusError, CorpusStore, EditError, NotFoundError, ReadOnlyError
+from mcparser.corpus.confidence import read_confidence
+from mcparser.corpus.store import normalise_column
 
 
 def test_sources(store, train_path):

@@ -1,11 +1,11 @@
 import pytest
 
-from llmparser.agents.prompts import TaskItem
-from llmparser.agents.team import AgentTeam
-from llmparser.corpus import CorpusError, CorpusStore
-from llmparser.pipeline import Pipeline
-from llmparser.rules import RuleSettings
-from llmparser.settings import Settings
+from mcparser.agents.prompts import TaskItem
+from mcparser.agents.team import AgentTeam
+from mcparser.corpus import CorpusError, CorpusStore
+from mcparser.pipeline import Pipeline
+from mcparser.rules import RuleSettings
+from mcparser.settings import Settings
 from scripted import cells, scored, scripted, sentences, values
 
 # The fixture predictions: p1 "Vino al mercado ." (al has no LEMMA/UPOS), p2 "the dog".
@@ -142,6 +142,7 @@ async def test_agent_failures_are_recorded_and_the_run_continues(store):
     assert len(report.tasks) == 1
     assert report.tasks[0].error.startswith("UnexpectedModelBehavior")
     assert "expected SENTENCE TOKEN_ID COLUMN CONFIDENCE" in model.retries[0]
+    assert report.tasks[0].retries == []  # a failed task has no result to read them from
     assert any("scorer p1, p2 FAILED" in message for message in messages)
 
 

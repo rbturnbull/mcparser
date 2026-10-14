@@ -2,10 +2,10 @@ import json
 
 import pytest
 
-from llmparser.agents.compact import compact_result, counts, misc
-from llmparser.agents.evidence import EvidenceBuilder
-from llmparser.agents.roles import ROLES
-from llmparser.corpus import CorpusStore
+from mcparser.agents.compact import compact_result, counts, misc
+from mcparser.agents.evidence import EvidenceBuilder
+from mcparser.agents.roles import ROLES
+from mcparser.corpus import CorpusStore
 
 
 def dumped(value):
@@ -108,13 +108,15 @@ def cells(store, column, sent_id="p1"):
 def test_morphology_evidence(store, builder):
     text = builder.build(ROLES["upos"], [("p1", cells(store, "upos")), ("p2", [])])
     assert text.splitlines() == [
-        "Analyses in the trusted data (lemma upos xpos feats ×count; then after the previous word, word-ending analogies):",
-        "- Vino: venir VERB VMIS3S0 Mood=Ind|Number=Sing|Person=3|Tense=Past ×1",
+        "Analyses in the trusted data (lemma upos xpos ×count; word-ending analogies for rare forms):",
+        "- Vino: venir VERB VMIS3S0 ×1",
         "- al: no trusted example",
-        "- mercado: mercado NOUN NCMS000 Gender=Masc|Number=Sing ×1",
-        "- .: . PUNCT . _ ×1; . PUNCT Fp _ ×1 | after 'mercado': . PUNCT Fp _ ×1",
-        "- the: the DET DT Definite=Def|PronType=Art ×1",
+        "- mercado: mercado NOUN NCMS000 ×1",
+        "- .: . PUNCT . ×1; . PUNCT Fp ×1",
+        "- the: the DET DT ×1",
         "- dog: no trusted example",
+        "Per word: readings of ambiguous forms in this context (after/before the neighbouring word or tag):",
+        "- s1 4 .: after 'mercado': . PUNCT Fp ×1 | after NOUN: . PUNCT Fp ×1",
     ]
     store.set_cell("pred", "p2", "2", "form", "DOGS")
     assert "(ignoring case/diacritics)" in builder.build(ROLES["lemma"], [("p2", [])])
@@ -165,15 +167,15 @@ def test_syntax_evidence(store, builder):
     text = builder.build(ROLES["head"], [("p1", []), ("p2", [])])
     examples, attach = text.split("How similar words attach")
     assert examples.startswith("Similar sentences from the treebank")
-    assert "## train:t2 (like p1)" in examples and "1\tVino\tvenir\tVERB\t0\troot" in examples
+    assert "## example like s1" in examples and "1\tVino\tvenir\tVERB\t0\troot" in examples
     lines = attach.splitlines()
     assert lines[1] == "- Vino (VERB): root→ROOT root ×3 (by UPOS, 3 arcs)"
     assert lines[2] == "- al (_): no UPOS or lemma yet"
     assert len(lines) == 7
     deprel = builder.build(ROLES["deprel"], [("p1", cells(store, "deprel"))])
-    assert "- p1 1 Vino (VERB): arc to ROOT: root×3 (by UPOS+head UPOS)" in deprel
-    assert "- p1 2 al (_): no head yet" in deprel
-    assert "- p1 3 mercado (NOUN): arc to Vino (VERB, left): no similar trusted arcs" in deprel
+    assert "- s1 1 Vino (VERB): arc to ROOT: root×3 (by UPOS+head UPOS)" in deprel
+    assert "- s1 2 al (_): no head yet" in deprel
+    assert "- s1 3 mercado (NOUN): arc to Vino (VERB, left): no similar trusted arcs" in deprel
     only_vino = builder.build(ROLES["deprel"], [("p1", [c for c in cells(store, "deprel") if c.token_id == "1"])])
     assert only_vino.count("\n- ") == 1
     store.set_cell("pred", "p1", "2", "upos", "INTJ")
@@ -194,9 +196,11 @@ def test_arcs_by_lemma_when_well_attested(tmp_path):
 
 def test_scorer_evidence(store, builder):
     text = builder.build(ROLES["scorer"], [("p1", []), ("p2", [])])
-    assert "- Vino: venir VERB VMIS3S0 Mood=Ind|Number=Sing|Person=3|Tense=Past ×1 | arc to ROOT: root×3 (by UPOS+head UPOS)" in text
-    assert "- al: no trusted example\n" in text  # no UPOS yet: no arc
-    assert "- the: the DET DT Definite=Def|PronType=Art ×1 | arc to dog (NOUN, right): det×3 (by UPOS+head UPOS)" in text
+    assert "- Vino: venir VERB VMIS3S0 Mood=Ind|Number=Sing|Person=3|Tense=Past ×1" in text
+    assert "- s1 1 Vino: arc to ROOT: root×3 (by UPOS+head UPOS)" in text
+    assert "- s1 2 al" not in text  # no UPOS yet: no arc
+    assert "- s1 4 .: after 'mercado': . PUNCT Fp _ ×1 | after NOUN: . PUNCT Fp _ ×1 | arc to Vino" in text
+    assert "- s2 1 the: arc to dog (NOUN, right): det×3 (by UPOS+head UPOS)" in text
 
 
 def test_scorer_skips_arcs_with_unknown_heads(tmp_path, store):
@@ -240,7 +244,7 @@ def test_fixed_expressions_and_examples(tmp_path, monkeypatch):
     assert store.source("train").index.fixed[("ni", "siquiera")] == 0  # not contiguous: not indexed
     builder = EvidenceBuilder(store, "pred")
     text = builder.build(ROLES["deprel"], [("p", [])])
-    assert "- p words 1–3 'a pesar de': fixed expression in 3 of 4 occurrences" in text
-    assert text.count("## train:") == 1  # each similar sentence once
-    monkeypatch.setattr("llmparser.agents.evidence.EXAMPLE_MAX_WORDS", 2)
+    assert "- s1 words 1–3 'a pesar de': fixed expression in 3 of 4 occurrences" in text
+    assert text.count("## example like") == 1  # each similar sentence once
+    monkeypatch.setattr("mcparser.agents.evidence.EXAMPLE_MAX_WORDS", 2)
     assert "Similar sentences" not in EvidenceBuilder(store, "pred").build(ROLES["deprel"], [("p", [])])

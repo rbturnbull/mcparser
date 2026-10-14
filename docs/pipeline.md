@@ -10,7 +10,7 @@ prediction ──▶ rules ──▶ │ score: scorer rates cells a model chang
 
 ## Round 0: the baseline
 
-`llmparser init` creates the prediction file. When trusted sources are given,
+`mcparser init` creates the prediction file. When trusted sources are given,
 it also applies a **frequency baseline** that needs no LLM:
 
 1. **Segmentation.** A surface token that the trusted data splits into a
@@ -54,7 +54,7 @@ is off by default; the next `run` scores those cells anyway.
 
 ## Settings
 
-`llmparser settings` prints the defaults as YAML. Save them, edit them, and
+`mcparser settings` prints the defaults as YAML. Save them, edit them, and
 pass the file with `--config`:
 
 ```yaml
@@ -87,16 +87,16 @@ Command-line overrides: `--strong-model`, `--efficient-model`, `--light-model`,
 `--efficient-thinking`, `--light-thinking`, `--model` (one model for every
 role), `--model-for ROLE=MODEL`, `--roles`, `--rounds`, `--threshold`,
 `--batch-sentences`, `--concurrency`, `--sentence` and `--max-sentences`.
-`llmparser score` runs only the rules and the scorer.
+`mcparser score` runs only the rules and the scorer.
 
 ## Cost
 
 Each run ends with token counts and an estimated price per model (list prices
-in {mod}`llmparser.pricing`). What keeps the cost down, roughly in order of
+in {mod}`mcparser.pricing`). What keeps the cost down, roughly in order of
 effect:
 
 - **Rules first.** Code settles every cell the treebank makes near-certain (see
-  {mod}`llmparser.rules`): on Latin PROIEL about three quarters of the LEMMA,
+  {mod}`mcparser.rules`): on Latin PROIEL about three quarters of the LEMMA,
   UPOS, XPOS and FEATS cells, with no errors in testing, and a fifth of the
   relation labels once heads are known. Those cells never reach a model. With
   `use_predictions`, forms the treebank lacks are settled from confident
@@ -110,10 +110,18 @@ effect:
   name sentences `s1`, `s2`, ... instead of repeating their `sent_id` (about 20
   tokens each in Coptic Scriptorium), and the scorer starts with `s1 * * 0.95`
   and lists only the exceptions.
-- **Evidence in the prompt**: the form's analyses; for an ambiguous form, its
-  analyses after the previous word, before the next word and before a word with
-  the next word's UPOS (Coptic `ⲩ` is DET before a NOUN, PRON before a VERB); word-ending analogies for unseen forms, and
-  relation counts for each word's actual head.
+- **Short input.** Most of the cost is the task prompt, which is written to the
+  prompt cache once. The cells to work on are listed as word ranges
+  (`1..36 at 0.00, 40 at 0.60`), since their values are in the sentence table;
+  empty columns at the end of a CoNLL-U line are left out; each form's
+  analyses appear once per task, with only the columns the role needs (UPOS:
+  lemma, UPOS, XPOS; LEMMA: lemma, UPOS).
+- **Evidence in the prompt**: the form's analyses; for an ambiguous form, the
+  readings next to the neighbouring words and tags (after the previous word or
+  UPOS, before the next word or UPOS), shown only where they change the
+  picture (Coptic `ⲛ` is the plural article after a preposition, 230 to 2);
+  word-ending analogies for unseen forms; relation counts for each word's
+  actual head.
 - **Three model tiers**: Haiku for XPOS, Sonnet for UPOS, FEATS and scoring,
   Opus for segmentation, lemmas and syntax.
 - **Cross-checks** flag (never change) a UPOS that the treebank almost never

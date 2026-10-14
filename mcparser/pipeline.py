@@ -1,12 +1,12 @@
 """The rules → score → refine loop over a prediction source.
 
-Before the first round, code settles what it can (see :mod:`llmparser.rules`),
+Before the first round, code settles what it can (see :mod:`mcparser.rules`),
 including columns the trusted data never uses. Then each round:
 
 1. **Score.** The scorer rates cells that a model or a person changed since it
    last scored them. Cells set by code are not re-checked: their confidence is
    based on the evidence.
-2. **Refine.** Each role in :data:`~llmparser.agents.roles.REFINE_ORDER` works
+2. **Refine.** Each role in :data:`~mcparser.agents.roles.REFINE_ORDER` works
    on cells of its column below the threshold and on flags raised for it.
    Sentences go from most to least confident, in batches of several sentences
    per task. After each role, the rules run again on the sentences it touched
@@ -54,6 +54,8 @@ class TaskResult(BaseModel):
     summary: str | None = None
     error: str | None = None
     usage: ModelUsage | None = None
+    retries: list[str] = []
+    """Why the model had to answer again (invalid values, broken trees, doubled relations)."""
 
 
 class RoundReport(BaseModel):
@@ -239,7 +241,9 @@ class Pipeline:
             if spec.is_scorer:
                 batch.cells = {item.sent_id: [(cell.token_id, cell.column) for cell in item.cells] for item in items}
             result.usage = ModelUsage(cost=0.0)
-            answer = await self.team.run(role, task_prompt(spec, self.target, items, evidence), batch, result.usage)
+            answer = await self.team.run(
+                role, task_prompt(spec, self.target, items, evidence), batch, result.usage, result.retries
+            )
             result.summary = answer.summary
             self.progress(f"{label}: {result.summary}")
         except UserError:

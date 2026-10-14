@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 from pydantic_ai import models
 
-from llmparser.corpus import CorpusStore, parse_conllu
+from mcparser.corpus import CorpusStore, parse_conllu
 
 models.ALLOW_MODEL_REQUESTS = False  # never call a real model from the tests
 

@@ -1,8 +1,8 @@
 import pytest
 
 from conftest import DATA
-from llmparser.corpus import parse_conllu
-from llmparser.evaluate import evaluate
+from mcparser.corpus import parse_conllu
+from mcparser.evaluate import evaluate
 
 GOLD = """\
 # sent_id = a

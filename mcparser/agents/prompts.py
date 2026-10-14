@@ -32,8 +32,10 @@ language and the UD guidelines. The source "{target}" holds the predictions;
 cells already settled by code are not shown to you.
 
 How to work:
-1. The task gives you the sentences (CoNLL-U, with confidences in MISC Conf=),
-   the cells to work on, open flags, and the main evidence from the treebank.
+1. The task gives you the sentences (CoNLL-U; empty columns at the end of a
+   line are left out), the cells to work on (word ids, "3..7" meaning words 3
+   to 7, with their confidence; the values are in the table), open flags, and
+   the main evidence from the treebank.
    Search tools are available (analyse_form with previous_form, find_tokens
    with suffix, relation_stats, find_arcs, ...) but call them only when the
    evidence given is not enough. Make independent calls in parallel.
@@ -165,11 +167,36 @@ def instructions(
     return "\n\n".join(parts)
 
 
-def _cell_lines(cells: Iterable[CellRef]) -> list[str]:
-    return [
-        f"- word {cell.token_id} ({cell.form}): {cell.column.upper()} = {cell.value!r}, confidence {cell.confidence:.2f}"
-        for cell in cells
-    ]
+def _ranges(ids: list[str]) -> list[str]:
+    """``["1", "2", "3", "5", "6.1"]`` → ``["1..3", "5", "6.1"]`` (runs of consecutive word numbers)."""
+    runs: list[list[str]] = []
+    for token_id in ids:
+        last = runs[-1][-1] if runs else ""
+        if token_id.isdigit() and last.isdigit() and int(token_id) == int(last) + 1:
+            runs[-1].append(token_id)
+        else:
+            runs.append([token_id])
+    return [run[0] if len(run) == 1 else f"{run[0]}..{run[-1]}" for run in runs]
+
+
+def _cell_line(cells: list[CellRef]) -> str:
+    """The cells of one column as ranges of word ids sharing a confidence: ``1..5 9 at 0.00, 7 at 0.60``."""
+    groups: list[tuple[str, list[str]]] = []
+    for cell in cells:
+        confidence = f"{cell.confidence:.2f}"
+        if groups and groups[-1][0] == confidence:
+            groups[-1][1].append(cell.token_id)
+        else:
+            groups.append((confidence, [cell.token_id]))
+    return ", ".join(f"{' '.join(_ranges(ids))} at {confidence}" for confidence, ids in groups)
+
+
+def _score_line(cells: list[CellRef]) -> str:
+    """The cells to score, per column: ``UPOS 1..5 7; HEAD 1..12``."""
+    columns: dict[str, list[str]] = {}
+    for cell in cells:
+        columns.setdefault(cell.column, []).append(cell.token_id)
+    return "; ".join(f"{column.upper()} {' '.join(_ranges(ids))}" for column, ids in columns.items())
 
 
 def _flag_lines(flags: Iterable[Flag]) -> list[str]:
@@ -182,7 +209,7 @@ def _flag_lines(flags: Iterable[Flag]) -> list[str]:
 
 
 def sentence_block(conllu: str) -> str:
-    """CoNLL-U without the Conf attributes (the cells to work on list confidences)."""
+    """CoNLL-U without the Conf attributes (the cells to work on list confidences) and trailing empty columns."""
     lines = []
     for line in conllu.splitlines():
         if line.startswith("#"):
@@ -190,6 +217,8 @@ def sentence_block(conllu: str) -> str:
             continue
         cells = line.split("\t")
         cells[9] = misc_without_conf(cells[9])
+        while len(cells) > 2 and cells[-1] == "_":
+            cells.pop()
         lines.append("\t".join(cells))
     return "\n".join(lines)
 
@@ -202,12 +231,10 @@ def task_prompt(role: Role, target: str, items: list[TaskItem], evidence: str = 
         if item.conllu:
             lines.append(sentence_block(item.conllu))
         if role.is_scorer:
-            lines.append("Score these cells:")
-            lines += _cell_lines(item.cells)
+            lines.append(f"Cells to score: {_score_line(item.cells)}")
             continue
         if item.cells:
-            lines.append(f"{role.column.upper()} cells to annotate or review (low confidence):")
-            lines += _cell_lines(item.cells)
+            lines.append(f"{role.column.upper()} cells to annotate or review: {_cell_line(item.cells)}")
         if item.flags:
             lines.append(f"Open flags for {role.column.upper()}:")
             lines += _flag_lines(item.flags)

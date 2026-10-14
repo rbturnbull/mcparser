@@ -1,5 +1,5 @@
 =========================
-LLM Parser
+MCParser
 =========================
 
 Uses LLM agents to perform dependency parsing, with CoNLL-U files as examples.
@@ -27,13 +27,13 @@ Annotating
 
    export ANTHROPIC_API_KEY=...
    # raw text (one sentence per line, or YAML with 'text' fields) -> CoNLL-U + baseline
-   uv run llmparser init input.txt -o pred.conllu -s ud-train.conllu
+   uv run mcparser init input.txt -o pred.conllu -s ud-train.conllu
    # score and refine with the agents (default model anthropic:claude-opus-5-5)
-   uv run llmparser run pred.conllu -s ud-train.conllu --rounds 3
+   uv run mcparser run pred.conllu -s ud-train.conllu --rounds 3
    # compare with gold
-   uv run llmparser evaluate pred.conllu gold.conllu
+   uv run mcparser evaluate pred.conllu gold.conllu
 
-Try ``--sentence ID`` first to see what one sentence costs. ``llmparser settings``
+Try ``--sentence ID`` first to see what one sentence costs. ``mcparser settings``
 prints the configurable settings (per-role models, threshold, rounds, ...).
 
 The CoNLL-U MCP server
@@ -44,9 +44,9 @@ hold trusted examples, writable (``rw``) sources hold predictions.
 
 .. code-block:: bash
 
-   uv run llmparser mcp serve -s train=ud-train.conllu -s pred=pred.conllu:rw
+   uv run mcparser mcp serve -s train=ud-train.conllu -s pred=pred.conllu:rw
    # JSON to add to Claude Desktop's claude_desktop_config.json:
-   uv run llmparser mcp config -s train=ud-train.conllu -s pred=pred.conllu:rw
+   uv run mcparser mcp config -s train=ud-train.conllu -s pred=pred.conllu:rw
 
 Development
 ===========

@@ -1,8 +1,8 @@
 import pytest
 
 from conftest import sentence
-from llmparser.corpus.errors import EditError, NotFoundError
-from llmparser.corpus.segmentation import (
+from mcparser.corpus.errors import EditError, NotFoundError
+from mcparser.corpus.segmentation import (
     add_multiword,
     delete_word,
     insert_word,

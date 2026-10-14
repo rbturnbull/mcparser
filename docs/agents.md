@@ -33,14 +33,14 @@ Open flags for UPOS:
 You may also correct any other UPOS value in this sentence.
 ```
 
-The instructions (see {mod}`llmparser.agents.prompts`) describe the team, the
+The instructions (see {mod}`mcparser.agents.prompts`) describe the team, the
 evidence tools for that role, the confidence scale (0.95 = clear and well
 attested, 0.8 = probable, 0.6 = plausible, below 0.5 = a guess), and the rule
 that problems in other columns are flagged, not fixed.
 
 ## What an agent may do
 
-{class}`~llmparser.agents.toolset.RoleToolset` wraps the MCP connection for
+{class}`~mcparser.agents.toolset.RoleToolset` wraps the MCP connection for
 each role:
 
 - only the role's tools are listed (the search tools for every role; the
@@ -63,7 +63,12 @@ for all the listed cells of a word (`s1 3 * 0.9`) or of the sentence
 (`s1 * * 0.95`), and later lines override earlier ones. Answers also include any flags for other columns and the flags it closed. Code
 checks the whole answer first: an unknown sentence or word, an invalid tag or,
 for HEAD, a cycle or wrong number of roots is sent back to the model to fix;
-only a valid answer is applied. The segmentation agent still edits through the
+only a valid answer is applied. For HEAD and DEPREL, code also asks once when
+an answer gives a word two dependents of a relation the treebank almost never
+repeats (in Coptic Scriptorium, 4 of 3,491 words have two `nsubj`; a noun
+subject next to a pronoun subject is `dislocated`); sending the same answer
+again confirms it. The reasons for every retry are kept in the run report.
+The segmentation agent still edits through the
 tools, since splitting and merging renumber the words.
 
 ## Models and reasoning
@@ -87,10 +92,10 @@ unset, each model uses its own default.
 
 ```python
 import anyio
-from llmparser.agents.team import AgentTeam
-from llmparser.corpus import CorpusStore
-from llmparser.pipeline import Pipeline
-from llmparser.settings import Settings
+from mcparser.agents.team import AgentTeam
+from mcparser.corpus import CorpusStore
+from mcparser.pipeline import Pipeline
+from mcparser.settings import Settings
 
 store = CorpusStore()
 store.add_source("train", "train.conllu")

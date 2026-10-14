@@ -2,10 +2,10 @@
 
 ## Install
 
-llmparser uses [uv](https://docs.astral.sh/uv/) and Python 3.11 or later.
+MCParser uses [uv](https://docs.astral.sh/uv/) and Python 3.11 or later.
 
 ```bash
-git clone <repository> && cd llmparser
+git clone <repository> && cd mcparser
 uv sync
 export ANTHROPIC_API_KEY=...   # or the key for whichever provider your models use
 ```
@@ -19,7 +19,7 @@ gold sentences, let the agents re-annotate them, and compare with the gold.
 mkdir -p examples/demo
 uv run python - <<'EOF'
 from pathlib import Path
-from llmparser.corpus import parse_conllu, format_conllu
+from mcparser.corpus import parse_conllu, format_conllu
 
 out = Path("examples/demo")
 sents = parse_conllu(Path("hit_hittb-ud-test.conllu").read_text())
@@ -38,7 +38,7 @@ EOF
 Run the agents on one sentence first, to see what they do and what it costs:
 
 ```bash
-uv run llmparser run examples/demo/pred.conllu -s examples/demo/train.conllu \
+uv run mcparser run examples/demo/pred.conllu -s examples/demo/train.conllu \
     --sentence 14.10-2 --rounds 1
 ```
 
@@ -53,7 +53,7 @@ Round 1: scored 1 sentences, 6 agent tasks, 28 edits, 0 open flags, mean confide
 Then score the result:
 
 ```bash
-uv run llmparser evaluate examples/demo/pred.conllu examples/demo/gold.conllu
+uv run mcparser evaluate examples/demo/pred.conllu examples/demo/gold.conllu
 ```
 
 Every edit is recorded in `examples/demo/pred.conllu.history.jsonl`, and review
@@ -72,8 +72,8 @@ B10K1V1:
 ```
 
 ```bash
-uv run llmparser init ephesians.yaml -o ephesians.conllu -s arabic-train.conllu
-uv run llmparser run ephesians.conllu -s arabic-train.conllu
+uv run mcparser init ephesians.yaml -o ephesians.conllu -s arabic-train.conllu
+uv run mcparser run ephesians.conllu -s arabic-train.conllu
 ```
 
 `init` tokenises the text (whitespace, with punctuation split off), then
@@ -84,15 +84,15 @@ segmentation kept) and `--max-sentences N`, which is the easiest way to test
 on a held-out set:
 
 ```bash
-uv run llmparser init la_proiel-ud-dev.conllu -o pred.conllu -s la_proiel-ud-train.conllu --max-sentences 100
-uv run llmparser run pred.conllu -s la_proiel-ud-train.conllu --max-sentences 20
-uv run llmparser evaluate pred.conllu la_proiel-ud-dev.conllu --predicted-only
+uv run mcparser init la_proiel-ud-dev.conllu -o pred.conllu -s la_proiel-ud-train.conllu --max-sentences 100
+uv run mcparser run pred.conllu -s la_proiel-ud-train.conllu --max-sentences 20
+uv run mcparser evaluate pred.conllu la_proiel-ud-dev.conllu --predicted-only
 ```
 
 ## Exploring a treebank from Claude Desktop
 
 ```bash
-uv run llmparser mcp config -s train=examples/demo/train.conllu -s pred=examples/demo/pred.conllu:rw
+uv run mcparser mcp config -s train=examples/demo/train.conllu -s pred=examples/demo/pred.conllu:rw
 ```
 
 Add the printed `mcpServers` entry to Claude Desktop's

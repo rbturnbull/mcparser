@@ -1105,50 +1105,6 @@ wheels = [
 ]
 
 [[package]]
-name = "llmparser"
-version = "0.2.0"
-source = { editable = "." }
-dependencies = [
-    { name = "mcp" },
-    { name = "pydantic" },
-    { name = "pydantic-ai-slim", extra = ["anthropic", "mcp"] },
-    { name = "pyyaml" },
-    { name = "typer" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pytest" },
-    { name = "pytest-cov" },
-]
-docs = [
-    { name = "furo" },
-    { name = "myst-parser" },
-    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "mcp", specifier = ">=2.3" },
-    { name = "pydantic", specifier = ">=2.10" },
-    { name = "pydantic-ai-slim", extras = ["anthropic", "mcp"], specifier = ">=2.56.0" },
-    { name = "pyyaml", specifier = ">=6.0" },
-    { name = "typer", specifier = ">=0.15" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pytest", specifier = ">=8" },
-    { name = "pytest-cov", specifier = ">=5" },
-]
-docs = [
-    { name = "furo", specifier = ">=2024.8.6" },
-    { name = "myst-parser", specifier = ">=4" },
-    { name = "sphinx", specifier = ">=8" },
-]
-
-[[package]]
 name = "logfire-api"
 version = "5.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1333,6 +1289,50 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/9e/2d/7c251e34207f6c51000312fc8839111ac45cfe02023f90b44e7f1051dd8e/mcp_types-2.3.0.tar.gz", hash = "sha256:d1e46549edb35ee19a94940fcee6d1addd7e589ab7ea92dda83f5d84781fc362", size = 65898, upload-time = "2026-10-02T22:06:57.863Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ce/48/32583066b155bb5d4507e7887dc88ee23118cc4de8e2a12870c49719e2a8/mcp_types-2.3.0-py3-none-any.whl", hash = "sha256:968efdbdaedfab06adae40d378a34395f1090c5921d4be3c9cde283aaf76d91d", size = 69108, upload-time = "2026-10-02T22:06:54.099Z" },
+]
+
+[[package]]
+name = "mcparser"
+version = "0.2.0"
+source = { editable = "." }
+dependencies = [
+    { name = "mcp" },
+    { name = "pydantic" },
+    { name = "pydantic-ai-slim", extra = ["anthropic", "mcp"] },
+    { name = "pyyaml" },
+    { name = "typer" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+    { name = "pytest-cov" },
+]
+docs = [
+    { name = "furo" },
+    { name = "myst-parser" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "mcp", specifier = ">=2.3" },
+    { name = "pydantic", specifier = ">=2.10" },
+    { name = "pydantic-ai-slim", extras = ["anthropic", "mcp"], specifier = ">=2.56.0" },
+    { name = "pyyaml", specifier = ">=6.0" },
+    { name = "typer", specifier = ">=0.15" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=8" },
+    { name = "pytest-cov", specifier = ">=5" },
+]
+docs = [
+    { name = "furo", specifier = ">=2024.8.6" },
+    { name = "myst-parser", specifier = ">=4" },
+    { name = "sphinx", specifier = ">=8" },
 ]
 
 [[package]]

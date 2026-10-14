@@ -1,5 +1,5 @@
-from llmparser.baseline import evidence_confidence, run_baseline
-from llmparser.corpus.confidence import read_confidence
+from mcparser.baseline import evidence_confidence, run_baseline
+from mcparser.corpus.confidence import read_confidence
 
 
 def test_evidence_confidence():

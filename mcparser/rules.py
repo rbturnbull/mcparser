@@ -13,7 +13,7 @@ The rules are:
   the same previous word;
 * **XPOS from tags** — the XPOS used with exactly this UPOS and FEATS;
 * **DEPREL** — ``root`` for the word with HEAD 0, otherwise the relation used
-  for arcs like this one (see :meth:`~llmparser.corpus.CorpusStore.relation_stats`);
+  for arcs like this one (see :meth:`~mcparser.corpus.CorpusStore.relation_stats`);
 * **segmentation** — surface tokens that the trusted data overwhelmingly
   splits (split them) or leaves whole (confirm them); if the trusted data has no
   multiword tokens at all, every word is confirmed;

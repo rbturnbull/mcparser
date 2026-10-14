@@ -122,7 +122,7 @@ def claude_desktop_config(
     alignments: list[AlignmentSpec] | None = None,
 ) -> dict[str, Any]:
     """The ``mcpServers`` entry for Claude Desktop's ``claude_desktop_config.json``."""
-    args = ["-m", "llmparser", "mcp", "serve", "--name", name]
+    args = ["-m", "mcparser", "mcp", "serve", "--name", name]
     for spec in specs:
         args += ["--source", spec.to_arg()]
     for alignment in alignments or []:

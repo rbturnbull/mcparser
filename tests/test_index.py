@@ -1,6 +1,6 @@
 from conftest import DATA
-from llmparser.corpus.conllu import parse_conllu
-from llmparser.corpus.index import SourceIndex, loose, merge_counters, terms
+from mcparser.corpus.conllu import parse_conllu
+from mcparser.corpus.index import SourceIndex, loose, merge_counters, terms
 
 
 def index():

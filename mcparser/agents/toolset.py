@@ -19,7 +19,7 @@ class RoleToolset(WrapperToolset[Any]):
     """The MCP toolset as seen by one role.
 
     Only the role's tools are listed, and results come back as compact text
-    (see :mod:`llmparser.agents.compact`). The ``agent`` argument is hidden from the
+    (see :mod:`mcparser.agents.compact`). The ``agent`` argument is hidden from the
     model and filled in with the role name, so edits and flags are attributed
     correctly. Writes are limited to the target source and the role's columns;
     the scorer may only send confidences. A refused call is returned to the

@@ -1,6 +1,6 @@
 # The MCP server
 
-The MCP server exposes a {class}`~llmparser.corpus.store.CorpusStore` to any
+The MCP server exposes a {class}`~mcparser.corpus.store.CorpusStore` to any
 MCP client. It is the only way the agents touch the data, and it can be used
 on its own from Claude Desktop or other projects.
 
@@ -8,13 +8,13 @@ on its own from Claude Desktop or other projects.
 
 ```bash
 # stdio (what Claude Desktop launches)
-uv run llmparser mcp serve -s train=ud-train.conllu -s pred=pred.conllu:rw
+uv run mcparser mcp serve -s train=ud-train.conllu -s pred=pred.conllu:rw
 
 # streamable HTTP
-uv run llmparser mcp serve -s ud-train.conllu --transport streamable-http --port 8000
+uv run mcparser mcp serve -s ud-train.conllu --transport streamable-http --port 8000
 
 # search tools only, no editing
-uv run llmparser mcp serve -s ud-train.conllu --read-only
+uv run mcparser mcp serve -s ud-train.conllu --read-only
 ```
 
 `--root-key` names the MISC attribute that holds a word's root (default
@@ -23,7 +23,7 @@ uv run llmparser mcp serve -s ud-train.conllu --read-only
 ## Claude Desktop
 
 ```bash
-uv run llmparser mcp config -s train=ud-train.conllu -s pred=pred.conllu:rw
+uv run mcparser mcp config -s train=ud-train.conllu -s pred=pred.conllu:rw
 ```
 
 This prints the entry to merge into `mcpServers` in
@@ -104,7 +104,7 @@ The store doesn't depend on the agents. A project such as a parallel-corpus
 aligner can use it directly:
 
 ```python
-from llmparser.corpus import CorpusStore
+from mcparser.corpus import CorpusStore
 
 store = CorpusStore()
 store.add_source("grc", "greek.conllu")
@@ -119,7 +119,7 @@ Or it can talk to the server over MCP, e.g. with pydantic-ai:
 ```python
 from pydantic_ai import Agent
 from pydantic_ai.mcp import MCPToolset
-from llmparser.mcp import build_server
+from mcparser.mcp import build_server
 
 agent = Agent("anthropic:claude-opus-5-5", toolsets=[MCPToolset(build_server(store))])
 ```

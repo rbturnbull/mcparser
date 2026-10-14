@@ -6,10 +6,10 @@ import pytest
 from mcp import Client
 
 from conftest import DATA
-from llmparser.corpus import ConflictError, CorpusError, CorpusStore, EditError, NotFoundError, ReadOnlyError
-from llmparser.corpus.alignment import AlignmentSet, Link, format_ugarit, parse_ugarit
-from llmparser.mcp import build_server
-from llmparser.mcp.config import AlignmentSpec, claude_desktop_config, load_store
+from mcparser.corpus import ConflictError, CorpusError, CorpusStore, EditError, NotFoundError, ReadOnlyError
+from mcparser.corpus.alignment import AlignmentSet, Link, format_ugarit, parse_ugarit
+from mcparser.mcp import build_server
+from mcparser.mcp.config import AlignmentSpec, claude_desktop_config, load_store
 
 
 @pytest.fixture
@@ -160,7 +160,7 @@ def test_specs_and_config(tmp_path):
     for bad in ("verses", "v=la,grc", "=la,grc,x", "v=la,,x"):
         with pytest.raises(CorpusError, match="should be NAME=SOURCE_A,SOURCE_B,PATH"):
             AlignmentSpec.parse(bad)
-    from llmparser.mcp.config import SourceSpec
+    from mcparser.mcp.config import SourceSpec
 
     sources = [SourceSpec.parse(f"la={DATA}/parallel_a.conllu"), SourceSpec.parse(f"grc={DATA}/parallel_b.conllu")]
     store = load_store(sources, alignments=[spec])
@@ -193,7 +193,7 @@ def test_cli_alignment_option(monkeypatch, tmp_path):
     from mcp.server import MCPServer
     from typer.testing import CliRunner
 
-    from llmparser.cli import app
+    from mcparser.cli import app
 
     calls = []
     monkeypatch.setattr(MCPServer, "run", lambda self, transport, **kwargs: calls.append(transport))

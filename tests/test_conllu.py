@@ -1,7 +1,7 @@
 import pytest
 
 from conftest import DATA, sentence
-from llmparser.corpus.conllu import (
+from mcparser.corpus.conllu import (
     Sentence,
     Token,
     check_cell,
@@ -12,7 +12,7 @@ from llmparser.corpus.conllu import (
     parse_pairs,
     surface_text,
 )
-from llmparser.corpus.errors import ConlluFormatError, EditError, NotFoundError
+from mcparser.corpus.errors import ConlluFormatError, EditError, NotFoundError
 
 
 def test_round_trip_is_lossless():

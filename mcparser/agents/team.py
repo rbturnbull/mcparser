@@ -8,6 +8,7 @@ from typing import Any
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.mcp import MCPToolset
+from pydantic_ai.messages import ModelRequest, RetryPromptPart
 from pydantic_ai.models import Model
 from pydantic_ai.settings import ModelSettings
 from pydantic_ai.toolsets import AbstractToolset
@@ -41,7 +42,7 @@ class ModelUsage(BaseModel):
     cache_read_tokens: int = 0
     cache_write_tokens: int = 0
     output_tokens: int = 0
-    cost: float | None = Field(None, description="Estimated US dollars (see llmparser.pricing).")
+    cost: float | None = Field(None, description="Estimated US dollars (see mcparser.pricing).")
 
     def add(self, usage: RunUsage, model: str) -> None:
         self.tasks += 1
@@ -146,11 +147,14 @@ class AgentTeam:
     async def __aexit__(self, *args: Any) -> None:
         await self.toolset.__aexit__(*args)
 
-    async def run(self, role: str, prompt: str, batch: Batch, usage: ModelUsage | None = None) -> Answer:
+    async def run(
+        self, role: str, prompt: str, batch: Batch, usage: ModelUsage | None = None, retries: list[str] | None = None
+    ) -> Answer:
         """Run ``role`` on a task; for compact answers, the edits are applied when the answer is accepted.
 
         The task's token use is added to the per-model and per-role totals and,
-        if given, to ``usage``.
+        if given, to ``usage``; the retry messages sent to the model (why a
+        request was repeated) are appended to ``retries``.
         """
         result = await self.agent(role).run(
             prompt, deps=batch, usage_limits=UsageLimits(request_limit=self.settings.request_limit)
@@ -162,6 +166,14 @@ class AgentTeam:
         self.role_usage.setdefault(role, ModelUsage(cost=0.0)).merge(task)
         if usage is not None:
             usage.merge(task)
+        if retries is not None:
+            retries += [
+                str(part.content)[:500]
+                for message in result.all_messages()
+                if isinstance(message, ModelRequest)
+                for part in message.parts
+                if isinstance(part, RetryPromptPart)
+            ]
         return result.output
 
     def total(self) -> ModelUsage:

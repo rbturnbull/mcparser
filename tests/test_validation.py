@@ -1,6 +1,6 @@
 from conftest import sentence
-from llmparser.corpus.conllu import Sentence
-from llmparser.corpus.validation import validate_sentence
+from mcparser.corpus.conllu import Sentence
+from mcparser.corpus.validation import validate_sentence
 
 
 def codes(s, known=None):

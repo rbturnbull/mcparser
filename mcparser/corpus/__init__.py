@@ -1,7 +1,7 @@
 """CoNLL-U corpora with confidence scores, search and safe editing.
 
 This subpackage has no dependency on the agents and can be used on its own,
-either directly in Python or through the MCP server in :mod:`llmparser.mcp`.
+either directly in Python or through the MCP server in :mod:`mcparser.mcp`.
 """
 
 from .conllu import ANNOTATION_COLUMNS, COLUMNS, UPOS_TAGS, Sentence, Token, format_conllu, parse_conllu

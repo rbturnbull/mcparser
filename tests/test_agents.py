@@ -4,14 +4,14 @@ import pytest
 from pydantic_ai import ModelRetry
 from pydantic_ai.models.test import TestModel
 
-from llmparser.agents.outputs import Annotation, Applier, Batch, FlagRequest, FlagResolution, Scores, parse_scores, parse_values
-from llmparser.agents.prompts import TaskItem, instructions, sentence_block, task_prompt
-from llmparser.agents.roles import COLUMN_ROLES, READ_TOOLS, ROLES, SEGMENTATION_TOOLS
-from llmparser.agents.team import AgentTeam, TaskReport
-from llmparser.agents.toolset import RoleToolset
-from llmparser.corpus.confidence import read_confidence
-from llmparser.corpus.models import CellRef, Flag
-from llmparser.settings import RoleSettings, Settings
+from mcparser.agents.outputs import Annotation, Applier, Batch, FlagRequest, FlagResolution, Scores, parse_scores, parse_values
+from mcparser.agents.prompts import TaskItem, instructions, sentence_block, task_prompt
+from mcparser.agents.roles import COLUMN_ROLES, READ_TOOLS, ROLES, SEGMENTATION_TOOLS
+from mcparser.agents.team import AgentTeam, TaskReport
+from mcparser.agents.toolset import RoleToolset
+from mcparser.corpus.confidence import read_confidence
+from mcparser.corpus.models import CellRef, Flag
+from mcparser.settings import RoleSettings, Settings
 from scripted import scripted, values
 
 # ---------------------------------------------------------------- roles and prompts
@@ -54,8 +54,7 @@ def test_task_prompts():
         "## s1 = sentence s",
         "# sent_id = s",
         "1\tVino\tvenir\tVERB\t_\t_\t0\troot\t_\tSpaceAfter=No",
-        "UPOS cells to annotate or review (low confidence):",
-        "- word 2 (al): UPOS = '_', confidence 0.00",
+        "UPOS cells to annotate or review: 2 at 0.00",
         "Open flags for UPOS:",
         "- flag 3 (word 2, from lemma): looks like ADP Suggested: 'ADP'.",
         "- flag 4 (whole sentence, from scorer): check all",
@@ -67,8 +66,21 @@ def test_task_prompts():
         "EVIDENCE",
     ]
     scorer = task_prompt(ROLES["scorer"], "pred", [TaskItem("s", cells, flags)])
-    assert "Score these cells:" in scorer and "Open flags" not in scorer
-    assert sentence_block("1\ta\t_\t_\t_\t_\t0\troot\t_\tConf=upos:0.10") == "1\ta\t_\t_\t_\t_\t0\troot\t_\t_"
+    assert "Cells to score: UPOS 2" in scorer and "Open flags" not in scorer
+    assert sentence_block("1\ta\t_\t_\t_\t_\t0\troot\t_\tConf=upos:0.10") == "1\ta\t_\t_\t_\t_\t0\troot"
+    assert sentence_block("1-2\tal\t_\t_\t_\t_\t_\t_\t_\t_") == "1-2\tal"
+
+
+def test_compact_cell_lists():
+    def ref(token_id, column="upos", confidence=0.0):
+        return CellRef(sent_id="s", token_id=token_id, form="x", column=column, value="_", confidence=confidence)
+
+    many = [ref("1"), ref("2"), ref("3"), ref("5"), ref("6", confidence=0.6), ref("7", confidence=0.6), ref("7.1")]
+    assert "UPOS cells to annotate or review: 1..3 5 at 0.00, 6..7 at 0.60, 7.1 at 0.00" in task_prompt(
+        ROLES["upos"], "pred", [TaskItem("s", many)]
+    )
+    scored = [ref("1"), ref("2"), ref("1", "head"), ref("4", "head")]
+    assert "Cells to score: UPOS 1..2; HEAD 1 4" in task_prompt(ROLES["scorer"], "pred", [TaskItem("s", scored)])
 
 
 # ---------------------------------------------------------------- toolset permissions
@@ -190,6 +202,18 @@ def test_applier_rejects_broken_trees(store):
     assert read_confidence(store.source("pred").sentence("p2").token("1"))["head"] == 0.95
 
 
+def test_doubled_relations_are_questioned_once(store, monkeypatch):
+    monkeypatch.setattr(store, "single_relations", lambda: {"obl": (100, 1)})
+    applier = Applier(store, ROLES["deprel"])
+    task = batch("p1")
+    with pytest.raises(ModelRetry, match=r"s1: word 1 would have 3 'obl' dependents \(2 al, 3 mercado, 4 \.\)"):
+        applier.annotation(Annotation(values="p1 4 obl 0.9"), task)
+    assert store.source("pred").sentence("p1").token("4").deprel == "punct"  # nothing applied
+    applier.annotation(Annotation(values="p1 4 obl 0.9"), task)  # confirmed: accepted
+    assert store.source("pred").sentence("p1").token("4").deprel == "obl"
+    assert Applier(store, ROLES["upos"])._doubled({}, task) == []
+
+
 def test_applier_scores(store):
     applier = Applier(store, ROLES["scorer"])
     applier.scores(Scores(scores="p2 1 * 0.9\np2 1 upos 0.4", flags=[FlagRequest(sent_id="p2", column="upos", reason="x")]), batch("p2"))
@@ -222,6 +246,10 @@ async def test_team_applies_compact_answers_and_retries(store):
     assert [(e.agent, e.column) for e in store.get_history("pred")] == [("upos", "upos")]
     usage = team.total()
     assert usage.requests == 3 and usage.input_tokens > 0 and usage.output_tokens > 0 and usage.cost is None
+    logged = []
+    async with team:
+        await team.run("upos", "## s1 = sentence p1", batch("p1"), retries=logged)
+    assert len(logged) == 1 and "not a universal POS tag" in logged[0]
 
 
 @pytest.mark.anyio
@@ -273,7 +301,7 @@ def test_applier_rejects_values_the_treebank_never_uses(store):
 
 
 def test_applier_accepts_any_value_without_trusted_data(pred_path):
-    from llmparser.corpus import CorpusStore
+    from mcparser.corpus import CorpusStore
 
     only = CorpusStore()
     only.add_source("pred", pred_path, mode="rw")

@@ -170,7 +170,7 @@ TrustedOption = Annotated[
     list[str] | None,
     typer.Option("--source", "-s", help="Trusted example sources, [NAME=]PATH[:ro[:CONFIDENCE]]. Repeatable."),
 ]
-ConfigOption = Annotated[Path | None, typer.Option("--config", "-c", help="Settings YAML (see `llmparser settings`).")]
+ConfigOption = Annotated[Path | None, typer.Option("--config", "-c", help="Settings YAML (see `mcparser settings`).")]
 
 
 def _prediction_store(prediction: Path, sources: list[str] | None) -> CorpusStore:

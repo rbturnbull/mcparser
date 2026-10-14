@@ -1,6 +1,6 @@
-# llmparser
+# MCParser
 
-llmparser produces [Universal Dependencies](https://universaldependencies.org/)
+MCParser produces [Universal Dependencies](https://universaldependencies.org/)
 annotation (CoNLL-U) with a team of LLM agents. Trusted CoNLL-U files, such as
 a treebank's training data, provide the examples. The agents annotate a
 prediction file, score every cell, and refine the least certain cells over

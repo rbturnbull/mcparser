@@ -29,7 +29,7 @@ class BaselineReport(BaseModel):
 BASELINE_MAX_CONFIDENCE = 0.7
 """Below the default refinement threshold: a most-frequent analysis is only a
 candidate, so an agent always reviews it. Near-certain cells are settled by
-:mod:`llmparser.rules` instead (at 0.97)."""
+:mod:`mcparser.rules` instead (at 0.97)."""
 
 
 def evidence_confidence(count: int, total: int) -> float:

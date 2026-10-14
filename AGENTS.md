@@ -1,4 +1,4 @@
-# llmparser — implementation notes
+# MCParser — implementation notes
 
 Notes for coding agents (Codex, Claude Code) and humans picking up this repo.
 Keep this file current when you change the design or finish a milestone.
@@ -11,11 +11,11 @@ scored and refined by agents over several rounds. All corpus access goes
 through an MCP server so that the same server also works from Claude Desktop
 and from other projects (e.g. llmaligner, which aligns parallel corpora).
 
-## Status (2026-10-14)
+## Status (2026-10-15)
 
 | Milestone | State |
 |---|---|
-| 1. Corpus store (`llmparser/corpus/`) | done, 100% covered |
+| 1. Corpus store (`mcparser/corpus/`) | done, 100% covered |
 | 2. MCP server + CLI `mcp serve` / `mcp config` / `validate` | done, 100% covered |
 | 3. Agents (pydantic-ai), per-role model config | done, 100% covered; verified with Opus 5.5 |
 | 4. Pipeline: `init` (text / YAML) + baseline, score/refine rounds, `evaluate` | done, 100% covered |
@@ -28,7 +28,7 @@ Reuse ideas from it, but it is not imported.
 ## Layout
 
 ```
-llmparser/
+mcparser/
   corpus/            # no agent or MCP dependencies; usable directly from Python
     conllu.py        # lossless CoNLL-U model (cells kept as raw strings) + parser
     confidence.py    # Conf=col:score,... in MISC
@@ -190,8 +190,8 @@ delete_word insert_word add_multiword remove_multiword flag_issue resolve_flag
 save reload`. Resources: `conllu://sources`, `conllu://{source}/{sent_id}`.
 Write tools take `agent` (recorded in history; also used for flag ownership).
 
-Claude Desktop: `uv run llmparser mcp config -s train.conllu -s pred=pred.conllu:rw`
-prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
+Claude Desktop: `uv run mcparser mcp config -s train.conllu -s pred=pred.conllu:rw`
+prints the `mcpServers` JSON (uses the venv's python with `-m mcparser`).
 
 ## Environment gotchas
 
@@ -221,14 +221,14 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   `--cov-fail-under=100` in `pyproject.toml`) and fast (~2.5 s without
   coverage, ~6 s with). No network in tests; use `tests/scripted.py`.
 - Docs: `./mkdocs.sh` (= `uv run --group docs sphinx-build -E -W ...`). Not
-  `uv tool run`: the docs import llmparser.
+  `uv tool run`: the docs import mcparser.
 - CI (`.github/workflows/`): `testing.yml` runs pytest on 3.11–3.14 with
   `uv sync --locked` (keep `uv.lock` current). `docs.yml` builds docs + coverage
   HTML on every push and deploys to GitHub Pages only from `main` (Pages source
   must be "GitHub Actions"); the coverage badge step needs a `GIST_SECRET`
-  secret and writes `llmparser-coverage-badge.json`. `publish.yml` publishes
-  on `v*.*.*` tags with `PYPI_TOKEN`, but the PyPI name `llmparser` is taken
-  by another project, so the distribution name must change before publishing.
+  secret and writes `mcparser-coverage-badge.json`. `publish.yml` publishes
+  on `v*.*.*` tags with `PYPI_TOKEN`. The project was renamed from llmparser
+  (taken on PyPI) to MCParser / `mcparser` (free on PyPI as of 2026-10-15).
 - Coverage differs by Python version: 3.11 maps branches inside `async with`
   differently, so avoid trailing `if` statements there (use a conditional
   expression).
@@ -304,6 +304,27 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   `ⲉⲃⲟⲗ ϩⲓⲧⲟⲟⲧ` 14/15, `ⲉⲧⲃⲉ ϫⲉ` 5/6). Remaining syntax errors: converters
   `mark` vs `aux`, punctuation attachment.
 
+- Coptic batch 2 (dev sentences 11–20, 309 words, 3 rounds, $4.28 vs $8.15):
+  UPOS 98.4, XPOS 97.7, lemma 97.4, UFeats 96.4, UAS 93.9, LAS 90.6. Rules
+  set ~55% of morphology cells with 100% accuracy. Calibration: cells at
+  0.85–0.9 were 92% right, ≥ 0.95 99%; the scorer piles cells at 0.85.
+  Cache writes were 68% of the cost (single-request tasks write their whole
+  prompt). → cell lists as id ranges (`1..36 at 0.00`), trailing `_` columns
+  dropped, each form's analyses once per task with role-specific columns
+  (`ANALYSIS_COLUMNS`), context readings per occurrence only when informative
+  (`INFORMATIVE_GAIN`), sentence labels in evidence: prompts 30–50% smaller
+  (head −40%, deprel −51%, upos −40%, lemma −47%, scorer −30%). Errors →
+  `ⲛ` ADP vs plural article (after ADP: DET 230 / ADP 2) → context by previous
+  UPOS; nouns `nsubj` instead of `dislocated` → `single_relations()` (deprels a
+  word almost never has twice, from trusted data) and a once-only retry
+  (`Applier._doubled`, `Batch.warned`); on old runs 13 such doublings, 11
+  containing a gold error. `TaskResult.retries` records retry reasons.
+  Measured but not used: punctuation heads (gold is the left or right
+  adjacent unit's head 88% in Coptic, but neither side alone > 56%), and
+  treebank support of an arc as a doubt signal (lowest-support arcs only ~35%
+  wrong). Remaining lemma errors are unseen lemmas or train/dev
+  inconsistencies (`ⲛⲛⲁϩⲣⲛ` → `ⲛⲁϩⲣⲛ` in train, `ⲛⲛⲁϩⲣⲛ` in dev).
+
 ## Ideas / next steps
 
 - Calibration report in `evaluate` (accuracy by confidence bucket).
@@ -312,4 +333,7 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   clitics are left to the baseline/segmentation agent).
 - Anthropic Message Batches (50% off) now that most tasks are single requests.
 - Coordination conventions (where shared dependents attach) as a computed hint.
+- Merge HEAD+DEPREL (and UPOS+XPOS+FEATS) into one task each as an option: the
+  sentence table and evidence are then sent once instead of per column.
+- llmaligner still imports `llmparser`; it must switch to `mcparser`.
 - A punctuation-attachment rule/hint (UD: attach to the head of the adjacent clause).

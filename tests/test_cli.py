@@ -6,9 +6,9 @@ import pytest
 from mcp.server import MCPServer
 from typer.testing import CliRunner
 
-from llmparser.cli import app
-from llmparser.corpus import CorpusError, SourceMode
-from llmparser.mcp.config import SourceSpec, claude_desktop_config, load_store
+from mcparser.cli import app
+from mcparser.corpus import CorpusError, SourceMode
+from mcparser.mcp.config import SourceSpec, claude_desktop_config, load_store
 
 runner = CliRunner()
 
@@ -37,7 +37,7 @@ def test_load_store_and_claude_desktop_config(train_path, pred_path):
     config = claude_desktop_config(specs, name="ud", read_only=True, root_key="LRoot")
     entry = config["mcpServers"]["ud"]
     assert entry["command"] == sys.executable
-    assert entry["args"][:6] == ["-m", "llmparser", "mcp", "serve", "--name", "ud"]
+    assert entry["args"][:6] == ["-m", "mcparser", "mcp", "serve", "--name", "ud"]
     assert entry["args"][-3:] == ["--read-only", "--root-key", "LRoot"]
 
 
@@ -80,11 +80,11 @@ def test_validate_command(train_path, pred_path):
 
 
 def test_module_entry_point(monkeypatch, capsys):
-    monkeypatch.setattr(sys, "argv", ["llmparser", "--help"])
+    monkeypatch.setattr(sys, "argv", ["mcparser", "--help"])
     with pytest.raises(SystemExit) as exit_info:
-        runpy.run_module("llmparser", run_name="__main__")
+        runpy.run_module("mcparser", run_name="__main__")
     assert exit_info.value.code == 0
-    assert "Usage: llmparser" in capsys.readouterr().out
+    assert "Usage: mcparser" in capsys.readouterr().out
 
 
 # ---------------------------------------------------------------- annotation commands
@@ -93,8 +93,8 @@ def test_module_entry_point(monkeypatch, capsys):
 @pytest.fixture
 def scripted_team(monkeypatch):
     """Replace the agent team with scripted models: the scorer rates everything 0.9."""
-    from llmparser import cli
-    from llmparser.agents.team import AgentTeam
+    from mcparser import cli
+    from mcparser.agents.team import AgentTeam
     from scripted import scored, scripted
 
     created = []
