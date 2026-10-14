@@ -1,0 +1,25 @@
+# sent_id = t1
+# text = the dogs barked.
+1	the	the	DET	DT	Definite=Def|PronType=Art	2	det	2:det	_
+2	dogs	dog	NOUN	NNS	Number=Plur	3	nsubj	3:nsubj	Root=dg
+3	barked	bark	VERB	VBD	Mood=Ind|Tense=Past|VerbForm=Fin	0	root	0:root	SpaceAfter=No
+4	.	.	PUNCT	.	_	3	punct	3:punct	_
+
+# sent_id = t2
+# text = Vino del mercado.
+1	Vino	venir	VERB	VMIS3S0	Mood=Ind|Number=Sing|Person=3|Tense=Past	0	root	0:root	_
+2-3	del	_	_	_	_	_	_	_	_
+2	de	de	ADP	SPS00	_	4	case	4:case	_
+3	el	el	DET	DA0MS0	Definite=Def|Gender=Masc|Number=Sing|PronType=Art	4	det	4:det	_
+4	mercado	mercado	NOUN	NCMS000	Gender=Masc|Number=Sing	1	obl:arg	1:obl:arg	Root=mrk|SpaceAfter=No
+5	.	.	PUNCT	Fp	_	1	punct	1:punct	_
+
+# sent_id = t3
+# text = Ella fue al río
+1	Ella	él	PRON	PP3FS000	Gender=Fem|Number=Sing|Person=3|PronType=Prs	2	nsubj	2:nsubj	_
+2	fue	ir	VERB	VMIS3S0	Mood=Ind|Number=Sing|Person=3|Tense=Past	0	root	0:root	_
+3-4	al	_	_	_	_	_	_	_	_
+3	a	a	ADP	SPS00	_	5	case	5:case	_
+4	el	el	DET	DA0MS0	Definite=Def|Gender=Masc|Number=Sing|PronType=Art	5	det	5:det	_
+5	río	río	NOUN	NCMS000	Gender=Masc|Number=Sing	2	obl	2:obl	Root=ri
+

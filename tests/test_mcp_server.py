@@ -1,181 +1,110 @@
-from llmparser.correction import CorrectionPatch
-from llmparser.mcp_server import CorrectionSession, CorrectionToolRegistry
+import json
+
+import pytest
+from mcp import Client
+from mcp.shared.exceptions import MCPError
+
+from llmparser.mcp import build_server
+
+READ_TOOLS = {
+    "list_sources", "list_sentences", "get_sentence", "get_context", "get_token", "search_sentences",
+    "find_tokens", "analyse_form", "find_multiword", "find_arcs", "allowed_values", "feature_inventory",
+    "validate", "low_confidence", "list_flags", "get_history",
+}  # fmt: skip
+EDIT_TOOLS = {
+    "set_cell", "update_cells", "split_word", "merge_words", "delete_word", "insert_word",
+    "add_multiword", "remove_multiword", "flag_issue", "resolve_flag", "save", "reload",
+}  # fmt: skip
 
 
-PREDICTED_CONLLU = """# sent_id = s1
-# text = Hello world.
-1	Hello	hello	NOUN	_	_	2	nsubj	_	_
-2	world	world	NOUN	_	_	0	root	_	_
-"""
+@pytest.fixture
+def anyio_backend():
+    return "asyncio"
 
 
-class DummyDatabase:
-    def __init__(self):
-        self.queries = []
-
-    def __call__(self, query: str, k: int = 10):
-        self.queries.append((query, k))
-        return [
-            {
-                "sent_id": "train1",
-                "text": "Hello there.",
-                "conllu": "1\tHello\thello\tINTJ\t_\t_\t0\troot\t_\t_",
-            }
-        ]
+async def call(client, name, **arguments):
+    result = await client.call_tool(name, arguments)
+    assert not result.is_error, result.content[0].text
+    content = result.structured_content
+    return content["result"] if set(content) == {"result"} else content
 
 
-def test_correction_session_loads_sentences_by_sent_id() -> None:
-    session = CorrectionSession.from_conllu_text(PREDICTED_CONLLU, DummyDatabase())
-
-    sentence = session.get_sentence("s1")
-
-    assert sentence["sent_id"] == "s1"
-    assert sentence["tokens"][0]["form"] == "Hello"
-
-
-def test_correction_session_gets_token() -> None:
-    session = CorrectionSession.from_conllu_text(PREDICTED_CONLLU, DummyDatabase())
-
-    token = session.get_token("s1", 1)
-
-    assert token["id"] == 1
-    assert token["form"] == "Hello"
+@pytest.mark.anyio
+async def test_lists_all_tools_with_annotations(store):
+    async with Client(build_server(store)) as client:
+        tools = {tool.name: tool for tool in (await client.list_tools()).tools}
+        assert set(tools) == READ_TOOLS | EDIT_TOOLS
+        assert tools["find_tokens"].annotations.read_only_hint is True
+        assert tools["delete_word"].annotations.destructive_hint is True
+        assert "Read-only sources" in client.instructions
 
 
-def test_correction_session_gets_token_evidence() -> None:
-    database = DummyDatabase()
-    session = CorrectionSession.from_conllu_text(PREDICTED_CONLLU, database)
-
-    evidence = session.get_token_evidence("s1", 1, "lemma", k=1)
-
-    assert evidence["form_examples"][0]["sent_id"] == "train1"
-    assert database.queries[:2] == [
-        ("FORM Hello", 1),
-        ("LEMMA hello", 1),
-    ]
+@pytest.mark.anyio
+async def test_read_only_server_has_no_edit_tools(store):
+    async with Client(build_server(store, allow_edits=False)) as client:
+        tools = {tool.name for tool in (await client.list_tools()).tools}
+        assert tools == READ_TOOLS
 
 
-def test_correction_session_gets_segmentation_evidence() -> None:
-    database = DummyDatabase()
-    session = CorrectionSession.from_conllu_text(PREDICTED_CONLLU, database)
-
-    evidence = session.get_segmentation_evidence("s1", "Hello", ["He", "llo"], k=1)
-
-    assert evidence["surface_examples"][0]["sent_id"] == "train1"
-    assert database.queries[:3] == [
-        ("SURFACE Hello", 1),
-        ("SUBFORM He", 1),
-        ("SUBFORM llo", 1),
-    ]
-
-
-def test_correction_session_applies_patch_and_serializes_sentence() -> None:
-    session = CorrectionSession.from_conllu_text(PREDICTED_CONLLU, DummyDatabase())
-
-    patch = CorrectionPatch(token_id=1, column="upos", value="INTJ")
-    updated = session.apply_patch("s1", patch)
-    serialized = session.serialize_sentence("s1")
-
-    assert updated["tokens"][0]["upos"] == "INTJ"
-    assert "1\tHello\thello\tINTJ" in serialized
+@pytest.mark.anyio
+async def test_read_tools(store):
+    async with Client(build_server(store)) as client:
+        assert [s["name"] for s in await call(client, "list_sources")] == ["train", "pred"]
+        assert (await call(client, "list_sentences", source="pred", order="confidence_asc"))["total"] == 2
+        assert (await call(client, "get_sentence", source="pred", sent_id="p1"))["tokens"] is None
+        assert len(await call(client, "get_context", source="train", sent_id="t2", before=0, after=0)) == 1
+        assert (await call(client, "get_token", source="train", sent_id="t3", token_id="5"))["head"]["form"] == "fue"
+        assert (await call(client, "search_sentences", query="mercado", sources=["train"]))[0]["sent_id"] == "t2"
+        assert (await call(client, "find_tokens", upos="DET", feats="Gender=Masc"))["total"] == 2
+        assert (await call(client, "analyse_form", form="el"))["groups"][0]["values"]["upos"] == "DET"
+        assert (await call(client, "find_multiword", surface="del"))["analyses"][0]["pieces"] == ["de", "el"]
+        assert (await call(client, "find_arcs", deprel="det"))["total"] == 4
+        assert (await call(client, "allowed_values", column="deprel"))[0]["value"] in {"punct", "det", "root"}
+        assert "Definite" in await call(client, "feature_inventory", upos="DET")
+        assert (await call(client, "validate", source="pred"))["errors"] == 0
+        assert (await call(client, "low_confidence", source="pred", columns=["upos"], limit=1))["total"] == 5
+        assert (await call(client, "list_flags", source="pred"))["total"] == 0
+        assert await call(client, "get_history", source="pred") == []
 
 
-def test_correction_session_validates_prediction() -> None:
-    invalid = """# sent_id = bad
-# text = Broken.
-1	Broken	broken	ADJ	_	_	4	root	_	_
-"""
-    session = CorrectionSession.from_conllu_text(invalid, DummyDatabase())
-
-    errors = session.validate_prediction("bad")
-
-    assert errors[0]["code"] == "invalid-head"
-
-
-def test_correction_tool_registry_lists_and_calls_tools() -> None:
-    session = CorrectionSession.from_conllu_text(PREDICTED_CONLLU, DummyDatabase())
-    registry = CorrectionToolRegistry(session)
-
-    assert registry.tool_names() == [
-        "apply_patch",
-        "apply_segmentation_patch",
-        "apply_token_split",
-        "get_segmentation_evidence",
-        "get_sentence",
-        "get_token",
-        "get_token_evidence",
-        "serialize_sentence",
-        "validate_prediction",
-    ]
-
-    token = registry.call_tool("get_token", item_id="s1", token_id=1)
-
-    assert token["form"] == "Hello"
+@pytest.mark.anyio
+async def test_edit_tools(store, pred_path):
+    async with Client(build_server(store)) as client:
+        result = await call(
+            client, "set_cell", source="pred", sent_id="p2", token_id="1", column="upos", value="DET",
+            confidence=0.95, reason="article", agent="pos",
+        )  # fmt: skip
+        assert result["edits"][0]["agent"] == "pos"
+        updates = [{"token_id": "2", "column": "lemma", "confidence": 0.9}]
+        assert (await call(client, "update_cells", source="pred", sent_id="p2", updates=updates))["edits"][0]["action"] == "confidence"
+        split = await call(client, "split_word", source="pred", sent_id="p1", token_id="2", forms=["a", "el"], multiword=True, head_index=1)
+        assert split["id_map"]["3"] == "4"
+        await call(client, "remove_multiword", source="pred", sent_id="p1", range_id="2-3")
+        await call(client, "merge_words", source="pred", sent_id="p1", token_ids=["2", "3"], form="al")
+        await call(client, "insert_word", source="pred", sent_id="p1", after="4", form="!")
+        await call(client, "delete_word", source="pred", sent_id="p1", token_id="5")
+        await call(client, "add_multiword", source="pred", sent_id="p1", start=2, end=3, form="almercado")
+        flag = await call(client, "flag_issue", source="pred", sent_id="p2", column="head", reason="?", token_id="1", suggestion="2")
+        assert (await call(client, "resolve_flag", source="pred", flag_id=flag["id"], status="dismissed", note="ok"))["status"] == "dismissed"
+        assert await call(client, "save") == ["pred"]
+        assert (await call(client, "reload", source="pred"))["open_flags"] == 4
+        assert "Conf=upos:0.95" in pred_path.read_text(encoding="utf-8")
 
 
-def test_correction_tool_registry_applies_patch_from_dict() -> None:
-    session = CorrectionSession.from_conllu_text(PREDICTED_CONLLU, DummyDatabase())
-    registry = CorrectionToolRegistry(session)
-
-    updated = registry.call_tool(
-        "apply_patch",
-        item_id="s1",
-        patch={"token_id": 1, "column": "upos", "value": "INTJ"},
-    )
-
-    assert updated["tokens"][0]["upos"] == "INTJ"
+@pytest.mark.anyio
+async def test_corpus_errors_become_tool_errors(store):
+    async with Client(build_server(store)) as client:
+        result = await client.call_tool("set_cell", {"source": "train", "sent_id": "t1", "token_id": "1", "column": "upos", "value": "X"})
+        assert result.is_error
+        assert "read-only" in result.content[0].text
 
 
-def test_correction_session_applies_token_split() -> None:
-    session = CorrectionSession.from_conllu_text(PREDICTED_CONLLU, DummyDatabase())
-    result = session.apply_token_split(
-        "s1",
-        {
-            "token_id": 1,
-            "replacement_tokens": [
-                {
-                    "id": 1,
-                    "form": "He",
-                    "lemma": "he",
-                    "upos": "PRON",
-                    "xpos": "_",
-                    "feats": None,
-                    "head": None,
-                    "deprel": None,
-                    "deps": None,
-                    "misc": None,
-                },
-                {
-                    "id": 2,
-                    "form": "llo",
-                    "lemma": "llo",
-                    "upos": "X",
-                    "xpos": "_",
-                    "feats": None,
-                    "head": None,
-                    "deprel": None,
-                    "deps": None,
-                    "misc": None,
-                },
-            ],
-        },
-    )
-
-    assert result["status"] == "patched"
-    assert session.get_sentence("s1")["tokens"][0]["form"] == "He"
-    assert "apply_token_split" in CorrectionToolRegistry(session).tool_names()
-
-
-def test_correction_session_applies_generic_segmentation_patch() -> None:
-    session = CorrectionSession.from_conllu_text(PREDICTED_CONLLU, DummyDatabase())
-    result = session.apply_segmentation_patch(
-        "s1",
-        {
-            "type": "delete",
-            "token_id": 1,
-        },
-    )
-
-    assert result["status"] == "patched"
-    assert session.get_sentence("s1")["tokens"][0]["form"] == "world"
-    assert "apply_segmentation_patch" in CorrectionToolRegistry(session).tool_names()
+@pytest.mark.anyio
+async def test_resources(store):
+    async with Client(build_server(store)) as client:
+        sources = await client.read_resource("conllu://sources")
+        assert [s["name"] for s in json.loads(sources.contents[0].text)] == ["train", "pred"]
+        sentence = await client.read_resource("conllu://pred/p2")
+        assert sentence.contents[0].text.startswith("# sent_id = p2")
+        with pytest.raises(MCPError, match="No sentence"):
+            await client.read_resource("conllu://pred/missing")

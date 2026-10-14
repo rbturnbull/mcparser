@@ -398,3 +398,287 @@ The pipeline processes columns in a fixed order: `lemma → upos → xpos → fe
 - The lemma checker sees the *original* UPOS values and can miss evidence if UPOS is wrong.
 - The feats checker sees the *corrected* UPOS and XPOS, so it finds the right training evidence.
 - A future improvement could re-run lemma after POS correction when lemma came back `uncertain`. That is not implemented today.
+
+---
+
+## Traces with agent checkers enabled
+
+The section above shows the rule-only path. Here every rule checker is paired with an agent via `ChainedTokenChecker` or `ChainedSentenceChecker`. With `only_when_uncertain: true`, an agent is only called when its paired rule returns `uncertain`. If the rule patches or checks successfully, the agent is skipped entirely.
+
+### Configuration
+
+```yaml
+lemma:
+  rule: true
+  agent:
+    skill: agents/correct_lemma/SKILL.md
+    only_when_uncertain: true
+
+upos_xpos:
+  rule: true
+  agent:
+    skill: agents/correct_upos_xpos/SKILL.md
+    only_when_uncertain: true
+
+feats:
+  rule: true
+  agent:
+    skill: agents/correct_feats/SKILL.md
+    only_when_uncertain: true
+
+head_deprel:
+  rule: true
+  agent:
+    skill: agents/correct_head_deprel/SKILL.md
+    only_when_uncertain: true
+```
+
+---
+
+### `predict_column` agent — annotating from blank
+
+The `predict_column` agent runs in a separate prediction mode, before correction. It is driven by `predict_sentence_columns` in `llmparser/prediction.py`. The input is a tokenised sentence with all annotation columns blank:
+
+```conllu
+# sent_id = example-2
+# text = The boys quickly walk home .
+1	The	_	_	_	_	_	_	_	_
+2	boys	_	_	_	_	_	_	_	_
+3	quickly	_	_	_	_	_	_	_	_
+4	walk	_	_	_	_	_	_	_	_
+5	home	_	_	_	_	_	_	_	_
+6	.	_	_	_	_	_	_	_	_
+```
+
+The predictor is called once per token per configured column in a fixed left-to-right order (`lemma`, then `upos`, then `xpos`, etc.). Each call applies its patch in-place, so by the time the `feats` predictor runs for token 1, `lemma`, `upos`, and `xpos` are already filled.
+
+Payload sent to the agent for **token 1, column `lemma`** (abbreviated):
+
+```json
+{
+  "skill": "# Column Prediction Agent\n...",
+  "sentence": {
+    "sent_id": "example-2",
+    "text": "The boys quickly walk home .",
+    "tokens": [
+      {"id": 1, "form": "The", "lemma": "_", "upos": "_", "xpos": "_", "feats": null, "head": null, "deprel": null, "deps": null, "misc": null},
+      {"id": 2, "form": "boys", ...},
+      ...
+    ]
+  },
+  "token": {"id": 1, "form": "The", "lemma": "_", "upos": "_", ...},
+  "column": "lemma",
+  "evidence": {
+    "form_examples": [
+      {"sent_id": "train-the-1", "conllu": "1\tThe\tthe\tDET\tDT\tDefinite=Def|PronType=Art\t2\tdet\t_\t_"},
+      {"sent_id": "train-the-2", "conllu": "1\tThe\tthe\tDET\tDT\tDefinite=Def|PronType=Art\t2\tdet\t_\t_"}
+    ],
+    "lemma_examples": [],
+    "form_upos_examples": [],
+    "similar_sentence_examples": [...]
+  }
+}
+```
+
+Expected agent response:
+
+```json
+{
+  "token_id": 1,
+  "column": "lemma",
+  "status": "patched",
+  "patches": [
+    {
+      "token_id": 1,
+      "column": "lemma",
+      "value": "the",
+      "reason": "Training examples consistently use lemma 'the' for form 'The'.",
+      "evidence_sent_ids": ["train-the-1", "train-the-2"]
+    }
+  ]
+}
+```
+
+Patch applied in-place. By the time the `upos` predictor runs for token 1, `lemma` is already `the`.
+
+---
+
+### `correct_segmentation` agent — not invoked
+
+Segmentation is not configured for this example and does not typically apply to English text. The `correct_segmentation` agent is not invoked. For a full trace of segmentation splitting and the agent contract, see [example1.md](example1.md), Example B.
+
+---
+
+### `correct_lemma` agent — resolving `uncertain` on token 1
+
+During the correction pipeline, the rule returned `uncertain` for token 1 because the predicted `UPOS=NOUN` filtered out all training evidence. The chained checker now calls the agent.
+
+Payload sent to the agent (abbreviated). Note that the sentence still shows `UPOS=NOUN` for token 1 — the agent receives the current state of the sentence, not the corrected state:
+
+```json
+{
+  "skill": "# Lemma Correction Agent\n...",
+  "sentence": {
+    "sent_id": "example-2",
+    "text": "The boys quickly walk home .",
+    "tokens": [
+      {"id": 1, "form": "The", "lemma": "the", "upos": "NOUN", "xpos": "DT",
+       "feats": {"Definite": "Ind", "PronType": "Art"}, "head": 4, "deprel": "det", ...},
+      ...
+    ]
+  },
+  "token": {"id": 1, "form": "The", "lemma": "the", "upos": "NOUN", "xpos": "DT", ...},
+  "column": "lemma",
+  "evidence": {
+    "form_examples": [
+      {"sent_id": "train-the-1", "conllu": "1\tThe\tthe\tDET\tDT\tDefinite=Def|PronType=Art\t2\tdet\t_\t_"},
+      {"sent_id": "train-the-2", "conllu": "1\tThe\tthe\tDET\tDT\tDefinite=Def|PronType=Art\t2\tdet\t_\t_"}
+    ],
+    "lemma_examples": [
+      {"sent_id": "train-the-1", "conllu": "..."}
+    ],
+    "form_upos_examples": [],
+    "similar_sentence_examples": [...]
+  }
+}
+```
+
+The agent inspects the evidence and notes that form `The` maps to lemma `the` in all training examples, regardless of the mismatched UPOS. The predicted lemma is already `the`, so no correction is needed.
+
+Agent response:
+
+```json
+{
+  "token_id": 1,
+  "column": "lemma",
+  "status": "checked",
+  "patches": [],
+  "evidence_sent_ids": ["train-the-1", "train-the-2"],
+  "notes": "Predicted lemma 'the' matches training evidence for form 'The'. UPOS mismatch in prediction was ignored."
+}
+```
+
+**Effect:** no patch applied. The per-token result changes from `uncertain` to `checked` in the audit. The lemma column for token 1 is now confirmed correct.
+
+> The rule was blocked by UPOS mismatch; the agent resolved the uncertainty without being constrained to exact-match filtering. This is the main value of chaining: the rule handles clear cases cheaply, and the agent handles the ambiguous residue.
+
+---
+
+### `correct_upos_xpos` agent — skipped
+
+The rule patched token 1 from `NOUN` to `DET` and returned `status: "patched"`. With `only_when_uncertain: true`, the chain returns the rule result immediately without invoking the agent. Tokens 2–6 were `checked` by the rule. Agent not called for any token.
+
+---
+
+### `correct_feats` agent — skipped
+
+The rule patched tokens 1 and 2 with full confidence (`patched`). Tokens 3–6 were `checked`. Agent not called for any token.
+
+---
+
+### `correct_head_deprel` agent — handling a double-root ambiguity
+
+The trivial HEAD/DEPREL error in the original example (token 4, `HEAD=0`, `DEPREL=nsubj`) is handled by the rule — the agent is never called. To show the agent working, consider a harder variant of the sentence where two tokens are both incorrectly marked as root:
+
+```conllu
+# sent_id = example-2-hard
+# text = The boys walk quickly .
+1	The	the	DET	DT	Definite=Def|PronType=Art	2	det	_	_
+2	boys	boy	NOUN	NNS	Number=Plur	0	root	_	_
+3	walk	walk	VERB	VBP	Mood=Ind	0	root	_	_
+4	quickly	quickly	ADV	RB	_	3	advmod	_	_
+5	.	.	PUNCT	.	_	3	punct	_	_
+```
+
+Tokens 2 and 3 both have `HEAD=0` and `DEPREL=root`. Initial validation reports `root-count: 2`. The rule checker evaluates:
+
+- `root_tokens` (HEAD=0): 2 tokens
+- `deprel_root_tokens` (DEPREL=root): 2 tokens
+
+Both counts are non-one, so the rule returns:
+
+```json
+{"status": "uncertain", "patches": [], "notes": "Cannot safely repair root count 2; expected exactly 1 root."}
+```
+
+The chain now calls the agent. Payload (abbreviated):
+
+```json
+{
+  "skill": "# HEAD/DEPREL Correction Agent\n...",
+  "sentence": {
+    "sent_id": "example-2-hard",
+    "text": "The boys walk quickly .",
+    "tokens": [
+      {"id": 1, "form": "The",     "upos": "DET",  "head": 2, "deprel": "det",    ...},
+      {"id": 2, "form": "boys",    "upos": "NOUN", "head": 0, "deprel": "root",   ...},
+      {"id": 3, "form": "walk",    "upos": "VERB", "head": 0, "deprel": "root",   ...},
+      {"id": 4, "form": "quickly", "upos": "ADV",  "head": 3, "deprel": "advmod", ...},
+      {"id": 5, "form": ".",       "upos": "PUNCT","head": 3, "deprel": "punct",  ...}
+    ]
+  },
+  "examples": [
+    {"sent_id": "train-walk-1", "conllu": "2\twalk\twalk\tVERB\tVBP\tMood=Ind\t0\troot\t_\t_"},
+    {"sent_id": "train-walk-2", "conllu": "1\twalk\twalk\tVERB\tVBP\tMood=Ind\t0\troot\t_\t_"}
+  ]
+}
+```
+
+The agent reasons:
+- Token 3 (`walk`) is a `VERB`. Training evidence shows verbs are the clausal root.
+- Tokens 4 and 5 already attach to token 3, which is consistent with token 3 being the head.
+- Token 2 (`boys`) is a `NOUN` and the natural subject of `walk`; nouns are not clausual roots in these training examples.
+
+Agent response:
+
+```json
+{
+  "status": "patched",
+  "patches": [
+    {
+      "token_id": 2,
+      "column": "head",
+      "value": 3,
+      "reason": "boys is the nominal subject of walk; the verb walk is the clausal root.",
+      "evidence_sent_ids": ["train-walk-1", "train-walk-2"]
+    },
+    {
+      "token_id": 2,
+      "column": "deprel",
+      "value": "nsubj",
+      "reason": "boys is a nominal subject, not a root.",
+      "evidence_sent_ids": ["train-walk-1", "train-walk-2"]
+    }
+  ],
+  "notes": "Resolved double-root: walk (VERB, token 3) is the clausal root; boys (NOUN, token 2) is nsubj."
+}
+```
+
+Both patches are applied. The resulting sentence has exactly one root (token 3):
+
+```conllu
+# sent_id = example-2-hard
+# text = The boys walk quickly .
+1	The	the	DET	DT	Definite=Def|PronType=Art	2	det	_	_
+2	boys	boy	NOUN	NNS	Number=Plur	3	nsubj	_	_
+3	walk	walk	VERB	VBP	Mood=Ind	0	root	_	_
+4	quickly	quickly	ADV	RB	_	3	advmod	_	_
+5	.	.	PUNCT	.	_	3	punct	_	_
+```
+
+Post-validation: no errors.
+
+---
+
+### Agent invocation summary for example-2
+
+| Stage | Rule result | Agent called? | Agent result |
+|---|---|---|---|
+| lemma, token 1 | `uncertain` | **yes** | `checked` (confirmed prediction correct) |
+| lemma, tokens 2–6 | `checked` or `patched` | no | — |
+| upos_xpos, token 1 | `patched` | no | — |
+| upos_xpos, tokens 2–6 | `checked` | no | — |
+| feats, tokens 1–2 | `patched` | no | — |
+| feats, tokens 3–6 | `checked` | no | — |
+| head_deprel (original example) | `patched` | no | — |
+| head_deprel (double-root variant) | `uncertain` | **yes** | `patched` (resolved ambiguity) |

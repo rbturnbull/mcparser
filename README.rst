@@ -2,83 +2,62 @@
 LLM Parser
 =========================
 
-Uses an LLM to perform dependency parsing.
+Uses LLM agents to perform dependency parsing, with CoNLL-U files as examples.
 
+All corpus access goes through an MCP server over CoNLL-U files, which can also
+be used from Claude Desktop or other projects. Agents and the refinement
+pipeline are in progress; see ``AGENTS.md`` for the design and status.
 
-Correction workflow
-===================
-
-The correction workflow takes CoNLL-U predictions from another model and checks
-them against examples from a training CoNLL-U database.
-
-Build a local sparse training-example database:
+Installation
+============
 
 .. code-block:: bash
 
-   llmparser db examples/training.conllu example-db --sparse
+   uv sync
 
-Run rule-based correction:
+The CoNLL-U MCP server
+======================
 
-.. code-block:: bash
-
-   llmparser correct examples/predictions.conllu \
-     --db example-db \
-     --output examples/corrected.yml \
-     --config examples/correction.yml
-
-The example correction config enables the implemented rule-based checkers:
-
-.. code-block:: yaml
-
-   lemma:
-     rule: true
-
-   upos_xpos:
-     rule: true
-
-   feats:
-     rule: true
-
-   head_deprel:
-     rule: true
-
-The correction output includes the corrected CoNLL-U, detailed audit entries,
-and an ``audit_summary`` for quick inspection.
-
-The ``--sparse`` database option uses the local retriv backend. Omitting it
-uses the OpenAI embedding/Chroma backend and requires working OpenAI embedding
-credentials.
-
-Current limitations
--------------------
-
-The command-line correction path is currently rule-based. Agent-backed checker
-configuration exists in the Python API, but the CLI does not yet provide a real
-agent runtime. MCP correction tool logic and a registry exist, but the MCP SDK
-transport is not wired yet. Segmentation correction has row-level patch
-infrastructure and evidence helpers, but no automatic linguistic segmenter.
-
-Agent-backed checkers
----------------------
-
-Agent configuration is supported by the Python config model, but the command
-line does not yet provide a real agent runtime. If a config contains
-``agent:`` entries, the CLI will fail clearly instead of silently pretending
-to run agents. Rule-based correction is the supported end-to-end CLI path for
-now.
-
-
-Developer notes
-===============
-
-Run the test suite with:
+Each source is a CoNLL-U file given as ``[NAME=]PATH[:ro|rw[:CONFIDENCE]]``.
+Read-only (``ro``) sources hold trusted examples; writable (``rw``) sources hold
+predictions that can be edited. Confidence per cell is stored in MISC as
+``Conf=upos:0.95,lemma:0.80,...``.
 
 .. code-block:: bash
 
-   poetry run pytest
+   uv run llmparser mcp serve -s train=ud-train.conllu -s pred=pred.conllu:rw
 
-Render the pipeline documentation with Quarto:
+To use it from Claude Desktop, print the configuration and add it to
+``claude_desktop_config.json``:
 
 .. code-block:: bash
 
-   quarto render docs/pipeline.qmd --to html
+   uv run llmparser mcp config -s train=ud-train.conllu -s pred=pred.conllu:rw
+
+Add ``--read-only`` to expose only the search tools.
+
+The same API is available in Python without MCP:
+
+.. code-block:: python
+
+   from llmparser.corpus import CorpusStore
+
+   store = CorpusStore()
+   store.add_source("train", "ud-train.conllu")
+   store.add_source("pred", "pred.conllu", mode="rw")
+   store.analyse_form("al", loose=True)
+
+Validate a file (unseen tags are checked against the trusted sources):
+
+.. code-block:: bash
+
+   uv run llmparser validate pred.conllu -s ud-train.conllu
+
+Development
+===========
+
+.. code-block:: bash
+
+   uv run pytest
+
+Tests must keep 100% line and branch coverage.

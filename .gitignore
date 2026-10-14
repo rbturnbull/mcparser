@@ -4,3 +4,11 @@ docs/*.html
 docs/*.pdf
 examples/corrected.yml
 example-db/
+.venv/
+.coverage
+htmlcov/
+.pytest_cache/
+__pycache__/
+*.review.json
+*.history.jsonl
+llmparserold
