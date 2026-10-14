@@ -95,17 +95,13 @@ def scripted_team(monkeypatch):
     """Replace the agent team with scripted models: the scorer rates everything 0.9."""
     from llmparser import cli
     from llmparser.agents.team import AgentTeam
-    from scripted import cells, nothing, scripted, sent_id
-
-    def score(prompt):
-        updates = [{"token_id": c["token_id"], "column": c["column"], "confidence": 0.9} for c in cells(prompt)]
-        return [("update_cells", {"source": "pred", "sent_id": sent_id(prompt), "updates": updates})]
+    from scripted import scored, scripted
 
     created = []
 
     def make_team(store, target, settings):
         created.append(settings)
-        return AgentTeam(store, target, settings, models={"scorer": scripted(score), "*": scripted(nothing)})
+        return AgentTeam(store, target, settings, models={"scorer": scripted(scored(0.9)), "*": scripted()})
 
     monkeypatch.setattr(cli, "make_team", make_team)
     return created
@@ -118,25 +114,36 @@ def test_run_command(scripted_team, train_path, pred_path, tmp_path):
     args = [
         "run", str(pred_path), "-s", str(train_path), "-c", str(config), "--model", "m", "--model-for", "lemma=small",
         "--roles", "lemma,head", "--threshold", "0.5", "--sentence", "p2", "--report", str(report),
+        "--strong-model", "s", "--efficient-model", "e", "--efficient-roles", "upos,head",
+        "--strong-thinking", "low", "--efficient-thinking", "off",
+        "--light-model", "h", "--light-roles", "xpos", "--light-thinking", "minimal", "--batch-sentences", "3",
     ]  # fmt: skip
     result = runner.invoke(app, args)
     assert result.exit_code == 0, result.output
     settings = scripted_team[0]
     assert (settings.model, settings.model_for("lemma"), settings.model_for("head"), settings.rounds, settings.threshold) == ("m", "small", "big", 2, 0.5)
     assert not settings.enabled("upos")
+    assert (settings.strong_model, settings.efficient_model, settings.efficient_roles) == ("s", "e", ["upos", "head"])
+    assert (settings.thinking_for("lemma"), settings.thinking_for("head")) == ("low", False)
+    assert (settings.light_model, settings.thinking_for("xpos"), settings.batch_sentences) == ("h", "minimal", 3)
+    assert "  function:" in result.stdout  # usage per model
     assert "Round 1: scored 1 sentences, 0 agent tasks" in result.stdout
     assert "Final mean confidence 0.900" in result.stdout
-    assert "[round 1] p2 scorer: done" in result.stderr
+    assert "[round 1] scorer p2: done" in result.stderr
+    assert "Rules settled" in result.stdout
     assert json.loads(report.read_text())["rounds"][0]["scored"] == 1
     assert "Conf=" in pred_path.read_text(encoding="utf-8")
 
 
 def test_score_command_and_missing_sources(scripted_team, pred_path):
-    result = runner.invoke(app, ["score", str(pred_path), "--concurrency", "2"])
+    result = runner.invoke(
+        app, ["score", str(pred_path), "--concurrency", "2", "--efficient-model", "e", "--efficient-thinking", "on", "--batch-sentences", "1"]
+    )
     assert result.exit_code == 0, result.output
     assert "no trusted --source" in result.stderr
     assert "Round 1: scored 2 sentences, 0 agent tasks" in result.stdout
-    assert scripted_team[0].concurrency == 2
+    settings = scripted_team[0]
+    assert (settings.concurrency, settings.efficient_model, settings.efficient_thinking, settings.batch_sentences) == (2, "e", True, 1)
 
 
 @pytest.mark.parametrize(
@@ -145,6 +152,8 @@ def test_score_command_and_missing_sources(scripted_team, pred_path):
         (["--model-for", "syntax=x"], "Expected ROLE=MODEL"),
         (["--model-for", "lemma"], "Expected ROLE=MODEL"),
         (["--roles", "lemma,syntax"], "Roles must be among"),
+        (["--efficient-roles", "syntax"], "Roles must be among"),
+        (["--strong-thinking", "max"], "Thinking must be"),
         (["-c", "missing.yaml"], "No such file"),
     ],
 )
@@ -203,7 +212,21 @@ def test_evaluate_command(tmp_path, train_path, pred_path):
 
 def test_settings_command(tmp_path):
     result = runner.invoke(app, ["settings"])
-    assert result.stdout.startswith("model: anthropic:claude-opus-5-5\n")
+    assert result.stdout.startswith("strong_model: anthropic:claude-opus-5-5\nefficient_model: anthropic:claude-sonnet-5-5\n")
     config = tmp_path / "s.yaml"
     config.write_text("rounds: 7\n", encoding="utf-8")
     assert "rounds: 7" in runner.invoke(app, ["settings", "-c", str(config)]).stdout
+
+
+def test_init_from_conllu_and_max_sentences(tmp_path, train_path, scripted_team):
+    output = tmp_path / "blank.conllu"
+    result = runner.invoke(app, ["init", str(train_path), "-o", str(output), "--max-sentences", "2", "--no-baseline"])
+    assert result.exit_code == 0, result.output
+    text = output.read_text(encoding="utf-8")
+    assert text.count("# sent_id") == 2 and "\tdog\t" not in text and "2-3\tdel\t_" in text
+    result = runner.invoke(app, ["score", str(output), "-s", str(train_path), "--max-sentences", "1"])
+    assert "Round 1: scored 1 sentences" in result.stdout
+    result = runner.invoke(app, ["run", str(output), "-s", str(train_path), "--sentence", "t2", "--max-sentences", "5", "--rounds", "1"])
+    assert "scored 1 sentences" in result.stdout
+    result = runner.invoke(app, ["evaluate", str(output), str(train_path), "--predicted-only"])
+    assert "2 sentences matched." in result.stdout and "Missing" not in result.stdout

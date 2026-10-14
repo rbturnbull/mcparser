@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+from dataclasses import dataclass
 from enum import StrEnum
 from pathlib import Path
 from typing import Annotated
@@ -16,17 +17,42 @@ from pydantic_ai.exceptions import UserError
 from .agents.roles import ROLES
 from .agents.team import AgentTeam
 from .baseline import run_baseline
+from .rules import Rules
 from .corpus import CorpusError, CorpusStore, SourceMode, format_conllu, parse_conllu
 from .evaluate import evaluate as evaluate_predictions
 from .mcp.config import SourceSpec, claude_desktop_config, load_store
 from .mcp.server import build_server
 from .pipeline import Pipeline, RunReport
-from .settings import Settings
-from .textinput import build_sentences, read_input
+from .settings import (
+    DEFAULT_EFFICIENT_MODEL,
+    DEFAULT_EFFICIENT_ROLES,
+    DEFAULT_LIGHT_MODEL,
+    DEFAULT_LIGHT_ROLES,
+    DEFAULT_STRONG_MODEL,
+    THINKING_LEVELS,
+    Settings,
+    Thinking,
+    parse_thinking,
+)
+from .textinput import blank_sentences, build_sentences, read_input
 
 os.environ.setdefault("PYDANTIC_AI_NO_BANNER", "1")
 
 TARGET = "pred"
+
+
+@dataclass
+class TierOptions:
+    """The model-tier options shared by ``run`` and ``score``."""
+
+    strong_model: str | None = None
+    efficient_model: str | None = None
+    light_model: str | None = None
+    efficient_roles: str | None = None
+    light_roles: str | None = None
+    strong_thinking: str | None = None
+    efficient_thinking: str | None = None
+    light_thinking: str | None = None
 
 app = typer.Typer(help="LLM agents for dependency parsing with CoNLL-U files.", no_args_is_help=True)
 mcp_app = typer.Typer(help="The CoNLL-U MCP server.", no_args_is_help=True)
@@ -136,22 +162,48 @@ def _prediction_store(prediction: Path, sources: list[str] | None) -> CorpusStor
     return _load([*specs, target], "Root")
 
 
+def _role_list(value: str | None, option: str) -> list[str] | None:
+    if value is None:
+        return None
+    names = [name.strip() for name in value.split(",") if name.strip()]
+    if not set(names) <= set(ROLES):
+        raise typer.BadParameter(f"Roles must be among {', '.join(ROLES)}.", param_hint=option)
+    return names
+
+
+def _thinking(value: str | None, option: str) -> Thinking | None:
+    try:
+        return None if value is None else parse_thinking(value)
+    except ValueError as error:
+        raise typer.BadParameter(str(error), param_hint=option) from error
+
+
 def _settings(
     config: Path | None,
     model: str | None,
     model_for: list[str] | None,
     roles: str | None,
+    tiers: TierOptions | None = None,
     **overrides: object,
 ) -> Settings:
+    tiers = tiers or TierOptions()
+    overrides.update(
+        strong_model=tiers.strong_model,
+        efficient_model=tiers.efficient_model,
+        light_model=tiers.light_model,
+        efficient_roles=_role_list(tiers.efficient_roles, "--efficient-roles"),
+        light_roles=_role_list(tiers.light_roles, "--light-roles"),
+        strong_thinking=_thinking(tiers.strong_thinking, "--strong-thinking"),
+        efficient_thinking=_thinking(tiers.efficient_thinking, "--efficient-thinking"),
+        light_thinking=_thinking(tiers.light_thinking, "--light-thinking"),
+    )
     role_models = {}
     for item in model_for or []:
         role, sep, role_model = item.partition("=")
         if not sep or role not in ROLES:
             raise typer.BadParameter(f"Expected ROLE=MODEL with ROLE one of {', '.join(ROLES)}.", param_hint="--model-for")
         role_models[role] = role_model
-    only = [role.strip() for role in roles.split(",")] if roles else None
-    if only and not set(only) <= set(ROLES):
-        raise typer.BadParameter(f"Roles must be among {', '.join(ROLES)}.", param_hint="--roles")
+    only = _role_list(roles, "--roles")
     try:
         base = Settings.from_file(config) if config else Settings()
         return base.with_overrides(model=model, role_models=role_models, only_roles=only, **overrides)
@@ -165,6 +217,7 @@ def make_team(store: CorpusStore, target: str, settings: Settings) -> AgentTeam:
 
 
 def _print_report(report: RunReport) -> None:
+    typer.echo(f"Rules settled {report.rules.total} cells without a model: {report.rules.cells}.")
     for item in report.rounds:
         typer.echo(
             f"Round {item.round}: scored {item.scored} sentences, {item.tasks} agent tasks, "
@@ -173,9 +226,15 @@ def _print_report(report: RunReport) -> None:
     failures = sum(task.error is not None for task in report.tasks)
     typer.echo(
         f"Final mean confidence {report.confidence:.3f} ({report.final_scored} sentences re-scored). "
-        f"{len(report.tasks)} tasks ({failures} failed), {report.requests} model requests, "
-        f"{report.input_tokens} input ({report.cache_read_tokens} from cache) / {report.output_tokens} output tokens."
+        f"{len(report.tasks)} tasks ({failures} failed)."
     )
+    for name, usage in [*report.usage.items(), ("total", report.total)]:
+        cost = f", ≈ ${usage.cost:.2f}" if usage.cost is not None else ""
+        typer.echo(
+            f"  {name}: {usage.tasks} tasks, {usage.requests} requests, {usage.input_tokens:,} input tokens "
+            f"({usage.cache_read_tokens:,} cache reads, {usage.cache_write_tokens:,} cache writes), "
+            f"{usage.output_tokens:,} output tokens{cost}"
+        )
 
 
 def _annotate(
@@ -185,8 +244,12 @@ def _annotate(
     sentence: list[str] | None,
     score_only: bool,
     report_path: Path | None,
+    max_sentences: int | None = None,
 ) -> None:
     store = _prediction_store(prediction, source)
+    if max_sentences:
+        ids = [s.sent_id for s in store.source(TARGET).sentences if not sentence or s.sent_id in sentence]
+        sentence = ids[:max_sentences]
     if not any(info.mode == "ro" for info in store.list_sources()):
         typer.echo("Warning: no trusted --source given; agents will have no examples to learn from.", err=True)
     try:
@@ -203,11 +266,42 @@ def _annotate(
         report_path.write_text(report.model_dump_json(indent=1), encoding="utf-8")
 
 
-ModelOption = Annotated[str | None, typer.Option(help="Model for every role, e.g. anthropic:claude-opus-5-5.")]
+ModelOption = Annotated[
+    str | None, typer.Option(help="One model for every role (overrides --strong-model and --efficient-model).")
+]
+StrongModelOption = Annotated[
+    str | None, typer.Option(help=f"Model for the demanding roles (default {DEFAULT_STRONG_MODEL}).")
+]
+EfficientModelOption = Annotated[
+    str | None, typer.Option(help=f"Cheaper model for the --efficient-roles (default {DEFAULT_EFFICIENT_MODEL}).")
+]
+EfficientRolesOption = Annotated[
+    str | None,
+    typer.Option(help=f"Comma-separated roles that use the efficient model (default {','.join(DEFAULT_EFFICIENT_ROLES)})."),
+]
+StrongThinkingOption = Annotated[
+    str | None, typer.Option(help=f"Reasoning for strong roles: off, on, {', '.join(THINKING_LEVELS)} (default: the model's own).")
+]
+EfficientThinkingOption = Annotated[
+    str | None, typer.Option(help="Reasoning for efficient roles (same values as --strong-thinking).")
+]
+LightModelOption = Annotated[
+    str | None, typer.Option(help=f"Cheapest model, for the --light-roles (default {DEFAULT_LIGHT_MODEL}).")
+]
+LightRolesOption = Annotated[
+    str | None, typer.Option(help=f"Comma-separated roles that use the light model (default {','.join(DEFAULT_LIGHT_ROLES)}).")
+]
+LightThinkingOption = Annotated[
+    str | None, typer.Option(help="Reasoning for light roles (same values as --strong-thinking).")
+]
+BatchOption = Annotated[int | None, typer.Option(min=1, help="Maximum sentences per agent task (default 8).")]
 ModelForOption = Annotated[
     list[str] | None, typer.Option("--model-for", help="ROLE=MODEL override, e.g. lemma=anthropic:claude-sonnet-5-5.")
 ]
 SentenceOption = Annotated[list[str] | None, typer.Option("--sentence", help="Only work on this sent_id. Repeatable.")]
+MaxSentencesOption = Annotated[
+    int | None, typer.Option(min=1, help="Only use the first N sentences (after any --sentence filter).")
+]
 ReportOption = Annotated[Path | None, typer.Option("--report", help="Write the run report as JSON.")]
 PredictionArgument = Annotated[Path, typer.Argument(help="Prediction CoNLL-U file (edited in place).")]
 
@@ -218,17 +312,35 @@ def run(
     source: TrustedOption = None,
     config: ConfigOption = None,
     model: ModelOption = None,
+    strong_model: StrongModelOption = None,
+    efficient_model: EfficientModelOption = None,
+    light_model: LightModelOption = None,
+    efficient_roles: EfficientRolesOption = None,
+    light_roles: LightRolesOption = None,
+    strong_thinking: StrongThinkingOption = None,
+    efficient_thinking: EfficientThinkingOption = None,
+    light_thinking: LightThinkingOption = None,
+    batch_sentences: BatchOption = None,
     model_for: ModelForOption = None,
     roles: Annotated[str | None, typer.Option(help=f"Comma-separated roles to run: {', '.join(r for r in ROLES if r != 'scorer')}.")] = None,
     rounds: Annotated[int | None, typer.Option(min=1, help="Maximum rounds.")] = None,
     threshold: Annotated[float | None, typer.Option(min=0, max=1, help="Refine cells below this confidence.")] = None,
     concurrency: Annotated[int | None, typer.Option(min=1, help="Sentences processed at once.")] = None,
     sentence: SentenceOption = None,
+    max_sentences: MaxSentencesOption = None,
     report: ReportOption = None,
 ) -> None:
     """Score and refine a prediction file with the agents, over several rounds."""
-    settings = _settings(config, model, model_for, roles, rounds=rounds, threshold=threshold, concurrency=concurrency)
-    _annotate(prediction, source, settings, sentence, False, report)
+    tiers = TierOptions(
+        strong_model=strong_model, efficient_model=efficient_model, light_model=light_model,
+        efficient_roles=efficient_roles, light_roles=light_roles,
+        strong_thinking=strong_thinking, efficient_thinking=efficient_thinking, light_thinking=light_thinking,
+    )  # fmt: skip
+    settings = _settings(
+        config, model, model_for, roles, tiers,
+        rounds=rounds, threshold=threshold, concurrency=concurrency, batch_sentences=batch_sentences,
+    )  # fmt: skip
+    _annotate(prediction, source, settings, sentence, False, report, max_sentences)
 
 
 @app.command()
@@ -237,43 +349,62 @@ def score(
     source: TrustedOption = None,
     config: ConfigOption = None,
     model: ModelOption = None,
+    efficient_model: EfficientModelOption = None,
+    efficient_thinking: EfficientThinkingOption = None,
+    batch_sentences: BatchOption = None,
     model_for: ModelForOption = None,
-    concurrency: Annotated[int | None, typer.Option(min=1, help="Sentences processed at once.")] = None,
+    concurrency: Annotated[int | None, typer.Option(min=1, help="Tasks run at once.")] = None,
     sentence: SentenceOption = None,
+    max_sentences: MaxSentencesOption = None,
     report: ReportOption = None,
 ) -> None:
     """Only run the scorer: give every changed or unscored cell a confidence."""
-    settings = _settings(config, model, model_for, None, concurrency=concurrency)
-    _annotate(prediction, source, settings, sentence, True, report)
+    tiers = TierOptions(efficient_model=efficient_model, efficient_thinking=efficient_thinking)
+    settings = _settings(config, model, model_for, None, tiers, concurrency=concurrency, batch_sentences=batch_sentences)
+    _annotate(prediction, source, settings, sentence, True, report, max_sentences)
 
 
 @app.command()
 def init(
-    input_path: Annotated[Path, typer.Argument(metavar="INPUT", help="Text (one sentence per line) or YAML with 'text' fields.")],
+    input_path: Annotated[
+        Path,
+        typer.Argument(
+            metavar="INPUT",
+            help="Text (one sentence per line), YAML with 'text' fields, or CoNLL-U (annotation is removed, segmentation kept).",
+        ),
+    ],
     output: Annotated[Path, typer.Option("--output", "-o", help="CoNLL-U file to create.")],
     source: TrustedOption = None,
     baseline: Annotated[bool, typer.Option(help="Fill in what the trusted sources make obvious (no LLM).")] = True,
     force: Annotated[bool, typer.Option("--force", help="Overwrite OUTPUT and its review/history files.")] = False,
+    max_sentences: MaxSentencesOption = None,
 ) -> None:
-    """Create a prediction file from raw text: tokenise, then apply the frequency baseline."""
+    """Create a prediction file from raw text or a gold CoNLL-U file, then apply the frequency baseline."""
     if output.exists() and not force:
         typer.echo(f"Error: {output} exists; use --force to overwrite it.", err=True)
         raise typer.Exit(1)
     try:
-        sentences = build_sentences(read_input(input_path))
+        if input_path.suffix.lower() == ".conllu":
+            sentences = blank_sentences(parse_conllu(input_path.read_text(encoding="utf-8")))
+        else:
+            sentences = build_sentences(read_input(input_path))
     except (CorpusError, OSError) as error:
         typer.echo(f"Error: {error}", err=True)
         raise typer.Exit(1) from error
+    sentences = sentences[:max_sentences] if max_sentences else sentences
     output.write_text(format_conllu(sentences), encoding="utf-8")
     for sidecar in (".review.json", ".history.jsonl"):
         output.with_name(output.name + sidecar).unlink(missing_ok=True)
     typer.echo(f"Wrote {len(sentences)} sentences to {output}.")
     if baseline and source:
-        result = run_baseline(_prediction_store(output, source), TARGET)
+        store = _prediction_store(output, source)
+        result = run_baseline(store, TARGET)
         typer.echo(
             f"Baseline: {result.splits} multiword splits, {result.analysed} words analysed, "
             f"{result.unknown} words not found in the trusted sources."
         )
+        rules = Rules(store, TARGET).apply()
+        typer.echo(f"Rules settled {rules.total} cells: {rules.cells}.")
 
 
 @app.command()
@@ -281,11 +412,16 @@ def evaluate(
     prediction: Annotated[Path, typer.Argument(help="Predicted CoNLL-U.")],
     gold: Annotated[Path, typer.Argument(help="Gold CoNLL-U.")],
     json_output: Annotated[bool, typer.Option("--json", help="Print JSON instead of a table.")] = False,
+    predicted_only: Annotated[
+        bool, typer.Option("--predicted-only", help="Ignore gold sentences that are not in the predictions.")
+    ] = False,
 ) -> None:
     """Compare predictions with gold annotation (precision, recall and F1 per metric)."""
     try:
         result = evaluate_predictions(
-            parse_conllu(prediction.read_text(encoding="utf-8")), parse_conllu(gold.read_text(encoding="utf-8"))
+            parse_conllu(prediction.read_text(encoding="utf-8")),
+            parse_conllu(gold.read_text(encoding="utf-8")),
+            predicted_only=predicted_only,
         )
     except (CorpusError, OSError) as error:
         typer.echo(f"Error: {error}", err=True)

@@ -1,7 +1,7 @@
 import pytest
 
-from llmparser.corpus import CorpusError, format_conllu
-from llmparser.textinput import InputSentence, build_sentences, read_input, tokenise
+from llmparser.corpus import CorpusError, format_conllu, parse_conllu
+from llmparser.textinput import InputSentence, blank_sentences, build_sentences, read_input, tokenise
 
 
 def test_tokenise_detaches_punctuation():
@@ -56,3 +56,20 @@ def test_build_sentences():
     assert format_conllu([sentence]).count("\t_\t_\t_\t_\t_\t_\t_\t") == 4
     with pytest.raises(CorpusError, match="is empty"):
         build_sentences([InputSentence(sent_id="e", text="   ")])
+
+
+def test_blank_sentences():
+    gold = parse_conllu(
+        "# sent_id = a\n# text = del río\n1-2\tdel\t_\t_\t_\t_\t_\t_\t_\tSpaceAfter=No\n"
+        "1\tde\tde\tADP\tP\t_\t3\tcase\t3:case\tGloss=of\n2\tel\tel\tDET\tD\t_\t3\tdet\t_\t_\n"
+        "2.1\tx\t_\t_\t_\t_\t_\t_\t3:dep\t_\n3\trío\trío\tNOUN\tN\t_\t0\troot\t_\tSpaceAfter=No|Ref=1\n\n"
+    )
+    (blank,) = blank_sentences(gold)
+    assert blank.comments == ["sent_id = a", "text = del río"]
+    assert [t.to_line() for t in blank.tokens] == [
+        "1-2\tdel\t_\t_\t_\t_\t_\t_\t_\tSpaceAfter=No",
+        "1\tde\t_\t_\t_\t_\t_\t_\t_\t_",
+        "2\tel\t_\t_\t_\t_\t_\t_\t_\t_",
+        "3\trío\t_\t_\t_\t_\t_\t_\t_\tSpaceAfter=No",
+    ]
+    assert gold[0].token("1").lemma == "de"  # the input is not modified

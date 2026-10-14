@@ -77,8 +77,17 @@ uv run llmparser run ephesians.conllu -s arabic-train.conllu
 ```
 
 `init` tokenises the text (whitespace, with punctuation split off), then
-applies a [frequency baseline](pipeline.md#round-0-the-baseline) learned from
-the trusted sources. `run` then scores and refines the result.
+applies a [frequency baseline](pipeline.md#round-0-the-baseline) and the
+rules learned from the trusted sources. `run` then scores and refines the
+result. `init` also accepts a gold CoNLL-U file (annotation removed,
+segmentation kept) and `--max-sentences N`, which is the easiest way to test
+on a held-out set:
+
+```bash
+uv run llmparser init la_proiel-ud-dev.conllu -o pred.conllu -s la_proiel-ud-train.conllu --max-sentences 100
+uv run llmparser run pred.conllu -s la_proiel-ud-train.conllu --max-sentences 20
+uv run llmparser evaluate pred.conllu la_proiel-ud-dev.conllu --predicted-only
+```
 
 ## Exploring a treebank from Claude Desktop
 

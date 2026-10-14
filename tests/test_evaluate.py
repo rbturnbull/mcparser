@@ -30,6 +30,12 @@ PRED = """\
 """
 
 
+def test_predicted_only():
+    gold = parse_conllu(GOLD)
+    result = evaluate(gold[:1], gold, predicted_only=True)
+    assert (result.sentences, result.missing, result.score("LAS").f1) == (1, [], 1.0)
+
+
 def test_identical_files_score_100():
     gold = parse_conllu((DATA / "train.conllu").read_text(encoding="utf-8"))
     result = evaluate(gold, gold)

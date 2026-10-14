@@ -1,13 +1,16 @@
 """Turn raw text into an unannotated CoNLL-U file.
 
-Two input formats are accepted:
+Three input formats are accepted:
 
 * plain text, one sentence per line (sentence ids are the line numbers of the
   non-empty lines);
 * YAML mapping ids to entries with a ``text`` field, as in
   ``ArabGr1-Ephesians-Parsed.yaml``. Other scalar fields (e.g. ``verse``) become
   comments; a ``conllu`` field is ignored. A YAML list of such entries (with
-  ``sent_id`` or ``id``) or of plain strings also works.
+  ``sent_id`` or ``id``) or of plain strings also works;
+* CoNLL-U (e.g. a gold test set): the segmentation and comments are kept and
+  all annotation is removed (see :func:`blank_sentences`), which gives a fair
+  held-out test with gold tokenisation.
 """
 
 from __future__ import annotations
@@ -108,3 +111,24 @@ def build_sentences(entries: list[InputSentence]) -> list[Sentence]:
             words.append(word)
         sentences.append(Sentence(comments=comments, tokens=words))
     return sentences
+
+
+def blank_sentences(sentences: list[Sentence]) -> list[Sentence]:
+    """Copies with all annotation removed: ids, forms and ``SpaceAfter=No`` only.
+
+    Multiword tokens are kept (their split is part of the segmentation); empty
+    nodes are dropped (they belong to the enhanced annotation). Other MISC
+    attributes are dropped too, since they may hold glosses or other answers.
+    """
+    blanked = []
+    for sentence in sentences:
+        tokens = []
+        for token in sentence.tokens:
+            if token.is_empty_node:
+                continue
+            copy = Token(id=token.id, form=token.form)
+            if token.misc_value("SpaceAfter") == "No":
+                copy.set_misc_value("SpaceAfter", "No")
+            tokens.append(copy)
+        blanked.append(Sentence(comments=list(sentence.comments), tokens=tokens))
+    return blanked

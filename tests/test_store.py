@@ -372,3 +372,57 @@ def test_store_is_thread_safe(store):
     for thread in threads:
         thread.join()
     assert len(store.get_history("pred", limit=100)) == 10
+
+
+def test_score_cells(store):
+    result = store.score_cells("pred", "p1", {"2:*": 0.7, "1:upos": 0.95, "1:pos": 0.9, "3": 0.5}, agent="scorer")
+    al = store.source("pred").sentence("p1").token("2")
+    assert read_confidence(al) == {"form": 0.7, "xpos": 0.7, "feats": 0.7, "head": 0.7, "deprel": 0.7}  # empty LEMMA/UPOS skipped
+    assert read_confidence(store.source("pred").sentence("p1").token("1"))["upos"] == 0.9  # later key wins
+    assert read_confidence(store.source("pred").sentence("p1").token("3"))["lemma"] == 0.5
+    assert {edit.action for edit in result.edits} == {"confidence"}
+    with pytest.raises(NotFoundError):
+        store.score_cells("pred", "p1", {"9:*": 0.5})
+    store.set_cell("pred", "p2", "1", "lemma", "_")
+    store.set_cell("pred", "p2", "1", "upos", "_")
+    store.set_cell("pred", "p2", "1", "head", "_")
+    store.set_cell("pred", "p2", "1", "deprel", "_")
+    for column in ("form", "xpos", "feats"):
+        store.set_cell("pred", "p2", "1", column, "_" if column != "form" else "the")
+    with pytest.raises(EditError, match="No cells to score"):
+        store.score_cells("pred", "p2", {})
+
+
+def test_find_tokens_by_suffix_and_context(store):
+    assert store.find_tokens(suffix="ADO", sources=["train"]).total == 1  # indexed length (loose)
+    assert store.find_tokens(suffix="do", upos="NOUN", sources=["train"]).total == 1  # scanned
+    assert store.find_tokens(suffix="o", sources=["train"]).total == 3  # Vino, mercado, río (unindexed length)
+    assert store.find_tokens(form="el", previous_form="DE", sources=["train"]).total == 1
+    assert store.find_tokens(form="el", next_form="río", sources=["train"]).total == 1
+    assert store.find_tokens(form="Vino", previous_form="x", sources=["train"]).total == 0  # first word
+    assert store.analyse_form("el", previous_form="a", sources=["train"]).groups[0].count == 1
+
+
+def test_find_arcs_by_direction(store):
+    assert store.find_arcs(deprel="punct", direction="left", sources=["train"]).total == 2
+    assert store.find_arcs(deprel="punct", direction="right", sources=["train"]).total == 0
+    assert store.find_arcs(head_upos="ROOT", direction="root", sources=["train"]).total == 3
+
+
+def test_relation_stats_and_xpos_for_tags(store):
+    det = store.relation_stats("el", "DET", "mercado", "NOUN", "right")
+    assert (det.basis, det.total) == ("UPOS+head UPOS", 3) and det.deprels[0].value == "det"
+    assert store.relation_stats("el", "DET", "río", "NOUN", "right", min_total=1).basis == "lemma+head lemma"
+    assert store.relation_stats("venir", "VERB", None, None, "root", min_total=1).basis == "lemma+head lemma"
+    assert store.relation_stats("zz", "INTJ", "x", "X", "left").basis == "none"
+    assert store.xpos_for_tags("NOUN", "Gender=Masc|Number=Sing")[0].value == "NCMS000"
+    assert store.xpos_for_tags("NOUN", "Case=Abl") == []
+
+
+def test_dry_run_changes_nothing(store):
+    result = store.update_cells("pred", "p2", [{"token_id": "1", "column": "head", "value": "1"}], dry_run=True)
+    assert any(issue.code == "self-loop" for issue in result.issues)
+    assert store.source("pred").sentence("p2").token("1").head == "2"
+    assert store.get_history("pred") == []
+    store.score_cells("pred", "p2", {"1:*": 0.5}, dry_run=True)
+    assert read_confidence(store.source("pred").sentence("p2").token("1")) == {}

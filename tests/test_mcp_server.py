@@ -8,11 +8,11 @@ from llmparser.mcp import build_server
 
 READ_TOOLS = {
     "list_sources", "list_sentences", "get_sentence", "get_context", "get_token", "search_sentences",
-    "find_tokens", "analyse_form", "find_multiword", "find_arcs", "allowed_values", "feature_inventory",
+    "find_tokens", "analyse_form", "find_multiword", "find_arcs", "relation_stats", "allowed_values", "feature_inventory",
     "validate", "low_confidence", "list_flags", "get_history",
 }  # fmt: skip
 EDIT_TOOLS = {
-    "set_cell", "update_cells", "split_word", "merge_words", "delete_word", "insert_word",
+    "set_cell", "update_cells", "score_cells", "split_word", "merge_words", "delete_word", "insert_word",
     "add_multiword", "remove_multiword", "flag_issue", "resolve_flag", "save", "reload",
 }  # fmt: skip
 
@@ -54,6 +54,8 @@ async def test_read_tools(store):
         assert (await call(client, "analyse_form", form="el"))["groups"][0]["values"]["upos"] == "DET"
         assert (await call(client, "find_multiword", surface="del"))["analyses"][0]["pieces"] == ["de", "el"]
         assert (await call(client, "find_arcs", deprel="det"))["total"] == 4
+        stats = await call(client, "relation_stats", dependent_lemma="el", dependent_upos="DET", head_lemma="río", head_upos="NOUN")
+        assert stats["deprels"][0]["value"] == "det"
         assert (await call(client, "allowed_values", column="deprel"))[0]["value"] in {"punct", "det", "root"}
         assert "Definite" in await call(client, "feature_inventory", upos="DET")
         assert (await call(client, "validate", source="pred"))["errors"] == 0
@@ -72,6 +74,7 @@ async def test_edit_tools(store, pred_path):
         assert result["edits"][0]["agent"] == "pos"
         updates = [{"token_id": "2", "column": "lemma", "confidence": 0.9}]
         assert (await call(client, "update_cells", source="pred", sent_id="p2", updates=updates))["edits"][0]["action"] == "confidence"
+        assert len((await call(client, "score_cells", source="pred", sent_id="p2", scores={"1:*": 0.8}))["edits"]) == 7
         split = await call(client, "split_word", source="pred", sent_id="p1", token_id="2", forms=["a", "el"], multiword=True, head_index=1)
         assert split["id_map"]["3"] == "4"
         await call(client, "remove_multiword", source="pred", sent_id="p1", range_id="2-3")
@@ -83,7 +86,7 @@ async def test_edit_tools(store, pred_path):
         assert (await call(client, "resolve_flag", source="pred", flag_id=flag["id"], status="dismissed", note="ok"))["status"] == "dismissed"
         assert await call(client, "save") == ["pred"]
         assert (await call(client, "reload", source="pred"))["open_flags"] == 4
-        assert "Conf=upos:0.95" in pred_path.read_text(encoding="utf-8")
+        assert "Conf=form:0.80,lemma:0.80,upos:0.80" in pred_path.read_text(encoding="utf-8")  # score_cells "1:*"
 
 
 @pytest.mark.anyio

@@ -17,6 +17,9 @@ from .models import Edit, Flag, SourceInfo
 SCORED_COLUMNS = ("form", "lemma", "upos", "xpos", "feats", "head", "deprel")
 """Columns that count towards a sentence's confidence (DEPS is optional in UD)."""
 
+REQUIRED_COLUMNS = ("lemma", "upos", "head", "deprel")
+"""Columns where ``_`` means "not annotated yet" (in XPOS, FEATS and DEPS it can be a real value)."""
+
 
 class SourceMode(StrEnum):
     READ_ONLY = "ro"

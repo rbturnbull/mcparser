@@ -10,6 +10,7 @@ from pydantic_ai import ModelRetry, RunContext
 from pydantic_ai.toolsets import AbstractToolset, ToolsetTool, WrapperToolset
 
 from ..corpus.store import normalise_column
+from .compact import compact_result
 from .roles import WRITE_TOOLS, Role
 
 
@@ -17,7 +18,8 @@ from .roles import WRITE_TOOLS, Role
 class RoleToolset(WrapperToolset[Any]):
     """The MCP toolset as seen by one role.
 
-    Only the role's tools are listed. The ``agent`` argument is hidden from the
+    Only the role's tools are listed, and results come back as compact text
+    (see :mod:`llmparser.agents.compact`). The ``agent`` argument is hidden from the
     model and filled in with the role name, so edits and flags are attributed
     correctly. Writes are limited to the target source and the role's columns;
     the scorer may only send confidences. A refused call is returned to the
@@ -57,9 +59,7 @@ class RoleToolset(WrapperToolset[Any]):
             raise ModelRetry(f"The tool {name!r} is not available to the {self.role.name} agent.")
         if name in WRITE_TOOLS and name != "resolve_flag" and args.get("source") != self.target:
             raise ModelRetry(f"You may only edit the source {self.target!r}.")
-        if name == "set_cell":
-            self._check_column(str(args.get("column", "")), has_value=True)
-        elif name == "update_cells":
+        if name == "update_cells":
             for update in args.get("updates") or []:
                 self._check_column(str(update.get("column", "")), has_value=update.get("value") is not None)
 
@@ -83,7 +83,7 @@ class RoleToolset(WrapperToolset[Any]):
         self.check(name, tool_args)
         if name in WRITE_TOOLS:
             tool_args = {**tool_args, "agent": self.role.name}
-        return await self.wrapped.call_tool(name, tool_args, ctx, tool)
+        return compact_result(name, await self.wrapped.call_tool(name, tool_args, ctx, tool), self.role)
 
 
 def role_toolset(toolset: AbstractToolset[Any], role: Role, target: str) -> RoleToolset:

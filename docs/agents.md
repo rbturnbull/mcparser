@@ -9,12 +9,12 @@ There is one agent per CoNLL-U element, plus the scorer. Each is a
 | `segmentation` | FORM, multiword tokens (`split_word`, `merge_words`, …) | `find_multiword`, `analyse_form` |
 | `upos` | UPOS | `analyse_form`, `find_tokens`, `allowed_values` |
 | `xpos` | XPOS | `allowed_values(column="xpos", upos=...)`, `analyse_form` |
-| `lemma` | LEMMA | `analyse_form`, `find_tokens(lemma=...)`, `find_tokens(root=...)` |
+| `lemma` | LEMMA | `analyse_form`, `find_tokens(suffix=...)` analogies, `find_tokens(root=...)` |
 | `feats` | FEATS | `feature_inventory(upos=...)`, `analyse_form` |
 | `head` | HEAD | `find_arcs`, `search_sentences`, `validate` |
-| `deprel` | DEPREL | `find_arcs(dependent_upos=..., head_upos=...)`, `allowed_values` |
+| `deprel` | DEPREL | `relation_stats` for the word's actual head, `find_arcs`, `allowed_values` |
 | `deps` | DEPS (off by default) | `find_arcs`, the trusted data's enhanced graphs |
-| `scorer` | confidences only | all of the above |
+| `scorer` | confidences only | all of the above, plus relation counts for each current arc |
 
 ## What an agent sees
 
@@ -43,8 +43,9 @@ that problems in other columns are flagged, not fixed.
 {class}`~llmparser.agents.toolset.RoleToolset` wraps the MCP connection for
 each role:
 
-- only the role's tools are listed (only the segmentation agent sees
-  `split_word`; nobody sees `save` or `reload`);
+- only the role's tools are listed (the search tools for every role; the
+  editing tools only for segmentation), and results come back as compact text
+  lines instead of JSON;
 - writes are allowed only to the prediction source and only to the role's own
   column; the scorer may only send confidences;
 - every write is signed with the role's name, so the history and flags show
@@ -52,12 +53,32 @@ each role:
 - a refused call goes back to the model as a retry message explaining what to
   do instead (for example "call `flag_issue` with column='upos'").
 
-## Models
+## Answers
 
-Every role uses the global `model` unless the settings or `--model-for` give
-it its own. Any pydantic-ai model name works (`anthropic:...`, `openai:...`,
-`google-gla:...`, a local `ollama:...`). Cheaper models can suit the simpler
-roles; HEAD and DEPREL benefit most from a strong model.
+Every role except segmentation answers in one request with compact lines,
+`SENT_ID TOKEN_ID VALUE CONFIDENCE` (the scorer: `SENT_ID TOKEN_ID COLUMN
+CONFIDENCE`), plus any flags for other columns and the flags it closed. Code
+checks the whole answer first: an unknown sentence or word, an invalid tag or,
+for HEAD, a cycle or wrong number of roots is sent back to the model to fix;
+only a valid answer is applied. The segmentation agent still edits through the
+tools, since splitting and merging renumber the words.
+
+## Models and reasoning
+
+Roles use one of three tiers. The **strong** model (default Opus 5.5) handles
+segmentation, lemmas, HEAD, DEPREL and DEPS. The **efficient** model (default
+Sonnet 5.5) handles UPOS, FEATS and the scorer. The **light** model (default
+Haiku 5.5) handles XPOS, which is close to a lookup once UPOS and FEATS are
+known. Change the split with `--efficient-roles` / `--light-roles`, the models
+with `--strong-model` / `--efficient-model` / `--light-model`, or give one role
+its own model with `--model-for` or in the settings file. Any pydantic-ai model name
+works (`anthropic:...`, `openai:...`, `google-gla:...`, `ollama:...`).
+
+Reasoning ("thinking") is set per tier with `--strong-thinking` /
+`--efficient-thinking` / `--light-thinking` (`off`, `on`, `minimal`, `low`, `medium`, `high`,
+`xhigh`) or per role in the settings. More reasoning costs output tokens and has
+not been measured here yet; HEAD and DEPREL are the likeliest to benefit. Left
+unset, each model uses its own default.
 
 ## Using the agents from Python
 

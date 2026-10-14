@@ -5,14 +5,19 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 READ_TOOLS = frozenset({
-    "list_sources", "list_sentences", "get_sentence", "get_context", "get_token", "search_sentences",
-    "find_tokens", "analyse_form", "find_multiword", "find_arcs", "allowed_values", "feature_inventory",
-    "validate", "low_confidence", "list_flags", "get_history",
+    "get_sentence", "get_context", "search_sentences", "find_tokens", "analyse_form", "find_multiword",
+    "find_arcs", "relation_stats", "allowed_values", "feature_inventory", "validate", "list_flags",
 })  # fmt: skip
-"""MCP tools every agent may use."""
+"""MCP tools every agent may use.
+
+Deliberately smaller than the server's full set: the task prompt already gives
+the sentence, the cells to work on, open flags and the main evidence, so tools
+such as list_sources, get_token or low_confidence would only add tokens to
+every request.
+"""
 
 REVIEW_TOOLS = frozenset({"flag_issue", "resolve_flag"})
-CELL_TOOLS = frozenset({"set_cell", "update_cells"})
+CELL_TOOLS = frozenset({"set_cell", "update_cells", "score_cells"})
 SEGMENTATION_TOOLS = frozenset(
     {"split_word", "merge_words", "delete_word", "insert_word", "add_multiword", "remove_multiword"}
 )
@@ -36,13 +41,15 @@ class Role:
         return self.columns[0]
 
     @property
+    def edits_with_tools(self) -> bool:
+        """Segmentation edits through tools (it renumbers words); the other roles return compact answers."""
+        return self.name == "segmentation"
+
+    @property
     def tools(self) -> frozenset[str]:
-        if self.is_scorer:
-            return READ_TOOLS | REVIEW_TOOLS | {"update_cells"}
-        tools = READ_TOOLS | REVIEW_TOOLS | CELL_TOOLS
-        if self.column == "form":
-            tools |= SEGMENTATION_TOOLS
-        return tools
+        if self.edits_with_tools:
+            return READ_TOOLS | REVIEW_TOOLS | SEGMENTATION_TOOLS | {"update_cells"}
+        return READ_TOOLS
 
 
 ROLES: dict[str, Role] = {

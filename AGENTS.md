@@ -45,9 +45,14 @@ llmparser/
     roles.py         # Role per column + scorer; tool sets; REFINE_ORDER
     prompts.py       # shared + per-role instructions, task prompts
     toolset.py       # RoleToolset: hides tools/`agent` arg, enforces columns & target
+    outputs.py       # compact answers (Annotation/Scores), parsing, Applier (validate, then apply)
+    evidence.py      # pre-fetched evidence per batch (analyses, context, endings, relations)
+    compact.py       # compact text renderings of tool results
     team.py          # AgentTeam: one pydantic-ai Agent per role over one MCPToolset
   pipeline.py        # Pipeline: score -> refine rounds, stop rules, RunReport
   baseline.py        # frequency baseline (no LLM) used by `init`
+  rules.py           # code that settles near-certain cells (no LLM)
+  pricing.py         # list prices, cost estimates
   textinput.py       # raw text / YAML -> unannotated sentences (tokeniser)
   evaluate.py        # CoNLL 2018-style P/R/F1 with surface-span alignment
   settings.py        # Settings (YAML): model per role, threshold, rounds, cache
@@ -121,7 +126,35 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
   multiword token by form (SequenceMatcher), like the CoNLL 2018 scorer.
 - **Prompt caching** on by default (`ModelSettings(cache=True)`): ~74% of
   input tokens were cache reads in a real run.
-
+- **Rules before models** (`rules.py`): code settles cells whose evidence is
+  overwhelming (≥ `min_count` examples, ≥ `min_share` agreeing): morphology per
+  column by form (or by form after the previous word), XPOS from (UPOS, FEATS),
+  DEPREL from `relation_stats` for the actual arc, `root` for HEAD 0, multiword
+  splits / confirmations, and (optional) confident predictions as evidence for
+  forms unseen in the treebank (only cells ≥ 0.96 count; rules set 0.95 so they
+  never feed themselves). Rules only fill `_` or confirm an equal value; rules
+  that build on other cells require those cells ≥ 0.9 (a guessed UPOS once
+  produced a wrong XPOS). On Latin PROIEL: 265/265 morphology cells and 21/21
+  relations correct. Rules run after `init`, at the start of `run`, and after
+  each role on the sentences it touched.
+- **Compact answers** (`agents/outputs.py`): every role but segmentation
+  returns `Annotation`/`Scores` with `SENT_ID TOKEN_ID VALUE CONFIDENCE` lines;
+  an output validator dry-runs the edits (`update_cells(dry_run=True)`), sends
+  errors (and broken trees for HEAD) back as `ModelRetry`, then applies. These
+  roles only see read tools. Segmentation still edits through tools.
+- **Batching**: the pipeline is role-major (each role over all sentences, most
+  confident first), with tasks of up to `batch_sentences`/`batch_cells`.
+- **Three tiers**: strong Opus (segmentation, lemma, head, deprel, deps),
+  efficient Sonnet (upos, feats, scorer), light Haiku (xpos).
+- **Scorer** sees only cells last changed by a model/person (not by `rules` or
+  `baseline`), not empty required cells, not XPOS/FEATS of untagged words.
+- **Evidence** (`agents/evidence.py`, deduplicated per batch): form analyses;
+  for ambiguous forms, analyses after the previous word; for rare/unseen forms,
+  word-ending analogies with form→lemma examples (`find_tokens(suffix=...)`,
+  indexed endings of 3–5 letters); for DEPREL and the scorer, `relation_stats`
+  for the word's actual head; for HEAD, how similar words attach.
+- Runs print tokens and an estimated price per model (`pricing.py`; update the
+  table when prices change).
 ## MCP tools
 
 Read: `list_sources list_sentences get_sentence get_context get_token
@@ -162,7 +195,18 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
 - `uv run pytest` must stay at **100% line+branch coverage** (enforced by
   `--cov-fail-under=100` in `pyproject.toml`) and fast (~2.5 s without
   coverage, ~6 s with). No network in tests; use `tests/scripted.py`.
-- Docs: `uv sync --all-groups && uv run sphinx-build -W docs docs/_build/html`.
+- Docs: `./mkdocs.sh` (= `uv run --group docs sphinx-build -E -W ...`). Not
+  `uv tool run`: the docs import llmparser.
+- CI (`.github/workflows/`): `testing.yml` runs pytest on 3.11–3.14 with
+  `uv sync --locked` (keep `uv.lock` current). `docs.yml` builds docs + coverage
+  HTML on every push and deploys to GitHub Pages only from `main` (Pages source
+  must be "GitHub Actions"); the coverage badge step needs a `GIST_SECRET`
+  secret and writes `llmparser-coverage-badge.json`. `publish.yml` publishes
+  on `v*.*.*` tags with `PYPI_TOKEN`, but the PyPI name `llmparser` is taken
+  by another project, so the distribution name must change before publishing.
+- Coverage differs by Python version: 3.11 maps branches inside `async with`
+  differently, so avoid trailing `if` statements there (use a conditional
+  expression).
 - Raise subclasses of `CorpusError` for expected failures; the MCP layer turns
   them into tool errors.
 - Return pydantic models from store methods; they become MCP output schemas.
@@ -176,14 +220,25 @@ prints the `mcpServers` JSON (uses the venv's python with `-m llmparser`).
   caching was enabled; ~2 minutes.
 - Scorer + upos on a 7-word sentence with caching: 13 requests, 146k input
   (108k cached). The flag workflow worked (scorer flagged, upos resolved).
+- Cost work, same 3 sentences (14.10-2, 14.15, 14.16-1; 20 words), 1 round:
+  before (all Opus, JSON tool results, no prompt evidence) 114 requests, 1.72M
+  input / 36.8k output tokens, ≈ $2.34–2.68; after (tiers + evidence + compact
+  results + per-cell scoring + XPOS rule) 74 requests, 0.71M / 22.5k,
+  ≈ $1.02 (Opus $0.87, Sonnet $0.15). Accuracy within noise: UPOS 95/95,
+  lemma 90/90, FEATS 70→75, UAS 90/90, LAS 90→85 (one Opus deprel, obj→obl).
+
+- Latin PROIEL dev, first 10 sentences (user run, old design): $2.43, 223
+  requests; UPOS/XPOS/lemma 100%, FEATS 94%, UAS 99%, LAS 96%. Remaining errors
+  were mostly gold inconsistencies (participle gender Neut vs treebank-majority
+  Masc; `corde` nsubj) and genuinely ambiguous `-erint` forms (after `cum`: 9 Sub
+  vs 7 Ind in train). New design on sentences 11–13: $0.25 for 3 sentences
+  (13 requests), UPOS/lemma 100%, FEATS 96%, UAS 96%, LAS 91%.
 
 ## Ideas / next steps
 
-- Auto-disable the `xpos` role when the trusted data has no XPOS (all `_`),
-  and similarly `deps`; saves a task per sentence.
 - Calibration report in `evaluate` (accuracy by confidence bucket).
 - Incremental index updates if prediction files get large.
 - Smarter `init` tokenisation per language (currently whitespace + punctuation;
   clitics are left to the baseline/segmentation agent).
-- Reduce cost: cheaper models for xpos/feats/scorer via `--model-for`, or
-  batch several sentences per scorer task.
+- Anthropic Message Batches (50% off) now that most tasks are single requests.
+- Coordination conventions (where shared dependents attach) as a computed hint.

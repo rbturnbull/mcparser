@@ -103,9 +103,15 @@ def _compare(pred: Token, gold: Token, pred_to_gold: dict[str, str]) -> set[str]
     return correct
 
 
-def evaluate(predicted: list[Sentence], gold: list[Sentence]) -> Evaluation:
-    """Score ``predicted`` against ``gold`` for every metric in :data:`METRICS`."""
+def evaluate(predicted: list[Sentence], gold: list[Sentence], predicted_only: bool = False) -> Evaluation:
+    """Score ``predicted`` against ``gold`` for every metric in :data:`METRICS`.
+
+    With ``predicted_only``, gold sentences missing from the predictions are
+    ignored (useful when only part of a test set was annotated).
+    """
     by_id = {sentence.sent_id: sentence for sentence in predicted}
+    if predicted_only:
+        gold = [sentence for sentence in gold if sentence.sent_id in by_id]
     gold_ids = {sentence.sent_id for sentence in gold}
     counts: Counter[str] = Counter()
     gold_words = predicted_words = matched = 0

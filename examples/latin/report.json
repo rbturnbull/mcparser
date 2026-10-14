@@ -1,0 +1,556 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "scored": 10,
+   "tasks": 53,
+   "edits": 257,
+   "open_flags": 0,
+   "confidence": 0.946
+  }
+ ],
+ "final_scored": 10,
+ "confidence": 0.944,
+ "tasks": [
+  {
+   "round": 1,
+   "sent_id": "12841",
+   "role": "scorer",
+   "summary": "Scored all cells; the evidence supports most values. Flagged suum's Gender=Masc, which should be Neut to agree with neuter os.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12842",
+   "role": "scorer",
+   "summary": "Scored all cells. Gave low scores to the accusative case on pauperes and regnum and flagged both: each is a subject, so nominative.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12844",
+   "role": "scorer",
+   "summary": "Scored all cells. Most are well attested in the trusted data and score high. ipsi has lower confidence because Pp vs Pd is ambiguous.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12846",
+   "role": "scorer",
+   "summary": "Scored all cells. Flagged qui feats: it is plural (subject of plural lugent), not singular. Gave ipsi Pp/Pd medium confidence.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12848",
+   "role": "scorer",
+   "summary": "I scored all the cells. Most are high; qui's Number=Sing is likely wrong (subject of plural verbs), so I flagged Number=Plur.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12850",
+   "role": "scorer",
+   "summary": "Scored all cells high: they match the trusted analyses. Word 4 (ipsi) gets 0.68 because Pp vs Pd is ambiguous.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12852",
+   "role": "scorer",
+   "summary": "Scored all cells. I flagged 'mundo' as a likely error: it should be ADJ, Abl Neut, agreeing with 'corde'. 'ipsi' Pp/Pd tagging is uncertain.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12854",
+   "role": "scorer",
+   "summary": "Scored all cells high (0.95–0.99). Every analysis matches the trusted data, including vocabuntur as a future passive. Nothing flagged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12856",
+   "role": "scorer",
+   "summary": "Scored all cells and gave most of them high confidence. Flagged two feats as likely wrong: qui should be Plur, regnum should be Nom.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12858",
+   "role": "scorer",
+   "summary": "Scored all cells; most well attested. Flagged dixerint FEATS: in this cum-clause it should be perfect subjunctive, matching fuerint and train:30405.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12856",
+   "role": "feats",
+   "summary": "Changed qui to Number=Plur and regnum to Case=Nom, per the flags; resolved both flags. Other features unchanged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12856",
+   "role": "head",
+   "summary": "I gave all 11 words heads and validation passes. Beati is the root; I set patiuntur and the quoniam-ipsorum clause, both less certain, under it.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12856",
+   "role": "deprel",
+   "summary": "I labelled all 11 relations, following the trusted Vulgate examples: the 'qui patiuntur' clause as nsubj, and 'ipsorum est regnum' as advcl with cop.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12850",
+   "role": "upos",
+   "summary": "Kept 'ipsi' as PRON (standalone subject pronoun) and raised its confidence to 0.88; no other UPOS changes.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12850",
+   "role": "xpos",
+   "summary": "Kept XPOS 'Pp' for 'ipsi' (word 4) and raised confidence to 0.8; trusted data uses both Pp and Pd, but Pp is more frequent.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12850",
+   "role": "feats",
+   "summary": "Kept FEATS for 'ipsi' unchanged (Pp, Person=3, PronType=Prs), the most common analysis in the trusted data. Raised its confidence to 0.85.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12850",
+   "role": "head",
+   "summary": "Set all heads: beati is the root, misericordes and consequentur attach to it, and quia, ipsi and misericordiam attach to consequentur. Validates with 0 errors.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12850",
+   "role": "deprel",
+   "summary": "Labelled the sentence: beati root, misericordes nsubj, quia mark, ipsi nsubj, misericordiam obj, consequentur advcl, matching the training data's 'beati oculi quia vident' pattern.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12842",
+   "role": "feats",
+   "summary": "Changed 'pauperes' and 'regnum' from accusative to nominative as subjects; resolved both flags.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12842",
+   "role": "head",
+   "summary": "Set all eight heads: beati is root, pauperes→beati, spiritu→pauperes, ipsorum is the predicate of the clause attached to beati. Validates cleanly.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12842",
+   "role": "deprel",
+   "summary": "I labelled all eight relations: beati is root, with pauperes as nsubj and spiritu as obl. The quoniam clause headed by ipsorum is advcl, following trusted Matthew 19.14.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12841",
+   "role": "upos",
+   "summary": "Set UPOS to VERB for sedisset (word 9) and aperiens (word 16); left other tags unchanged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12841",
+   "role": "xpos",
+   "summary": "Set XPOS 'V-' for sedisset and aperiens (both verbs, matching trusted VERB convention); other cells unchanged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12841",
+   "role": "lemma",
+   "summary": "Set lemma 'sedeo' for sedisset and 'aperio' for aperiens. Both lemmas appear often in the trusted data. No flags raised.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12841",
+   "role": "feats",
+   "summary": "Filled sedisset (pluperfect subjunctive) and aperiens (nominative participle) FEATS; set suum to Neuter to agree with os; resolved flag 1.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12841",
+   "role": "head",
+   "summary": "Filled in all 21 heads: ascendit is the root, with accesserunt and docebat attached as coordinated clauses and the participles as dependents. Validation passed.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12841",
+   "role": "deprel",
+   "summary": "Labelled all 21 words: root ascendit, two conj clauses, advcl for the participles and the cum clause, and the usual case, obj and det.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12852",
+   "role": "upos",
+   "summary": "Changed mundo to ADJ (clean, agreeing with corde) and resolved the flag. Kept ipsi as PRON with higher confidence.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12852",
+   "role": "xpos",
+   "summary": "Changed mundo XPOS to A- (adjective, 'pure'); kept ipsi as Pp, consistent with its features.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12852",
+   "role": "feats",
+   "summary": "Changed mundo to Case=Abl|Degree=Pos|Gender=Neut|Number=Sing to agree with neuter cor; kept ipsi's features and raised confidence.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12852",
+   "role": "head",
+   "summary": "I set all heads: beati is the root, corde depends on beati, mundo on corde, and videbunt is a clause under beati with quoniam, ipsi and Deum.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12852",
+   "role": "deprel",
+   "summary": "Labelled all 7 relations: root, amod, obl (corde, uncertain), mark, nsubj, obj and advcl for the quoniam clause.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12858",
+   "role": "upos",
+   "summary": "Set UPOS to VERB for maledixerint (0.97) and mentientes (0.9, participle). Other cells left unchanged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12858",
+   "role": "xpos",
+   "summary": "Set XPOS to V- for maledixerint and mentientes (both VERB); other XPOS values left unchanged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12858",
+   "role": "lemma",
+   "summary": "Set the lemma of maledixerint to maledico and of mentientes to mentior, both following trusted spellings. Other lemmas look fine.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12858",
+   "role": "feats",
+   "summary": "Set perfect subjunctive feats on maledixerint and dixerint, gave mentientes present active participle feats, and resolved flag 9.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12858",
+   "role": "head",
+   "summary": "Assigned all 18 heads, with beati as root, the cum-clause under beati and its three verbs coordinated. Validation passed with 0 errors.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12858",
+   "role": "deprel",
+   "summary": "Labelled all 18 relations: beati is the root with cop estis, and the cum clause is advcl with conjoined verbs; fuerint is aux, as attested for persecuti.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12854",
+   "role": "upos",
+   "summary": "Set UPOS of 'pacifici' to ADJ (0.85), following trusted pacificus ADJ; other cells left unchanged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12854",
+   "role": "xpos",
+   "summary": "Set XPOS of 'pacifici' (word 2, ADJ) to 'A-', the tag the trusted data uses for ADJ. Left the other XPOS cells unchanged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12854",
+   "role": "lemma",
+   "summary": "I set the lemma of 'pacifici' to 'pacificus'. The trusted data has one example of this lemma, as an adjective.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12854",
+   "role": "feats",
+   "summary": "Set FEATS for 'pacifici' to Case=Nom|Degree=Pos|Gender=Masc|Number=Plur, matching 'beati'. The other FEATS cells are unchanged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12854",
+   "role": "head",
+   "summary": "I set all six heads: 'beati' is the root, with 'pacifici' and 'vocabuntur' under it, and 'quoniam', 'filii' under 'vocabuntur', 'Dei' under 'filii'. Validates cleanly.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12854",
+   "role": "deprel",
+   "summary": "Added labels root, nsubj, mark, xcomp, nmod and advcl. xcomp for filii matches train sentence 26940 (vocabuntur filii Dei).",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12844",
+   "role": "upos",
+   "summary": "Set mites to ADJ (substantivized adjective, 0.9); kept ipsi as PRON (0.85).",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12844",
+   "role": "xpos",
+   "summary": "Set mites XPOS to A- (ADJ); kept ipsi as Pp, matching trusted pronominal nsubj uses of ipsi.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12844",
+   "role": "lemma",
+   "summary": "I set the lemma of 'mites' to 'mitis' (confidence 0.97); the trusted data has three examples of this lemma as ADJ. No other changes.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12844",
+   "role": "feats",
+   "summary": "Set FEATS for 'mites' to Case=Nom|Degree=Pos|Gender=Masc|Number=Plur. Raised confidence on 'ipsi' FEATS, which matches the trusted Pp pattern.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12844",
+   "role": "head",
+   "summary": "Set beati as root with mites as its subject. The quoniam clause headed by possidebunt attaches to beati. The tree validates.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12844",
+   "role": "deprel",
+   "summary": "Labelled the deprels as root, nsubj, mark, nsubj, advcl and obj, following trusted beatitude parallels (beati oculi quia vident).",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12848",
+   "role": "segmentation",
+   "summary": "Kept 'saturabuntur' as a single word (no split needed). Flagged 'qui': its feats say singular, but it should be plural.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12848",
+   "role": "upos",
+   "summary": "Set esuriunt, sitiunt and saturabuntur to VERB (0.97). Kept ipsi as PRON and raised its confidence to 0.93.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12848",
+   "role": "xpos",
+   "summary": "Set XPOS V- for esuriunt, sitiunt and saturabuntur; kept Pp for ipsi, matching similar trusted examples.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12848",
+   "role": "lemma",
+   "summary": "I set the three missing lemmas to esurio, sitio and saturo. All three are attested in the trusted data. Confidence 0.98 each.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12848",
+   "role": "feats",
+   "summary": "Set qui to Number=Plur, filled FEATS for esuriunt, sitiunt and saturabuntur, kept ipsi, and resolved flags 5 and 10.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12848",
+   "role": "head",
+   "summary": "I assigned all heads following the train:20071 pattern. beati is the root; the 'qui' clause is its subject; the quoniam clause attaches to beati. iustitiam→esuriunt is uncertain.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12848",
+   "role": "deprel",
+   "summary": "I labelled all 9 relations, following trusted train:20071 (beati qui...): the headless relative clause is nsubj, quoniam opens an advcl. No flags raised.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12846",
+   "role": "upos",
+   "summary": "Set lugent and consolabuntur to VERB; kept ipsi as PRON (confidence 0.85), since it is a standalone emphatic subject.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12846",
+   "role": "xpos",
+   "summary": "Set XPOS V- for lugent and consolabuntur; kept Pp for ipsi (raised confidence to 0.85), matching the trusted data.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12846",
+   "role": "lemma",
+   "summary": "I set the lemmas to lugeo for lugent and consolor for consolabuntur; both lemmas are attested in the trusted data.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12846",
+   "role": "feats",
+   "summary": "Filled FEATS for lugent (pres ind act 3pl) and consolabuntur (fut ind pass 3pl). Changed qui to plural. Confirmed ipsi. Resolved flag 4.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12846",
+   "role": "head",
+   "summary": "I set all six heads: beati is the root, lugent and consolabuntur attach to beati, following train:20071. Validation passes.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12846",
+   "role": "deprel",
+   "summary": "Labelled all six DEPREL cells: beati is root, the headless relative lugent is nsubj (as in train:20071), and quoniam-clause is advcl with nsubj:pass.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12841",
+   "role": "scorer",
+   "summary": "Scored all 51 cells high. The tree is consistent with trusted Vulgate conventions (Pqp subjunctive, dicens advcl). Nothing flagged.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12842",
+   "role": "scorer",
+   "summary": "Scored all 18 cells high. The analysis matches the trusted analyses and attested arcs, so no changes or flags were needed.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12844",
+   "role": "scorer",
+   "summary": "I scored all 18 cells. The structure matches a trusted beatitude parse. Main doubts: ipsi tagged PRON/Pp rather than Pd, and mites' ADJ tag.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12846",
+   "role": "scorer",
+   "summary": "I scored all 22 cells; most are high, matching trusted beatitude analyses. ipsi got 0.7 for UPOS and 0.6 for nsubj:pass, since trusted consolor subjects use nsubj.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12848",
+   "role": "scorer",
+   "summary": "Scored all 33 cells; the tree matches the trusted 'beati qui' pattern. iustitiam's head (word 3 vs 5) stays doubtful, so no flags raised.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12850",
+   "role": "scorer",
+   "summary": "I confirmed all 12 head and deprel cells and scored them 0.90–0.97; they match the trusted beatitude pattern (train 17163). I raised no flags.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12852",
+   "role": "scorer",
+   "summary": "Scored all 19 cells and flagged nothing. Lowest are corde's obl relation (no trusted Beatitude parallel) and ipsi's Pp tag (Pp/Pd split in training data).",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12854",
+   "role": "scorer",
+   "summary": "I confirmed every cell and scored them 0.85–0.96. They match the trusted beatitude pattern in train:33919. I raised no flags.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12856",
+   "role": "scorer",
+   "summary": "I scored all 24 cells high and changed no values. The verb-as-subject analysis matches trusted 'beati qui audiunt'. No flags raised.",
+   "error": null
+  },
+  {
+   "round": 1,
+   "sent_id": "12858",
+   "role": "scorer",
+   "summary": "I scored all the listed cells. Main doubts are subjunctive vs future-perfect on maledixerint/dixerint and where 'propter me' and 'adversum vos' attach. No flags raised.",
+   "error": null
+  }
+ ],
+ "total": {
+  "tasks": 73,
+  "requests": 223,
+  "input_tokens": 1990358,
+  "cache_read_tokens": 1701948,
+  "cache_write_tokens": 287818,
+  "output_tokens": 51064,
+  "cost": 2.4291783000000002
+ },
+ "usage": {
+  "anthropic:claude-opus-5-5": {
+   "tasks": 47,
+   "requests": 156,
+   "input_tokens": 1436067,
+   "cache_read_tokens": 1224875,
+   "cache_write_tokens": 210786,
+   "output_tokens": 37735,
+   "cost": 2.055229
+  },
+  "anthropic:claude-sonnet-5-5": {
+   "tasks": 26,
+   "requests": 67,
+   "input_tokens": 554291,
+   "cache_read_tokens": 477073,
+   "cache_write_tokens": 77032,
+   "output_tokens": 13329,
+   "cost": 0.3739493
+  }
+ }
+}

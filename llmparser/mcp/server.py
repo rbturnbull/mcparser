@@ -26,6 +26,7 @@ from ..corpus.models import (
     Flag,
     FlagPage,
     MultiwordSearch,
+    RelationStats,
     SentenceHit,
     SentencePage,
     SentenceSummary,
@@ -185,6 +186,9 @@ def build_server(
         feats: Annotated[str | None, Field(description='Required features, e.g. "Case=Gen|Number=Sing".')] = None,
         deprel: Annotated[str | None, Field(description='Relation; "nmod" also matches "nmod:gen".')] = None,
         root: Annotated[str | None, Field(description="Value of the MISC Root attribute (e.g. a Semitic root).")] = None,
+        suffix: Annotated[str | None, Field(description="Word ending, e.g. 'erint', for analogy with unseen forms.")] = None,
+        previous_form: Annotated[str | None, Field(description="Form of the word just before.")] = None,
+        next_form: Annotated[str | None, Field(description="Form of the word just after.")] = None,
         loose: Loose = False,
         sources: Sources = None,
         min_confidence: MinConfidence = 0.0,
@@ -195,7 +199,7 @@ def build_server(
         """Find words matching all the given criteria. Returns counts over all matches plus example hits in context."""
         return store.find_tokens(
             form=form, lemma=lemma, upos=upos, xpos=xpos, feats=feats, deprel=deprel, root=root,
-            loose=loose, sources=sources, min_confidence=min_confidence,
+            suffix=suffix, previous_form=previous_form, next_form=next_form, loose=loose, sources=sources, min_confidence=min_confidence,
             exclude_sentence=exclude_sentence, group_by=group_by, limit=limit,
         )  # fmt: skip
 
@@ -203,13 +207,18 @@ def build_server(
     def analyse_form(
         form: str,
         loose: Loose = False,
+        previous_form: Annotated[str | None, Field(description="Only occurrences after this word.")] = None,
+        next_form: Annotated[str | None, Field(description="Only occurrences before this word.")] = None,
         sources: Sources = None,
         min_confidence: MinConfidence = 0.0,
         exclude_sentence: Exclude = None,
         limit: Limit = 5,
     ) -> TokenSearch:
-        """How is this word form analysed elsewhere? Counts of (lemma, upos, xpos, feats) with examples."""
-        return store.analyse_form(form, loose=loose, sources=sources, min_confidence=min_confidence, exclude_sentence=exclude_sentence, limit=limit)
+        """How is this word form analysed elsewhere (optionally next to given words)? Counts of (lemma, upos, xpos, feats) with examples."""
+        return store.analyse_form(
+            form, loose=loose, previous_form=previous_form, next_form=next_form, sources=sources,
+            min_confidence=min_confidence, exclude_sentence=exclude_sentence, limit=limit,
+        )  # fmt: skip
 
     @tool(READ)
     def find_multiword(surface: str, loose: Loose = False, sources: Sources = None, limit: Limit = 10) -> MultiwordSearch:
@@ -225,6 +234,9 @@ def build_server(
         head_lemma: str | None = None,
         head_upos: Annotated[str | None, Field(description='UPOS of the head; "ROOT" finds root words.')] = None,
         deprel: Annotated[str | None, Field(description='Relation; "nmod" also matches "nmod:gen".')] = None,
+        direction: Annotated[
+            Literal["left", "right", "root"] | None, Field(description="Side of the dependent on which the head lies.")
+        ] = None,
         loose: Loose = False,
         sources: Sources = None,
         min_confidence: MinConfidence = 0.0,
@@ -234,9 +246,24 @@ def build_server(
         """Find dependency arcs by dependent, head and relation, with relation and direction counts."""
         return store.find_arcs(
             dependent_form=dependent_form, dependent_lemma=dependent_lemma, dependent_upos=dependent_upos,
-            head_form=head_form, head_lemma=head_lemma, head_upos=head_upos, deprel=deprel, loose=loose,
+            head_form=head_form, head_lemma=head_lemma, head_upos=head_upos, deprel=deprel, direction=direction, loose=loose,
             sources=sources, min_confidence=min_confidence, exclude_sentence=exclude_sentence, limit=limit,
         )  # fmt: skip
+
+    @tool(READ)
+    def relation_stats(
+        dependent_lemma: str,
+        dependent_upos: str,
+        head_lemma: Annotated[str | None, Field(description="None if the dependent is the root.")] = None,
+        head_upos: Annotated[str | None, Field(description="None if the dependent is the root.")] = None,
+        direction: Annotated[Literal["left", "right", "root"], Field(description="Side of the dependent on which the head lies.")] = "right",
+        min_total: Annotated[int, Field(ge=1)] = 3,
+        sources: Annotated[list[str] | None, Field(description="Sources to count; default the read-only sources.")] = None,
+    ) -> RelationStats:
+        """How does the trusted data label arcs like this one? DEPREL counts at the most specific level with enough examples."""
+        return store.relation_stats(
+            dependent_lemma, dependent_upos, head_lemma, head_upos, direction, min_total=min_total, sources=sources
+        )
 
     # ------------------------------------------------------------ tagsets
 
@@ -320,6 +347,20 @@ def build_server(
         a confidence to re-score a cell without changing it.
         """
         return store.update_cells(source, sent_id, updates, agent=agent)
+
+    @tool(EDIT)
+    def score_cells(
+        source: Source,
+        sent_id: SentId,
+        scores: Annotated[
+            dict[str, float],
+            Field(description='Confidence per cell, keyed "TOKEN_ID:COLUMN" (e.g. "3:upos"); "TOKEN_ID:*" scores every annotated column of the word.'),
+        ],
+        reason: Reason = "",
+        agent: Agent = "agent",
+    ) -> EditResult:
+        """Set the confidence of many cells at once without changing their values."""
+        return store.score_cells(source, sent_id, scores, reason=reason, agent=agent)
 
     @tool(EDIT)
     def split_word(

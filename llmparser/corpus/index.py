@@ -31,6 +31,9 @@ def terms(text: str) -> list[str]:
 Location = tuple[int, int]
 """(sentence position, token position) within a source."""
 
+SUFFIX_LENGTHS = (3, 4, 5)
+"""Lengths of the (loose) word endings that are indexed, for analogy with unseen forms."""
+
 
 class SourceIndex:
     """Postings and tag inventories for one list of sentences."""
@@ -46,6 +49,11 @@ class SourceIndex:
         self.values: dict[str, Counter[str]] = {column: Counter() for column in ("upos", "xpos", "deprel", "feats")}
         self.by_upos: dict[str, defaultdict[str, Counter[str]]] = {column: defaultdict(Counter) for column in ("xpos", "deprel", "feats")}
         self.features: defaultdict[str, defaultdict[str, Counter[str]]] = defaultdict(lambda: defaultdict(Counter))
+        self.suffixes: defaultdict[str, list[Location]] = defaultdict(list)
+        self.xpos_by_tags: defaultdict[tuple[str, str], Counter[str]] = defaultdict(Counter)
+        """XPOS counts for each (UPOS, FEATS) pair."""
+        self.relations: defaultdict[tuple[str, ...], Counter[str]] = defaultdict(Counter)
+        """DEPREL counts keyed by :func:`relation_keys` of the dependent and head."""
 
         self.k1, self.b = bm25_k1, bm25_b
         self.doc_terms: list[Counter[str]] = []
@@ -57,6 +65,13 @@ class SourceIndex:
         self.avg_length = (sum(lengths) / len(lengths)) if lengths else 0.0
 
     def _add(self, s_pos: int, sentence: Sentence) -> None:
+        words = {word.id: word for word in sentence.words}
+        for word in words.values():
+            if word.deprel == EMPTY or not (word.head == "0" or word.head in words):
+                continue
+            head = words.get(word.head)
+            for key in relation_keys(word.lemma, word.upos, head.lemma if head else None, head.upos if head else None, direction_of(word.id, word.head)):
+                self.relations[key][word.deprel] += 1
         for t_pos, token in enumerate(sentence.tokens):
             location = (s_pos, t_pos)
             if token.is_multiword:
@@ -81,6 +96,12 @@ class SourceIndex:
             for feature, value in token.feats_dict.items():
                 if value is not None:
                     self.features[token.upos][feature][value] += 1
+            key = loose(token.form)
+            for length in SUFFIX_LENGTHS:
+                if len(key) > length:
+                    self.suffixes[key[-length:]].append(location)
+            if token.upos != EMPTY and token.xpos != EMPTY:
+                self.xpos_by_tags[(token.upos, token.feats)][token.xpos] += 1
         doc = Counter(terms(sentence.text))
         self.doc_terms.append(doc)
         self.doc_freq.update(doc.keys())
@@ -89,6 +110,13 @@ class SourceIndex:
         if loose_match and field in self.loose:
             return self.loose[field].get(loose(value), [])
         return self.exact[field].get(value, [])
+
+    def suffix(self, ending: str) -> list[Location] | None:
+        """Words whose loose form ends with ``ending``; ``None`` if that length is not indexed."""
+        ending = loose(ending)
+        if len(ending) not in SUFFIX_LENGTHS:
+            return None
+        return self.suffixes.get(ending, [])
 
     def multiword(self, surface: str, loose_match: bool = False) -> list[Location]:
         if loose_match:
@@ -113,6 +141,31 @@ class SourceIndex:
             if score > 0:
                 scores.append((s_pos, score))
         return scores
+
+
+def direction_of(token_id: str, head_id: str) -> str:
+    """Side of the dependent on which its head lies: left, right or root."""
+    if head_id == "0":
+        return "root"
+    return "left" if int(head_id) < int(token_id) else "right"
+
+
+def relation_keys(
+    dep_lemma: str, dep_upos: str, head_lemma: str | None, head_upos: str | None, direction: str
+) -> list[tuple[str, ...]]:
+    """Keys for relation statistics, most specific first.
+
+    ``head_lemma``/``head_upos`` are ``None`` for the root. The levels are
+    (dependent lemma, head lemma), (dependent lemma, head UPOS, direction) and
+    (dependent UPOS, head UPOS, direction).
+    """
+    head_upos = head_upos or "ROOT"
+    head_lemma = head_lemma or "ROOT"
+    return [
+        ("lemma+head lemma", dep_lemma, head_lemma),
+        ("lemma+head UPOS", dep_lemma, head_upos, direction),
+        ("UPOS+head UPOS", dep_upos, head_upos, direction),
+    ]
 
 
 def merge_counters(counters: Iterable[Counter[str]]) -> Counter[str]:

@@ -3,41 +3,68 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from dataclasses import dataclass, field
 
 from ..corpus.models import CellRef, Flag
+from .compact import misc as misc_without_conf
 from .roles import Role
+
+
+@dataclass
+class TaskItem:
+    """One sentence of a task: its CoNLL-U, the cells to work on and open flags."""
+
+    sent_id: str
+    cells: list[CellRef]
+    flags: list[Flag] = field(default_factory=list)
+    conllu: str = ""
 
 COMMON = """\
 You are one of a team of annotation agents producing a Universal Dependencies
 (UD) analysis in CoNLL-U format. You are responsible for {title}. Other agents
-are responsible for the other columns.
+and code rules are responsible for the other columns.
 
-All data is reached through the conllu MCP tools. The source "{target}" holds
-the predictions you edit. The read-only sources ({trusted}) hold trusted,
-human-annotated examples (confidence 1.0); follow their conventions (tagset,
-lemma spelling, feature values, relation subtypes). Other sentences in
-"{target}" may be used as evidence only when their confidence is high (pass
-min_confidence, e.g. 0.9). Pass exclude_sentence="{target}:<sent_id>" when
-searching so the sentence you are editing does not count as evidence.
+Your goal is to reproduce the annotation conventions of the trusted treebank
+({trusted}), not your own preferred analysis. When the evidence shows how the
+treebank analyses a form, an ending or a construction, follow it unless the
+context clearly rules it out; when it has no example, use your knowledge of the
+language and the UD guidelines. The source "{target}" holds the predictions;
+cells already settled by code are not shown to you.
 
 How to work:
-1. Read the sentence with get_sentence; use get_context when neighbouring
-   sentences help.
-2. Gather evidence for each cell you work on with the search tools (see below).
-   Prefer attested evidence to intuition; when the trusted data has no example,
-   use your knowledge of the language and the UD guidelines.
-3. Write your decisions with update_cells (ideally one call per sentence). Give
-   every value a calibrated confidence: 0.95 or more = clear and well attested;
-   0.8 = probable; 0.6 = plausible but doubtful; below 0.5 = a guess.
-4. If a cell you were asked about is already right, re-score it by sending only
-   a confidence for it.
-5. You may only change {columns}. If you see a probable mistake in another
-   column, call flag_issue with that column, the token id, a reason and, if you
-   can, a suggestion. Flag real problems only.
-6. Close every flag addressed to you with resolve_flag: "resolved" if you made a
-   change, "dismissed" (with a note) if the current value is right.
-Finish with a one or two sentence summary of what you did.
+1. The task gives you the sentences (CoNLL-U, with confidences in MISC Conf=),
+   the cells to work on, open flags, and the main evidence from the treebank.
+   Search tools are available (analyse_form with previous_form, find_tokens
+   with suffix, relation_stats, find_arcs, ...) but call them only when the
+   evidence given is not enough. Make independent calls in parallel.
+2. {answer}
+3. Give every value a calibrated confidence: 0.95 or more = clear and well
+   attested; 0.8 = probable; 0.6 = plausible but doubtful; below 0.5 = a guess.
+4. If you see a probable mistake in another column, report it as a flag (with
+   the column, the word, a reason and, if you can, a suggestion). Flag real
+   problems only.
 """
+
+ANSWERS = {
+    "annotation": (
+        "Answer with ONE final result. Put one line per cell in `values`: "
+        '"SENT_ID TOKEN_ID VALUE CONFIDENCE" (e.g. "12841 3 {example} 0.95"), covering every cell listed '
+        "and any other {columns} value you correct. Close each open flag addressed to you in `resolved`: "
+        '"resolved" if you changed something, "dismissed" (with a note) if not. Keep `summary` under 15 words.'
+    ),
+    "scores": (
+        "Answer with ONE final result. Put one line per cell in `scores`: "
+        '"SENT_ID TOKEN_ID COLUMN CONFIDENCE" (e.g. "12841 3 upos 0.95"); "SENT_ID TOKEN_ID * 0.95" scores '
+        "every listed cell of a word, and a later line overrides it for one column. Keep `summary` under 15 words."
+    ),
+    "tools": (
+        "Make your changes with the tools (split_word, merge_words, ...; update_cells to set the confidence of "
+        "column FORM for words you checked), close flags addressed to you with resolve_flag, then finish with a "
+        "summary of at most 15 words."
+    ),
+}
+
+EXAMPLES = {"lemma": "dico", "upos": "NOUN", "xpos": "Nb", "feats": "Case=Nom|Number=Sing", "head": "4", "deprel": "nsubj", "deps": "4:nsubj"}
 
 GUIDANCE = {
     "segmentation": """\
@@ -81,18 +108,20 @@ Give every word its head so the sentence forms a single tree: exactly one word
 has HEAD 0, every other word points to a word id, no cycles. Follow UD: content
 words are heads; function words (case, det, aux, cop, mark, cc) attach to the
 content word they belong to; punctuation attaches to the head of its clause.
-Evidence: find_arcs with the dependent's lemma or UPOS shows where similar words
-attach and in which direction; search_sentences finds similar sentences. Write
-all heads of the sentence in one update_cells call, then call validate. DEPREL
-is another agent's job, but if an attachment you make needs a different
-relation, flag it for "deprel".""",
+Give the heads of all words of a sentence together: an answer that leaves a
+cycle or the wrong number of roots is sent back. The evidence shows where
+similar words attach and in which direction; find_arcs and search_sentences
+give more. In coordination, follow how the treebank attaches shared
+dependents. DEPREL is another agent's job, but if an attachment you make needs
+a different relation, flag it for "deprel".""",
     "deprel": """\
 Label each word's relation to its head with a UD relation, using the subtypes
 the trusted data uses (allowed_values column="deprel"). "root" is used exactly
-for the word with HEAD 0. Evidence: find_arcs with dependent_upos/head_upos (or
-lemmas) shows the relation distribution for similar arcs; find_tokens shows
-how a form or lemma is usually attached. If a label cannot be right because the
-head is wrong, flag "head" instead of forcing a label.""",
+for the word with HEAD 0. The evidence gives the relations the treebank uses
+for arcs like each word's current one (same lemmas, or same lemma and head
+UPOS and direction, or same UPOS pair); prefer them, and use relation_stats or
+find_arcs for more. If a label cannot be right because the head is wrong, flag
+"head" instead of forcing a label.""",
     "deps": """\
 Give the enhanced dependency graph as head:relation pairs sorted by head and
 joined with "|", following the conventions of the trusted data (e.g.
@@ -101,10 +130,10 @@ enhancements the trusted data uses (propagated conjuncts, controlled subjects,
 relative-clause references).""",
     "scorer": """\
 Your job is to judge, not to annotate: for every cell you are given, decide how
-likely the current value is to be correct and record that with update_cells,
-sending only a confidence (never a value). Check each value against the trusted
-data (analyse_form, find_tokens, find_arcs, feature_inventory, allowed_values)
-and against the rest of the sentence (agreement, a well-formed tree, validate).
+likely the current value is to be correct. Check each value
+against the evidence given (the form's analyses, how often its arc is attested)
+and the rest of the sentence (agreement, a well-formed tree); use the search
+tools only when that is not enough.
 Be sceptical: a value with no supporting evidence should not score above 0.6,
 and a value that contradicts clear evidence should score below 0.3. When you
 are fairly sure a value is wrong and know the fix, also flag it for the
@@ -114,8 +143,10 @@ responsible column with your suggestion.""",
 
 def instructions(role: Role, target: str, trusted: Iterable[str], extra: str | None = None) -> str:
     columns = "the confidence of cells" if role.is_scorer else " and ".join(c.upper() for c in role.columns)
+    kind = "scores" if role.is_scorer else "tools" if role.edits_with_tools else "annotation"
+    answer = ANSWERS[kind].format(example=EXAMPLES.get(role.name, ""), columns=columns)
     parts = [
-        COMMON.format(title=role.title, target=target, trusted=", ".join(trusted) or "none", columns=columns),
+        COMMON.format(title=role.title, target=target, trusted=", ".join(trusted) or "none", answer=answer),
         GUIDANCE[role.name],
     ]
     if extra:
@@ -139,18 +170,36 @@ def _flag_lines(flags: Iterable[Flag]) -> list[str]:
     return lines
 
 
-def task_prompt(role: Role, target: str, sent_id: str, cells: list[CellRef], flags: list[Flag]) -> str:
-    """The user prompt for one role working on one sentence."""
-    lines = [f'Sentence "{sent_id}" in source "{target}".']
-    if role.is_scorer:
-        lines.append("Score these cells (send only confidences):")
-        lines += _cell_lines(cells)
-    else:
-        if cells:
-            lines.append(f"These {role.column.upper()} cells need annotation or review (low confidence):")
-            lines += _cell_lines(cells)
-        if flags:
+def sentence_block(conllu: str) -> str:
+    """CoNLL-U without the Conf attributes (the cells to work on list confidences)."""
+    lines = []
+    for line in conllu.splitlines():
+        if line.startswith("#"):
+            lines.append(line)
+            continue
+        cells = line.split("\t")
+        cells[9] = misc_without_conf(cells[9])
+        lines.append("\t".join(cells))
+    return "\n".join(lines)
+
+
+def task_prompt(role: Role, target: str, items: list[TaskItem], evidence: str = "") -> str:
+    """The user prompt for one role working on a batch of sentences."""
+    lines = [f'Source "{target}". {len(items)} sentence(s).']
+    for item in items:
+        lines.append(f"\n## Sentence {item.sent_id}")
+        if item.conllu:
+            lines.append(sentence_block(item.conllu))
+        if role.is_scorer:
+            lines.append("Score these cells:")
+            lines += _cell_lines(item.cells)
+            continue
+        if item.cells:
+            lines.append(f"{role.column.upper()} cells to annotate or review (low confidence):")
+            lines += _cell_lines(item.cells)
+        if item.flags:
             lines.append(f"Open flags for {role.column.upper()}:")
-            lines += _flag_lines(flags)
-        lines.append(f"You may also correct any other {role.column.upper()} value in this sentence.")
+            lines += _flag_lines(item.flags)
+    if evidence:
+        lines += ["", evidence]
     return "\n".join(lines)

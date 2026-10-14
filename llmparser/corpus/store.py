@@ -19,6 +19,7 @@ from .confidence import check_confidence_column, set_confidence, strip_confidenc
 from .conllu import ANNOTATION_COLUMNS, EDITABLE_COLUMNS, EMPTY, UPOS_TAGS, Sentence, Token, check_cell, parse_pairs
 from .errors import CorpusError, EditError, NotFoundError
 from .index import loose as loose_key
+from .index import relation_keys
 from .models import (
     ArcHit,
     ArcSearch,
@@ -31,6 +32,7 @@ from .models import (
     FlagPage,
     GroupCount,
     MultiwordAnalysis,
+    RelationStats,
     MultiwordSearch,
     SentenceHit,
     SentenceIssue,
@@ -45,7 +47,7 @@ from .models import (
     ValidationReport,
     ValueCount,
 )
-from .source import SCORED_COLUMNS, CorpusSource, SourceMode
+from .source import REQUIRED_COLUMNS, SCORED_COLUMNS, CorpusSource, SourceMode
 from .validation import validate_sentence
 
 COLUMN_ALIASES = {
@@ -102,6 +104,22 @@ def _context(sentence: Sentence, token: Token, window: int) -> str:
 def _deprel_matches(actual: str, query: str) -> bool:
     """``nmod`` matches ``nmod:gen``; ``nmod:gen`` only matches itself."""
     return actual == query or (":" not in query and actual.split(":")[0] == query)
+
+
+def _neighbour(sentence: Sentence, token: Token, offset: int) -> Token | None:
+    """The word ``offset`` words before (negative) or after (positive) ``token``."""
+    words = sentence.words
+    index = next((i for i, word in enumerate(words) if word is token), None)
+    if index is None or not 0 <= index + offset < len(words):
+        return None
+    return words[index + offset]
+
+
+def _direction(token: Token, head: Token | None) -> str:
+    """The side of ``token`` on which its head lies: left, right or root."""
+    if head is None:
+        return "root"
+    return "left" if int(head.id) < int(token.id) else "right"
 
 
 def _head_token(sentence: Sentence, token: Token) -> Token | None:
@@ -292,6 +310,10 @@ class CorpusStore:
         self, source: CorpusSource, token: Token, criteria: dict[str, str], feats: dict[str, str | None], loose: bool
     ) -> bool:
         for field, wanted in criteria.items():
+            if field == "suffix":
+                if not loose_key(token.form).endswith(loose_key(wanted)):
+                    return False
+                continue
             actual = self._field_value(source, token, field)
             if field == "deprel":
                 if not _deprel_matches(actual, wanted):
@@ -305,10 +327,23 @@ class CorpusStore:
         return all(token_feats.get(key) == value for key, value in feats.items())
 
     @staticmethod
+    def _context_matches(sentence: Sentence, token: Token, context: dict[int, str]) -> bool:
+        """Whether the neighbouring words have the given forms (ignoring case and diacritics)."""
+        for offset, wanted in context.items():
+            neighbour = _neighbour(sentence, token, offset)
+            if neighbour is None or loose_key(neighbour.form) != loose_key(wanted):
+                return False
+        return True
+
+    @staticmethod
     def _candidates(source: CorpusSource, criteria: dict[str, str], loose: bool) -> list[tuple[int, int]]:
         for field in CANDIDATE_FIELDS:
             if field in criteria:
                 return source.index.lookup(field, criteria[field], loose)
+        if "suffix" in criteria:
+            found = source.index.suffix(criteria["suffix"])
+            if found is not None:
+                return found
         return [
             (s_pos, t_pos)
             for s_pos, sentence in enumerate(source.sentences)
@@ -345,6 +380,9 @@ class CorpusStore:
         feats: str | None = None,
         deprel: str | None = None,
         root: str | None = None,
+        suffix: str | None = None,
+        previous_form: str | None = None,
+        next_form: str | None = None,
         loose: bool = False,
         sources: list[str] | None = None,
         min_confidence: float = 0.0,
@@ -356,14 +394,20 @@ class CorpusStore:
         """Find words matching every given criterion.
 
         ``feats`` matches words having at least those features. ``root`` matches
-        the MISC root attribute (``Root=`` by default). Hits are ordered by
-        confidence (in LEMMA/UPOS/XPOS/FEATS), and ``groups`` counts all matches.
+        the MISC root attribute (``Root=`` by default). ``suffix`` matches word
+        endings, for analogy with unseen forms; ``previous_form`` and
+        ``next_form`` require the neighbouring words (these three ignore case and
+        diacritics). Hits are ordered by confidence (in LEMMA/UPOS/XPOS/FEATS),
+        and ``groups`` counts all matches.
         """
         criteria = {
             field: value
-            for field, value in {"form": form, "lemma": lemma, "upos": upos, "xpos": xpos, "deprel": deprel, "root": root}.items()
+            for field, value in {
+                "form": form, "lemma": lemma, "upos": upos, "xpos": xpos, "deprel": deprel, "root": root, "suffix": suffix,
+            }.items()
             if value
-        }
+        }  # fmt: skip
+        context = {offset: value for offset, value in ((-1, previous_form), (1, next_form)) if value}
         if not criteria and not feats:
             raise EditError("Give at least one search criterion.")
         wanted_feats = parse_pairs(feats) if feats else {}
@@ -381,6 +425,8 @@ class CorpusStore:
                     continue
                 if not self._token_matches(source, token, criteria, wanted_feats, loose):
                     continue
+                if context and not self._context_matches(sentence, token, context):
+                    continue
                 confidence = min(source.confidence(token, column) for column in MORPHOLOGY_COLUMNS)
                 if confidence >= min_confidence:
                     matches.append((confidence, order, s_pos, t_pos, source, sentence, token))
@@ -397,14 +443,18 @@ class CorpusStore:
         self,
         form: str,
         loose: bool = False,
+        previous_form: str | None = None,
+        next_form: str | None = None,
         sources: list[str] | None = None,
         min_confidence: float = 0.0,
         exclude_sentence: str | None = None,
         limit: int = 5,
     ) -> TokenSearch:
-        """How a word form is analysed: counts of (lemma, upos, xpos, feats) plus examples."""
+        """How a word form is analysed (optionally next to given words): counts of (lemma, upos, xpos, feats) plus examples."""
         return self.find_tokens(
             form=form,
+            previous_form=previous_form,
+            next_form=next_form,
             loose=loose,
             sources=sources,
             min_confidence=min_confidence,
@@ -453,6 +503,7 @@ class CorpusStore:
         head_lemma: str | None = None,
         head_upos: str | None = None,
         deprel: str | None = None,
+        direction: Literal["left", "right", "root"] | None = None,
         loose: bool = False,
         sources: list[str] | None = None,
         min_confidence: float = 0.0,
@@ -463,7 +514,8 @@ class CorpusStore:
         """Find dependency arcs by properties of the dependent, the head and the relation.
 
         ``deprel`` without a subtype (``nmod``) also matches subtypes (``nmod:gen``).
-        Use ``head_upos="ROOT"`` to find root words.
+        Use ``head_upos="ROOT"`` to find root words. ``direction`` is the side of
+        the dependent on which the head lies.
         """
         dependent = {k: v for k, v in {"form": dependent_form, "lemma": dependent_lemma, "upos": dependent_upos}.items() if v}
         head_criteria = {k: v for k, v in {"form": head_form, "lemma": head_lemma, "upos": head_upos}.items() if v}
@@ -492,15 +544,12 @@ class CorpusStore:
                     continue
                 if head_criteria and (head is None or not self._token_matches(source, head, head_criteria, {}, loose)):
                     continue
+                if direction and _direction(token, head) != direction:
+                    continue
                 confidence = min(source.confidence(token, column) for column in SYNTAX_COLUMNS)
                 if confidence >= min_confidence:
                     matches.append((confidence, order, s_pos, t_pos, source, sentence, token, head))
         matches.sort(key=lambda match: (-match[0], match[1], match[2], match[3]))
-
-        def direction(token: Token, head: Token | None) -> str:
-            if head is None:
-                return "root"
-            return "left" if int(head.id) < int(token.id) else "right"
 
         hits = [
             ArcHit(
@@ -509,7 +558,7 @@ class CorpusStore:
                 dependent=_ref(token),
                 head=_ref(head) if head is not None else None,
                 deprel=token.deprel,
-                direction=direction(token, head),
+                direction=_direction(token, head),
                 distance=abs(int(head.id) - int(token.id)) if head is not None else 0,
                 confidence=confidence,
                 context=_context(sentence, token, window),
@@ -517,7 +566,7 @@ class CorpusStore:
             for confidence, _, _, _, source, sentence, token, head in matches[:limit]
         ]
         deprels = Counter(match[6].deprel for match in matches)
-        directions = Counter(direction(match[6], match[7]) for match in matches)
+        directions = Counter(_direction(match[6], match[7]) for match in matches)
         return ArcSearch(
             total=len(matches),
             deprels=[ValueCount(value=value, count=count) for value, count in deprels.most_common()],
@@ -592,6 +641,43 @@ class CorpusStore:
             feature: [ValueCount(value=value, count=count) for value, count in totals[feature].most_common()]
             for feature in sorted(totals, key=str.lower)
         }
+
+    @_locked
+    def relation_stats(
+        self,
+        dependent_lemma: str,
+        dependent_upos: str,
+        head_lemma: str | None,
+        head_upos: str | None,
+        direction: Literal["left", "right", "root"],
+        min_total: int = 3,
+        sources: list[str] | None = None,
+    ) -> RelationStats:
+        """DEPREL counts for arcs like this one, from the most specific level with ``min_total`` arcs.
+
+        Levels: dependent lemma + head lemma; dependent lemma + head UPOS +
+        direction; dependent UPOS + head UPOS + direction. Use ``None`` heads for
+        the root. Counts come from the read-only sources by default.
+        """
+        trusted = self._trusted(sources)
+        for key in relation_keys(dependent_lemma, dependent_upos, head_lemma, head_upos, direction):
+            counts: Counter[str] = Counter()
+            for source in trusted:
+                counts.update(source.index.relations.get(key, Counter()))
+            total = sum(counts.values())
+            if total >= min_total:
+                return RelationStats(
+                    basis=key[0], total=total, deprels=[ValueCount(value=v, count=c) for v, c in counts.most_common()]
+                )
+        return RelationStats(basis="none", total=0, deprels=[])
+
+    @_locked
+    def xpos_for_tags(self, upos: str, feats: str, sources: list[str] | None = None) -> list[ValueCount]:
+        """XPOS values used with exactly this UPOS and FEATS (default: read-only sources)."""
+        total: Counter[str] = Counter()
+        for source in self._trusted(sources):
+            total.update(source.index.xpos_by_tags.get((upos, feats), Counter()))
+        return [ValueCount(value=value, count=count) for value, count in total.most_common()]
 
     @_locked
     def known_values(self) -> dict[str, set[str]]:
@@ -692,14 +778,20 @@ class CorpusStore:
 
     @_locked
     def update_cells(
-        self, source: str, sent_id: str, updates: list[CellUpdate | dict[str, Any]], agent: str = "agent"
+        self,
+        source: str,
+        sent_id: str,
+        updates: list[CellUpdate | dict[str, Any]],
+        agent: str = "agent",
+        dry_run: bool = False,
     ) -> EditResult:
         """Apply several cell updates to one sentence, all or nothing.
 
         An update with a ``value`` replaces the cell and sets its confidence to
         ``confidence`` (or clears it, falling back to the source default). An
         update with only ``confidence`` re-scores the cell. MISC edits never
-        change ``Conf``.
+        change ``Conf``. With ``dry_run`` the updates are checked and the result
+        (including validation issues) is returned, but nothing is changed.
         """
         target = self.source(source)
         target.require_writable()
@@ -742,11 +834,51 @@ class CorpusStore:
                     reason=update.reason,
                 )
             )
-        target.replace(sent_id, work)
-        for edit in edits:
-            target.record(edit)
-        self._autosave(target)
+        if not dry_run:
+            target.replace(sent_id, work)
+            for edit in edits:
+                target.record(edit)
+            self._autosave(target)
         return self._result(target, work, edits)
+
+    @_locked
+    def score_cells(
+        self,
+        source: str,
+        sent_id: str,
+        scores: dict[str, float],
+        reason: str = "",
+        agent: str = "agent",
+        dry_run: bool = False,
+    ) -> EditResult:
+        """Set confidences compactly: ``{"3:upos": 0.9, "4:*": 0.95}``.
+
+        ``"ID:*"`` (or just ``"ID"``) scores every scored column of the word except
+        required columns that are still empty (``_``), which stay unscored.
+        Specific keys override a wildcard for the same word.
+        """
+        target = self.source(source)
+        sentence = target.sentence(sent_id)
+        wildcard: dict[tuple[str, str], float] = {}
+        specific: dict[tuple[str, str], float] = {}
+        for key, confidence in scores.items():
+            token_id, _, column = key.partition(":")
+            token = sentence.token(token_id.strip())
+            column = normalise_column(column)
+            if column in ("", "*"):
+                for name in SCORED_COLUMNS:
+                    if not (name in REQUIRED_COLUMNS and token.get(name) == EMPTY):
+                        wildcard[(token.id, name)] = confidence
+            else:
+                specific[(token.id, column)] = confidence
+        merged = {**wildcard, **specific}
+        updates = [
+            CellUpdate(token_id=token_id, column=column, confidence=confidence, reason=reason)
+            for (token_id, column), confidence in merged.items()
+        ]
+        if not updates:
+            raise EditError("No cells to score.")
+        return self.update_cells(source, sent_id, updates, agent=agent, dry_run=dry_run)
 
     def set_cell(
         self,

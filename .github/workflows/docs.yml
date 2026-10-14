@@ -1,0 +1,78 @@
+name: docs
+
+# Builds the Sphinx docs and the coverage report on every push (so a broken
+# docs build shows up on any branch), and deploys them to GitHub Pages from main.
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GIST_SECRET: ${{ secrets.GIST_SECRET }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          enable-cache: true
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: uv sync --locked --all-groups
+
+      - name: Build Sphinx docs
+        run: uv run --locked sphinx-build -W -b html -d docs/_build/doctrees docs gh-pages
+
+      - name: Run tests and generate coverage report
+        run: |
+          uv run --locked pytest --cov-report=html:gh-pages/coverage
+          rm -f gh-pages/coverage/.gitignore
+          echo "COVERAGE=$(uv run --locked coverage report --format=total --precision 2)%" >> "$GITHUB_ENV"
+
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v6
+
+      - name: Upload artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: gh-pages
+
+      # Needs a GIST_SECRET repository secret (a token with the gist scope);
+      # skipped when it isn't set.
+      - name: Create coverage badge
+        if: github.ref == 'refs/heads/main' && env.GIST_SECRET != ''
+        uses: schneegans/dynamic-badges-action@v1.1.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: a23131bdd656358f346385f451cdd3ec
+          filename: llmparser-coverage-badge.json
+          label: coverage
+          message: ${{ env.COVERAGE }}
+          color: green
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -61,9 +61,10 @@ model can act on.
 | Tool | Purpose |
 |---|---|
 | `analyse_form` | counts of (lemma, upos, xpos, feats) for a form, with examples |
-| `find_tokens` | words by form, lemma, UPOS, XPOS, features, relation or root, grouped by any columns |
+| `find_tokens` | words by form, lemma, UPOS, XPOS, features, relation, root, word ending (`suffix`) or neighbouring words (`previous_form`, `next_form`), grouped by any columns |
 | `find_multiword` | how a surface token is split, and how often it is left unsplit |
-| `find_arcs` | arcs by dependent, head (`head_upos="ROOT"` for roots) and relation, with relation and direction counts |
+| `find_arcs` | arcs by dependent, head (`head_upos="ROOT"` for roots), relation and `direction`, with relation and direction counts |
+| `relation_stats` | relation counts for arcs like a given one (lemma pair, or lemma + head UPOS + direction, or UPOS pair) |
 | `search_sentences` | BM25 search over sentence text |
 
 `loose=true` ignores case and diacritics (Unicode NFD with combining marks
@@ -85,6 +86,7 @@ A relation without a subtype (`nmod`) also matches its subtypes (`nmod:gen`).
 | Tool | Purpose |
 |---|---|
 | `set_cell`, `update_cells` | set values and/or confidences (batch is all or nothing) |
+| `score_cells` | confidences only, compactly: `{"3:upos": 0.9, "4:*": 0.95}` |
 | `split_word`, `merge_words`, `insert_word`, `delete_word` | segmentation, with renumbering |
 | `add_multiword`, `remove_multiword` | multiword surface tokens |
 | `flag_issue`, `resolve_flag` | review flags |

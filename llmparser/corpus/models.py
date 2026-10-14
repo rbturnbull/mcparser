@@ -168,6 +168,14 @@ class ValueCount(BaseModel):
     count: int
 
 
+class RelationStats(BaseModel):
+    """How the trusted data labels arcs like a given one."""
+
+    basis: str = Field(description="Which properties were matched, e.g. 'lemma+head lemma'; 'none' if nothing.")
+    total: int
+    deprels: list[ValueCount]
+
+
 class ArcSearch(BaseModel):
     total: int
     deprels: list[ValueCount]
