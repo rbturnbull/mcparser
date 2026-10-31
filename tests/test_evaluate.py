@@ -2,7 +2,7 @@ import pytest
 
 from conftest import DATA
 from mcparser.corpus import parse_conllu
-from mcparser.evaluate import evaluate
+from mcparser.evaluate import calibration, calibration_table, evaluate
 
 GOLD = """\
 # sent_id = a
@@ -99,3 +99,32 @@ def test_annotated_only():
     result = evaluate(unparsed, gold, annotated_only=True)
     assert (result.sentences, result.missing) == (1, [])  # sentence a has no root head any more: left out
     assert result.score("LAS").f1 == 1.0
+
+
+SCORED_GOLD = """\
+# sent_id = a
+1\tdog\tdog\tNOUN\t_\tNumber=Sing\t2\tnsubj\t_\t_
+2\tbarks\tbark\tVERB\t_\t_\t0\troot\t_\t_
+"""
+
+SCORED_PRED = """\
+# sent_id = a
+1\tdog\tdog\tNOUN\t_\tNumber=Plur\t0\tnsubj\t_\tConf=upos:0.99,lemma:0.3,feats:0.6,head:0.85,deprel:0.97
+2\tbarks\tbark\tVERB\t_\t_\t0\tobj\t_\tConf=upos:0.2,head:0.99,deprel:0.1
+"""
+
+
+def test_calibration_buckets_by_confidence():
+    buckets = calibration(parse_conllu(SCORED_PRED), parse_conllu(SCORED_GOLD) + parse_conllu("# sent_id = z\n1\tx\tx\tX\t_\t_\t0\troot\t_\t_\n"))
+    cells = {b.label: (b.cells, b.correct) for b in buckets}
+    assert cells == {
+        "0.00-0.50": (3, 2),  # lemma and upos right, deprel wrong
+        "0.50-0.70": (1, 0),  # feats wrong
+        "0.70-0.80": (0, 0),
+        "0.80-0.90": (1, 0),  # head wrong
+        "0.90-0.95": (0, 0),
+        "0.95-1.00": (3, 3),
+    }
+    assert buckets[-1].accuracy == 1.0 and buckets[2].accuracy == 0.0
+    table = calibration_table(buckets)
+    assert table.splitlines()[0].startswith("Confidence") and "0.95-1.00" in table

@@ -150,7 +150,14 @@ head, it also shows the relations the treebank uses for arcs like its current
 one. Prefer those relations, and when they do not fit, ask whether the head is
 wrong. Watch the treebank's conventions for coordination (where the conjunction
 and shared dependents attach), dislocated and fronted phrases, and clauses
-(mark vs aux, advcl vs acl). Open flags may come from code that compared your
+(mark vs aux, advcl vs acl). UD rules that models often break: every conjunct
+attaches to the FIRST conjunct (never to the previous conjunct), and each cc to
+the conjunct that follows it; in a copular clause the predicate (not the cop) is
+the head and the copula attaches to it; the final punctuation mark attaches to
+the root of its sentence, other punctuation to the head of the phrase or clause
+it closes or opens (look at how the treebank treats the same mark); with a
+passive verb, use the passive subject relation (nsubj:pass) if the treebank has
+it. Open flags may come from code that compared your
 labels with the treebank: take them seriously, but the context decides.""",
     "deps": """\
 Give the enhanced dependency graph as head:relation pairs sorted by head and

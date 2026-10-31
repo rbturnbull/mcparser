@@ -710,6 +710,14 @@ class CorpusStore:
         return [ValueCount(value=value, count=count) for value, count in total.most_common()]
 
     @_locked
+    def deprels_for_voice(self, deprel: str, passive: bool, sources: list[str] | None = None) -> list[ValueCount]:
+        """DEPREL values (with subtype) used for ``deprel`` (subtype ignored) on dependents of a passive or active head."""
+        total: Counter[str] = Counter()
+        for source in self._trusted(sources):
+            total.update(source.index.by_voice.get((deprel.split(":")[0], passive), Counter()))
+        return [ValueCount(value=value, count=count) for value, count in total.most_common()]
+
+    @_locked
     def fixed_expressions(
         self, source: str, sent_id: str, min_count: int = 3, min_share: float = 0.5, sources: list[str] | None = None
     ) -> list[FixedExpression]:
@@ -757,6 +765,26 @@ class CorpusStore:
             deprel: (count, repeated[deprel])
             for deprel, count in dependents.items()
             if count >= min_heads and repeated[deprel] <= max_share * count
+        }
+
+    @_locked
+    def unchained_relations(
+        self, min_count: int = 100, max_share: float = 0.05, sources: list[str] | None = None
+    ) -> dict[str, tuple[int, int]]:
+        """Relations that (almost) never attach to a word with the same relation, from the trusted data.
+
+        Returns ``{deprel: (words with the relation, of which chained)}``, e.g. ``conj``
+        attaches to the first conjunct rather than to the previous ``conj``.
+        """
+        total: Counter[str] = Counter()
+        chained: Counter[str] = Counter()
+        for source in self._trusted(sources):
+            total.update(source.index.values["deprel"])
+            chained.update(source.index.chained)
+        return {
+            deprel: (count, chained[deprel])
+            for deprel, count in total.items()
+            if count >= min_count and chained[deprel] <= max_share * count
         }
 
     @_locked

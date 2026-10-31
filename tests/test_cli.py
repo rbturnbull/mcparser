@@ -210,6 +210,8 @@ def test_evaluate_command(tmp_path, train_path, pred_path):
     assert "Missing" not in result.stdout and "Words      100.00%" in result.stdout
     result = runner.invoke(app, ["evaluate", str(tmp_path / "missing.conllu"), str(train_path)])
     assert result.exit_code == 1 and "Error" in result.stderr
+    result = runner.invoke(app, ["evaluate", str(train_path), str(train_path), "--calibration"])
+    assert "Accuracy of cells by confidence:" in result.stdout and "0.95-1.00" in result.stdout
 
 
 def test_settings_command(tmp_path):

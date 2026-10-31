@@ -11,7 +11,7 @@ scored and refined by agents over several rounds. All corpus access goes
 through an MCP server so that the same server also works from Claude Desktop
 and from other projects (e.g. llmaligner, which aligns parallel corpora).
 
-## Status (2026-10-15)
+## Status (2026-10-31)
 
 | Milestone | State |
 |---|---|
@@ -332,9 +332,29 @@ prints the `mcpServers` JSON (uses the venv's python with `-m mcparser`).
   wrong). Remaining lemma errors are unseen lemmas or train/dev
   inconsistencies (`ⲛⲛⲁϩⲣⲛ` → `ⲛⲁϩⲣⲛ` in train, `ⲛⲛⲁϩⲣⲛ` in dev).
 
+- Experiment sweep 2026-10-31 (Gothic, OCS, Ancient Hebrew, Classical Armenian,
+  Georgian, Coptic Bohairic, plus Greek/Latin/Arabic/Coptic Scriptorium; 12-sentence
+  dev batches, 2 rounds; ~$1–3 per batch; scripts and logs in `experiments/`,
+  report `experiments/report.html`). Pooled over 12 batches, v1 → v2: UAS
+  92.0 → 92.8, LAS 89.0 → 89.8 at the same cost. Changes: `Applier._chained`
+  (a relation attached to a word with the same relation, e.g. conj chain, is
+  questioned once; `store.unchained_relations`, index `chained`), `Rules.voice_check`
+  (nsubj/csubj/aux subtype by head Voice; flag only; first version also fired on
+  obl subtypes and was right 3/24 times, so it is limited to those relations and
+  to labels rare for that voice: replayed on 51 saved predictions 2 flags, both
+  right; `experiments/replay_voice.py`; `store.deprels_for_voice`, index `by_voice`), UD reminders in the syntax prompt (first conjunct, cop,
+  final punctuation, passive subjects), `evaluate --calibration`
+  (`evaluate.calibration`). Measured, not adopted: `--strong-thinking high`
+  (+0–2 LAS, +20–110% cost), `--threshold 0.9` (no gain, +15–35% cost), a
+  per-form punctuation head rule (final marks attach to the root 93–97%, but commas/maqaf
+  vary: the best of {previous, next, head of either, root} per form gave only 40–75%
+  of punctuation heads right). Run-to-run noise on 12 sentences is about ±1.5 UAS/LAS,
+  so differences smaller than that are not evidence. Calibration over ~70k cells: ≥ 0.95
+  → 99.4% right, 0.8–0.9 → 91.8%, 0.5–0.7 → 57%; HEAD cells rarely reach 0.95
+  (most sit at 0.8–0.95 and are 91–95% right).
+
 ## Ideas / next steps
 
-- Calibration report in `evaluate` (accuracy by confidence bucket).
 - Incremental index updates if prediction files get large.
 - Smarter `init` tokenisation per language (currently whitespace + punctuation;
   clitics are left to the baseline/segmentation agent).

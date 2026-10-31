@@ -184,3 +184,43 @@ def test_relation_check_flags_labels_that_contradict_the_treebank(make):
     assert report.flags == 1 and (flag.token_id, flag.suggestion, flag.raised_by) == ("1", "det", "rules")
     assert flag.reason.startswith("The treebank labels arcs like this det (3 of 3")
     assert rules.apply(columns=["upos"]).flags == 0  # only checked with DEPREL
+
+
+def test_voice_check_flags_subjects_that_ignore_the_heads_voice(make):
+    active = [("dog", "dog", "NOUN", "_", "_", "2", "nsubj"), ("bites", "bite", "VERB", "_", "Voice=Act", "0", "root")]
+    passive = [("dog", "dog", "NOUN", "_", "_", "2", "nsubj:pass"), ("bitten", "bite", "VERB", "_", "Voice=Pass", "0", "root")]
+    aux = [("is", "be", "AUX", "_", "_", "2", "aux"), ("bitten", "bite", "VERB", "_", "Voice=Pass", "0", "root")]
+    aux_active = [("has", "have", "AUX", "_", "_", "2", "aux"), ("bitten", "bite", "VERB", "_", "Voice=Act", "0", "root")]
+    store, rules = make([active] * 3 + [passive] * 3 + [DOG] * 3 + [aux, aux_active] * 3, blank(["dog", "bitten"], ["dog", "bites"], ["dog", "ran"], ["a", "b"]))
+
+    def label(sent_id, deprel, verb_feats, confidence=0.9):
+        store.update_cells("pred", sent_id, [
+            {"token_id": "1", "column": "deprel", "value": deprel, "confidence": confidence},
+            {"token_id": "1", "column": "head", "value": "2", "confidence": 0.9},
+            {"token_id": "2", "column": "feats", "value": verb_feats, "confidence": 0.9},
+        ], agent="syntax")  # fmt: skip
+
+    label("p0", "nsubj", "Voice=Pass")  # passive head, plain label
+    label("p1", "nsubj:pass", "Voice=Act")  # active head, passive label
+    label("p2", "nsubj", "Voice=Act")  # fine
+    sentences = store.source("pred")
+    assert rules.voice_check(sentences.sentence("p0")) == [("1", "nsubj", "nsubj:pass", "3 of 3 relations like this have a passive head")]
+    assert rules.voice_check(sentences.sentence("p1")) == [("1", "nsubj:pass", "nsubj", "6 of 6 relations like this have a not passive head")]
+    assert rules.voice_check(sentences.sentence("p2")) == []
+    label("p3", "aux", "Voice=Pass")
+    assert rules.voice_check(sentences.sentence("p3")) == []  # the head's voice makes no difference to aux here
+    label("p3", "obl", "Voice=Pass")
+    assert rules.voice_check(sentences.sentence("p3")) == []  # not a relation whose subtype follows voice
+    label("p0", "nsubj", "_")
+    assert rules.voice_check(sentences.sentence("p0")) == []  # head without FEATS
+    label("p0", "nsubj", "Voice=Pass", confidence=0.3)
+    assert rules.voice_check(sentences.sentence("p0")) == []  # label too uncertain
+    label("p0", "nsubj:foo", "Voice=Pass")
+    assert rules.voice_check(sentences.sentence("p0")) == [("1", "nsubj:foo", "nsubj:pass", "3 of 3 relations like this have a passive head")]
+    label("p0", "nsubj:pass", "Voice=Pass")
+    assert rules.voice_check(sentences.sentence("p0")) == []  # already right
+    label("p0", "nsubj", "Voice=Pass")
+    report = rules.apply(columns=["feats"])
+    flag = store.list_flags("pred", column="deprel", sent_id="p0").flags[0]
+    assert flag.suggestion == "nsubj:pass" and flag.raised_by == "rules" and report.flags >= 1
+    assert flag.reason.startswith("The treebank labels this nsubj:pass (3 of 3")

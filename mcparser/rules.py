@@ -62,6 +62,14 @@ FLAG_INPUT_CONFIDENCE = 0.5
 fire when those cells are at least this confident, so guesses do not propagate."""
 
 
+VOICE_SHARE = 0.9
+"""Share of dependents of passive (or active) heads that must have one label before a mismatch is flagged."""
+VOICE_RARE = 0.1
+"""The word's own label must be at most this common among dependents of such heads (obl:tmod next to a passive verb is fine)."""
+VOICE_RELATIONS = frozenset({"nsubj", "csubj", "aux"})
+"""Relations whose subtype follows the head's voice (nsubj:pass, csubj:pass, aux:pass)."""
+
+
 class RuleSettings(BaseModel):
     min_count: int = Field(5, ge=1, description="Examples needed before a rule fires.")
     min_share: float = Field(
@@ -256,6 +264,36 @@ class Rules:
                 mismatches.append((word.id, word.deprel, expected, f"{count} of {stats.total}, by {stats.basis}"))
         return mismatches
 
+    def voice_check(self, sentence: Sentence) -> list[tuple[str, str, str, str]]:
+        """``(token_id, current DEPREL, expected DEPREL, basis)`` where the label ignores the head's voice.
+
+        Treebanks that mark passive subjects (``nsubj:pass``) use the subtype
+        almost exactly when the head is passive. Flags only ask for a review, so
+        the share needed is lower than for rules that write cells.
+        """
+        words = {word.id: word for word in sentence.words}
+        mismatches = []
+        for word in sentence.words:
+            head = words.get(word.head)
+            if head is None or word.deprel.split(":")[0] not in VOICE_RELATIONS or head.feats == EMPTY:
+                continue
+            if self.source.confidence(word, "deprel") < FLAG_INPUT_CONFIDENCE or self.source.confidence(head, "feats") < FLAG_INPUT_CONFIDENCE:
+                continue
+            passive = head.feats_dict.get("Voice") == "Pass"
+            by_voice = {
+                flag: Counter({v.value: v.count for v in self.store.deprels_for_voice(word.deprel, flag)}) for flag in (True, False)
+            }
+            if by_voice[True].most_common(1)[:1] == by_voice[False].most_common(1)[:1]:
+                continue  # the head's voice makes no difference to this relation
+            counts = by_voice[passive]
+            total = sum(counts.values())
+            expected, count = counts.most_common(1)[0] if counts else (word.deprel, 0)
+            rare = counts[word.deprel] / total <= VOICE_RARE if total else False
+            if total >= self.settings.min_count and count / total >= VOICE_SHARE and rare and expected != word.deprel:
+                voice = "passive" if passive else "not passive"
+                mismatches.append((word.id, word.deprel, expected, f"{count} of {total} relations like this have a {voice} head"))
+        return mismatches
+
     def segmentation(self, sentence: Sentence) -> tuple[list[CellUpdate], list[tuple[str, list[str], int]]]:
         """Confirmations of unsplit words, and splits ``(token_id, pieces, head_index)`` to make."""
         trusted_has_multiwords = any(
@@ -333,6 +371,9 @@ class Rules:
             word = sentence.token(token_id)
             reason = f"In the treebank, '{word.lemma}' as {word.deprel} is {expected}, not {current}."
             self._raise(sent_id, "upos", token_id, reason, expected, report)
+        for token_id, current, expected, basis in self.voice_check(sentence) if columns & {"deprel", "feats"} else []:
+            reason = f"The treebank labels this {expected} ({basis}), not {current}; check the label or the head's voice."
+            self._raise(sent_id, "deprel", token_id, reason, expected, report)
         for token_id, current, expected, basis in self.relation_check(sentence) if "deprel" in columns else []:
             reason = f"The treebank labels arcs like this {expected} ({basis}), not {current}; check the label or the head."
             self._raise(sent_id, "deprel", token_id, reason, expected, report)

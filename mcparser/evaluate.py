@@ -15,6 +15,7 @@ from difflib import SequenceMatcher
 
 from pydantic import BaseModel
 
+from .corpus.confidence import read_confidence
 from .corpus.conllu import Sentence, Token
 
 METRICS = ("Words", "UPOS", "XPOS", "Lemmas", "UFeats", "AllTags", "UAS", "LAS")
@@ -153,3 +154,63 @@ def evaluate(
         )
     extra = [sentence.sent_id for sentence in predicted if sentence.sent_id not in gold_ids]
     return Evaluation(sentences=matched, missing=missing, extra=extra, scores=scores)
+
+
+CALIBRATION_EDGES = (0.5, 0.7, 0.8, 0.9, 0.95)
+"""Lower edges of the confidence buckets (the first bucket starts at 0)."""
+
+CALIBRATION_COLUMNS = ("upos", "xpos", "lemma", "feats", "head", "deprel")
+
+
+class CalibrationBucket(BaseModel):
+    low: float
+    high: float
+    cells: int
+    correct: int
+
+    @property
+    def accuracy(self) -> float:
+        return self.correct / self.cells if self.cells else 0.0
+
+    @property
+    def label(self) -> str:
+        return f"{self.low:.2f}-{self.high:.2f}"
+
+
+def calibration(predicted: list[Sentence], gold: list[Sentence], columns: tuple[str, ...] = CALIBRATION_COLUMNS) -> list[CalibrationBucket]:
+    """How accurate cells are, by the confidence recorded in MISC (``Conf=``).
+
+    Only cells of aligned words that carry a confidence count. A good scorer
+    gives low scores to the cells that are wrong, so accuracy should rise with
+    confidence; this shows where to set the refinement threshold.
+    """
+    bounds = [0.0, *CALIBRATION_EDGES, 1.0]
+    buckets = [CalibrationBucket(low=low, high=high, cells=0, correct=0) for low, high in zip(bounds, bounds[1:])]
+    by_id = {sentence.sent_id: sentence for sentence in predicted}
+    for gold_sentence in gold:
+        pred_sentence = by_id.get(gold_sentence.sent_id)
+        if pred_sentence is None:
+            continue
+        aligned = _align(pred_sentence, gold_sentence)
+        pred_to_gold = {p.id: g.id for p, g in aligned}
+        for pred_word, gold_word in aligned:
+            scores = read_confidence(pred_word)
+            for column in columns:
+                if column not in scores:
+                    continue
+                if column == "head":
+                    ok = ("0" if pred_word.head == "0" else pred_to_gold.get(pred_word.head)) == gold_word.head
+                elif column == "feats":
+                    ok = pred_word.feats_dict == gold_word.feats_dict
+                else:
+                    ok = pred_word.get(column) == gold_word.get(column)
+                bucket = next(b for b in buckets if scores[column] < b.high or b is buckets[-1])
+                bucket.cells += 1
+                bucket.correct += ok
+    return buckets
+
+
+def calibration_table(buckets: list[CalibrationBucket]) -> str:
+    lines = [f"{'Confidence':<11} {'Cells':>6} {'Correct':>8} {'Accuracy':>9}"]
+    lines += [f"{b.label:<11} {b.cells:>6} {b.correct:>8} {b.accuracy:>9.1%}" for b in buckets]
+    return "\n".join(lines)

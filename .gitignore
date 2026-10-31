@@ -15,3 +15,5 @@ llmparserold
 docs/_build/
 docs/_generated/
 mk-demo.py
+experiments/
+examples/arabic-joint/

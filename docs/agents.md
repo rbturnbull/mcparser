@@ -69,7 +69,10 @@ only a valid answer is applied. For HEAD and DEPREL, code also asks once when
 an answer gives a word two dependents of a relation the treebank almost never
 repeats (in Coptic Scriptorium, 4 of 3,491 words have two `nsubj`; a noun
 subject next to a pronoun subject is `dislocated`); sending the same answer
-again confirms it. The reasons for every retry are kept in the run report.
+again confirms it. The same goes for chains: a word attached with a relation
+to a word that has the same relation, when the treebank almost never does that
+(`conj` attaches to the first conjunct, not the previous one: only 12 of 3,269
+Georgian `conj` words attach to another `conj`). The reasons for every retry are kept in the run report.
 The segmentation agent still edits through the
 tools, since splitting and merging renumber the words.
 

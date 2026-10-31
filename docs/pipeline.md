@@ -129,6 +129,10 @@ effect:
   uses for that lemma in that relation, once the syntax is known, so the next
   round can fix it (PROIEL's *omnis* is DET as `det`, PRON as a subject).
   This, and the scorer's low scores, only pay off with at least two rounds.
+- **Voice check**: after FEATS, a subject or auxiliary relation (`nsubj`, `csubj`, `aux`) that ignores the head's voice
+  (plain `nsubj` on a `Voice=Pass` verb, `nsubj:pass` on an active one) is
+  flagged for the syntax agent when the treebank separates the two (≥ 90% of
+  the cases, at least 5 examples, and the word's own label is rare for that voice).
 - **The scorer only judges what a model or person wrote**, never cells set by
   code, unannotated cells, or XPOS/FEATS of untagged words.
 - **Compact tool results**, **prompt caching**, and columns the treebank never

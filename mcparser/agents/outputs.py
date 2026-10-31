@@ -246,6 +246,13 @@ class Applier:
                     )
         return errors
 
+    def _answer_tree(self, cells: list[CellUpdate], sent_id: str, batch: Batch) -> dict[str, list[str]]:
+        """``{token id: [form, head, deprel]}`` of the sentence as it would be after the answer."""
+        words = {w.id: [w.form, w.head, w.deprel] for w in self.store.source(batch.target).sentence(sent_id).words}
+        for cell in cells:  # ids and values were checked by the dry run
+            words[cell.token_id][1 if cell.column == "head" else 2] = cell.value or "_"
+        return words
+
     def _doubled(self, updates: dict[str, list[CellUpdate]], batch: Batch) -> list[str]:
         """Warn (once) when the answer leaves a word with two dependents of a relation the treebank almost never repeats.
 
@@ -257,9 +264,7 @@ class Applier:
         single = self.store.single_relations()
         warnings = []
         for sent_id, cells in updates.items():
-            words = {w.id: [w.form, w.head, w.deprel] for w in self.store.source(batch.target).sentence(sent_id).words}
-            for cell in cells:  # ids and values were checked by the dry run
-                words[cell.token_id][1 if cell.column == "head" else 2] = cell.value or "_"
+            words = self._answer_tree(cells, sent_id, batch)
             groups: dict[tuple[str, str], list[str]] = {}
             for token_id, (_, head, deprel) in words.items():
                 if deprel in single:
@@ -276,6 +281,31 @@ class Applier:
                     f"but in the treebank only {repeated} of {heads} words have more than one. Check whether one of them "
                     "has another relation (e.g. dislocated, conj, appos, det) or another head. If the answer is right, "
                     "send it again unchanged."
+                )
+        return warnings
+
+    def _chained(self, updates: dict[str, list[CellUpdate]], batch: Batch) -> list[str]:
+        """Warn (once) when a word is attached with a relation to a word that has the same relation, if the treebank avoids that.
+
+        In UD, every conjunct attaches to the *first* conjunct, not to the one before it.
+        """
+        if not {"head", "deprel"} & set(self.role.columns):
+            return []
+        unchained = self.store.unchained_relations()
+        warnings = []
+        for sent_id, cells in updates.items():
+            words = self._answer_tree(cells, sent_id, batch)
+            for token_id, (form, head, deprel) in words.items():
+                key = (sent_id, token_id, "chain")
+                if deprel not in unchained or key in batch.warned or head not in words or words[head][2] != deprel:
+                    continue
+                batch.warned.add(key)
+                count, chained = unchained[deprel]
+                warnings.append(
+                    f"sentence {batch.label(sent_id)}: word {token_id} {form} is '{deprel}' of word {head} {words[head][0]}, "
+                    f"which is itself '{deprel}'; in the treebank only {chained} of {count} '{deprel}' words attach to another "
+                    f"'{deprel}' word. Attach it to the head of that chain (e.g. the first conjunct) instead. "
+                    "If the answer is right, send it again unchanged."
                 )
         return warnings
 
@@ -318,7 +348,7 @@ class Applier:
                 ]
         self._check_flags(answer.flags, batch, errors)
         self._retry(errors)
-        self._retry(self._doubled(updates, batch))
+        self._retry(self._doubled(updates, batch) + self._chained(updates, batch))
         for resolution in answer.resolved:
             try:
                 self.store.resolve_flag(batch.target, resolution.flag_id, resolution.status, resolution.note, agent=self.role.name)

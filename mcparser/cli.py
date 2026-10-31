@@ -19,6 +19,7 @@ from .agents.team import AgentTeam, ModelUsage
 from .baseline import run_baseline
 from .rules import Rules
 from .corpus import CorpusError, CorpusStore, SourceMode, format_conllu, parse_conllu
+from .evaluate import calibration, calibration_table
 from .evaluate import evaluate as evaluate_predictions
 from .mcp.config import AlignmentSpec, SourceSpec, claude_desktop_config, load_store
 from .mcp.server import build_server
@@ -463,14 +464,16 @@ def evaluate(
     annotated_only: Annotated[
         bool, typer.Option("--annotated-only", help="Only score predicted sentences that have been parsed (every HEAD set).")
     ] = False,
+    show_calibration: Annotated[
+        bool, typer.Option("--calibration", help="Also show accuracy by recorded confidence (Conf in MISC).")
+    ] = False,
 ) -> None:
     """Compare predictions with gold annotation (precision, recall and F1 per metric)."""
     try:
+        predicted_sentences = parse_conllu(prediction.read_text(encoding="utf-8"))
+        gold_sentences = parse_conllu(gold.read_text(encoding="utf-8"))
         result = evaluate_predictions(
-            parse_conllu(prediction.read_text(encoding="utf-8")),
-            parse_conllu(gold.read_text(encoding="utf-8")),
-            predicted_only=predicted_only,
-            annotated_only=annotated_only,
+            predicted_sentences, gold_sentences, predicted_only=predicted_only, annotated_only=annotated_only
         )
     except (CorpusError, OSError) as error:
         typer.echo(f"Error: {error}", err=True)
@@ -484,6 +487,9 @@ def evaluate(
     if result.extra:
         typer.echo(f"Not in the gold file: {', '.join(result.extra)}")
     typer.echo(result.table())
+    if show_calibration:
+        typer.echo("\nAccuracy of cells by confidence:")
+        typer.echo(calibration_table(calibration(predicted_sentences, gold_sentences)))
 
 
 @app.command("settings")

@@ -247,6 +247,19 @@ def test_doubled_relations_are_questioned_once(store, monkeypatch):
     assert Applier(store, ROLES["upos"])._doubled({}, task) == []
 
 
+def test_chained_relations_are_questioned_once(store, monkeypatch):
+    monkeypatch.setattr(store, "unchained_relations", lambda: {"punct": (100, 1)})
+    store.set_cell("pred", "p1", "4", "head", "3")
+    applier = Applier(store, ROLES["deprel"])
+    task = batch("p1")
+    with pytest.raises(ModelRetry, match=r"s1: word 4 \. is 'punct' of word 3 mercado, which is itself 'punct'"):
+        applier.annotation(Annotation(values="p1 3 punct 0.9"), task)
+    assert store.source("pred").sentence("p1").token("3").deprel != "punct"  # nothing applied
+    applier.annotation(Annotation(values="p1 3 punct 0.9"), task)  # confirmed: accepted
+    assert store.source("pred").sentence("p1").token("3").deprel == "punct"
+    assert Applier(store, ROLES["upos"])._chained({}, task) == []
+
+
 def test_applier_scores(store):
     applier = Applier(store, ROLES["scorer"])
     applier.scores(Scores(scores="p2 1 * 0.9\np2 1 upos 0.4", flags=[FlagRequest(sent_id="p2", column="upos", reason="x")]), batch("p2"))

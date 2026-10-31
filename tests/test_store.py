@@ -429,3 +429,10 @@ def test_dry_run_changes_nothing(store):
     assert store.get_history("pred") == []
     store.score_cells("pred", "p2", {"1:*": 0.5}, dry_run=True)
     assert read_confidence(store.source("pred").sentence("p2").token("1")) == {}
+
+
+def test_unchained_relations(store):
+    first = store.unchained_relations(min_count=1, max_share=1)
+    assert set(first) <= set(store.known_values()["deprel"])
+    assert all(chained <= count for count, chained in first.values())
+    assert store.unchained_relations(min_count=10**6) == {}

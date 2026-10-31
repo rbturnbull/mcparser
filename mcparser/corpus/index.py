@@ -62,6 +62,10 @@ class SourceIndex:
         self.dependents: Counter[str] = Counter()
         """Per DEPREL, the number of words with at least one dependent of that relation."""
         self.repeated: Counter[str] = Counter()
+        self.by_voice: defaultdict[tuple[str, bool], Counter[str]] = defaultdict(Counter)
+        """Per (DEPREL without subtype, whether the head is passive), the full DEPREL values (nsubj vs nsubj:pass)."""
+        self.chained: Counter[str] = Counter()
+        """Per DEPREL, the number of words whose head has the same DEPREL (e.g. conj attached to a conj)."""
         """Per DEPREL, the number of words with two or more dependents of that relation."""
         """DEPREL counts keyed by :func:`relation_keys` of the dependent and head."""
 
@@ -104,6 +108,10 @@ class SourceIndex:
             if word.deprel == EMPTY or not (word.head == "0" or word.head in words):
                 continue
             head = words.get(word.head)
+            if head is not None:
+                self.by_voice[(word.deprel.split(":")[0], head.feats_dict.get("Voice") == "Pass")][word.deprel] += 1
+            if head is not None and head.deprel == word.deprel:
+                self.chained[word.deprel] += 1
             if word.upos != EMPTY:
                 self.upos_by_function[(word.lemma, word.deprel.split(":")[0])][word.upos] += 1
             for key in relation_keys(word.lemma, word.upos, head.lemma if head else None, head.upos if head else None, direction_of(word.id, word.head)):

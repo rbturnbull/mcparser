@@ -50,3 +50,11 @@ def test_empty_nodes_and_valueless_features_are_skipped():
     idx = SourceIndex(parse_conllu(text))
     assert idx.lookup("form", "e") == []
     assert dict(idx.features["X"]) == {"Case": {"Nom": 1}}
+
+
+def test_chained_relations_are_counted():
+    text = "\n".join(
+        ["1\ta\ta\tNOUN\t_\t_\t0\troot\t_\t_", "2\tb\tb\tNOUN\t_\t_\t1\tconj\t_\t_", "3\tc\tc\tNOUN\t_\t_\t2\tconj\t_\t_", ""]
+    )
+    idx = SourceIndex(parse_conllu(text))
+    assert idx.chained == {"conj": 1}
