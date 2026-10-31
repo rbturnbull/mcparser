@@ -298,21 +298,25 @@ class EvidenceBuilder:
                 )
                 lines += occurrences
             lines += self.tagset(role, sentences)
-        if role.name in ("head", "deprel"):
+        if role.name in ("syntax", "head", "deprel"):
             fixed = [line for sentence in sentences for line in self.fixed(sentence.sent_id, labels[sentence.sent_id])]
             if fixed:
                 lines += ["Fixed expressions of the treebank in these sentences:", *fixed]
             examples = self.examples(sentences, labels)
             if examples:
                 lines += ["Similar sentences from the treebank, to show its conventions (ID FORM LEMMA UPOS HEAD DEPREL):", *examples]
-        if role.name == "deprel":
-            lines.append("Relations in the trusted data for arcs like each word's current one:")
-            for sentence, (sent_id, cells) in zip(sentences, batch, strict=True):
-                wanted = {cell.token_id for cell in cells}
-                for word in sentence.words:
-                    if not wanted or word.id in wanted:
-                        lines.append(f"- {labels[sent_id]} {word.id} {word.form} ({word.upos}): {self.arc_labels(sentence, word) or 'no head yet'}")
-        elif not (role.name in MORPHOLOGY_ROLES or role.is_scorer):  # head and deps
+        if role.name in ("deprel", "syntax"):
+            # The syntax role sees these only for words that already have a head (review rounds).
+            arcs = [
+                f"- {labels[sent_id]} {word.id} {word.form} ({word.upos}): {self.arc_labels(sentence, word) or 'no head yet'}"
+                for sentence, (sent_id, cells) in zip(sentences, batch, strict=True)
+                for word in sentence.words
+                if (not cells or word.id in {cell.token_id for cell in cells})
+                and (role.name == "deprel" or word.head != EMPTY)
+            ]
+            if arcs:
+                lines += ["Relations in the trusted data for arcs like each word's current one:", *arcs]
+        if not (role.name in MORPHOLOGY_ROLES or role.is_scorer or role.name == "deprel"):  # syntax, head and deps
             lines.append("How similar words attach in the trusted data (relation→head UPOS, side of head ×count):")
             for sentence, (_, cells) in zip(sentences, batch, strict=True):
                 wanted = {cell.token_id for cell in cells}

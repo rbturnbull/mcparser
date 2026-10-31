@@ -3,6 +3,7 @@ import pytest
 from mcparser.agents.prompts import TaskItem
 from mcparser.agents.team import AgentTeam
 from mcparser.corpus import CorpusError, CorpusStore
+from mcparser.corpus.models import CellRef
 from mcparser.pipeline import Pipeline
 from mcparser.rules import RuleSettings
 from mcparser.settings import Settings
@@ -184,8 +185,10 @@ async def test_unused_columns_are_settled_without_agents(store, tmp_path):
 
 def test_helpers(store, tmp_path):
     p = Pipeline(store, "pred", AgentTeam(store, "pred", Settings()), Settings(roles={"xpos": {"enabled": False}}))
-    assert p.roles == ["segmentation", "upos", "lemma", "head", "deprel", "feats"]
+    assert p.roles == ["segmentation", "upos", "lemma", "syntax", "feats"]
     assert [c.column for c in p.cells("p2")][:6] == ["form", "upos", "lemma", "head", "deprel", "feats"]
+    separate = Pipeline(store, "pred", AgentTeam(store, "pred", Settings()), Settings(joint_syntax=False))
+    assert separate.roles == ["segmentation", "upos", "lemma", "head", "deprel", "feats", "xpos"]
     assert p.sentences(order="confidence_desc") == ["p1", "p2"]
 
     keys = lambda: [(c.token_id, c.column) for c in p.cells_to_score("p1")]  # noqa: E731
@@ -203,7 +206,9 @@ def test_helpers(store, tmp_path):
     store.flag_issue("pred", "p1", "upos", "x", agent="scorer")
     assert p.edits_since(0) == 2  # rules' edits do not count
 
-    item = lambda n: TaskItem("s", [None] * n)  # noqa: E731
+    def item(n):  # n words, each with HEAD and DEPREL cells (counted once)
+        return TaskItem("s", [CellRef(sent_id="s", token_id=str(i), form="x", column=c, value="_", confidence=0.0)
+                              for i in range(n) for c in ("head", "deprel")])
     p.settings.batch_sentences, p.settings.batch_cells = 2, 5
     assert [len(batch) for batch in p.batches([item(2), item(2), item(2), item(6), item(0), item(1)])] == [2, 1, 1, 2]
 
@@ -212,3 +217,25 @@ def test_helpers(store, tmp_path):
     other = CorpusStore()
     other.add_source("pred", empty, mode="rw")
     assert Pipeline(other, "pred", AgentTeam(other, "pred", Settings()), Settings()).confidence() == 0.0
+
+
+@pytest.mark.anyio
+async def test_joint_syntax_sets_heads_and_relations_together(store):
+    tree = {("p1", "1"): "0 root", ("p1", "2"): "3 case", ("p1", "3"): "1 obl", ("p1", "4"): "1 punct",
+            ("p2", "1"): "2 det", ("p2", "2"): "0 root"}  # fmt: skip
+    prompts = []
+
+    def syntax(prompt):
+        prompts.append(prompt)
+        words = dict.fromkeys((c["sent_id"], c["token_id"]) for c in cells(prompt))
+        return {"values": "\n".join(f"{s} {t} {tree[(s, t)]} 0.95 0.9" for s, t in words)}
+
+    doubt_syntax = scored(lambda c: 0.3 if c["column"] in ("head", "deprel") else 0.9)
+    models = {"syntax": scripted(syntax), "scorer": scripted(doubt_syntax), "*": scripted()}
+    report = await pipeline(store, models, rounds=1, threshold=0.8).run()
+    assert {task.role for task in report.tasks} >= {"syntax"}
+    assert "Relations in the trusted data for arcs like each word's current one:" in prompts[0]  # heads exist
+    words = store.source("pred").sentence("p1").words
+    assert [(w.head, w.deprel) for w in words] == [("0", "root"), ("3", "case"), ("1", "obl"), ("1", "punct")]
+    changed = {e.agent for e in store.get_history("pred") if e.column in ("head", "deprel") and e.old != e.new}
+    assert changed == {"syntax"}

@@ -37,7 +37,8 @@ sentences that settle first can serve as evidence (with `min_confidence`) for
 the harder ones. In each sentence, the role agents run in this order:
 
 ```text
-segmentation → upos → lemma → head → deprel → feats → xpos → (deps)
+segmentation → upos → lemma → syntax → feats → xpos → (deps)
+                            (or head → deprel with --separate-syntax)
 ```
 
 Later columns build on earlier ones. Syntax comes before FEATS because case
@@ -58,7 +59,7 @@ is off by default; the next `run` scores those cells anyway.
 pass the file with `--config`:
 
 ```yaml
-strong_model: anthropic:claude-opus-5-5       # segmentation, lemma, head, deprel, deps
+strong_model: anthropic:claude-opus-5-5       # segmentation, lemma, syntax, deps
 efficient_model: anthropic:claude-sonnet-5-5  # efficient_roles
 light_model: anthropic:claude-haiku-5-5       # light_roles
 efficient_roles: [upos, feats, scorer]

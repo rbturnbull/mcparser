@@ -106,8 +106,41 @@ def _lines(text: str) -> list[list[str]]:
     return [line.split() for line in text.splitlines() if line.strip() and not line.lstrip().startswith("#")]
 
 
+def _confidence(text: str) -> float:
+    return min(max(float(text), 0.0), 1.0)
+
+
+def parse_syntax(text: str, batch: Batch) -> tuple[dict[str, list[CellUpdate]], list[str]]:
+    """``SENTENCE TOKEN_ID HEAD DEPREL CONFIDENCE [DEPREL_CONFIDENCE]`` lines as HEAD and DEPREL updates."""
+    updates: dict[str, list[CellUpdate]] = {}
+    errors = []
+    for number, parts in enumerate(_lines(text), start=1):
+        if len(parts) not in (5, 6):
+            errors.append(
+                f"line {number}: expected SENTENCE TOKEN_ID HEAD DEPREL CONFIDENCE [DEPREL_CONFIDENCE], got {' '.join(parts)!r}"
+            )
+            continue
+        name, token_id, head, deprel, *confidences = parts
+        sent_id = batch.resolve(name)
+        if sent_id is None:
+            errors.append(f"line {number}: sentence {name!r} is not in this task")
+            continue
+        try:
+            head_score, deprel_score = _confidence(confidences[0]), _confidence(confidences[-1])
+        except ValueError:
+            errors.append(f"line {number}: confidences {' '.join(confidences)!r} are not numbers")
+            continue
+        updates.setdefault(sent_id, []).extend([
+            CellUpdate(token_id=token_id, column="head", value=head, confidence=head_score),
+            CellUpdate(token_id=token_id, column="deprel", value=deprel, confidence=deprel_score),
+        ])  # fmt: skip
+    return updates, errors
+
+
 def parse_values(text: str, role: Role, batch: Batch) -> tuple[dict[str, list[CellUpdate]], list[str]]:
-    """``SENT_ID TOKEN_ID VALUE CONFIDENCE`` lines as updates per sentence, plus error messages."""
+    """``SENTENCE TOKEN_ID VALUE CONFIDENCE`` lines as updates per sentence, plus error messages."""
+    if role.columns == ("head", "deprel"):
+        return parse_syntax(text, batch)
     updates: dict[str, list[CellUpdate]] = {}
     errors = []
     for number, parts in enumerate(_lines(text), start=1):
@@ -120,13 +153,11 @@ def parse_values(text: str, role: Role, batch: Batch) -> tuple[dict[str, list[Ce
             errors.append(f"line {number}: sentence {name!r} is not in this task")
             continue
         try:
-            score = float(confidence)
+            score = _confidence(confidence)
         except ValueError:
             errors.append(f"line {number}: confidence {confidence!r} is not a number")
             continue
-        updates.setdefault(sent_id, []).append(
-            CellUpdate(token_id=token_id, column=role.column, value=value, confidence=min(max(score, 0.0), 1.0))
-        )
+        updates.setdefault(sent_id, []).append(CellUpdate(token_id=token_id, column=role.column, value=value, confidence=score))
     return updates, errors
 
 
@@ -197,13 +228,14 @@ class Applier:
 
     def _unseen(self, updates: dict[str, list[CellUpdate]]) -> list[str]:
         """Values the trusted data never uses (only for closed tagsets, and only if there is trusted data)."""
-        column = self.role.column
-        known = self.store.known_values().get(column) if column in CLOSED_TAGSETS else None
-        if not known:
-            return []
+        known_values = self.store.known_values()
         errors = []
         for sent_id, cells in updates.items():
             for cell in cells:
+                column = cell.column
+                known = known_values.get(column) if column in CLOSED_TAGSETS else None
+                if not known:
+                    continue
                 value = cell.value or "_"
                 parts = value.split("|") if column == "feats" else [value]
                 unseen = [part for part in parts if part != "_" and part not in known]
@@ -220,7 +252,7 @@ class Applier:
         In Coptic, a noun subject before a verb that also has a pronoun subject
         is ``dislocated``; in most treebanks a word has one ``nsubj`` and one ``obj``.
         """
-        if self.role.column not in ("head", "deprel"):
+        if not {"head", "deprel"} & set(self.role.columns):
             return []
         single = self.store.single_relations()
         warnings = []
@@ -247,25 +279,29 @@ class Applier:
                 )
         return warnings
 
-    def _follow_up(self, sent_id: str, changed: list[tuple[str, str]], batch: Batch) -> None:
-        """Mark dependent cells for review and close flags that this change answers."""
-        dependents = DEPENDENT_COLUMNS.get(self.role.column, ())
-        if dependents and changed:
-            sentence = self.store.source(batch.target).sentence(sent_id)
-            review = [
-                CellUpdate(token_id=token_id, column=column, confidence=0.0, reason=f"{self.role.column.upper()} changed")
-                for token_id, _ in changed
-                for column in dependents
-                if sentence.token(token_id).get(column) != "_"
-            ]
-            if review:
-                self.store.update_cells(batch.target, sent_id, review, agent=self.role.name)
-        values = dict(changed)
-        for flag in self.store.list_flags(batch.target, column=self.role.column, sent_id=sent_id, limit=10_000).flags:
-            if flag.token_id in values:
-                self.store.resolve_flag(
-                    batch.target, flag.id, "resolved", f"{self.role.name} changed it to {values[flag.token_id]}", agent=self.role.name
-                )
+    def _follow_up(self, sent_id: str, changed: list[tuple[str, str, str]], batch: Batch) -> None:
+        """Mark dependent cells for review and close flags that this change answers.
+
+        ``changed`` holds ``(token_id, column, new value)``. Dependent columns that
+        this role set itself (DEPREL for the joint syntax role) are not marked.
+        """
+        sentence = self.store.source(batch.target).sentence(sent_id)
+        review = [
+            CellUpdate(token_id=token_id, column=dependent, confidence=0.0, reason=f"{column.upper()} changed")
+            for token_id, column, _ in changed
+            for dependent in DEPENDENT_COLUMNS.get(column, ())
+            if dependent not in self.role.columns and sentence.token(token_id).get(dependent) != "_"
+        ]
+        if review:
+            self.store.update_cells(batch.target, sent_id, review, agent=self.role.name)
+        values = {(token_id, column): value for token_id, column, value in changed}
+        for column in self.role.columns:
+            for flag in self.store.list_flags(batch.target, column=column, sent_id=sent_id, limit=10_000).flags:
+                if (flag.token_id, column) in values:
+                    self.store.resolve_flag(
+                        batch.target, flag.id, "resolved", f"{self.role.name} changed it to {values[(flag.token_id, column)]}",
+                        agent=self.role.name,
+                    )  # fmt: skip
 
     def annotation(self, answer: Annotation, batch: Batch) -> Annotation:
         updates, errors = parse_values(answer.values, self.role, batch)
@@ -276,7 +312,7 @@ class Applier:
             except CorpusError as error:
                 errors.append(f"sentence {sent_id}: {error}")
                 continue
-            if self.role.column == "head":
+            if "head" in self.role.columns:
                 errors += [
                     f"sentence {sent_id}: {issue.message}" for issue in result.issues if issue.code in TREE_ERRORS
                 ]
@@ -290,7 +326,7 @@ class Applier:
                 pass  # an unknown or already closed flag is harmless
         for sent_id, cells in updates.items():
             result = self.store.update_cells(batch.target, sent_id, cells, agent=self.role.name)
-            changed = [(edit.token_id, edit.new) for edit in result.edits if edit.old != edit.new]
+            changed = [(edit.token_id, edit.column, edit.new) for edit in result.edits if edit.old != edit.new]
             self._follow_up(sent_id, changed, batch)
         self._apply_flags(answer.flags, batch)
         return answer

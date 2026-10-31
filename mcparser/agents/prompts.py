@@ -60,6 +60,14 @@ ANSWERS = {
         'then add a line only for the cells that deserve a different score, e.g. "s1 3 upos 0.4" or "s1 3 * 0.6" '
         "(all listed cells of word 3). Later lines override earlier ones. Keep `summary` under 15 words."
     ),
+    "syntax": (
+        "Answer with ONE final result. Put one line per word in `values`: "
+        '"SENTENCE TOKEN_ID HEAD DEPREL CONFIDENCE" (e.g. "s1 3 4 nsubj 0.95"; s1 is the sentence label), or with '
+        'separate confidences for HEAD and DEPREL, "s1 3 4 nsubj 0.95 0.7". Give both values for every word listed, '
+        "even if only one of them is listed (repeat the current value if it is right), and for any other word whose "
+        "head or relation you correct. Close each open flag addressed to you in `resolved`: "
+        '"resolved" if you changed something, "dismissed" (with a note) if not. Keep `summary` under 15 words.'
+    ),
     "tools": (
         "Make your changes with the tools (split_word, merge_words, ...; update_cells to set the confidence of "
         "column FORM for words you checked), close flags addressed to you with resolve_flag, then finish with a "
@@ -67,7 +75,7 @@ ANSWERS = {
     ),
 }
 
-EXAMPLES = {"lemma": "dico", "upos": "NOUN", "xpos": "Nb", "feats": "Case=Nom|Number=Sing", "head": "4", "deprel": "nsubj", "deps": "4:nsubj"}
+EXAMPLES = {"syntax": "4 nsubj", "lemma": "dico", "upos": "NOUN", "xpos": "Nb", "feats": "Case=Nom|Number=Sing", "head": "4", "deprel": "nsubj", "deps": "4:nsubj"}
 
 GUIDANCE = {
     "segmentation": """\
@@ -128,6 +136,22 @@ for arcs like each word's current one (same lemmas, or same lemma and head
 UPOS and direction, or same UPOS pair); prefer them, and use relation_stats or
 find_arcs for more. If a label cannot be right because the head is wrong, flag
 "head" instead of forcing a label.""",
+    "syntax": """\
+Build the dependency tree and label it: give every word its head and its
+relation, deciding both together. Exactly one word has HEAD 0 and DEPREL root;
+every other word points to a word id; no cycles. Follow UD: content words are
+heads; function words (case, det, aux, cop, mark, cc) attach to the content
+word they belong to; punctuation attaches to the head of its clause. Use the
+relations and subtypes of the trusted data. Answer for all listed words of a
+sentence together: an answer that leaves a cycle or the wrong number of roots
+is sent back. The evidence shows where similar words attach and with which
+relation, similar treebank sentences and fixed expressions; once a word has a
+head, it also shows the relations the treebank uses for arcs like its current
+one. Prefer those relations, and when they do not fit, ask whether the head is
+wrong. Watch the treebank's conventions for coordination (where the conjunction
+and shared dependents attach), dislocated and fronted phrases, and clauses
+(mark vs aux, advcl vs acl). Open flags may come from code that compared your
+labels with the treebank: take them seriously, but the context decides.""",
     "deps": """\
 Give the enhanced dependency graph as head:relation pairs sorted by head and
 joined with "|", following the conventions of the trusted data (e.g.
@@ -147,14 +171,14 @@ responsible column with your suggestion.""",
 }
 
 
-SYNTAX_ROLES = frozenset({"head", "deprel", "deps", "scorer"})
+SYNTAX_ROLES = frozenset({"syntax", "head", "deprel", "deps", "scorer"})
 
 
 def instructions(
     role: Role, target: str, trusted: Iterable[str], extra: str | None = None, relations: str | None = None
 ) -> str:
     columns = "the confidence of cells" if role.is_scorer else " and ".join(c.upper() for c in role.columns)
-    kind = "scores" if role.is_scorer else "tools" if role.edits_with_tools else "annotation"
+    kind = "scores" if role.is_scorer else "tools" if role.edits_with_tools else "syntax" if role.name == "syntax" else "annotation"
     answer = ANSWERS[kind].format(example=EXAMPLES.get(role.name, ""), columns=columns)
     parts = [
         COMMON.format(title=role.title, target=target, trusted=", ".join(trusted) or "none", answer=answer),
@@ -233,10 +257,12 @@ def task_prompt(role: Role, target: str, items: list[TaskItem], evidence: str = 
         if role.is_scorer:
             lines.append(f"Cells to score: {_score_line(item.cells)}")
             continue
-        if item.cells:
-            lines.append(f"{role.column.upper()} cells to annotate or review: {_cell_line(item.cells)}")
+        for column in role.columns:
+            cells = [cell for cell in item.cells if cell.column == column]
+            if cells:
+                lines.append(f"{column.upper()} cells to annotate or review: {_cell_line(cells)}")
         if item.flags:
-            lines.append(f"Open flags for {role.column.upper()}:")
+            lines.append(f"Open flags for {'/'.join(column.upper() for column in role.columns)}:")
             lines += _flag_lines(item.flags)
     if evidence:
         lines += ["", evidence]

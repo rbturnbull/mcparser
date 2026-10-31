@@ -354,6 +354,13 @@ def run(
     model_for: ModelForOption = None,
     roles: Annotated[str | None, typer.Option(help=f"Comma-separated roles to run: {', '.join(r for r in ROLES if r != 'scorer')}.")] = None,
     rounds: Annotated[int | None, typer.Option(min=1, help="Maximum rounds.")] = None,
+    joint_syntax: Annotated[
+        bool | None,
+        typer.Option(
+            "--joint-syntax/--separate-syntax",
+            help="One agent sets HEAD and DEPREL together (default), or separate head and deprel agents.",
+        ),
+    ] = None,
     final_score: Annotated[
         bool | None,
         typer.Option("--final-score/--no-final-score", help="Re-score the cells changed in the last round (default off)."),
@@ -373,7 +380,7 @@ def run(
     settings = _settings(
         config, model, model_for, roles, tiers,
         rounds=rounds, threshold=threshold, concurrency=concurrency, batch_sentences=batch_sentences,
-        final_scoring=final_score,
+        final_scoring=final_score, joint_syntax=joint_syntax,
     )  # fmt: skip
     _annotate(prediction, source, settings, sentence, False, report, max_sentences)
 

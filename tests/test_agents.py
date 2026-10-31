@@ -6,7 +6,7 @@ from pydantic_ai.models.test import TestModel
 
 from mcparser.agents.outputs import Annotation, Applier, Batch, FlagRequest, FlagResolution, Scores, parse_scores, parse_values
 from mcparser.agents.prompts import TaskItem, instructions, sentence_block, task_prompt
-from mcparser.agents.roles import COLUMN_ROLES, READ_TOOLS, ROLES, SEGMENTATION_TOOLS
+from mcparser.agents.roles import READ_TOOLS, ROLES, SEGMENTATION_TOOLS
 from mcparser.agents.team import AgentTeam, TaskReport
 from mcparser.agents.toolset import RoleToolset
 from mcparser.corpus.confidence import read_confidence
@@ -24,8 +24,6 @@ def test_roles():
     assert "relation_stats" in READ_TOOLS
     assert ROLES["segmentation"].edits_with_tools and not ROLES["scorer"].edits_with_tools
     assert ROLES["scorer"].is_scorer and not ROLES["head"].is_scorer
-    assert COLUMN_ROLES["form"] == "segmentation"
-    assert "scorer" not in COLUMN_ROLES.values()
 
 
 def test_instructions():
@@ -69,6 +67,12 @@ def test_task_prompts():
     assert "Cells to score: UPOS 2" in scorer and "Open flags" not in scorer
     assert sentence_block("1\ta\t_\t_\t_\t_\t0\troot\t_\tConf=upos:0.10") == "1\ta\t_\t_\t_\t_\t0\troot"
     assert sentence_block("1-2\tal\t_\t_\t_\t_\t_\t_\t_\t_") == "1-2\tal"
+    head = CellRef(sent_id="s", token_id="2", form="al", column="head", value="_", confidence=0.0)
+    label = CellRef(sent_id="s", token_id="3", form="x", column="deprel", value="obl", confidence=0.4)
+    syntax = task_prompt(ROLES["syntax"], "pred", [TaskItem("s", [head, label], flags[:1])])
+    assert "HEAD cells to annotate or review: 2 at 0.00\nDEPREL cells to annotate or review: 3 at 0.40" in syntax
+    assert "Open flags for HEAD/DEPREL:" in syntax
+    assert '"s1 3 4 nsubj 0.95 0.7"' in instructions(ROLES["syntax"], "pred", ["train"], relations="root 3")
 
 
 def test_compact_cell_lists():
@@ -200,6 +204,35 @@ def test_applier_rejects_broken_trees(store):
     assert store.source("pred").sentence("p2").token("2").head == "0"  # nothing applied
     applier.annotation(Annotation(values="p2 1 2 0.95"), batch("p2"))
     assert read_confidence(store.source("pred").sentence("p2").token("1"))["head"] == 0.95
+
+
+def test_parse_syntax():
+    updates, errors = parse_values(
+        "s1 2 3 obl 0.9\ns1 3 1 obl 0.8 0.6\ns1 4 1\nzz 1 0 root 0.9\ns1 1 0 root high", ROLES["syntax"], batch("p1")
+    )
+    assert [(u.token_id, u.column, u.value, u.confidence) for u in updates["p1"]] == [
+        ("2", "head", "3", 0.9), ("2", "deprel", "obl", 0.9), ("3", "head", "1", 0.8), ("3", "deprel", "obl", 0.6),
+    ]
+    assert [e.split(":")[0] for e in errors] == ["line 3", "line 4", "line 5"]
+    assert "expected SENTENCE TOKEN_ID HEAD DEPREL CONFIDENCE" in errors[0]
+
+
+def test_applier_joint_syntax(store):
+    applier = Applier(store, ROLES["syntax"])
+    head_flag = store.flag_issue("pred", "p2", "head", "the head?", token_id="1", agent="scorer")
+    label_flag = store.flag_issue("pred", "p2", "deprel", "the label?", token_id="2", agent="scorer")
+    with pytest.raises(ModelRetry, match="form a cycle"):
+        applier.annotation(Annotation(values="s1 1 2 det 0.9\ns1 2 1 root 0.9"), batch("p2"))
+    with pytest.raises(ModelRetry, match="never occurs in the treebank's DEPREL"):
+        applier.annotation(Annotation(values="s1 1 2 article 0.9"), batch("p2"))
+    store.set_cell("pred", "p2", "1", "head", "0", confidence=0.5)
+    store.set_cell("pred", "p2", "2", "head", "1", confidence=0.5)
+    applier.annotation(Annotation(values="s1 1 2 det 0.9 0.8\ns1 2 0 root 0.95"), batch("p2"))
+    words = store.source("pred").sentence("p2").words
+    assert [(w.head, w.deprel) for w in words] == [("2", "det"), ("0", "root")]
+    assert read_confidence(words[0])["deprel"] == 0.8  # not marked for review: the same answer set it
+    flags = {f.id: f for f in store.list_flags("pred", status="all").flags}
+    assert flags[head_flag.id].status == "resolved" and flags[label_flag.id].status == "open"  # p2:2 deprel unchanged
 
 
 def test_doubled_relations_are_questioned_once(store, monkeypatch):

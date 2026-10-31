@@ -21,6 +21,9 @@ The rules are:
   treebank (almost) never uses for that lemma in that relation is flagged for
   the UPOS agent (e.g. PROIEL's *omnis* is DET as ``det`` but PRON as a
   subject or object). Cross-checks only flag; they never change a value.
+* **relation checks** — a DEPREL set by a model that differs from the label
+  the treebank (almost) always uses for arcs like it is flagged for review,
+  with the treebank's label as suggestion.
 * optionally, **the predictions themselves**: for a form the trusted data never
   has, analyses given with high confidence elsewhere in the prediction file
   (from agents or people, not from rules) count as evidence.
@@ -227,6 +230,32 @@ class Rules:
                 mismatches.append((word.id, word.upos, counts.most_common(1)[0][0]))
         return mismatches
 
+    def relation_check(self, sentence: Sentence) -> list[tuple[str, str, str, str]]:
+        """``(token_id, current DEPREL, expected DEPREL, basis)`` where a model's label contradicts the treebank.
+
+        Uses the same evidence and thresholds as :meth:`deprel`, which can only
+        fill empty cells; once a model has labelled an arc, a disagreement is
+        flagged instead of silently accepted.
+        """
+        words = {word.id: word for word in sentence.words}
+        mismatches = []
+        for word in sentence.words:
+            head = words.get(word.head)
+            if head is None or word.deprel == EMPTY:
+                continue
+            if self.source.confidence(word, "head") < FLAG_INPUT_CONFIDENCE or not (
+                self._confident(word, "upos") and self._confident(head, "upos")
+            ):
+                continue
+            stats = self.store.relation_stats(
+                word.lemma, word.upos, head.lemma, head.upos, direction_of(word.id, word.head), min_total=self.settings.min_count
+            )
+            expected = dominant(Counter({v.value: v.count for v in stats.deprels}), self.settings)
+            if expected is not None and expected != word.deprel:
+                count = next(v.count for v in stats.deprels if v.value == expected)
+                mismatches.append((word.id, word.deprel, expected, f"{count} of {stats.total}, by {stats.basis}"))
+        return mismatches
+
     def segmentation(self, sentence: Sentence) -> tuple[list[CellUpdate], list[tuple[str, list[str], int]]]:
         """Confirmations of unsplit words, and splits ``(token_id, pieces, head_index)`` to make."""
         trusted_has_multiwords = any(
@@ -304,6 +333,9 @@ class Rules:
             word = sentence.token(token_id)
             reason = f"In the treebank, '{word.lemma}' as {word.deprel} is {expected}, not {current}."
             self._raise(sent_id, "upos", token_id, reason, expected, report)
+        for token_id, current, expected, basis in self.relation_check(sentence) if "deprel" in columns else []:
+            reason = f"The treebank labels arcs like this {expected} ({basis}), not {current}; check the label or the head."
+            self._raise(sent_id, "deprel", token_id, reason, expected, report)
 
     def _write(self, sent_id: str, updates: list[CellUpdate], report: RulesReport) -> None:
         if updates:

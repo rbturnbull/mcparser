@@ -113,7 +113,7 @@ class Pipeline:
         self.sent_ids = set(sent_ids) if sent_ids else None
         self.progress = progress or (lambda message: None)
         self.roles = [name for name in REFINE_ORDER if settings.enabled(name)]
-        self.columns = [ROLES[name].column for name in self.roles]
+        self.columns = list(dict.fromkeys(column for name in self.roles for column in ROLES[name].columns))
         self.tasks: list[TaskResult] = []
         self.evidence = EvidenceBuilder(store, target)
         self.rules = Rules(store, target, settings.rules)
@@ -193,11 +193,11 @@ class Pipeline:
         )
 
     def batches(self, items: list[TaskItem]) -> list[list[TaskItem]]:
-        """Group items into tasks of at most ``batch_sentences`` sentences and ``batch_cells`` cells."""
+        """Group items into tasks of at most ``batch_sentences`` sentences and ``batch_cells`` words with cells."""
         groups: list[list[TaskItem]] = []
         size = 0
         for item in items:
-            cells = max(len(item.cells), 1)
+            cells = max(len({cell.token_id for cell in item.cells}), 1)
             if groups and len(groups[-1]) < self.settings.batch_sentences and size + cells <= self.settings.batch_cells:
                 groups[-1].append(item)
                 size += cells
@@ -267,13 +267,17 @@ class Pipeline:
         """Run each role on low-confidence cells and open flags. Returns the number of tasks."""
         count = 0
         for role in self.roles:
-            column = ROLES[role].column
+            columns = list(ROLES[role].columns)
             items = []
             for sent_id in self.sentences(order="confidence_desc"):
                 cells = self.store.low_confidence(
-                    self.target, threshold=self.settings.threshold, columns=[column], sent_id=sent_id, limit=ALL
+                    self.target, threshold=self.settings.threshold, columns=columns, sent_id=sent_id, limit=ALL
                 ).cells
-                flags = self.store.list_flags(self.target, column=column, sent_id=sent_id, limit=ALL).flags
+                flags = [
+                    flag
+                    for column in columns
+                    for flag in self.store.list_flags(self.target, column=column, sent_id=sent_id, limit=ALL).flags
+                ]
                 if cells or flags:
                     items.append(TaskItem(sent_id, cells, flags))
             batches = self.batches(items)

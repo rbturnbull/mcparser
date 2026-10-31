@@ -35,7 +35,7 @@ from typing import Literal
 import yaml
 from pydantic import BaseModel, Field, field_validator
 
-from .agents.roles import DEFAULT_DISABLED, ROLES
+from .agents.roles import DEFAULT_DISABLED, JOINT_ROLES, ROLES, SEPARATE_SYNTAX_ROLES
 from .rules import RuleSettings
 
 DEFAULT_STRONG_MODEL = "anthropic:claude-opus-5-5"
@@ -87,7 +87,10 @@ class Settings(BaseModel):
     request_limit: int = Field(60, ge=1, description="Maximum model requests per agent task.")
     cache: bool = Field(True, description="Use prompt caching (tool definitions, instructions, conversation).")
     batch_sentences: int = Field(8, ge=1, description="Maximum sentences per agent task.")
-    batch_cells: int = Field(120, ge=1, description="Maximum cells per agent task (a single sentence may exceed it).")
+    batch_cells: int = Field(120, ge=1, description="Maximum words with cells to work on per agent task (a single sentence may exceed it).")
+    joint_syntax: bool = Field(
+        True, description="One agent sets HEAD and DEPREL together (false: separate head and deprel agents)."
+    )
     final_scoring: bool = Field(
         False, description="Score the cells changed in the last round once more (costs scorer tasks, changes no values)."
     )
@@ -141,7 +144,13 @@ class Settings(BaseModel):
 
     def enabled(self, name: str) -> bool:
         enabled = self.role(name).enabled
-        return name not in DEFAULT_DISABLED if enabled is None else enabled
+        if enabled is not None:
+            return enabled
+        if name in JOINT_ROLES:
+            return self.joint_syntax
+        if name in SEPARATE_SYNTAX_ROLES:
+            return not self.joint_syntax
+        return name not in DEFAULT_DISABLED
 
     def with_overrides(
         self,

@@ -151,10 +151,10 @@ def test_score_command_and_missing_sources(scripted_team, pred_path):
 @pytest.mark.parametrize(
     ("args", "message"),
     [
-        (["--model-for", "syntax=x"], "Expected ROLE=MODEL"),
+        (["--model-for", "parsing=x"], "Expected ROLE=MODEL"),
         (["--model-for", "lemma"], "Expected ROLE=MODEL"),
-        (["--roles", "lemma,syntax"], "Roles must be among"),
-        (["--efficient-roles", "syntax"], "Roles must be among"),
+        (["--roles", "lemma,parsing"], "Roles must be among"),
+        (["--efficient-roles", "parsing"], "Roles must be among"),
         (["--strong-thinking", "max"], "Thinking must be"),
         (["-c", "missing.yaml"], "No such file"),
     ],

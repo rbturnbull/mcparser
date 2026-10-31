@@ -60,6 +60,7 @@ ROLES: dict[str, Role] = {
         Role("xpos", "language-specific part-of-speech tags (XPOS)", ("xpos",)),
         Role("lemma", "lemmas (LEMMA)", ("lemma",)),
         Role("feats", "morphological features (FEATS)", ("feats",)),
+        Role("syntax", "the dependency tree: heads and relation labels (HEAD and DEPREL)", ("head", "deprel")),
         Role("head", "dependency heads (HEAD)", ("head",)),
         Role("deprel", "dependency relation labels (DEPREL)", ("deprel",)),
         Role("deps", "enhanced dependencies (DEPS)", ("deps",)),
@@ -67,7 +68,7 @@ ROLES: dict[str, Role] = {
     )
 }
 
-REFINE_ORDER = ("segmentation", "upos", "lemma", "head", "deprel", "feats", "xpos", "deps")
+REFINE_ORDER = ("segmentation", "upos", "lemma", "syntax", "head", "deprel", "feats", "xpos", "deps")
 """Order in which roles work: later columns build on earlier ones. Syntax comes
 before FEATS because case and definiteness depend on a word's function, and XPOS
 comes last because in many treebanks it encodes UPOS and FEATS."""
@@ -75,5 +76,8 @@ comes last because in many treebanks it encodes UPOS and FEATS."""
 DEFAULT_DISABLED = frozenset({"deps"})
 """Roles that only run when enabled in the settings (enhanced dependencies are optional in UD)."""
 
-COLUMN_ROLES = {role.column: role.name for role in ROLES.values() if not role.is_scorer}
-"""The role responsible for each column."""
+JOINT_ROLES = frozenset({"syntax"})
+SEPARATE_SYNTAX_ROLES = frozenset({"head", "deprel"})
+"""By default one ``syntax`` agent sets HEAD and DEPREL together (setting
+``joint_syntax``); with ``joint_syntax: false`` the ``head`` and ``deprel``
+agents do it one after the other."""

@@ -50,7 +50,7 @@ def test_one_model_for_everything():
 
 @pytest.mark.parametrize("field", ["roles", "efficient_roles"])
 def test_unknown_roles_are_rejected(field):
-    value = {"syntax": RoleSettings()} if field == "roles" else ["syntax"]
+    value = {"parsing": RoleSettings()} if field == "roles" else ["parsing"]
     with pytest.raises(ValidationError, match="Unknown roles"):
         Settings(**{field: value})
 

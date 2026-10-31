@@ -18,8 +18,8 @@ projects (for example a parallel-corpus aligner).
 Main features:
 
 - **One agent per CoNLL-U element**: segmentation (FORM and multiword tokens),
-  UPOS, XPOS, LEMMA, FEATS, HEAD, DEPREL and, optionally, DEPS, plus a
-  **scorer** that judges every cell.
+  UPOS, XPOS, LEMMA, FEATS, syntax (HEAD and DEPREL decided together, or
+  separately) and, optionally, DEPS, plus a **scorer** that judges every cell.
 - **A confidence for every cell**, stored in the MISC column
   (`Conf=upos:0.95,head:0.40,...`), which decides what gets refined next.
 - **Cross-agent review**: any agent can flag a probable mistake in a column

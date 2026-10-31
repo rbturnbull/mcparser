@@ -164,3 +164,23 @@ def test_cross_check_flags_upos_that_does_not_fit_the_relation(make):
     assert rules.apply(columns=["deprel"]).flags == 0  # not raised twice
     store.update_cells("pred", "p1", [{"token_id": "1", "column": "deprel", "value": "nsubj", "confidence": 0.3}], agent="deprel")
     assert rules.cross_check(store.source("pred").sentence("p1")) == []  # relation too uncertain to check against
+
+
+def test_relation_check_flags_labels_that_contradict_the_treebank(make):
+    store, rules = make([DOG] * 3, blank(["the", "dog", "barks"]))
+    rules.apply(columns=["upos", "lemma"])
+    store.update_cells("pred", "p0", [
+        {"token_id": "1", "column": "head", "value": "2", "confidence": 0.9},
+        {"token_id": "1", "column": "deprel", "value": "amod", "confidence": 0.9},
+        {"token_id": "2", "column": "head", "value": "3", "confidence": 0.3},
+        {"token_id": "2", "column": "deprel", "value": "obj", "confidence": 0.9},
+        {"token_id": "3", "column": "head", "value": "0", "confidence": 0.9},
+        {"token_id": "3", "column": "deprel", "value": "root", "confidence": 0.9},
+    ], agent="syntax")  # fmt: skip
+    sentence = store.source("pred").sentence("p0")
+    assert rules.relation_check(sentence) == [("1", "amod", "det", "3 of 3, by lemma+head lemma")]  # word 2: head a guess
+    report = rules.apply(columns=["deprel"])
+    flag = store.list_flags("pred", column="deprel").flags[0]
+    assert report.flags == 1 and (flag.token_id, flag.suggestion, flag.raised_by) == ("1", "det", "rules")
+    assert flag.reason.startswith("The treebank labels arcs like this det (3 of 3")
+    assert rules.apply(columns=["upos"]).flags == 0  # only checked with DEPREL

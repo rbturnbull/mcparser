@@ -104,7 +104,14 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
   `CorpusStore` method takes an `RLock`.
 - **One agent per column** (segmentation=form, upos, xpos, lemma, feats, head,
   deprel, deps [off by default]) + **scorer** (confidences only). Each role's
-  column is also its flag column. Agents edit through MCP tools directly; the
+  columns are also its flag columns. **Joint syntax** (default, setting
+  `joint_syntax`, CLI `--joint-syntax/--separate-syntax`): role `syntax` with
+  columns (head, deprel) replaces `head` + `deprel`; answers
+  `S ID HEAD DEPREL CONF [DEPREL_CONF]` (`parse_syntax`); a head change does not
+  mark its own DEPREL for review; review rounds get `arc_labels` for words with
+  heads; `Rules.relation_check` flags model labels that contradict a dominant
+  treebank label for the exact arc (on old runs: 6 flags, 2 real errors; cheap
+  because a flag only costs a review). Batches count words, not cells. Agents edit through MCP tools directly; the
   structured output is only a `TaskReport(summary)`.
 - **Permissions live in `RoleToolset`** (client side): only the role's tools
   are listed, the `agent` argument is hidden from the schema and injected,
@@ -154,7 +161,7 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
   roles only see read tools. Segmentation still edits through tools.
 - **Batching**: the pipeline is role-major (each role over all sentences, most
   confident first), with tasks of up to `batch_sentences`/`batch_cells`.
-- **Three tiers**: strong Opus (segmentation, lemma, head, deprel, deps),
+- **Three tiers**: strong Opus (segmentation, lemma, syntax/head/deprel, deps),
   efficient Sonnet (upos, feats, scorer), light Haiku (xpos).
 - **Scorer** sees only cells last changed by a model/person (not by `rules` or
   `baseline`), not empty required cells, not XPOS/FEATS of untagged words.
@@ -333,7 +340,8 @@ prints the `mcpServers` JSON (uses the venv's python with `-m mcparser`).
   clitics are left to the baseline/segmentation agent).
 - Anthropic Message Batches (50% off) now that most tasks are single requests.
 - Coordination conventions (where shared dependents attach) as a computed hint.
-- Merge HEAD+DEPREL (and UPOS+XPOS+FEATS) into one task each as an option: the
-  sentence table and evidence are then sent once instead of per column.
+- Compare joint vs separate syntax on gold batches (Coptic 11–20, Arabic) and
+  record UAS/LAS/cost here. Merging UPOS+FEATS was rejected: FEATS must come
+  after syntax (Case errors in Greek/Arabic).
 - llmaligner still imports `llmparser`; it must switch to `mcparser`.
 - A punctuation-attachment rule/hint (UD: attach to the head of the adjacent clause).

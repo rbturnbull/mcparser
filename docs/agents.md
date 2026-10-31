@@ -1,6 +1,7 @@
 # The agents
 
-There is one agent per CoNLL-U element, plus the scorer. Each is a
+There is one agent per CoNLL-U element, except that by default one `syntax`
+agent sets HEAD and DEPREL together, plus the scorer. Each is a
 [pydantic-ai](https://ai.pydantic.dev) agent whose only tools are the
 [MCP server's](mcp.md) tools, connected in-process.
 
@@ -11,8 +12,9 @@ There is one agent per CoNLL-U element, plus the scorer. Each is a
 | `xpos` | XPOS | `allowed_values(column="xpos", upos=...)`, `analyse_form` |
 | `lemma` | LEMMA | `analyse_form`, `find_tokens(suffix=...)` analogies, `find_tokens(root=...)` |
 | `feats` | FEATS | `feature_inventory(upos=...)`, `analyse_form` |
-| `head` | HEAD | similar treebank sentences, fixed expressions, `find_arcs`, `relation_stats` |
-| `deprel` | DEPREL | `relation_stats` for the word's actual head, `find_arcs`, `allowed_values` |
+| `syntax` | HEAD and DEPREL (default) | similar treebank sentences, fixed expressions, where similar words attach and with which relation; in review rounds, `relation_stats` for each word's actual head |
+| `head` | HEAD (with `--separate-syntax`) | similar treebank sentences, fixed expressions, `find_arcs`, `relation_stats` |
+| `deprel` | DEPREL (with `--separate-syntax`) | `relation_stats` for the word's actual head, `find_arcs`, `allowed_values` |
 | `deps` | DEPS (off by default) | `find_arcs`, the trusted data's enhanced graphs |
 | `scorer` | confidences only | all of the above, plus relation counts for each current arc |
 
@@ -71,10 +73,33 @@ again confirms it. The reasons for every retry are kept in the run report.
 The segmentation agent still edits through the
 tools, since splitting and merging renumber the words.
 
+## Joint syntax
+
+Choosing a head and choosing a relation are one decision (`obl` or `nmod`
+depends on whether the head is a verb or a noun; a fronted noun is `nsubj` or
+`dislocated` depending on the verb's other dependents), and in the Coptic
+runs about half of the wrong labels were on words with a wrong head. So by
+default one `syntax` agent answers `s1 3 4 nsubj 0.95 0.7` (head, relation,
+and their confidences). It works in two passes:
+
+1. **Round 1** builds the tree from the attachment evidence, examples and
+   fixed expressions. The arc-specific relation counts cannot be shown yet,
+   since there are no heads.
+2. **Later rounds** review only sentences with something to look at: cells the
+   scorer doubted, flags from other agents, and flags from code that compared
+   each label with the treebank's counts for that exact arc (a label that
+   contradicts an overwhelming majority, see {mod}`mcparser.rules`). Now the
+   prompt includes those counts for each word's current arc.
+
+When an answer gives a word two dependents of a relation the treebank almost
+never repeats, the agent is asked once to check it. `--separate-syntax`
+(setting `joint_syntax: false`) restores the separate `head` and `deprel`
+agents.
+
 ## Models and reasoning
 
 Roles use one of three tiers. The **strong** model (default Opus 5.5) handles
-segmentation, lemmas, HEAD, DEPREL and DEPS. The **efficient** model (default
+segmentation, lemmas, syntax (HEAD and DEPREL) and DEPS. The **efficient** model (default
 Sonnet 5.5) handles UPOS, FEATS and the scorer. The **light** model (default
 Haiku 5.5) handles XPOS, which is close to a lookup once UPOS and FEATS are
 known. Change the split with `--efficient-roles` / `--light-roles`, the models
