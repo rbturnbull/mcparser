@@ -181,8 +181,24 @@ responsible column with your suggestion.""",
 SYNTAX_ROLES = frozenset({"syntax", "head", "deprel", "deps", "scorer"})
 
 
+CORPUS = """\
+Unannotated text ({names}) is also available. The evidence shows, for forms the
+treebank has rarely or never seen, how often they occur in it, which words
+come before and after, and which longer words contain them (the form with a
+prefix or suffix).{tool} It has no
+analyses and may be of another period or genre than the treebank, so it tells
+you how a word is used (does a stem occur on its own? what precedes it?), not
+what the treebank would call it: treebank evidence outranks it."""
+
+
 def instructions(
-    role: Role, target: str, trusted: Iterable[str], extra: str | None = None, relations: str | None = None
+    role: Role,
+    target: str,
+    trusted: Iterable[str],
+    extra: str | None = None,
+    relations: str | None = None,
+    corpora: Iterable[str] = (),
+    corpus_tool: bool = True,
 ) -> str:
     columns = "the confidence of cells" if role.is_scorer else " and ".join(c.upper() for c in role.columns)
     kind = "scores" if role.is_scorer else "tools" if role.edits_with_tools else "syntax" if role.name == "syntax" else "annotation"
@@ -191,6 +207,8 @@ def instructions(
         COMMON.format(title=role.title, target=target, trusted=", ".join(trusted) or "none", answer=answer),
         GUIDANCE[role.name],
     ]
+    if corpora:
+        parts.append(CORPUS.format(names=", ".join(corpora), tool=" corpus_find gives more, with example lines." if corpus_tool else ""))
     if relations and role.name in SYNTAX_ROLES:
         parts.append(f"Relations used in the treebank (with counts; use its subtypes):\n{relations}")
     if extra:

@@ -94,6 +94,9 @@ class Settings(BaseModel):
     final_scoring: bool = Field(
         False, description="Score the cells changed in the last round once more (costs scorer tasks, changes no values)."
     )
+    corpus_tool: bool = Field(
+        True, description="Let agents call corpus_find themselves (false: they only see the corpus evidence in the prompt)."
+    )
     rules: RuleSettings = Field(default_factory=RuleSettings, description="When code settles cells without a model.")
     roles: dict[str, RoleSettings] = Field(default_factory=dict)
 

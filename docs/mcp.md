@@ -96,6 +96,13 @@ A relation without a subtype (`nmod`) also matches its subtypes (`nmod:gen`).
 `get_parallel`, `translation_candidates`, `low_confidence_links`, and (writable
 sets) `set_links`, `remove_links`.
 
+**Text corpora** (only registered when the server is started with
+`--corpus [NAME=]PATH[,PATH...]`; see
+[Unannotated text](quickstart.md#unannotated-text)): `list_corpora`, and
+`corpus_find`, which returns for a word its frequency, the words before and
+after it, longer words that contain it (a stem with a clitic or suffix) and
+example lines in context.
+
 **Resources:** `conllu://sources` and `conllu://{source}/{sent_id}`.
 
 ## Using the corpus from another project

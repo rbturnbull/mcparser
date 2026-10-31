@@ -22,6 +22,8 @@ from ..corpus.models import (
     ArcSearch,
     CellPage,
     CellUpdate,
+    CorpusInfo,
+    CorpusSearch,
     Edit,
     EditResult,
     Flag,
@@ -109,6 +111,15 @@ def _guard(function: F) -> F:
 
     return wrapper  # type: ignore[return-value]
 
+CORPUS_INSTRUCTIONS = """
+Text corpora: unannotated text (no lemmas or tags) that shows how a word is
+used. list_corpora names them; corpus_find gives a word's frequency, the words
+before and after it, longer words containing it (a stem with a clitic or
+suffix) and example lines. It cannot say what a word is, only how it behaves,
+and the corpus may be of another period or genre than the treebank: use it
+for forms the treebank lacks and weigh it below treebank evidence.
+"""
+
 
 def build_server(
     store: CorpusStore,
@@ -123,7 +134,8 @@ def build_server(
     configures the root logger at ``log_level``; the WARNING default keeps
     per-request logs out of the terminal.
     """
-    server = MCPServer(name, instructions=INSTRUCTIONS, log_level=log_level)
+    instructions = INSTRUCTIONS + CORPUS_INSTRUCTIONS if store.text_corpora else INSTRUCTIONS
+    server = MCPServer(name, instructions=instructions, log_level=log_level)
 
     def tool(annotations: ToolAnnotations) -> Callable[[F], F]:
         def register(function: F) -> F:
@@ -374,6 +386,24 @@ def build_server(
     ) -> LinkPage:
         """List links below a confidence threshold, least confident first."""
         return store.low_confidence_links(alignment, threshold=threshold, sent_id=sent_id, limit=limit)
+
+    if store.text_corpora:
+
+        @tool(READ)
+        def list_corpora() -> list[CorpusInfo]:
+            """List the unannotated text corpora with their size."""
+            return store.list_corpora()
+
+        @tool(READ)
+        def corpus_find(
+            form: str,
+            corpus: Annotated[str | None, Field(description="Corpus name; may be omitted when there is only one.")] = None,
+            loose: Loose = False,
+            examples: Annotated[int, Field(ge=0, le=20, description="Example lines to return.")] = 3,
+            width: Annotated[int, Field(ge=1, le=30, description="Words of context on each side of an example.")] = 6,
+        ) -> CorpusSearch:
+            """How is this word used in unannotated text? Frequency, neighbouring words, longer words containing it, examples."""
+            return store.corpus_find(form, corpus=corpus, loose=loose, examples=examples, width=width)
 
     if not allow_edits:
         return server

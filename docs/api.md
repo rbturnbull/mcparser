@@ -11,6 +11,7 @@
 .. automodule:: mcparser.corpus.validation
 .. automodule:: mcparser.corpus.alignment
 .. automodule:: mcparser.corpus.index
+.. automodule:: mcparser.corpus.textcorpus
 .. automodule:: mcparser.corpus.models
 .. automodule:: mcparser.corpus.errors
 ```

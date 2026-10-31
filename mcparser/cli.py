@@ -21,7 +21,7 @@ from .rules import Rules
 from .corpus import CorpusError, CorpusStore, SourceMode, format_conllu, parse_conllu
 from .evaluate import calibration, calibration_table
 from .evaluate import evaluate as evaluate_predictions
-from .mcp.config import AlignmentSpec, SourceSpec, claude_desktop_config, load_store
+from .mcp.config import AlignmentSpec, CorpusSpec, SourceSpec, claude_desktop_config, load_store
 from .mcp.server import build_server
 from .pipeline import Pipeline, RunReport
 from .settings import (
@@ -82,6 +82,11 @@ AlignmentOption = Annotated[
         help="NAME=SOURCE_A,SOURCE_B,PATH[:ro|rw[:CONFIDENCE]]: word alignments between two sources. Repeatable.",
     ),
 ]
+CorpusHelp = (
+    "[NAME=]PATH[,PATH...]: unannotated text (one sentence or paragraph per line) that agents can search for "
+    "how a word is used. Repeatable."
+)
+CorpusOption = Annotated[list[str] | None, typer.Option("--corpus", help=CorpusHelp)]
 NameOption = Annotated[str, typer.Option(help="Server name shown to MCP clients.")]
 
 
@@ -99,9 +104,21 @@ def _alignments(alignments: list[str] | None) -> list[AlignmentSpec]:
         raise typer.BadParameter(str(error), param_hint="--alignment") from error
 
 
-def _load(specs: list[SourceSpec], root_key: str, alignments: list[AlignmentSpec] | None = None) -> CorpusStore:
+def _corpora(corpora: list[str] | None) -> list[CorpusSpec]:
     try:
-        return load_store(specs, root_key=root_key, alignments=alignments)
+        return [CorpusSpec.parse(spec) for spec in corpora or []]
+    except CorpusError as error:
+        raise typer.BadParameter(str(error), param_hint="--corpus") from error
+
+
+def _load(
+    specs: list[SourceSpec],
+    root_key: str,
+    alignments: list[AlignmentSpec] | None = None,
+    corpora: list[CorpusSpec] | None = None,
+) -> CorpusStore:
+    try:
+        return load_store(specs, root_key=root_key, alignments=alignments, corpora=corpora)
     except CorpusError as error:
         typer.echo(f"Error: {error}", err=True)
         raise typer.Exit(1) from error
@@ -117,9 +134,10 @@ def serve(
     root_key: RootKeyOption = "Root",
     name: NameOption = "conllu",
     alignment: AlignmentOption = None,
+    corpus: CorpusOption = None,
 ) -> None:
     """Serve CoNLL-U sources over MCP (stdio for Claude Desktop, or streamable HTTP)."""
-    store = _load(_specs(source), root_key, _alignments(alignment))
+    store = _load(_specs(source), root_key, _alignments(alignment), _corpora(corpus))
     server = build_server(store, name=name, allow_edits=not read_only)
     if transport is Transport.STDIO:
         server.run("stdio")
@@ -134,13 +152,17 @@ def config(
     root_key: RootKeyOption = "Root",
     name: NameOption = "conllu",
     alignment: AlignmentOption = None,
+    corpus: CorpusOption = None,
 ) -> None:
     """Print the JSON to add to Claude Desktop's claude_desktop_config.json."""
     specs = _specs(source)
     for spec in specs:
         if not spec.path.is_file():
             typer.echo(f"Warning: {spec.path} does not exist.", err=True)
-    typer.echo(json.dumps(claude_desktop_config(specs, name=name, read_only=read_only, root_key=root_key, alignments=_alignments(alignment)), indent=2))
+    config_json = claude_desktop_config(
+        specs, name=name, read_only=read_only, root_key=root_key, alignments=_alignments(alignment), corpora=_corpora(corpus)
+    )
+    typer.echo(json.dumps(config_json, indent=2))
 
 
 @app.command()
@@ -174,10 +196,10 @@ TrustedOption = Annotated[
 ConfigOption = Annotated[Path | None, typer.Option("--config", "-c", help="Settings YAML (see `mcparser settings`).")]
 
 
-def _prediction_store(prediction: Path, sources: list[str] | None) -> CorpusStore:
+def _prediction_store(prediction: Path, sources: list[str] | None, corpora: list[str] | None = None) -> CorpusStore:
     specs = _specs(sources or [])
     target = SourceSpec(name=TARGET, path=prediction.expanduser().resolve(), mode=SourceMode.READ_WRITE)
-    return _load([*specs, target], "Root")
+    return _load([*specs, target], "Root", corpora=_corpora(corpora))
 
 
 def _role_list(value: str | None, option: str) -> list[str] | None:
@@ -272,8 +294,13 @@ def _annotate(
     score_only: bool,
     report_path: Path | None,
     max_sentences: int | None = None,
+    corpus: list[str] | None = None,
 ) -> None:
-    store = _prediction_store(prediction, source)
+    store = _prediction_store(prediction, source, corpus)
+    for text_corpus in store.text_corpora.values():
+        typer.echo(f"Indexing corpus {text_corpus.name!r} ...", err=True)
+        info = text_corpus.info()
+        typer.echo(f"  {info.words:,} words, {info.types:,} distinct.", err=True)
     if max_sentences:
         ids = [s.sent_id for s in store.source(TARGET).sentences if not sentence or s.sent_id in sentence]
         sentence = ids[:max_sentences]
@@ -341,6 +368,7 @@ PredictionArgument = Annotated[Path, typer.Argument(help="Prediction CoNLL-U fil
 def run(
     prediction: PredictionArgument,
     source: TrustedOption = None,
+    corpus: CorpusOption = None,
     config: ConfigOption = None,
     model: ModelOption = None,
     strong_model: StrongModelOption = None,
@@ -366,6 +394,13 @@ def run(
         bool | None,
         typer.Option("--final-score/--no-final-score", help="Re-score the cells changed in the last round (default off)."),
     ] = None,
+    corpus_tool: Annotated[
+        bool | None,
+        typer.Option(
+            "--corpus-tool/--no-corpus-tool",
+            help="Let agents call corpus_find (default) or give them only the corpus evidence in the prompt.",
+        ),
+    ] = None,
     threshold: Annotated[float | None, typer.Option(min=0, max=1, help="Refine cells below this confidence.")] = None,
     concurrency: Annotated[int | None, typer.Option(min=1, help="Sentences processed at once.")] = None,
     sentence: SentenceOption = None,
@@ -381,15 +416,16 @@ def run(
     settings = _settings(
         config, model, model_for, roles, tiers,
         rounds=rounds, threshold=threshold, concurrency=concurrency, batch_sentences=batch_sentences,
-        final_scoring=final_score, joint_syntax=joint_syntax,
+        final_scoring=final_score, joint_syntax=joint_syntax, corpus_tool=corpus_tool,
     )  # fmt: skip
-    _annotate(prediction, source, settings, sentence, False, report, max_sentences)
+    _annotate(prediction, source, settings, sentence, False, report, max_sentences, corpus)
 
 
 @app.command()
 def score(
     prediction: PredictionArgument,
     source: TrustedOption = None,
+    corpus: CorpusOption = None,
     config: ConfigOption = None,
     model: ModelOption = None,
     efficient_model: EfficientModelOption = None,
@@ -404,7 +440,7 @@ def score(
     """Only run the scorer: give every changed or unscored cell a confidence."""
     tiers = TierOptions(efficient_model=efficient_model, efficient_thinking=efficient_thinking)
     settings = _settings(config, model, model_for, None, tiers, concurrency=concurrency, batch_sentences=batch_sentences)
-    _annotate(prediction, source, settings, sentence, True, report, max_sentences)
+    _annotate(prediction, source, settings, sentence, True, report, max_sentences, corpus)
 
 
 @app.command()

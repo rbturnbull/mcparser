@@ -32,6 +32,10 @@ INFORMATIVE_GAIN = 0.15
 ANALYSIS_COLUMNS = {"upos": ("lemma", "upos", "xpos"), "lemma": ("lemma", "upos")}
 """Columns of the analyses shown to a role (default: lemma, upos, xpos, feats)."""
 FULL_ANALYSIS = ("lemma", "upos", "xpos", "feats")
+CORPUS_SHOWN = 3
+"""Neighbours and longer words shown per form from the unannotated corpus."""
+STEM_MINIMUM = 2
+"""Letters that must remain when a clitic-sized piece is cut off to count the stem in the corpus."""
 EXAMPLE_MAX_WORDS = 40
 """Similar trusted sentences longer than this are not shown (too many tokens)."""
 
@@ -136,6 +140,45 @@ class EvidenceBuilder:
                 pairs = list(dict.fromkeys(f"{hit.form}→{hit.lemma}" for hit in result.hits if hit.form != form))[:4]
                 return f"words ending '-{key[-length:]}': {self._groups(result)}; e.g. {', '.join(pairs)}"
         return ""
+
+    # ------------------------------------------------------------ unannotated text
+
+    def corpus(self, form: str) -> str:
+        """For a form the trusted data has rarely seen: how it is used in the unannotated corpora."""
+        if not self.store.text_corpora:
+            return ""
+        return self._cached(("corpus", form), lambda: self._corpus(form))
+
+    def _corpus(self, form: str) -> str:
+        if self.store.analyse_form(form, sources=self.trusted, limit=1).total >= RARE_COUNT:
+            return ""
+        parts = []
+        for name in self.store.text_corpora:
+            found = self.store.corpus_find(
+                form, corpus=name, loose=True, examples=0, neighbours=CORPUS_SHOWN, affixed=CORPUS_SHOWN
+            )
+            text = f"text ×{found.total}"
+            for label, values in (
+                ("after", found.previous), ("before", found.next), ("prefixed", found.prefixed), ("suffixed", found.suffixed)
+            ):  # fmt: skip
+                if values:
+                    text += f"; {label} " + ", ".join(f"{v.value}×{v.count}" for v in values)
+            parts.append(text)
+        return " | ".join(parts)
+
+    def stems(self, surface: str) -> str:
+        """How often a surface token and the pieces left after cutting a first letter or two occur in the corpora."""
+        if not self.store.text_corpora:
+            return ""
+        parts = []
+        for name in self.store.text_corpora:
+            corpus = self.store.text_corpus(name)
+            counts = {surface: corpus.count(surface, loose=True)}
+            for cut in (1, 2):
+                if len(surface) - cut >= STEM_MINIMUM:
+                    counts[surface[cut:]] = corpus.count(surface[cut:], loose=True)
+            parts.append(", ".join(f"{piece}×{count}" for piece, count in counts.items()))
+        return " | ".join(parts)
 
     def word_context(self, sentence: Sentence, word: Token, columns: tuple[str, ...] = FULL_ANALYSIS) -> str:
         """:meth:`context` for a word of a sentence, from its neighbours' forms and UPOS."""
@@ -247,7 +290,7 @@ class EvidenceBuilder:
         return surface
 
     def segmentation(self, sentences: list[Sentence]) -> list[str]:
-        lines, seen = [], set()
+        lines, unseen, seen = [], [], set()
         for sentence in sentences:
             for token in self.surface_tokens(sentence):
                 if token.form in seen:
@@ -257,7 +300,16 @@ class EvidenceBuilder:
                 if found.total:
                     splits = "; ".join(f"{'+'.join(a.pieces)} ({' '.join(a.upos)}) ×{a.count}" for a in found.analyses)
                     lines.append(f"- {token.form!r}: split as {splits}; unsplit ×{found.as_single_word}")
-        return lines or ["- No token of these sentences is ever split in the trusted data."]
+                elif not found.as_single_word and (stems := self.stems(token.form)):
+                    unseen.append(f"- {token.form}: {stems}")
+        lines = lines or ["- No token of these sentences is ever split in the trusted data."]
+        if unseen:
+            lines += [
+                "Tokens the trusted data lacks, with how often the token and its remainder after cutting one or two "
+                "letters occur in unannotated text (a frequent remainder next to a rare token suggests a clitic):",
+                *unseen,
+            ]
+        return lines
 
     # ------------------------------------------------------------ driver
 
@@ -286,10 +338,14 @@ class EvidenceBuilder:
                     detail = " | ".join(part for part in parts if part)
                     if detail:
                         occurrences.append(f"- {labels[sent_id]} {word.id} {word.form}: {detail}")
-            lines.append(f"Analyses in the trusted data ({' '.join(columns)} ×count; word-ending analogies for rare forms):")
+            text = " and unannotated-text counts" if self.store.text_corpora else ""
+            lines.append(f"Analyses in the trusted data ({' '.join(columns)} ×count; word-ending analogies{text} for rare forms):")
             for form in forms:
                 analogy = self.analogy(form)
-                lines.append(f"- {form}: {self.analyses(form, columns)}" + (f" | {analogy}" if analogy else ""))
+                lines.append(
+                    f"- {form}: {self.analyses(form, columns)}"
+                    + "".join(f" | {note}" for note in (analogy, self.corpus(form)) if note)
+                )
             if occurrences:
                 lines.append(
                     "Per word: readings of ambiguous forms in this context (after/before the neighbouring word or tag)"

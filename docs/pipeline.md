@@ -123,6 +123,13 @@ effect:
   picture (Coptic `ⲛ` is the plural article after a preposition, 230 to 2);
   word-ending analogies for unseen forms; relation counts for each word's
   actual head.
+- **Unannotated text** (`--corpus`): for forms the treebank has seen fewer than
+  three times, the evidence adds how often the form occurs in the text, its
+  neighbours and the longer words that contain it; for tokens the treebank lacks,
+  the segmentation agent sees how often the token and its remainder after cutting
+  one or two letters occur (a frequent remainder next to a rare token suggests a
+  clitic). It costs a few tokens per rare form and nothing when there is no
+  corpus.
 - **Three model tiers**: Haiku for XPOS, Sonnet for UPOS, FEATS and scoring,
   Opus for segmentation, lemmas and syntax.
 - **Cross-checks** flag (never change) a UPOS that the treebank almost never

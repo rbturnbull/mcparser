@@ -113,6 +113,26 @@ def multiword(result: dict[str, Any], role: Role) -> str:
     return "\n".join(lines)
 
 
+def corpus_search(result: dict[str, Any], role: Role) -> str:
+    if not result["total"]:
+        return f"{result['form']!r}: not in the unannotated corpus {result['corpus']!r}."
+    lines = [f"{result['form']!r}: {result['total']}× in corpus {result['corpus']!r} (no analyses, only use)."]
+    for label, key in (
+        (f"preceded by (in {result['sample']} sampled)", "previous"),
+        (f"followed by (in {result['sample']} sampled)", "next"),
+        ("with a prefix", "prefixed"),
+        ("with a suffix", "suffixed"),
+    ):
+        if result[key]:
+            lines.append(f"{label}: {counts(result[key])}")
+    lines += [f"- {e['file']}:{e['line']} {e['before']} [{e['form']}] {e['after']}" for e in result["examples"]]
+    return "\n".join(lines)
+
+
+def corpora(result: list[dict[str, Any]], role: Role) -> str:
+    return "\n".join(f"- {c['name']}: {c['lines']:,} lines, {c['words']:,} words" for c in result) or "None."
+
+
 def sentence_view(result: dict[str, Any], role: Role) -> str:
     lines = [result["conllu"], f"Mean confidence {result['confidence']:.2f}."]
     if result["open_flags"]:
@@ -174,6 +194,8 @@ FORMATTERS: dict[str, Callable[[Any, Role], str]] = {
     "find_tokens": token_search,
     "analyse_form": token_search,
     "find_multiword": multiword,
+    "corpus_find": corpus_search,
+    "list_corpora": corpora,
     "find_arcs": arc_search,
     "allowed_values": value_counts,
     "feature_inventory": inventory,

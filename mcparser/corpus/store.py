@@ -26,6 +26,8 @@ from .models import (
     CellPage,
     CellRef,
     CellUpdate,
+    CorpusInfo,
+    CorpusSearch,
     Edit,
     EditResult,
     Flag,
@@ -54,6 +56,7 @@ from .models import (
 )
 from .alignment import AlignmentInfo, AlignmentSet, Link, format_ugarit, parse_ugarit
 from .source import REQUIRED_COLUMNS, SCORED_COLUMNS, CorpusSource, SourceMode
+from .textcorpus import TextCorpus
 from .validation import validate_sentence
 
 COLUMN_ALIASES = {
@@ -148,6 +151,7 @@ class CorpusStore:
     def __init__(self, autosave: bool = True):
         self.sources: dict[str, CorpusSource] = {}
         self.alignments: dict[str, AlignmentSet] = {}
+        self.text_corpora: dict[str, TextCorpus] = {}
         self.autosave = autosave
         self.round: int | None = None
         self._lock = threading.RLock()
@@ -191,6 +195,45 @@ class CorpusStore:
     @_locked
     def list_sources(self) -> list[SourceInfo]:
         return [source.info() for source in self.sources.values()]
+
+    # ------------------------------------------------------------ text corpora
+    # Unannotated text is independent of the CoNLL-U sources, so these methods do
+    # not take the store lock (indexing a large corpus takes seconds).
+
+    def add_text_corpus(self, name: str, paths: list[Path | str]) -> TextCorpus:
+        """Register plain-text files as a corpus of unannotated evidence (indexed on first use)."""
+        with self._lock:
+            if name in self.text_corpora:
+                raise CorpusError(f"A corpus named {name!r} already exists.")
+            self.text_corpora[name] = TextCorpus(name, paths)
+            return self.text_corpora[name]
+
+    def text_corpus(self, name: str | None = None) -> TextCorpus:
+        """The named corpus, or the only one when no name is given."""
+        if name is None and len(self.text_corpora) == 1:
+            return next(iter(self.text_corpora.values()))
+        if name in self.text_corpora:
+            return self.text_corpora[name]
+        available = ", ".join(self.text_corpora) or "none"
+        raise NotFoundError(f"Name a corpus; available: {available}." if name is None else f"No corpus named {name!r}; available: {available}.")
+
+    def list_corpora(self) -> list[CorpusInfo]:
+        return [corpus.info() for corpus in self.text_corpora.values()]
+
+    def corpus_find(
+        self,
+        form: str,
+        corpus: str | None = None,
+        loose: bool = False,
+        examples: int = 3,
+        width: int = 6,
+        neighbours: int = 5,
+        affixed: int = 5,
+    ) -> CorpusSearch:
+        """How ``form`` is used in an unannotated corpus (see :meth:`TextCorpus.find`)."""
+        return self.text_corpus(corpus).find(
+            form, loose=loose, examples=examples, width=width, neighbours=neighbours, affixed=affixed
+        )
 
     @_locked
     def save(self, source: str | None = None) -> list[str]:

@@ -35,6 +35,7 @@ mcparser/
     segmentation.py  # split/merge/insert/delete words, add/remove multiword tokens
     validation.py    # structural, tagset and tree checks -> Issue
     index.py         # per-source postings, tag inventories, BM25
+    textcorpus.py    # unannotated text: counts, neighbours, clitic variants, examples (no CoNLL-U)
     models.py        # pydantic return types (also the MCP output schemas)
     source.py        # one file: ro/rw, sidecars, atomic save, conflict check
     store.py         # CorpusStore: the public API used by MCP and Python callers
@@ -173,6 +174,50 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
   for the word's actual head; for HEAD, how similar words attach.
 - Runs print tokens and an estimated price per model (`pricing.py`; update the
   table when prices change).
+## Unannotated text corpora (`--corpus`)
+
+`corpus/textcorpus.py`: `TextCorpus` over plain-text files (one sentence or
+paragraph per line), registered with `store.add_text_corpus(name, paths)` / CLI
+`--corpus [NAME=]PATH[,PATH...]` (`run`, `score`, `mcp serve`, `mcp config`).
+Index built lazily and once (30M words: ~10 s, ~200 MB): word counts plus at most 50 line
+numbers per word and byte offsets, so sentences are read from the files on demand.
+`find` returns count, neighbours (over those ≤ 50 lines), longer words that
+end/begin with the form (≤ 4 extra letters: proclitic/enclitic variants) and
+examples. MCP tools `list_corpora` / `corpus_find` exist only when a corpus is given;
+`corpus_find` is in `READ_TOOLS` for agents. `EvidenceBuilder.corpus` adds a
+`text ×N; after ..; before ..; prefixed ..` note for forms with < `RARE_COUNT`
+treebank examples (morphology roles and scorer); `EvidenceBuilder.stems` gives
+segmentation the counts of an unseen token and of what remains after cutting 1–2 letters.
+Corpus words are never settled by `rules.py` and the prompt says treebank evidence outranks it.
+
+Setting `corpus_tool` (CLI `--corpus-tool/--no-corpus-tool`, default on): whether agents may call
+`corpus_find` themselves (`CORPUS_TOOLS` in `roles.py`, added per team in `role_toolset(extra=...)`) or only see
+the evidence in the prompt. Evidence and `stems` match loosely (the ancientcorpora texts are lowercased and
+unaccented), `corpus_find` defaults to exact matching.
+
+Measured, 2026-11-01. (1) Arabic PADT with the classical-Arabic corpus, 20 sentences / 507 words chosen
+for ≥ 3 unseen forms, morphology + segmentation roles, 2 rounds: no corpus UPOS 95.3 / 96.5 (two
+identical runs), lemma 94.9 / 95.1, UFeats 92.9 / 91.7; corpus UPOS 96.3, lemma 96.1, UFeats 92.9; cost
+$2.19 / $2.40 vs $2.83. The identical runs differ on 13 UPOS and 24 FEATS words, as much as the corpus does.
+(2) Hebrew PTNK, Greek PROIEL, Latin PROIEL, Coptic Scriptorium (`experiments/cl2/`, 23–30 sentences each,
+≥ 3 (Coptic 2) forms unseen in train, one found in the corpus), arms: no corpus ×2, corpus + tool, corpus
+evidence only; mean over the 4 languages UPOS/XPOS/lemma/UFeats/AllTags: 97.95/97.47/97.53/94.70/93.34 and
+97.83/97.30/97.71/94.90/93.38 (the two no-corpus runs), 97.98/97.46/97.81/94.99/93.63 (corpus + tool),
+97.79/97.36/97.70/94.24/92.78 (evidence only); cost $9.29 / $9.15 vs $10.64 / $10.30. Corpus effect
+0.1–0.3 points, below the spread of identical runs (up to 0.9 per language). **No demonstrated gain**; keep
+it optional. **Leakage**: the Greek and Latin corpora contain the treebanks' own text (80% / 83% of dev
+sentences have ≥ 50% of their 5-grams in the corpus; Coptic 32%, Hebrew 6%), so the tests use only
+sentences outside the corpus (`experiments/select_clean.py`); an unfiltered test would flatter the corpus.
+The Arabic corpus is classical text, PADT is newswire: only ~30% of the unseen dev words occur ≥ 5 times.
+Probably useful only with a corpus of the treebank's genre and a language the model knows poorly.
+
+Offline negative results from the same runs: the lemma's treebank gender would fix only ~17 of 115 gender
+errors on nouns/proper nouns (mostly Hebrew); the systematic FEATS errors are `Gender=Masc,Neut`
+conventions (PROIEL) and lexical gender; for punctuation, the gold head is a non-crossing candidate 98–99.9%
+of the time, but choosing among the candidates (highest / lowest / nearest) is right only 1–57%, and agents
+make crossing punctuation arcs only 7 times in 1,439 (16% of punctuation heads are wrong), so a
+projectivity check would change nothing. Spend: about $52 of the second $80 budget.
+
 ## Alignment (for llmaligner)
 
 `corpus/alignment.py`: `AlignmentSet` links words of same-`sent_id` sentences in

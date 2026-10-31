@@ -9,6 +9,7 @@ from .errors import ConflictError, ConlluFormatError, CorpusError, EditError, No
 from .models import CellUpdate, Edit, Flag
 from .source import CorpusSource, SourceMode
 from .store import CorpusStore
+from .textcorpus import TextCorpus
 from .validation import Issue, validate_sentence
 
 __all__ = [
@@ -29,6 +30,7 @@ __all__ = [
     "ReadOnlyError",
     "Sentence",
     "SourceMode",
+    "TextCorpus",
     "Token",
     "format_conllu",
     "parse_conllu",

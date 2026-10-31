@@ -239,3 +239,25 @@ def test_init_from_conllu_and_max_sentences(tmp_path, train_path, scripted_team)
     assert "2 sentences matched." in result.stdout and "Missing" not in result.stdout
     result = runner.invoke(app, ["evaluate", str(output), str(train_path), "--annotated-only"])
     assert "0 sentences matched." in result.stdout
+
+
+def test_cli_corpus_options(monkeypatch, tmp_path, train_path, scripted_team, pred_path):
+    corpus = tmp_path / "text.txt"
+    corpus.write_text("vino al mercado\n", encoding="utf-8")
+    paths = [corpus]
+    spec = f"es={paths[0]}"
+    result = runner.invoke(app, ["mcp", "config", "-s", str(train_path), "--corpus", spec])
+    assert json.loads(result.stdout)["mcpServers"]["conllu"]["args"][-2:] == ["--corpus", f"es={paths[0].resolve()}"]
+    result = runner.invoke(app, ["mcp", "config", "-s", str(train_path), "--corpus", "es="])
+    assert result.exit_code == 2 and "--corpus" in result.output
+    result = runner.invoke(app, ["run", str(pred_path), "-s", str(train_path), "--corpus", spec, "--no-corpus-tool", "--sentence", "p2"])
+    assert result.exit_code == 0, result.output
+    assert scripted_team[-1].corpus_tool is False
+    assert "Indexing corpus 'es'" in result.stderr and "words," in result.stderr
+    result = runner.invoke(app, ["score", str(pred_path), "-s", str(train_path), "--corpus", spec, "--sentence", "p2"])
+    assert result.exit_code == 0, result.output
+    served = []
+    monkeypatch.setattr(MCPServer, "run", lambda self, transport, **kwargs: served.append(self.instructions))
+    result = runner.invoke(app, ["mcp", "serve", "-s", str(train_path), "--corpus", spec])
+    assert result.exit_code == 0, result.output
+    assert "Text corpora" in served[0]

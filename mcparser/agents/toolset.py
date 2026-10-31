@@ -28,12 +28,18 @@ class RoleToolset(WrapperToolset[Any]):
 
     role: Role
     target: str
+    extra: frozenset[str] = frozenset()
+    """Tools every role may use besides its own (the corpus tool)."""
+
+    @property
+    def allowed(self) -> frozenset[str]:
+        return self.role.tools | self.extra
 
     async def get_tools(self, ctx: RunContext[Any]) -> dict[str, ToolsetTool[Any]]:
         tools = await self.wrapped.get_tools(ctx)
         visible: dict[str, ToolsetTool[Any]] = {}
         for name, tool in tools.items():
-            if name not in self.role.tools:
+            if name not in self.allowed:
                 continue
             schema = tool.tool_def.parameters_json_schema
             properties = schema.get("properties", {})
@@ -55,7 +61,7 @@ class RoleToolset(WrapperToolset[Any]):
 
     def check(self, name: str, args: dict[str, Any]) -> None:
         """Raise :class:`ModelRetry` if the role may not make this call."""
-        if name not in self.role.tools:
+        if name not in self.allowed:
             raise ModelRetry(f"The tool {name!r} is not available to the {self.role.name} agent.")
         if name in WRITE_TOOLS and name != "resolve_flag" and args.get("source") != self.target:
             raise ModelRetry(f"You may only edit the source {self.target!r}.")
@@ -86,5 +92,7 @@ class RoleToolset(WrapperToolset[Any]):
         return compact_result(name, await self.wrapped.call_tool(name, tool_args, ctx, tool), self.role)
 
 
-def role_toolset(toolset: AbstractToolset[Any], role: Role, target: str) -> RoleToolset:
-    return RoleToolset(wrapped=toolset, role=role, target=target)
+def role_toolset(
+    toolset: AbstractToolset[Any], role: Role, target: str, extra: frozenset[str] = frozenset()
+) -> RoleToolset:
+    return RoleToolset(wrapped=toolset, role=role, target=target, extra=extra)

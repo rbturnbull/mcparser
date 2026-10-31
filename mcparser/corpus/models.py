@@ -168,6 +168,41 @@ class ValueCount(BaseModel):
     count: int
 
 
+class CorpusInfo(BaseModel):
+    """An unannotated text corpus (see :class:`~mcparser.corpus.textcorpus.TextCorpus`)."""
+
+    name: str
+    files: list[str]
+    lines: int
+    words: int
+    types: int
+
+
+class CorpusExample(BaseModel):
+    """One occurrence of a word in an unannotated corpus, with the words around it."""
+
+    file: str
+    line: int = Field(description="Line number within the file (1-based).")
+    before: str
+    form: str
+    after: str
+
+
+class CorpusSearch(BaseModel):
+    """How a word is used in an unannotated corpus: counts, neighbours, longer words containing it, examples."""
+
+    corpus: str
+    form: str
+    total: int = Field(description="Occurrences of the word (any of the matching forms).")
+    forms: list[ValueCount] = Field(description="The spellings that matched (more than one with loose matching).")
+    previous: list[ValueCount] = Field(description="Words right before it, commonest first.")
+    next: list[ValueCount] = Field(description="Words right after it, commonest first.")
+    sample: int = Field(description="Occurrences the neighbours were counted over (the first lines containing it).")
+    prefixed: list[ValueCount] = Field(description="Longer words ending in it, e.g. with a proclitic.")
+    suffixed: list[ValueCount] = Field(description="Longer words starting with it, e.g. with an enclitic.")
+    examples: list[CorpusExample]
+
+
 class FixedExpression(BaseModel):
     """A word sequence of a sentence that the trusted data annotates as a fixed expression."""
 

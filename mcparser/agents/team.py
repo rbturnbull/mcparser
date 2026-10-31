@@ -20,7 +20,7 @@ from ..pricing import estimate
 from ..settings import Settings
 from .outputs import Annotation, Applier, Batch, Scores
 from .prompts import instructions
-from .roles import ROLES
+from .roles import CORPUS_TOOLS, ROLES
 from .toolset import role_toolset
 
 
@@ -82,6 +82,7 @@ class AgentTeam:
         self.target = target
         self.settings = settings
         self.models = dict(models or {})
+        self.corpus_tool = settings.corpus_tool and bool(store.text_corpora)
         self.toolset = toolset or MCPToolset(build_server(store))
         self._agents: dict[str, Agent[Batch, Answer]] = {}
         self.usage: dict[str, ModelUsage] = {}
@@ -110,10 +111,12 @@ class AgentTeam:
                 name=role,
                 deps_type=Batch,
                 instructions=instructions(
-                    spec, self.target, self.trusted, self.settings.role(role).instructions, self.relations()
+                    spec, self.target, self.trusted, self.settings.role(role).instructions, self.relations(),
+                    list(self.store.text_corpora),
+                    self.corpus_tool,
                 ),
                 output_type=output_type,
-                toolsets=[role_toolset(self.toolset, spec, self.target)],
+                toolsets=[role_toolset(self.toolset, spec, self.target, CORPUS_TOOLS if self.corpus_tool else frozenset())],
                 retries=3,
                 model_settings=self.model_settings(role),
                 defer_model_check=True,

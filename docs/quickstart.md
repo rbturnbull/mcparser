@@ -89,6 +89,34 @@ uv run mcparser run pred.conllu -s la_proiel-ud-train.conllu --max-sentences 20
 uv run mcparser evaluate pred.conllu la_proiel-ud-dev.conllu --predicted-only
 ```
 
+## Unannotated text
+
+A plain-text file (one sentence or paragraph per line) can serve as extra
+evidence for forms the treebank has rarely or never seen. It has no analyses,
+so it cannot say what a word is, but it shows how the word is used: how often
+it occurs, which words come before and after, and which longer words contain it
+(a stem next to the same stem with a clitic). Give it with `--corpus` (repeat the
+option for several corpora; several files for one corpus are joined with commas):
+
+```bash
+uv run mcparser run pred.conllu -s ar-train.conllu \
+    --corpus arabic=train.txt,valid.txt
+```
+
+The corpus is indexed once per run (about 10 seconds and 200 MB for 30 million
+words). Agents then see, for each form with fewer than three treebank examples,
+a `text ×N; after ...; before ...; prefixed ...` note in the evidence (the
+segmentation agent sees how often an unseen token and its remainder after
+cutting one or two letters occur) and may call `corpus_find` for example lines.
+`--no-corpus-tool` keeps the notes in the prompt but stops agents calling `corpus_find` themselves (a little cheaper).
+The same option works for `mcp serve` and `mcp config`, so Claude Desktop can
+query the corpus too. Treebank evidence outranks the text, which may be of
+another period or genre. In tests on Arabic, Hebrew, Greek, Latin and Coptic (corpora from
+`ancientcorpora-output`, sentences that are not in the corpus) the gain was within run-to-run noise
+at 11–25% more cost, so try it on a small batch first; it should help most when the text matches
+the treebank's genre. Check that your corpus does not contain the very text you are annotating if
+you want to measure its effect.
+
 ## Exploring a treebank from Claude Desktop
 
 ```bash

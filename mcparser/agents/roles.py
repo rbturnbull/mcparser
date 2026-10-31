@@ -16,6 +16,8 @@ such as list_sources, get_token or low_confidence would only add tokens to
 every request.
 """
 
+CORPUS_TOOLS = frozenset({"corpus_find"})
+"""Added to every role's tools when there is a text corpus and the ``corpus_tool`` setting is on."""
 REVIEW_TOOLS = frozenset({"flag_issue", "resolve_flag"})
 CELL_TOOLS = frozenset({"set_cell", "update_cells", "score_cells"})
 SEGMENTATION_TOOLS = frozenset(

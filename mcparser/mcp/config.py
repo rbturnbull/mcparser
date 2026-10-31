@@ -97,11 +97,37 @@ class AlignmentSpec(BaseModel):
         return spec
 
 
+class CorpusSpec(BaseModel):
+    """An unannotated text corpus given as ``[NAME=]PATH[,PATH...]``.
+
+    The files hold plain text, one sentence or paragraph per line. ``NAME``
+    defaults to the stem of the first file. Example:
+    ``arabic=train.txt,valid.txt``.
+    """
+
+    name: str
+    paths: list[Path]
+
+    @classmethod
+    def parse(cls, spec: str) -> CorpusSpec:
+        name, sep, rest = spec.partition("=")
+        if not sep:
+            name, rest = "", spec
+        paths = [Path(part).expanduser().resolve() for part in rest.split(",") if part]
+        if not paths:
+            raise CorpusError(f"{spec!r} has no path.")
+        return cls(name=name or paths[0].stem, paths=paths)
+
+    def to_arg(self) -> str:
+        return f"{self.name}={','.join(str(path) for path in self.paths)}"
+
+
 def load_store(
     specs: list[SourceSpec],
     autosave: bool = True,
     root_key: str = "Root",
     alignments: list[AlignmentSpec] | None = None,
+    corpora: list[CorpusSpec] | None = None,
 ) -> CorpusStore:
     store = CorpusStore(autosave=autosave)
     for spec in specs:
@@ -111,6 +137,8 @@ def load_store(
             alignment.name, alignment.source_a, alignment.source_b, alignment.path,
             mode=alignment.mode, default_confidence=alignment.default_confidence,
         )  # fmt: skip
+    for corpus in corpora or []:
+        store.add_text_corpus(corpus.name, corpus.paths)
     return store
 
 
@@ -120,6 +148,7 @@ def claude_desktop_config(
     read_only: bool = False,
     root_key: str = "Root",
     alignments: list[AlignmentSpec] | None = None,
+    corpora: list[CorpusSpec] | None = None,
 ) -> dict[str, Any]:
     """The ``mcpServers`` entry for Claude Desktop's ``claude_desktop_config.json``."""
     args = ["-m", "mcparser", "mcp", "serve", "--name", name]
@@ -127,6 +156,8 @@ def claude_desktop_config(
         args += ["--source", spec.to_arg()]
     for alignment in alignments or []:
         args += ["--alignment", alignment.to_arg()]
+    for corpus in corpora or []:
+        args += ["--corpus", corpus.to_arg()]
     if read_only:
         args.append("--read-only")
     if root_key != "Root":
