@@ -168,6 +168,20 @@ class ValueCount(BaseModel):
     count: int
 
 
+class FeatureConvention(BaseModel):
+    """How a feature is written with a UPOS, Case and Number, where the treebank uses combined values (``Masc,Neut``)."""
+
+    upos: str
+    case: str
+    number: str
+    feature: str
+    values: list[ValueCount]
+
+    @property
+    def total(self) -> int:
+        return sum(value.count for value in self.values)
+
+
 class CorpusInfo(BaseModel):
     """An unannotated text corpus (see :class:`~mcparser.corpus.textcorpus.TextCorpus`)."""
 

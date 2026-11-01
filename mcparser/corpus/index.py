@@ -49,6 +49,8 @@ class SourceIndex:
         self.values: dict[str, Counter[str]] = {column: Counter() for column in ("upos", "xpos", "deprel", "feats")}
         self.by_upos: dict[str, defaultdict[str, Counter[str]]] = {column: defaultdict(Counter) for column in ("xpos", "deprel", "feats")}
         self.features: defaultdict[str, defaultdict[str, Counter[str]]] = defaultdict(lambda: defaultdict(Counter))
+        self.by_case: defaultdict[tuple[str, str, str, str], Counter[str]] = defaultdict(Counter)
+        """Feature value counts for each (UPOS, Case, Number, feature), to see where combined values (``Masc,Neut``) are used."""
         self.suffixes: defaultdict[str, list[Location]] = defaultdict(list)
         self.xpos_by_tags: defaultdict[tuple[str, str], Counter[str]] = defaultdict(Counter)
         """XPOS counts for each (UPOS, FEATS) pair."""
@@ -140,6 +142,9 @@ class SourceIndex:
             for feature, value in token.feats_dict.items():
                 if value is not None:
                     self.features[token.upos][feature][value] += 1
+                    if feature not in ("Case", "Number"):
+                        case, number = (token.feats_dict.get(name) or "-" for name in ("Case", "Number"))
+                        self.by_case[(token.upos, case, number, feature)][value] += 1
             key = loose(token.form)
             for length in SUFFIX_LENGTHS:
                 if len(key) > length:

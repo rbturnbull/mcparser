@@ -89,6 +89,8 @@ class Batch:
     """For the scorer: the (token_id, column) cells listed per sentence, which wildcards expand to."""
     warned: set[tuple[str, str, str]] = field(default_factory=set)
     """Doubled relations already pointed out to the model, which may confirm them by answering again."""
+    carried: dict[str, list[CellUpdate]] = field(default_factory=dict)
+    """Valid answers for sentences from an earlier attempt, kept when the model answers again only for the sentences with problems."""
 
     def label(self, sent_id: str) -> str:
         return f"s{self.sent_ids.index(sent_id) + 1}"
@@ -210,6 +212,15 @@ class Applier:
     def _retry(self, errors: list[str]) -> None:
         if errors:
             raise ModelRetry("Fix these problems and answer again:\n" + "\n".join(f"- {e}" for e in errors[:20]))
+
+    @staticmethod
+    def _carry(updates: dict[str, list[CellUpdate]], errors: list[str], batch: Batch) -> None:
+        """Keep the sentences of this answer that passed the checks, for the case that the model answers again for the others only."""
+        for sent_id, cells in updates.items():
+            if any(error.startswith((f"sentence {sent_id}:", f"sentence {sent_id} ")) for error in errors):
+                batch.carried.pop(sent_id, None)
+            else:
+                batch.carried[sent_id] = cells
 
     def _check_flags(self, flags: list[FlagRequest], batch: Batch, errors: list[str]) -> None:
         for flag in flags:
@@ -347,8 +358,11 @@ class Applier:
                     f"sentence {sent_id}: {issue.message}" for issue in result.issues if issue.code in TREE_ERRORS
                 ]
         self._check_flags(answer.flags, batch, errors)
+        self._carry(updates, errors, batch)
         self._retry(errors)
+        updates = {**batch.carried, **updates}
         self._retry(self._doubled(updates, batch) + self._chained(updates, batch))
+        batch.carried = {}
         for resolution in answer.resolved:
             try:
                 self.store.resolve_flag(batch.target, resolution.flag_id, resolution.status, resolution.note, agent=self.role.name)

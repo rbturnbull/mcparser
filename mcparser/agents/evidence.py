@@ -36,6 +36,8 @@ CORPUS_SHOWN = 3
 """Neighbours and longer words shown per form from the unannotated corpus."""
 STEM_MINIMUM = 2
 """Letters that must remain when a clitic-sized piece is cut off to count the stem in the corpus."""
+CONVENTIONS_SHOWN = 4
+"""Combined-value conventions listed per UPOS in the FEATS evidence."""
 EXAMPLE_MAX_WORDS = 40
 """Similar trusted sentences longer than this are not shown (too many tokens)."""
 
@@ -43,9 +45,10 @@ EXAMPLE_MAX_WORDS = 40
 class EvidenceBuilder:
     """Builds compact evidence for one role over one or more sentences of the target source."""
 
-    def __init__(self, store: CorpusStore, target: str):
+    def __init__(self, store: CorpusStore, target: str, conventions: bool = True):
         self.store = store
         self.target = target
+        self.conventions = conventions
         self.trusted = [info.name for info in store.list_sources() if info.mode == "ro"] or None
         self._cache: dict[tuple, str] = {}
 
@@ -208,8 +211,24 @@ class EvidenceBuilder:
                 inventory = self.store.feature_inventory(upos=tag, sources=self.trusted)
                 features = "; ".join(f"{name}={'|'.join(v.value for v in values)}" for name, values in inventory.items())
                 lines.append(f"- Features used with {tag}: {features or 'none'}")
+            if self.conventions:
+                lines += self.combined_values(tags)
             return lines
         return []
+
+    def combined_values(self, tags: list[str]) -> list[str]:
+        """Where the treebank writes a combined value such as ``Gender=Masc,Neut`` (share of the examples), per UPOS."""
+        lines = []
+        for tag in tags:
+            conventions = self.store.feature_conventions(tag, sources=self.trusted)[:CONVENTIONS_SHOWN]
+            if conventions:
+                shown = "; ".join(
+                    f"{c.feature} with {c.case} {c.number}: "
+                    + ", ".join(f"{v.value} {v.count / c.total:.0%}" for v in c.values[:3])
+                    for c in conventions
+                )
+                lines.append(f"- Combined values the treebank uses with {tag} (case number: shares): {shown}")
+        return lines
 
     # ------------------------------------------------------------ syntax
 

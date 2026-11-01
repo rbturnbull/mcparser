@@ -370,3 +370,42 @@ def test_changing_a_key_marks_dependents_and_closes_flags(store):
     assert (flags[flag.id].status, flags[flag.id].note) == ("resolved", "upos changed it to PRON")
     assert flags[other.id].status == "open"
     Applier(store, ROLES["head"]).annotation(Annotation(values="p2 2 0 0.9\np2 1 2 0.9"), batch("p2"))  # no change
+
+
+def test_a_second_answer_for_the_failed_sentences_keeps_the_others(store):
+    """After a retry the model often answers only for the sentences with problems; the rest of its first answer still counts."""
+    applier = Applier(store, ROLES["upos"])
+    task = batch("p1", "p2")
+    with pytest.raises(ModelRetry, match="sentence p2"):
+        applier.annotation(Annotation(values="s1 3 NOUN 0.9\ns2 1 NOTATAG 0.9"), task)
+    assert set(task.carried) == {"p1"}
+    with pytest.raises(ModelRetry, match="sentence p2"):
+        applier.annotation(Annotation(values="s2 1 STILLWRONG 0.9"), task)  # a bad answer again: p1 is still kept
+    assert set(task.carried) == {"p1"}
+    applier.annotation(Annotation(values="s2 1 DET 0.95"), task)
+    pred = store.source("pred")
+    assert (pred.sentence("p1").token("3").upos, pred.sentence("p2").token("1").upos) == ("NOUN", "DET")
+    assert task.carried == {}
+
+
+def test_a_new_bad_answer_replaces_the_carried_one(store):
+    applier = Applier(store, ROLES["upos"])
+    task = batch("p1", "p2")
+    with pytest.raises(ModelRetry, match="sentence p1"):
+        applier.annotation(Annotation(values="s1 3 NOTATAG 0.9\ns2 1 DET 0.9"), task)
+    assert set(task.carried) == {"p2"}
+    task.carried["p1"] = []  # an older valid answer for p1 ...
+    with pytest.raises(ModelRetry, match="sentence p1"):
+        applier.annotation(Annotation(values="s1 3 NOTATAG 0.9"), task)
+    assert set(task.carried) == {"p2"}  # ... is dropped when the new one for p1 is bad
+
+
+def test_a_warning_retry_keeps_the_other_sentences(store, monkeypatch):
+    monkeypatch.setattr(store, "single_relations", lambda: {"obl": (100, 1)})
+    applier = Applier(store, ROLES["deprel"])
+    task = batch("p1", "p2")
+    with pytest.raises(ModelRetry, match="would have 3 'obl' dependents"):
+        applier.annotation(Annotation(values="s1 4 obl 0.9\ns2 2 nsubj 0.9"), task)
+    applier.annotation(Annotation(values="s1 4 obl 0.9"), task)  # only the doubled sentence again
+    pred = store.source("pred")
+    assert (pred.sentence("p1").token("4").deprel, pred.sentence("p2").token("2").deprel) == ("obl", "nsubj")

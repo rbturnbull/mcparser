@@ -207,7 +207,7 @@ def test_evaluate_command(tmp_path, train_path, pred_path):
     result = runner.invoke(app, ["evaluate", str(train_path), str(train_path), "--json"])
     assert json.loads(result.stdout)["scores"][0]["f1"] == 1.0
     result = runner.invoke(app, ["evaluate", str(train_path), str(train_path)])
-    assert "Missing" not in result.stdout and "Words      100.00%" in result.stdout
+    assert "Missing" not in result.stdout and "Words        100.00%" in result.stdout
     result = runner.invoke(app, ["evaluate", str(tmp_path / "missing.conllu"), str(train_path)])
     assert result.exit_code == 1 and "Error" in result.stderr
     result = runner.invoke(app, ["evaluate", str(train_path), str(train_path), "--calibration"])
@@ -261,3 +261,14 @@ def test_cli_corpus_options(monkeypatch, tmp_path, train_path, scripted_team, pr
     result = runner.invoke(app, ["mcp", "serve", "-s", str(train_path), "--corpus", spec])
     assert result.exit_code == 0, result.output
     assert "Text corpora" in served[0]
+
+
+def test_run_stops_at_the_cost_limit(scripted_team, monkeypatch, pred_path):
+    from mcparser.agents.team import AgentTeam, ModelUsage
+
+    monkeypatch.setattr(AgentTeam, "total", lambda self: ModelUsage(cost=2.0))
+    result = runner.invoke(app, ["run", str(pred_path), "--max-cost", "1.5", "--sentence", "p2"])
+    assert result.exit_code == 0, result.output
+    assert scripted_team[0].max_cost == 1.5
+    assert "STOPPED: the cost limit was reached (1 tasks not started)" in result.stdout
+    assert "(0 failed)" in result.stdout

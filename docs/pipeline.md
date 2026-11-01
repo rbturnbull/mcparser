@@ -72,6 +72,8 @@ batch_cells: 120              # cells per agent task
 concurrency: 1                # tasks run at the same time
 request_limit: 60             # model requests per agent task
 cache: true                   # prompt caching
+max_cost: null                # stop starting tasks at this estimated cost (US dollars); run again to continue
+conventions: true             # tell the FEATS agent where the treebank writes combined values (Gender=Masc,Neut)
 rules:
   min_count: 5                # examples needed before code settles a cell
   min_share: 0.98             # share of them that must agree
@@ -87,7 +89,9 @@ Command-line overrides: `--strong-model`, `--efficient-model`, `--light-model`,
 `--efficient-roles`, `--light-roles`, `--strong-thinking`,
 `--efficient-thinking`, `--light-thinking`, `--model` (one model for every
 role), `--model-for ROLE=MODEL`, `--roles`, `--rounds`, `--threshold`,
-`--batch-sentences`, `--concurrency`, `--sentence` and `--max-sentences`.
+`--batch-sentences`, `--concurrency`, `--max-cost`, `--sentence` and `--max-sentences`.
+`--max-cost 50` stops starting agent tasks once the estimate reaches $50 (tasks already running finish, so the total can
+exceed it by a few tasks); the sentences not reached stay unannotated, and `run` on the same file continues.
 `mcparser score` runs only the rules and the scorer.
 
 ## Cost
@@ -130,6 +134,9 @@ effect:
   one or two letters occur (a frequent remainder next to a rare token suggests a
   clitic). It costs a few tokens per rare form and nothing when there is no
   corpus.
+- **Conventions** (`conventions`): the FEATS agent is told where the treebank writes a combined value
+  (`Gender with Gen Sing: Masc 75%, Masc,Neut 25%`), computed from the trusted data for the UPOS, case and
+  number combinations where at least 10% of 20+ examples have one.
 - **Three model tiers**: Haiku for XPOS, Sonnet for UPOS, FEATS and scoring,
   Opus for segmentation, lemmas and syntax.
 - **Cross-checks** flag (never change) a UPOS that the treebank almost never

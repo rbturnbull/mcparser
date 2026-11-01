@@ -55,7 +55,7 @@ mcparser/
   rules.py           # code that settles near-certain cells (no LLM)
   pricing.py         # list prices, cost estimates
   textinput.py       # raw text / YAML -> unannotated sentences (tokeniser)
-  evaluate.py        # CoNLL 2018-style P/R/F1 with surface-span alignment
+  evaluate.py        # CoNLL 2018 metrics ported from conll18_ud_eval.py (tested against it), run_official, scorable
   settings.py        # Settings (YAML): model per role, threshold, rounds, cache
   cli.py             # typer app: init run score evaluate validate settings mcp
 docs/                # Sphinx (myst-parser + furo); CLI page generated in conf.py
@@ -397,6 +397,55 @@ prints the `mcpServers` JSON (uses the venv's python with `-m mcparser`).
   so differences smaller than that are not evidence. Calibration over ~70k cells: ≥ 0.95
   → 99.4% right, 0.8–0.9 → 91.8%, 0.5–0.7 → 57%; HEAD cells rarely reach 0.95
   (most sit at 0.8–0.95 and are 91–95% right).
+
+## Evaluation = the official scorer (2026-11-01)
+
+`evaluate.py` is a port of `conll18_ud_eval.py` (alignment, UFeats = universal features only, LAS without
+subtype, CLAS / MLAS / BLEX, Tokens); `tests/test_official.py` runs the vendored script
+(`tests/official/`, MPL 2.0) against it on 150 random sentence sets with different tokens / multiword tokens / cells
+and 50 whole files, and `experiments/compare_official.py` agreed on all 89 saved run directories that have heads.
+Sentences are matched by `sent_id`, the official script aligns the whole file at once; they differ only when
+surface tokens differ at a sentence boundary (found by the fuzz test; the official global alignment then
+aligns leftovers across sentences). `--strict` adds UFeatsAll / AllTagsAll / LASFull (all features, full relation): the
+numbers cited before this date in this file are strict. The official script rejects a missing HEAD, several roots or a
+cycle: `Evaluation.invalid` lists such sentences, `scorable` repairs them for `evaluate --official PATH` only.
+`udtools` (PyPI; `uvx --from udtools udeval gold pred`, `udvalidate --lang grc --level 2 file`) is the UD tools'
+newer scorer and the official validator: same numbers on a saved run, and the predictions pass level 2.
+
+`--max-cost` / `max_cost`: no new agent task starts once the estimated cost reaches the limit (running tasks finish);
+the report has `budget_reached`; run again to continue. `conventions` (default on): the FEATS evidence lists where
+the treebank writes combined values (`FeatureConvention`, `Index.by_case`, `Store.feature_conventions`).
+
+## Full dev runs, 2026-11-01 (budget $200; $194.6 measured plus a few dollars of duplicate tasks from a double launch, so about $195–198)
+
+Sonnet 5.5 for the strong roles, Haiku for XPOS, one round, concurrency 3, `--max-cost` per language
+(`experiments/full_run.sh`, outputs in `experiments/dev{ar,grc,la,cop}`, scores in `experiments/final/`). Opus,
+2 rounds would cost about $0.0064 per word (Greek, 100 sentences: $7.83 / $7.93 with and without `conventions`;
+UFeats 93.8 → 94.2, UAS 92.9 → 92.0, LAS 89.9 → 89.1: noise) = about $440 for the four dev files. The dev runs cost
+Arabic $65.5 (30.2k words), Greek $34.3 (13.7k), Latin $34.2 (13.9k), Coptic $44.8 (11.0k) with the scorer only for Coptic/Arabic.
+**None finished**: every cap was reached during FEATS, so XPOS never ran (rules and baseline only), 26 / 19 / 7 / 166
+FEATS tasks are missing, and the cost per word was higher than the 0.0023 I assumed (syntax alone $0.0009–0.0011).
+**Bug found by the official scorer** (fixed afterwards, 479 tests): when a task needed a retry, the model answered
+again only for the failing sentences and the first answer's other sentences were never applied (`Applier` only
+applied the last answer; now `Batch.carried`). That left 118 / 198 / 328 / 68 sentences (13 / 19 / 27 / 18%) of
+Arabic / Greek / Latin / Coptic without any HEAD. They are scored as wrong (official scorer with `scorable` repairs:
+Greek UAS/LAS 74.3 / 69.7, Latin 66.2 / 61.1, Arabic 75.7 / 69.9) and left out below. A Coptic repair run
+(`--roles syntax`, $2.23) did nothing for them: refine visits the most confident sentences first and the
+low-confidence heads of parsed sentences used up the cap. **Next**: rerun the four files with the fix (about $12
+for the missing syntax), then FEATS, then XPOS; give `refine` a way to start with cells that have no value.
+
+Official scores (conll18_ud_eval.py == udeval to the second decimal) on the sentences with a complete tree:
+
+| | sentences / words | UPOS | XPOS* | UFeats | Lemmas | UAS | LAS | CLAS | MLAS | BLEX |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Arabic PADT | 790 / 26,749 | 96.86 | 72.67 | 75.85 | 96.06 | 83.95 | 78.71 | 77.39 | 49.08 | 74.20 |
+| Greek PROIEL | 821 / 10,956 | 97.85 | 94.00 | 93.30 | 98.59 | 91.07 | 86.71 | 83.16 | 73.60 | 81.57 |
+| Latin PROIEL | 905 / 10,054 | 97.45 | 93.50 | 93.35 | 98.28 | 89.28 | 84.41 | 82.09 | 73.61 | 80.76 |
+| Coptic Scriptorium | 313 / 9,135 | 97.10 | 68.60 | 96.62 | 97.36 | 88.93 | 84.81 | 80.71 | 73.83 | 79.16 |
+
+\*XPOS (and so AllTags) is unfinished everywhere; Arabic UFeats stops at 10 of 176 FEATS tasks. The parsed
+subset is biased toward sentences whose batch needed no retry. `udvalidate --level 2` fails on every file; for Arabic, Greek and Latin the
+FORMAT and SYNTAX errors are exactly the words with a missing head (3,356 / 2,674 / 3,824 each); Coptic also has 6 MORPHO and 8 METADATA errors (not examined).
 
 ## Ideas / next steps
 

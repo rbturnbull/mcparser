@@ -70,7 +70,7 @@ def test_empty_inputs_and_table():
     assert {score.f1 for score in result.scores} == {0.0}
     table = evaluate(parse_conllu(GOLD), parse_conllu(GOLD)).table()
     assert table.splitlines()[0].split() == ["Metric", "Precision", "Recall", "F1"]
-    assert "LAS        100.00%   100.00%   100.00%" in table
+    assert "LAS          100.00%   100.00%   100.00%" in table
 
 
 def test_multiword_words_align_by_form():

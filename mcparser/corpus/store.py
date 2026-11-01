@@ -30,16 +30,17 @@ from .models import (
     CorpusSearch,
     Edit,
     EditResult,
+    FeatureConvention,
+    FixedExpression,
     Flag,
     FlagPage,
     GroupCount,
     LinkPage,
     LinkRef,
-    FixedExpression,
     MultiwordAnalysis,
+    MultiwordSearch,
     ParallelView,
     RelationStats,
-    MultiwordSearch,
     SentenceHit,
     SentenceIssue,
     SentencePage,
@@ -714,6 +715,30 @@ class CorpusStore:
             feature: [ValueCount(value=value, count=count) for value, count in totals[feature].most_common()]
             for feature in sorted(totals, key=str.lower)
         }
+
+    @_locked
+    def feature_conventions(
+        self, upos: str, min_count: int = 20, min_share: float = 0.1, sources: list[str] | None = None
+    ) -> list[FeatureConvention]:
+        """Where the trusted data writes a combined feature value (``Gender=Masc,Neut``) for ``upos``.
+
+        One entry per (Case, Number, feature) with at least ``min_count`` examples
+        of which at least ``min_share`` carry a combined value, most frequent first.
+        """
+        total: dict[tuple[str, str, str], Counter[str]] = {}
+        for source in self._trusted(sources):
+            for (tag, case, number, feature), values in source.index.by_case.items():
+                if tag == upos:
+                    total.setdefault((case, number, feature), Counter()).update(values)
+        found = [
+            FeatureConvention(
+                upos=upos, case=case, number=number, feature=feature,
+                values=[ValueCount(value=value, count=count) for value, count in values.most_common()],
+            )  # fmt: skip
+            for (case, number, feature), values in total.items()
+            if sum(values.values()) >= min_count and sum(c for v, c in values.items() if "," in v) >= min_share * sum(values.values())
+        ]
+        return sorted(found, key=lambda convention: -convention.total)
 
     @_locked
     def relation_stats(

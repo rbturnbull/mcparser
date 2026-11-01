@@ -239,3 +239,26 @@ async def test_joint_syntax_sets_heads_and_relations_together(store):
     assert [(w.head, w.deprel) for w in words] == [("0", "root"), ("3", "case"), ("1", "obl"), ("1", "punct")]
     changed = {e.agent for e in store.get_history("pred") if e.column in ("head", "deprel") and e.old != e.new}
     assert changed == {"syntax"}
+
+
+@pytest.mark.anyio
+async def test_the_budget_stops_the_run(store, monkeypatch):
+    from mcparser.agents.team import ModelUsage
+
+    run = pipeline(store, {"scorer": scripted(scored(0.9)), "*": scripted()}, max_cost=1.0)
+    assert not run.out_of_budget()  # scripted models have no price
+    monkeypatch.setattr(run.team, "total", lambda: ModelUsage(cost=1.5))
+    report = await run.run()
+    assert report.budget_reached
+    assert [task.error for task in report.tasks] == ["skipped: the budget of $1.0 is reached"]
+    assert len(report.rounds) == 1 and report.total.requests == 0
+    assert (await pipeline(store, {"*": scripted()}).run(score_only=True)).budget_reached is False
+
+
+@pytest.mark.anyio
+async def test_the_scorer_can_be_disabled(store):
+    from mcparser.settings import RoleSettings
+
+    run = pipeline(store, {"*": scripted()}, roles={"scorer": RoleSettings(enabled=False)})
+    assert await run.score() == 0
+    assert (await run.run(score_only=True)).total.requests == 0

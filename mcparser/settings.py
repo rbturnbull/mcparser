@@ -94,8 +94,14 @@ class Settings(BaseModel):
     final_scoring: bool = Field(
         False, description="Score the cells changed in the last round once more (costs scorer tasks, changes no values)."
     )
+    max_cost: float | None = Field(
+        None, gt=0, description="Stop starting agent tasks once the estimated cost reaches this many US dollars (tasks already running finish)."
+    )
     corpus_tool: bool = Field(
         True, description="Let agents call corpus_find themselves (false: they only see the corpus evidence in the prompt)."
+    )
+    conventions: bool = Field(
+        True, description="Tell the FEATS agent where the treebank writes combined values (Gender=Masc,Neut), from the trusted data."
     )
     rules: RuleSettings = Field(default_factory=RuleSettings, description="When code settles cells without a model.")
     roles: dict[str, RoleSettings] = Field(default_factory=dict)

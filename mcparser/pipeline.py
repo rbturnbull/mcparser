@@ -77,6 +77,8 @@ class RunReport(BaseModel):
     usage: dict[str, ModelUsage]
     roles: dict[str, ModelUsage] = {}
     """Token use and estimated cost per role."""
+    budget_reached: bool = False
+    """The run stopped early because ``max_cost`` was reached; tasks that were not started are recorded as skipped."""
 
 
 @dataclass
@@ -115,7 +117,7 @@ class Pipeline:
         self.roles = [name for name in REFINE_ORDER if settings.enabled(name)]
         self.columns = list(dict.fromkeys(column for name in self.roles for column in ROLES[name].columns))
         self.tasks: list[TaskResult] = []
-        self.evidence = EvidenceBuilder(store, target)
+        self.evidence = EvidenceBuilder(store, target, conventions=settings.conventions)
         self.rules = Rules(store, target, settings.rules)
         self.rules_report = RulesReport()
 
@@ -228,10 +230,18 @@ class Pipeline:
             for batch in batches:
                 group.start_soon(limited, batch)
 
+    def out_of_budget(self) -> bool:
+        limit = self.settings.max_cost
+        return limit is not None and (self.team.total().cost or 0.0) >= limit
+
     async def _task(self, role: str, items: list[TaskItem]) -> None:
         sent_ids = [item.sent_id for item in items]
         result = TaskResult(round=self.store.round or 0, sent_ids=sent_ids, role=role)
         label = f"[round {result.round}] {role} {', '.join(sent_ids)}"
+        if self.out_of_budget():
+            result.error = f"skipped: the budget of ${self.settings.max_cost} is reached"
+            self.tasks.append(result)
+            return
         try:
             spec = ROLES[role]
             for item in items:
@@ -256,7 +266,9 @@ class Pipeline:
     # ------------------------------------------------------------ phases
 
     async def score(self) -> int:
-        """Score the cells that need it. Returns the number of sentences scored."""
+        """Score the cells that need it. Returns the number of sentences scored (none if the scorer is disabled)."""
+        if not self.settings.enabled("scorer"):
+            return 0
         state = self.history_state()
         items = [TaskItem(sent_id, self.cells_to_score(sent_id, state)) for sent_id in self.sentences()]
         items = [item for item in items if item.cells]
@@ -267,6 +279,8 @@ class Pipeline:
         """Run each role on low-confidence cells and open flags. Returns the number of tasks."""
         count = 0
         for role in self.roles:
+            if self.out_of_budget():
+                break
             columns = list(ROLES[role].columns)
             items = []
             for sent_id in self.sentences(order="confidence_desc"):
@@ -344,7 +358,7 @@ class Pipeline:
                     )
                 )
                 self.progress(f"Round {number}: {reports[-1].model_dump()}")
-                if score_only or tasks == 0 or reports[-1].edits == 0:
+                if score_only or tasks == 0 or reports[-1].edits == 0 or self.out_of_budget():
                     break
             final_scored = await self.score() if self.settings.final_scoring and not score_only else 0
         return RunReport(
@@ -356,4 +370,5 @@ class Pipeline:
             total=self.team.total(),
             usage=self.team.usage,
             roles=self.team.role_usage,
+            budget_reached=self.out_of_budget(),
         )

@@ -21,6 +21,7 @@ from .rules import Rules
 from .corpus import CorpusError, CorpusStore, SourceMode, format_conllu, parse_conllu
 from .evaluate import calibration, calibration_table
 from .evaluate import evaluate as evaluate_predictions
+from .evaluate import run_official
 from .mcp.config import AlignmentSpec, CorpusSpec, SourceSpec, claude_desktop_config, load_store
 from .mcp.server import build_server
 from .pipeline import Pipeline, RunReport
@@ -266,9 +267,12 @@ def _print_report(report: RunReport) -> None:
             f"Round {item.round}: scored {item.scored} sentences, {item.tasks} agent tasks, "
             f"{item.edits} edits, {item.open_flags} open flags, mean confidence {item.confidence:.3f}"
         )
-    failures = sum(task.error is not None for task in report.tasks)
+    failures = sum(task.error is not None and not task.error.startswith("skipped") for task in report.tasks)
+    skipped = sum(task.error is not None and task.error.startswith("skipped") for task in report.tasks)
     rescored = f" ({report.final_scored} sentences re-scored)" if report.final_scored else ""
     typer.echo(f"Final mean confidence {report.confidence:.3f}{rescored}. {len(report.tasks)} tasks ({failures} failed).")
+    if report.budget_reached:
+        typer.echo(f"STOPPED: the cost limit was reached ({skipped} tasks not started). Run again to continue.")
     typer.echo("By model:")
     for name, usage in [*report.usage.items(), ("total", report.total)]:
         typer.echo(f"  {name}: {_usage_line(usage)}")
@@ -394,6 +398,10 @@ def run(
         bool | None,
         typer.Option("--final-score/--no-final-score", help="Re-score the cells changed in the last round (default off)."),
     ] = None,
+    max_cost: Annotated[
+        float | None,
+        typer.Option(min=0.01, help="Stop starting agent tasks once the estimated cost reaches this many dollars (run again to continue)."),
+    ] = None,
     corpus_tool: Annotated[
         bool | None,
         typer.Option(
@@ -416,7 +424,7 @@ def run(
     settings = _settings(
         config, model, model_for, roles, tiers,
         rounds=rounds, threshold=threshold, concurrency=concurrency, batch_sentences=batch_sentences,
-        final_scoring=final_score, joint_syntax=joint_syntax, corpus_tool=corpus_tool,
+        final_scoring=final_score, joint_syntax=joint_syntax, corpus_tool=corpus_tool, max_cost=max_cost,
     )  # fmt: skip
     _annotate(prediction, source, settings, sentence, False, report, max_sentences, corpus)
 
@@ -503,26 +511,41 @@ def evaluate(
     show_calibration: Annotated[
         bool, typer.Option("--calibration", help="Also show accuracy by recorded confidence (Conf in MISC).")
     ] = False,
+    strict: Annotated[
+        bool, typer.Option("--strict", help="Also score all features and relation subtypes (the official metrics ignore them).")
+    ] = False,
+    official: Annotated[
+        Path | None,
+        typer.Option(help="Also run the official conll18_ud_eval.py at this path (sentences it would refuse are repaired first)."),
+    ] = None,
 ) -> None:
-    """Compare predictions with gold annotation (precision, recall and F1 per metric)."""
+    """Compare predictions with gold annotation (the CoNLL 2018 metrics: precision, recall and F1)."""
     try:
         predicted_sentences = parse_conllu(prediction.read_text(encoding="utf-8"))
         gold_sentences = parse_conllu(gold.read_text(encoding="utf-8"))
         result = evaluate_predictions(
-            predicted_sentences, gold_sentences, predicted_only=predicted_only, annotated_only=annotated_only
+            predicted_sentences, gold_sentences, predicted_only=predicted_only, annotated_only=annotated_only, strict=strict
         )
+        official_result = run_official(official, predicted_sentences, gold_sentences) if official else None
     except (CorpusError, OSError) as error:
         typer.echo(f"Error: {error}", err=True)
         raise typer.Exit(1) from error
     if json_output:
         typer.echo(result.model_dump_json(indent=1))
+        if official_result:
+            typer.echo(official_result.model_dump_json(indent=1))
         return
     typer.echo(f"{result.sentences} sentences matched.")
     if result.missing:
         typer.echo(f"Missing from the predictions: {', '.join(result.missing)}")
     if result.extra:
         typer.echo(f"Not in the gold file: {', '.join(result.extra)}")
+    if result.invalid:
+        typer.echo(f"The official scorer would refuse {len(result.invalid)} predicted sentences (no valid tree): {', '.join(result.invalid[:10])}")
     typer.echo(result.table())
+    if official_result:
+        typer.echo(f"\nOfficial scorer, {official_result.sentences} sentences ({len(official_result.repaired)} repaired for it, {len(official_result.skipped)} gold sentences it cannot read left out):")
+        typer.echo(official_result.table())
     if show_calibration:
         typer.echo("\nAccuracy of cells by confidence:")
         typer.echo(calibration_table(calibration(predicted_sentences, gold_sentences)))
