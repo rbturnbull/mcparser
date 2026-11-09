@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import shutil
 from pathlib import Path
 
@@ -7,6 +8,11 @@ import pytest
 from pydantic_ai import models
 
 from mcparser.corpus import CorpusStore, parse_conllu
+
+# GitHub Actions makes typer/rich force colours and boxes, which breaks substring assertions on CLI output
+for _name in ("GITHUB_ACTIONS", "FORCE_COLOR", "PY_COLORS"):
+    os.environ.pop(_name, None)
+os.environ["_TYPER_FORCE_DISABLE_TERMINAL"] = "1"
 
 models.ALLOW_MODEL_REQUESTS = False  # never call a real model from the tests
 
