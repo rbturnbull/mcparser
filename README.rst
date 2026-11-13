@@ -1,11 +1,11 @@
 |logo| |text|
 
-.. |logo| image:: https://raw.githubusercontent.com/rbturnbull/mcparser/main/docs/_static/mcparser.svg
+.. |logo| image:: docs/_static/mcparser.svg
    :alt: MCParser logo
    :height: 140px
    :align: middle
 
-.. |text| image:: https://raw.githubusercontent.com/rbturnbull/mcparser/main/docs/_static/mcparser-text.svg
+.. |text| image:: docs/_static/mcparser-text.svg
    :alt: MCParser
    :height: 140px
    :align: middle
