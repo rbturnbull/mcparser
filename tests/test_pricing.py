@@ -18,6 +18,14 @@ def test_estimate():
     assert estimate("local:llama", 10, 0, 0, 10) is None
 
 
+def test_estimate_other_vendors_uses_cache_rates():
+    plain = estimate("openai:gpt-5.6", 1_000_000, 0, 0, 0)
+    cached = estimate("openai:gpt-5.6", 1_000_000, 900_000, 0, 0)
+    assert plain and cached and cached < plain / 2  # cache reads are much cheaper than fresh input
+    assert estimate("google-gla:gemini-2.5-pro", 1000, 500, 0, 10) > 0
+    assert estimate("gateway:gpt-5.6", 1000, 0, 0, 10) > 0  # unknown provider prefix: found by model name
+
+
 def test_model_usage_accumulates():
     from pydantic_ai.usage import RunUsage
 

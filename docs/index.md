@@ -1,5 +1,13 @@
 # MCParser
 
+```{raw} html
+<div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin:1rem 0 2rem">
+  <img src="_static/mcparser.svg" alt="MCParser logo: a rotating cube" width="160" height="160">
+  <img class="only-light" src="_static/mcparser-text.svg" alt="MCParser, a CoNLL-U parser built on MCP" width="420">
+  <img class="only-dark" src="_static/mcparser-text-dark.svg" alt="MCParser, a CoNLL-U parser built on MCP" width="420">
+</div>
+```
+
 MCParser produces [Universal Dependencies](https://universaldependencies.org/)
 annotation (CoNLL-U) with a team of LLM agents. Trusted CoNLL-U files, such as
 a treebank's training data, provide the examples. The agents annotate a

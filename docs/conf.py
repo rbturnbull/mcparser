@@ -24,6 +24,11 @@ exclude_patterns = ["_build"]
 html_theme = "furo"
 html_title = "MCParser"
 html_static_path = ["_static"]
+html_theme_options = {
+    "light_logo": "mcparser-text.svg",
+    "dark_logo": "mcparser-text-dark.svg",
+    "sidebar_hide_name": True,
+}
 autodoc_member_order = "bysource"
 autodoc_typehints = "description"
 autodoc_default_options = {"members": True, "show-inheritance": True}

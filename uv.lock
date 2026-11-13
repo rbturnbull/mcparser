@@ -1296,6 +1296,7 @@ name = "mcparser"
 version = "0.2.0"
 source = { editable = "." }
 dependencies = [
+    { name = "genai-prices" },
     { name = "mcp" },
     { name = "pydantic" },
     { name = "pydantic-ai-slim", extra = ["anthropic", "mcp"] },
@@ -1317,6 +1318,7 @@ docs = [
 
 [package.metadata]
 requires-dist = [
+    { name = "genai-prices", specifier = ">=0.1" },
     { name = "mcp", specifier = ">=2.3" },
     { name = "pydantic", specifier = ">=2.10" },
     { name = "pydantic-ai-slim", extras = ["anthropic", "mcp"], specifier = ">=2.56.0" },

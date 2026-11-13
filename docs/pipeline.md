@@ -71,7 +71,7 @@ batch_sentences: 8            # sentences per agent task
 batch_cells: 120              # cells per agent task
 concurrency: 1                # tasks run at the same time
 request_limit: 60             # model requests per agent task
-cache: true                   # prompt caching
+cache: true                   # prompt caching (Anthropic, Bedrock, OpenRouter, OpenAI GPT-5.6+; others cache implicitly)
 max_cost: null                # stop starting tasks at this estimated cost (US dollars); run again to continue
 conventions: true             # tell the FEATS agent where the treebank writes combined values (Gender=Masc,Neut)
 rules:

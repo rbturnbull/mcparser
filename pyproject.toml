@@ -12,6 +12,7 @@ dependencies = [
     "typer>=0.15",
     "pyyaml>=6.0",
     "pydantic-ai-slim[anthropic,mcp]>=2.56.0",
+    "genai-prices>=0.1",
 ]
 
 [project.scripts]

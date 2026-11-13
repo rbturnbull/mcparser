@@ -3,11 +3,14 @@
 Prices are US dollars per million tokens (Anthropic list prices, October 2026).
 Cache writes use the 5-minute rate, which is what ``cache=True`` uses. Haiku's
 price is for prompts up to 100k tokens, far above the size of an agent request.
-Models not in the table get no estimate.
+Other vendors' models are priced by the ``genai-prices`` package (the one
+pydantic-ai uses), which knows their cache read/write rates; models it does not
+know get no estimate.
 """
 
 from __future__ import annotations
 
+from genai_prices import Usage, calc_price
 from pydantic import BaseModel
 
 
@@ -35,7 +38,7 @@ def estimate(model: str, input_tokens: int, cache_read_tokens: int, cache_write_
     """Dollars for this usage. ``input_tokens`` includes the cached and cache-written tokens."""
     price = price_for(model)
     if price is None:
-        return None
+        return _listed_estimate(model, input_tokens, cache_read_tokens, cache_write_tokens, output_tokens)
     uncached = input_tokens - cache_read_tokens - cache_write_tokens
     return (
         uncached * price.input
@@ -43,3 +46,17 @@ def estimate(model: str, input_tokens: int, cache_read_tokens: int, cache_write_
         + cache_write_tokens * price.cache_write
         + output_tokens * price.output
     ) / 1_000_000
+
+
+def _listed_estimate(model: str, input_tokens: int, cache_read_tokens: int, cache_write_tokens: int, output_tokens: int) -> float | None:
+    """Dollars from the ``genai-prices`` database, trying the provider prefix first and then the model name alone."""
+    provider, _, name = model.rpartition(":")
+    usage = Usage(
+        input_tokens=input_tokens, cache_read_tokens=cache_read_tokens, cache_write_tokens=cache_write_tokens, output_tokens=output_tokens
+    )
+    for provider_id in dict.fromkeys([provider or None, None]):
+        try:
+            return float(calc_price(usage, name, provider_id=provider_id).total_price)
+        except LookupError:
+            continue
+    return None
