@@ -1,43 +1,56 @@
+from __future__ import annotations
+
+import os
+import shutil
 from pathlib import Path
 
 import pytest
+from pydantic_ai import models
 
-import llmparser.database.database_chroma as database_chroma
+from mcparser.corpus import CorpusStore, parse_conllu
 
+# GitHub Actions makes typer/rich force colours and boxes, which breaks substring assertions on CLI output
+for _name in ("GITHUB_ACTIONS", "FORCE_COLOR", "PY_COLORS"):
+    os.environ.pop(_name, None)
+os.environ["_TYPER_FORCE_DISABLE_TERMINAL"] = "1"
 
-class DummyEmbeddings:
-    def __init__(self, model: str) -> None:
-        self.model = model
+models.ALLOW_MODEL_REQUESTS = False  # never call a real model from the tests
 
-
-class FakeChroma:
-    def __init__(self, persist_directory: str, embedding_function) -> None:
-        self.persist_directory = str(persist_directory)
-        self.embedding_function = embedding_function
-        self.documents = []
-        marker = Path(self.persist_directory) / "docs_count.txt"
-        self.docs_count = int(marker.read_text().strip()) if marker.exists() else 0
-
-    @classmethod
-    def from_documents(cls, documents, embedding, persist_directory: str):
-        instance = cls(persist_directory=persist_directory, embedding_function=embedding)
-        instance.documents = list(documents)
-        instance.docs_count = len(instance.documents)
-        path = Path(persist_directory)
-        path.mkdir(parents=True, exist_ok=True)
-        (path / "docs_count.txt").write_text(str(instance.docs_count))
-        return instance
-
-    def add_documents(self, documents) -> None:
-        self.documents.extend(documents)
-        self.docs_count = len(self.documents)
-        path = Path(self.persist_directory)
-        path.mkdir(parents=True, exist_ok=True)
-        (path / "docs_count.txt").write_text(str(self.docs_count))
+DATA = Path(__file__).parent / "data"
 
 
 @pytest.fixture
-def patch_embeddings_and_chroma(monkeypatch):
-    monkeypatch.setattr(database_chroma, "OpenAIEmbeddings", DummyEmbeddings)
-    monkeypatch.setattr(database_chroma, "Chroma", FakeChroma)
-    return FakeChroma
+def train_path(tmp_path: Path) -> Path:
+    path = tmp_path / "train.conllu"
+    shutil.copy(DATA / "train.conllu", path)
+    return path
+
+
+@pytest.fixture
+def pred_path(tmp_path: Path) -> Path:
+    path = tmp_path / "pred.conllu"
+    shutil.copy(DATA / "pred.conllu", path)
+    return path
+
+
+@pytest.fixture
+def store(train_path: Path, pred_path: Path) -> CorpusStore:
+    store = CorpusStore()
+    store.add_source("train", train_path)
+    store.add_source("pred", pred_path, mode="rw")
+    return store
+
+
+def sentence(text: str):
+    """Parse a single sentence written with spaces between columns (``|`` kept)."""
+    lines = []
+    for line in text.strip().splitlines():
+        line = line.strip()
+        lines.append(line if line.startswith("#") else "\t".join(line.split()))
+    (parsed,) = parse_conllu("\n".join(lines))
+    return parsed
+
+
+@pytest.fixture
+def anyio_backend():
+    return "asyncio"

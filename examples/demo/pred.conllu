@@ -1,0 +1,160 @@
+# sent_id = 14.8-3
+# text = nu ku-it-ma-an mi-e-ya-wa-aš=te-eš ḫal-ki-in ka-ri-ip-pa-an-zi zi-g=a d-UTU-uš ḫu-e-eš
+# translated = and while your four are devouring the grain, may you live, Ištanu.
+1	nu	_	_	_	_	_	_	_	_
+2	ku-it-ma-an	_	_	_	_	_	_	_	_
+3-4	mi-e-ya-wa-aš=te-eš	_	_	_	_	_	_	_	_
+3	mi-e-ya-wa-aš	_	_	_	_	_	_	_	_
+4	te-eš	_	_	_	_	_	_	_	_
+5	ḫal-ki-in	_	_	_	_	_	_	_	_
+6	ka-ri-ip-pa-an-zi	_	_	_	_	_	_	_	_
+7-8	zi-g=a	_	_	_	_	_	_	_	_
+7	zi-g	_	_	_	_	_	_	_	_
+8	a	_	_	_	_	_	_	_	_
+9-10	d-UTU-uš	_	_	_	_	_	_	_	_
+9	d	_	_	_	_	_	_	_	_
+10	UTU-uš	_	_	_	_	_	_	_	_
+11	ḫu-e-eš	_	_	_	_	_	_	_	_
+
+# sent_id = 14.9
+# text = A-NA d-UTU-Š=I=za ag-ga-an-na-aš TI-an-na-aš UN-aš e-eš
+# translation = To your Majesty, may you be the lord of life and death.
+# source = KBo 4.14 iii 9 (NH)
+1	A-NA	_	_	_	_	_	_	_	_
+2-5	d-UTU-Š=I=za	_	_	_	_	_	_	_	_
+2	d	_	_	_	_	_	_	_	_
+3	UTU-Š	_	_	_	_	_	_	_	_
+4	I	_	_	_	_	_	_	_	_
+5	za	_	_	_	_	_	_	_	_
+6	ag-ga-an-na-aš	_	_	_	_	_	_	_	_
+7	TI-an-na-aš	_	_	_	_	_	_	_	_
+8	UN-aš	_	_	_	_	_	_	_	_
+9	e-eš	_	_	_	_	_	_	_	_
+
+# sent_id = 14.10-1
+# text = ki-nu-n=a=wa ka-a-ša DINGIR-LUM 2 TA.ÀM šar-ni-ik-ta
+# translation = Now the god just made restitution 2 times.
+# source = KBo 5.1 i 45-47 (NH)
+1-3	ki-nu-n=a=wa	_	_	_	_	_	_	_	_
+1	ki-nu-n	_	_	_	_	_	_	_	_
+2	a	_	_	_	_	_	_	_	_
+3	wa	_	_	_	_	_	_	_	_
+4	ka-a-ša	_	_	_	_	_	_	_	_
+5	DINGIR-LUM	_	_	_	_	_	_	_	_
+6	2	_	_	_	_	_	_	_	_
+7	TA.ÀM	_	_	_	_	_	_	_	_
+8	šar-ni-ik-ta	_	_	_	_	_	_	_	_
+
+# sent_id = 14.10-2
+# text = nu BE-EL SÍSKUR pár-ku-iš nam-ma e-eš-du
+# translation = May the lord of the offering then be pure.
+# source = KBo 5.1 i 45-47 (NH)
+1	nu	_	_	_	_	_	_	_	_
+2	BE-EL	_	_	_	_	_	_	_	_
+3	SÍSKUR	_	_	_	_	_	_	_	_
+4	pár-ku-iš	_	_	_	_	_	_	_	_
+5	nam-ma	_	_	_	_	_	_	_	_
+6	e-eš-du	_	_	_	_	_	_	_	_
+
+# sent_id = 14.11
+# text = ták-ku DUMU LUGAL ḫa-an-te-ez-zi-iš NU.GÁL nu ku-iš ta-a-an pé-e-da-aš DUMU-RU nu LUGAL-uš a-pa-a-aš ki-ša-ru
+# translation = If there is no first son of the king, he who is the son of the second rank, may that one become king.
+# source = KBo 3.1 ii 36-37 (OH/NS)
+1	ták-ku	_	_	_	_	_	_	_	_
+2	DUMU	_	_	_	_	_	_	_	_
+3	LUGAL	_	_	_	_	_	_	_	_
+4	ḫa-an-te-ez-zi-iš	_	_	_	_	_	_	_	_
+5	NU.GÁL	_	_	_	_	_	_	_	_
+6	nu	_	_	_	_	_	_	_	_
+7	ku-iš	_	_	_	_	_	_	_	_
+8	ta-a-an	_	_	_	_	_	_	_	_
+9	pé-e-da-aš	_	_	_	_	_	_	_	_
+10	DUMU-RU	_	_	_	_	_	_	_	_
+11	nu	_	_	_	_	_	_	_	_
+12	LUGAL-uš	_	_	_	_	_	_	_	_
+13	a-pa-a-aš	_	_	_	_	_	_	_	_
+14	ki-ša-ru	_	_	_	_	_	_	_	_
+
+# sent_id = 14.12
+# text = nu ma-a-an ku-u-uš li-in-ga-a-uš pa-aḫ-ḫa-aš-du-ma šu-ma-aš=a DINGIR.MEŠ-eš pa-aḫ-ša-an-da-ru
+# translation = If you protect these oaths, may the gods protect you.
+# source = KBo 8.35 ii 14-15 (MH/MS)
+1	nu	_	_	_	_	_	_	_	_
+2	ma-a-an	_	_	_	_	_	_	_	_
+3	ku-u-uš	_	_	_	_	_	_	_	_
+4	li-in-ga-a-uš	_	_	_	_	_	_	_	_
+5	pa-aḫ-ḫa-aš-du-ma	_	_	_	_	_	_	_	_
+6-7	šu-ma-aš=a	_	_	_	_	_	_	_	_
+6	šu-ma-aš	_	_	_	_	_	_	_	_
+7	a	_	_	_	_	_	_	_	_
+8	DINGIR.MEŠ-eš	_	_	_	_	_	_	_	_
+9	pa-aḫ-ša-an-da-ru	_	_	_	_	_	_	_	_
+
+# sent_id = 14.15
+# text = NIM.LÀL te-ri-ya-aš UD-aš mi-u-wa-aš UD-aš KASKAL-an pa-a-an-du
+# translation = Let the bees go on a journey of three or four days.
+# source = KUB 43.60 i 10-11 (OH/NS)
+1	NIM.LÀL	_	_	_	_	_	_	_	_
+2	te-ri-ya-aš	_	_	_	_	_	_	_	_
+3	UD-aš	_	_	_	_	_	_	_	_
+4	mi-u-wa-aš	_	_	_	_	_	_	_	_
+5	UD-aš	_	_	_	_	_	_	_	_
+6	KASKAL-an	_	_	_	_	_	_	_	_
+7	pa-a-an-du	_	_	_	_	_	_	_	_
+
+# sent_id = 14.16-1
+# text = nu I-NA URU-A-ri-ip-ša-a an-da-[an za-aḫ-ḫi-ya i-ya-an]-ni-[ya-nu-un]
+# translation = I set out to Aripša for battle.
+# source = KBo 4.4 iv 4-5 (NH) [freely restored version]
+1	nu	_	_	_	_	_	_	_	_
+2	I-NA	_	_	_	_	_	_	_	_
+3-4	URU-A-ri-ip-ša-a	_	_	_	_	_	_	_	_
+3	URU	_	_	_	_	_	_	_	_
+4	A-ri-ip-ša-a	_	_	_	_	_	_	_	_
+5	an-da-[an	_	_	_	_	_	_	_	_
+6	za-aḫ-ḫi-ya	_	_	_	_	_	_	_	_
+7	i-ya-an]-ni-[ya-nu-un]	_	_	_	_	_	_	_	_
+
+# sent_id = 14.16-2
+# text = a-ši=ma=kán URU-A-ri-ip-ša-aš [ŠÀ A.A]B.BA ki-it-ta-ri
+# translation = But that Aripša lies on the sea.
+# source = KBo 4.4 iv 4-5 (NH) [freely restored version]
+1-3	a-ši=ma=kán	_	_	_	_	_	_	_	_
+1	a-ši	_	_	_	_	_	_	_	_
+2	ma	_	_	_	_	_	_	_	_
+3	kán	_	_	_	_	_	_	_	_
+4-5	URU-A-ri-ip-ša-aš	_	_	_	_	_	_	_	_
+4	URU	_	_	_	_	_	_	_	_
+5	A-ri-ip-ša-aš	_	_	_	_	_	_	_	_
+6	[ŠÀ	_	_	_	_	_	_	_	_
+7	A.A]B.BA	_	_	_	_	_	_	_	_
+8	ki-it-ta-ri	_	_	_	_	_	_	_	_
+
+# sent_id = 14.17
+# text = nu-u=š-ša-[an ḫa-a]n-te-ez-zi-ya GIŠ-BANŠUR-i ku-iš 1 NINDA.GUR4.RA ki-it-ta-at … n=a-an=ša-an A-NA GIŠ-BANŠUR.GAL … še-er da-a-i
+# translation = Which 1 loaf of leavened bread lay on the foremost table ... he will put ... it on the big table.
+# source = KBo 17.75 i 46-47 (OH/NS) [restored and excerpted version]
+1-2	nu-u=š-ša-[an	_	_	_	_	_	_	_	_
+1	nu-u	_	_	_	_	_	_	_	_
+2	š-ša-[an	_	_	_	_	_	_	_	_
+3	ḫa-a]n-te-ez-zi-ya	_	_	_	_	_	_	_	_
+4-5	GIŠ-BANŠUR-i	_	_	_	_	_	_	_	_
+4	GIŠ	_	_	_	_	_	_	_	_
+5	BANŠUR-i	_	_	_	_	_	_	_	_
+6	ku-iš	_	_	_	_	_	_	_	_
+7	1	_	_	_	_	_	_	_	_
+8	NINDA.GUR4.RA	_	_	_	_	_	_	_	_
+9	ki-it-ta-at	_	_	_	_	_	_	_	_
+10	…	_	_	_	_	_	_	_	_
+11-13	n=a-an=ša-an	_	_	_	_	_	_	_	_
+11	n	_	_	_	_	_	_	_	_
+12	a-an	_	_	_	_	_	_	_	_
+13	ša-an	_	_	_	_	_	_	_	_
+14	A-NA	_	_	_	_	_	_	_	_
+15-16	GIŠ-BANŠUR.GAL	_	_	_	_	_	_	_	_
+15	GIŠ	_	_	_	_	_	_	_	_
+16	BANŠUR.GAL	_	_	_	_	_	_	_	_
+17	…	_	_	_	_	_	_	_	_
+18	še-er	_	_	_	_	_	_	_	_
+19	da-a-i	_	_	_	_	_	_	_	_
+

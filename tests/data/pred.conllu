@@ -1,0 +1,12 @@
+# sent_id = p1
+# text = Vino al mercado.
+1	Vino	venir	VERB	_	_	0	root	_	Conf=lemma:0.90,upos:0.80
+2	al	_	_	_	_	1	obl	_	_
+3	mercado	mercado	NOUN	_	_	1	obl	_	SpaceAfter=No
+4	.	.	PUNCT	_	_	1	punct	_	_
+
+# sent_id = p2
+# text = the dog
+1	the	the	DET	_	_	2	det	_	_
+2	dog	dog	NOUN	_	_	0	root	_	_
+

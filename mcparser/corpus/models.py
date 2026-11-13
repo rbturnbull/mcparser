@@ -1,0 +1,334 @@
+"""Pydantic models returned by the corpus store (and hence by the MCP tools)."""
+
+from __future__ import annotations
+
+from typing import Literal
+
+from pydantic import BaseModel, Field
+
+from .conllu import Token
+from .validation import Issue
+
+FlagStatus = Literal["open", "resolved", "dismissed"]
+
+
+class Flag(BaseModel):
+    """A request for the agent responsible for ``column`` to review a cell or sentence."""
+
+    id: int
+    sent_id: str
+    token_id: str | None = Field(None, description="None for a sentence-level flag.")
+    column: str = Field(description="The element to review; 'form' means segmentation.")
+    reason: str
+    suggestion: str | None = None
+    raised_by: str
+    status: FlagStatus = "open"
+    resolved_by: str | None = None
+    note: str | None = None
+    created: str
+    round: int | None = None
+
+
+class Edit(BaseModel):
+    """One entry in a source's edit history."""
+
+    seq: int
+    time: str
+    sent_id: str
+    token_id: str | None = None
+    action: str
+    column: str | None = None
+    old: str | None = None
+    new: str | None = None
+    confidence: float | None = None
+    reason: str = ""
+    agent: str
+    round: int | None = None
+
+
+class SourceInfo(BaseModel):
+    name: str
+    path: str
+    mode: Literal["ro", "rw"]
+    default_confidence: float
+    sentences: int
+    words: int
+    open_flags: int
+
+
+class SentenceSummary(BaseModel):
+    source: str
+    sent_id: str
+    position: int
+    text: str
+    words: int
+    confidence: float = Field(description="Mean confidence over the scored cells of the sentence's words.")
+    open_flags: int
+
+
+class SentencePage(BaseModel):
+    total: int
+    sentences: list[SentenceSummary]
+
+
+class SentenceView(BaseModel):
+    source: str
+    sent_id: str
+    position: int
+    text: str
+    conllu: str
+    tokens: list[Token] | None = None
+    confidence: float
+    open_flags: list[Flag]
+    issues: list[Issue]
+
+
+class TokenRef(BaseModel):
+    id: str
+    form: str
+    lemma: str
+    upos: str
+    deprel: str
+
+
+class TokenView(BaseModel):
+    source: str
+    sent_id: str
+    token: Token
+    confidence: dict[str, float] = Field(description="Effective confidence for each annotation column.")
+    head: TokenRef | None = Field(None, description="The head word (None for the root or an unknown head).")
+    dependents: list[TokenRef]
+    multiword: TokenRef | None = Field(None, description="The multiword token containing this word, if any.")
+
+
+class TokenHit(BaseModel):
+    source: str
+    sent_id: str
+    token_id: str
+    form: str
+    lemma: str
+    upos: str
+    xpos: str
+    feats: str
+    head: str
+    deprel: str
+    misc: str
+    head_form: str | None = Field(None, description="Form of the head word; None for the root.")
+    confidence: float
+    context: str = Field(description="Neighbouring words with the hit marked as [[form]].")
+
+
+class GroupCount(BaseModel):
+    values: dict[str, str]
+    count: int
+
+
+class TokenSearch(BaseModel):
+    total: int
+    groups: list[GroupCount] = Field(description="All matches grouped by the requested columns, most frequent first.")
+    hits: list[TokenHit]
+
+
+class SentenceHit(BaseModel):
+    source: str
+    sent_id: str
+    text: str
+    score: float
+    confidence: float
+
+
+class MultiwordAnalysis(BaseModel):
+    pieces: list[str]
+    upos: list[str]
+    count: int
+    examples: list[str] = Field(description="'source:sent_id:range_id' references.")
+
+
+class MultiwordSearch(BaseModel):
+    surface: str
+    total: int
+    analyses: list[MultiwordAnalysis]
+    as_single_word: int = Field(description="How often the surface form occurs as an unsplit word.")
+
+
+class ArcHit(BaseModel):
+    source: str
+    sent_id: str
+    dependent: TokenRef
+    head: TokenRef | None = Field(description="None when the dependent is the root.")
+    deprel: str
+    direction: Literal["left", "right", "root"] = Field(description="Side of the dependent on which its head lies.")
+    distance: int
+    confidence: float
+    context: str
+
+
+class ValueCount(BaseModel):
+    value: str
+    count: int
+
+
+class FeatureConvention(BaseModel):
+    """How a feature is written with a UPOS, Case and Number, where the treebank uses combined values (``Masc,Neut``)."""
+
+    upos: str
+    case: str
+    number: str
+    feature: str
+    values: list[ValueCount]
+
+    @property
+    def total(self) -> int:
+        return sum(value.count for value in self.values)
+
+
+class CorpusInfo(BaseModel):
+    """An unannotated text corpus (see :class:`~mcparser.corpus.textcorpus.TextCorpus`)."""
+
+    name: str
+    files: list[str]
+    lines: int
+    words: int
+    types: int
+
+
+class CorpusExample(BaseModel):
+    """One occurrence of a word in an unannotated corpus, with the words around it."""
+
+    file: str
+    line: int = Field(description="Line number within the file (1-based).")
+    before: str
+    form: str
+    after: str
+
+
+class CorpusSearch(BaseModel):
+    """How a word is used in an unannotated corpus: counts, neighbours, longer words containing it, examples."""
+
+    corpus: str
+    form: str
+    total: int = Field(description="Occurrences of the word (any of the matching forms).")
+    forms: list[ValueCount] = Field(description="The spellings that matched (more than one with loose matching).")
+    previous: list[ValueCount] = Field(description="Words right before it, commonest first.")
+    next: list[ValueCount] = Field(description="Words right after it, commonest first.")
+    sample: int = Field(description="Occurrences the neighbours were counted over (the first lines containing it).")
+    prefixed: list[ValueCount] = Field(description="Longer words ending in it, e.g. with a proclitic.")
+    suffixed: list[ValueCount] = Field(description="Longer words starting with it, e.g. with an enclitic.")
+    examples: list[CorpusExample]
+
+
+class FixedExpression(BaseModel):
+    """A word sequence of a sentence that the trusted data annotates as a fixed expression."""
+
+    start: str = Field(description="Id of the first word (the head of the expression in UD).")
+    end: str
+    forms: list[str]
+    fixed: int = Field(description="Times the sequence is annotated as fixed in the trusted data.")
+    occurrences: int = Field(description="Times the sequence occurs in the trusted data at all.")
+
+
+class RelationStats(BaseModel):
+    """How the trusted data labels arcs like a given one."""
+
+    basis: str = Field(description="Which properties were matched, e.g. 'lemma+head lemma'; 'none' if nothing.")
+    total: int
+    deprels: list[ValueCount]
+
+
+class ArcSearch(BaseModel):
+    total: int
+    deprels: list[ValueCount]
+    directions: list[ValueCount]
+    hits: list[ArcHit]
+
+
+class CellRef(BaseModel):
+    sent_id: str
+    token_id: str
+    form: str
+    column: str
+    value: str
+    confidence: float
+
+
+class CellPage(BaseModel):
+    total: int
+    cells: list[CellRef]
+
+
+class FlagPage(BaseModel):
+    total: int
+    flags: list[Flag]
+
+
+class SentenceIssue(BaseModel):
+    sent_id: str
+    issue: Issue
+
+
+class ValidationReport(BaseModel):
+    total: int
+    errors: int
+    warnings: int
+    issues: list[SentenceIssue]
+
+
+class ParallelView(BaseModel):
+    """A sentence pair of an alignment set, with its links."""
+
+    alignment: str
+    sent_id: str
+    source_a: str
+    source_b: str
+    conllu_a: str
+    conllu_b: str
+    links: str = Field(description="Ugarit links, e.g. '1-1S 2-3P' (word id in A - word id in B).")
+    confidence: dict[str, float] = Field(description="Confidence of each link, keyed 'A-B'.")
+    agents: dict[str, str] = Field(default_factory=dict, description="Who last set or changed each link, keyed 'A-B'.")
+    unaligned_a: list[str] = Field(description="Word ids in A without a link.")
+    unaligned_b: list[str] = Field(description="Word ids in B without a link.")
+
+
+class TranslationSearch(BaseModel):
+    """What a lemma is aligned to in the other source."""
+
+    lemma: str
+    side: str
+    occurrences: int = Field(description="Words with this lemma in aligned sentence pairs.")
+    unaligned: int = Field(description="Of those, how many have no link.")
+    candidates: list[ValueCount] = Field(description="Lemmas on the other side, most often linked first.")
+    examples: list[str] = Field(description="'alignment:sent_id form→form' references.")
+
+
+class LinkRef(BaseModel):
+    alignment: str
+    sent_id: str
+    link: str
+    form_a: str
+    form_b: str
+    confidence: float
+
+
+class LinkPage(BaseModel):
+    total: int
+    links: list[LinkRef]
+
+
+class CellUpdate(BaseModel):
+    """A change to one cell: a new value, a new confidence, or both."""
+
+    token_id: str
+    column: str
+    value: str | None = Field(None, description="New value; omit to change only the confidence.")
+    confidence: float | None = Field(None, ge=0.0, le=1.0)
+    reason: str = ""
+
+
+class EditResult(BaseModel):
+    source: str
+    sent_id: str
+    edits: list[Edit]
+    conllu: str = Field(description="The sentence after the edit.")
+    issues: list[Issue]
+    id_map: dict[str, str | None] | None = Field(None, description="For segmentation edits: old id -> new id.")
+    new_ids: list[str] | None = None

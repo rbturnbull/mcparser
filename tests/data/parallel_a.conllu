@@ -1,0 +1,15 @@
+# sent_id = s1
+# text = Deus amat mundum
+1	Deus	deus	NOUN	_	_	2	nsubj	_	_
+2	amat	amo	VERB	_	_	0	root	_	_
+3	mundum	mundus	NOUN	_	_	2	obj	_	_
+
+# sent_id = s2
+# text = Deus videt
+1	Deus	deus	NOUN	_	_	2	nsubj	_	_
+2	videt	_	VERB	_	_	0	root	_	_
+
+# sent_id = s3
+# text = solus
+1	solus	solus	ADJ	_	_	0	root	_	_
+

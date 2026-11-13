@@ -1,0 +1,382 @@
+# source = Histories, Book 1, chapter 11
+# text = ἐώθεε γὰρ καὶ πρόσθε ὅκως ἡ βασίλεια καλέοι φοιτᾶν
+# sent_id = 64438
+1	ἐώθεε	ἔθω	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pqp|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.90,upos:0.95,xpos:0.92,feats:0.88,head:0.97,deprel:0.99
+2	γὰρ	γάρ	ADV	Df	_	1	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.93,deprel:0.97
+3	καὶ	καί	ADV	Df	_	4	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.80,xpos:0.85,feats:0.97,head:0.82,deprel:0.85
+4	πρόσθε	πρόσθεν	ADV	Df	_	1	advmod	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.92,feats:0.95,head:0.80,deprel:0.90
+5	ὅκως	ὅπως	SCONJ	G-	_	8	mark	_	Conf=form:0.97,lemma:0.97,upos:0.92,xpos:0.90,feats:0.95,head:0.95,deprel:0.95
+6	ἡ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	7	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.97
+7	βασίλεια	βασίλεια	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	8	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+8	καλέοι	καλέω	VERB	V-	Mood=Opt|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	9	advcl	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.93,head:0.65,deprel:0.90
+9	φοιτᾶν	φοιτάω	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	1	xcomp	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.93,head:0.92,deprel:0.88
+
+# source = Histories, Book 1, chapter 11
+# text = ὡς δὲ ὁ Γύγης ἀπίκετο ἔλεγε ἡ γυνὴ τάδε
+# sent_id = 64439
+1	ὡς	ὡς	SCONJ	G-	_	5	mark	_	Conf=form:0.97,lemma:0.97,upos:0.88,xpos:0.90,feats:0.92,head:0.96,deprel:0.97
+2	δὲ	δέ	ADV	Df	_	6	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.96
+3	ὁ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	4	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
+4	Γύγης	Γύγης	PROPN	Ne	Case=Nom|Gender=Masc|Number=Sing	5	nsubj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.92,deprel:0.95
+5	ἀπίκετο	ἀφικνέομαι	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	6	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+6	ἔλεγε	λέγω	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.99
+7	ἡ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	8	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
+8	γυνὴ	γυνή	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	6	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+9	τάδε	ὅδε	PRON	Pd	Case=Acc|Gender=Neut|Number=Plur	6	obj	_	Conf=form:0.97,lemma:0.97,upos:0.88,xpos:0.97,feats:0.90,head:0.95,deprel:0.95
+
+# source = Histories, Book 1, chapter 11
+# text = νῦν τοί δυῶν ὁδῶν παρεουσέων Γύγη δίδωμί αἵρεσιν
+# sent_id = 64440
+1	νῦν	νῦν	ADV	Df	_	7	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.95
+2	τοί	σύ	PRON	Pp	Case=Dat|Gender=Masc|Number=Sing|Person=2|PronType=Prs	7	obl:arg	_	Conf=form:0.97,lemma:0.95,upos:0.90,xpos:0.97,feats:0.90,head:0.85,deprel:0.85
+3	δυῶν	δύο	NUM	Ma	Case=Gen|Gender=Masc|Number=Plur	4	nummod	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.95,feats:0.50,head:0.95,deprel:0.90
+4	ὁδῶν	ὁδός	NOUN	Nb	Case=Gen|Gender=Fem|Number=Plur	5	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.97,head:0.92,deprel:0.88
+5	παρεουσέων	πάρειμι	VERB	V-	Case=Gen|Gender=Fem|Number=Plur|Tense=Pres|VerbForm=Part|Voice=Act	7	advcl	_	Conf=form:0.97,lemma:0.93,upos:0.75,xpos:0.85,feats:0.95,head:0.88,deprel:0.82
+6	Γύγη	Γύγης	PROPN	Ne	Case=Voc|Gender=Masc|Number=Sing	7	vocative	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.90,head:0.92,deprel:0.90
+7	δίδωμί	δίδωμι	VERB	V-	Mood=Ind|Number=Sing|Person=1|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.97,head:0.96,deprel:0.99
+8	αἵρεσιν	αἵρεσις	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	7	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.92
+
+# source = Histories, Book 1, chapter 11
+# text = ὁκοτέρην βούλεαι τραπέσθαι
+# sent_id = 75001
+1	ὁκοτέρην	ὁπότερος	PRON	Pi	Case=Acc|Gender=Fem|Number=Sing|PronType=Int	3	obj	_	Conf=form:0.97,lemma:0.88,upos:0.65,xpos:0.75,feats:0.85,head:0.88,deprel:0.80
+2	βούλεαι	βούλομαι	VERB	V-	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Mid	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.99
+3	τραπέσθαι	τρέπω	VERB	V-	Aspect=Perf|Tense=Past|VerbForm=Inf|Voice=Mid	2	xcomp	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.93,head:0.92,deprel:0.85
+
+# source = Histories, Book 1, chapter 11
+# text = ἢ γὰρ Κανδαύλεα ἀποκτείνας ἐμέ τε καὶ τὴν βασιληίην ἔχε τὴν Λυδῶν ἢ αὐτόν σε αὐτίκα οὕτω ἀποθνήσκειν δεῖ ὡς ἂν μὴ πάντα πειθόμενος Κανδαύλῃ τοῦ λοιποῦ ἴδῃς τὰ μὴ σε δεῖ
+# sent_id = 64441
+1	ἢ	ἤ	CCONJ	C-	_	10	cc	_	Conf=form:0.97,lemma:0.97,upos:0.88,xpos:0.93,feats:0.97,head:0.80,deprel:0.80
+2	γὰρ	γάρ	ADV	Df	_	10	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+3	Κανδαύλεα	Κανδαύλης	PROPN	Ne	Case=Acc|Gender=Masc|Number=Sing	4	obj	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.95,deprel:0.90
+4	ἀποκτείνας	ἀποκτείνω	VERB	V-	Aspect=Perf|Case=Nom|Gender=Masc|Number=Sing|Tense=Past|VerbForm=Part|Voice=Act	10	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.85
+5	ἐμέ	ἐγώ	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=1|PronType=Prs	10	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.85
+6	τε	τε	CCONJ	C-	_	9	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.90
+7	καὶ	καί	CCONJ	C-	_	9	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+8	τὴν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	9	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+9	βασιληίην	βασιλεία	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	5	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.85
+10	ἔχε	ἔχω	VERB	V-	Mood=Imp|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+11	τὴν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	12	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.70,deprel:0.90
+12	Λυδῶν	Λυδός	NOUN	Nb	Case=Gen|Gender=Masc|Number=Plur	9	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.85
+13	ἢ	ἤ	CCONJ	C-	_	19	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.95,feats:0.97,head:0.85,deprel:0.85
+14	αὐτόν	αὐτός	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	15	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.70
+15	σε	σύ	PRON	Pp	Case=Acc|Gender=Fem,Masc|Number=Sing|Person=2|PronType=Prs	18	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.85,head:0.75,deprel:0.75
+16	αὐτίκα	αὐτίκα	ADV	Df	_	18	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.95
+17	οὕτω	οὕτω(ς)	ADV	Df	_	18	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.90
+18	ἀποθνήσκειν	ἀποθνῄσκω	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	19	ccomp	_	Conf=form:0.97,lemma:0.96,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.85
+19	δεῖ	δεῖ	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	10	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.80
+20	ὡς	ὡς	SCONJ	G-	_	28	mark	_	Conf=form:0.97,lemma:0.97,upos:0.82,xpos:0.90,feats:0.90,head:0.90,deprel:0.90
+21	ἂν	ἄν	ADV	Df	_	28	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+22	μὴ	μή	ADV	Df	Polarity=Neg	28	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
+23	πάντα	πᾶς	PRON	Px	Case=Acc|Gender=Neut|Number=Plur	24	obj	_	Conf=form:0.97,lemma:0.97,upos:0.70,xpos:0.97,feats:0.93,head:0.80,deprel:0.80
+24	πειθόμενος	πείθω	VERB	V-	Case=Nom|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Pass	28	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.70,head:0.85,deprel:0.80
+25	Κανδαύλῃ	Κανδαύλης	PROPN	Ne	Case=Dat|Gender=Masc|Number=Sing	24	obl:arg	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.95,head:0.90,deprel:0.75
+26	τοῦ	ὁ	DET	S-	Case=Gen|Definite=Def|Gender=Neut|Number=Sing|PronType=Dem	27	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.80,head:0.95,deprel:0.97
+27	λοιποῦ	λοιπός	ADJ	A-	Case=Gen|Degree=Pos|Gender=Neut|Number=Sing	28	obl	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.97,feats:0.90,head:0.80,deprel:0.50
+28	ἴδῃς	ὁράω	VERB	V-	Aspect=Perf|Mood=Sub|Number=Sing|Person=2|Tense=Past|VerbForm=Fin|Voice=Act	19	advcl	_	Conf=form:0.97,lemma:0.96,upos:0.95,xpos:0.97,feats:0.90,head:0.70,deprel:0.85
+29	τὰ	ὁ	PRON	Pd	Case=Acc|Definite=Def|Gender=Neut|Number=Plur|PronType=Dem	28	obj	_	Conf=form:0.97,lemma:0.97,upos:0.80,xpos:0.60,feats:0.60,head:0.85,deprel:0.75
+30	μὴ	μή	ADV	Df	Polarity=Neg	32	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+31	σε	σύ	PRON	Pp	Case=Acc|Gender=Fem,Masc|Number=Sing|Person=2|PronType=Prs	32	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.85,head:0.85,deprel:0.60
+32	δεῖ	δεῖ	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	29	acl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.80
+
+# source = Histories, Book 1, chapter 11
+# text = ἀλλ’ ἤτοι κεῖνόν γε τὸν ταῦτα βουλεύσαντα δεῖ ἀπόλλυσθαι ἢ σε τὸν ἐμὲ γυμνήν θεησάμενον καὶ ποιήσαντα οὐ νομιζόμενα
+# sent_id = 64442
+1	ἀλλ’	ἀλλά	CCONJ	C-	_	8	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.90
+2	ἤτοι	ἤτοι	CCONJ	C-	_	3	cc	_	Conf=form:0.97,lemma:0.95,upos:0.80,xpos:0.90,feats:0.90,head:0.70,deprel:0.85
+3	κεῖνόν	ἐκεῖνος	PRON	Pd	Case=Acc|Gender=Masc|Number=Sing	9	nsubj	_	Conf=form:0.97,lemma:0.96,upos:0.88,xpos:0.95,feats:0.90,head:0.80,deprel:0.85
+4	γε	γε	ADV	Df	_	3	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.95
+5	τὸν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	7	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.88
+6	ταῦτα	οὗτος	PRON	Pd	Case=Acc|Gender=Neut|Number=Plur	7	obj	_	Conf=form:0.97,lemma:0.97,upos:0.92,xpos:0.97,feats:0.95,head:0.92,deprel:0.93
+7	βουλεύσαντα	βουλεύω	VERB	V-	Aspect=Perf|Case=Acc|Gender=Masc|Number=Sing|Tense=Past|VerbForm=Part|Voice=Act	3	acl	_	Conf=form:0.97,lemma:0.96,upos:0.95,xpos:0.97,feats:0.93,head:0.85,deprel:0.80
+8	δεῖ	δεῖ	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.99
+9	ἀπόλλυσθαι	ἀπόλλυμι	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Mid	8	ccomp	_	Conf=form:0.97,lemma:0.96,upos:0.95,xpos:0.95,feats:0.60,head:0.88,deprel:0.85
+10	ἢ	ἤ	CCONJ	C-	_	11	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.95,feats:0.97,head:0.88,deprel:0.90
+11	σε	σύ	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=2|PronType=Prs	3	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.50,head:0.80,deprel:0.88
+12	τὸν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	15	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.88
+13	ἐμὲ	ἐγώ	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=1|PronType=Prs	15	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.90
+14	γυμνήν	γυμνός	ADJ	A-	Case=Acc|Degree=Pos|Gender=Fem|Number=Sing	15	xcomp	_	Conf=form:0.97,lemma:0.98,upos:0.88,xpos:0.95,feats:0.95,head:0.80,deprel:0.60
+15	θεησάμενον	θεάομαι	VERB	V-	Aspect=Perf|Case=Acc|Gender=Masc|Number=Sing|Tense=Past|VerbForm=Part|Voice=Mid	11	acl	_	Conf=form:0.97,lemma:0.96,upos:0.95,xpos:0.95,feats:0.85,head:0.82,deprel:0.80
+16	καὶ	καί	CCONJ	C-	_	17	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.95,feats:0.97,head:0.90,deprel:0.95
+17	ποιήσαντα	ποιέω	VERB	V-	Aspect=Perf|Case=Acc|Gender=Masc|Number=Sing|Tense=Past|VerbForm=Part|Voice=Act	15	conj	_	Conf=form:0.97,lemma:0.98,upos:0.95,xpos:0.97,feats:0.90,head:0.88,deprel:0.90
+18	οὐ	οὐ	ADV	Df	Polarity=Neg	19	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+19	νομιζόμενα	νομίζω	VERB	V-	Case=Acc|Gender=Neut|Number=Plur|Tense=Pres|VerbForm=Part|Voice=Pass	17	obj	_	Conf=form:0.97,lemma:0.97,upos:0.92,xpos:0.95,feats:0.85,head:0.82,deprel:0.65
+
+# source = Histories, Book 1, chapter 11
+# text = ὁ δὲ Γύγης τέως μὲν ἀπεθώμαζε τὰ λεγόμενα
+# sent_id = 64443
+1	ὁ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	3	det	_	Conf=form:0.97,lemma:0.97,upos:0.93,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+2	δὲ	δέ	ADV	Df	_	6	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+3	Γύγης	Γύγης	PROPN	Ne	Case=Nom|Gender=Masc|Number=Sing	6	nsubj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.95,deprel:0.95
+4	τέως	τέως	ADV	Df	_	6	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+5	μὲν	μέν	ADV	Df	_	6	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+6	ἀπεθώμαζε	ἀποθαυμάζω	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.96,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.99
+7	τὰ	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Neut|Number=Plur|PronType=Dem	8	det	_	Conf=form:0.97,lemma:0.97,upos:0.93,xpos:0.97,feats:0.97,head:0.95,deprel:0.92
+8	λεγόμενα	λέγω	VERB	V-	Case=Acc|Gender=Neut|Number=Plur|Tense=Pres|VerbForm=Part|Voice=Pass	6	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.92,deprel:0.87
+
+# source = Histories, Book 1, chapter 11
+# text = μετὰ δὲ ἱκέτευε μὴ μιν ἀναγκαίῃ ἐνδέειν διακρῖναι τοιαύτην αἵρεσιν
+# sent_id = 75039
+1	μετὰ	μετά	ADV	Df	_	3	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.80,feats:0.97,head:0.85,deprel:0.88
+2	δὲ	δέ	ADV	Df	_	3	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+3	ἱκέτευε	ἱκετεύω	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.92,head:0.95,deprel:0.99
+4	μὴ	μή	ADV	Df	Polarity=Neg	7	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.90
+5	μιν	μιν	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	7	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.88,deprel:0.85
+6	ἀναγκαίῃ	ἀνάγκη	NOUN	Nb	Case=Dat|Gender=Fem|Number=Sing	7	obl	_	Conf=form:0.97,lemma:0.88,upos:0.95,xpos:0.97,feats:0.95,head:0.90,deprel:0.80
+7	ἐνδέειν	ἐνδέω	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	3	xcomp	_	Conf=form:0.97,lemma:0.85,upos:0.95,xpos:0.97,feats:0.92,head:0.85,deprel:0.65
+8	διακρῖναι	διακρίνω	VERB	V-	Aspect=Perf|Tense=Past|VerbForm=Inf|Voice=Act	7	xcomp	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.90,head:0.80,deprel:0.60
+9	τοιαύτην	τοιοῦτος	DET	Pd	Case=Acc|Gender=Fem|Number=Sing	10	det	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+10	αἵρεσιν	αἵρεσις	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	8	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+
+# source = Histories, Book 1, chapter 11
+# text = οὔκων δὴ ἔπειθε ἀλλ’ ὥρα ἀναγκαίην ἀληθέως προκειμένην ἢ τὸν δεσπότεα ἀπολλύναι ἢ αὐτὸν ὑπ’ ἄλλων ἀπόλλυσθαι
+# sent_id = 64444
+1	οὔκων	οὔκουν	ADV	Df	_	3	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+2	δὴ	δή	ADV	Df	_	3	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+3	ἔπειθε	πείθω	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+4	ἀλλ’	ἀλλά	CCONJ	C-	_	5	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+5	ὥρα	ὁράω	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	3	conj	_	Conf=form:0.97,lemma:0.90,upos:0.95,xpos:0.97,feats:0.90,head:0.85,deprel:0.80
+6	ἀναγκαίην	ἀνάγκη	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	5	obj	_	Conf=form:0.97,lemma:0.88,upos:0.95,xpos:0.97,feats:0.97,head:0.88,deprel:0.85
+7	ἀληθέως	ἀληθῶς	ADV	Df	_	8	advmod	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.95,feats:0.93,head:0.85,deprel:0.90
+8	προκειμένην	πρόκειμαι	VERB	V-	Case=Acc|Gender=Fem|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Mid	6	acl	_	Conf=form:0.97,lemma:0.95,upos:0.90,xpos:0.97,feats:0.90,head:0.80,deprel:0.85
+9	ἢ	ἤ	CCONJ	C-	_	12	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.95,feats:0.97,head:0.85,deprel:0.85
+10	τὸν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	11	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+11	δεσπότεα	δεσπότης	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	12	obj	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.97,head:0.90,deprel:0.85
+12	ἀπολλύναι	ἀπόλλυμι	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	6	nmod	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.90,head:0.60,deprel:0.40
+13	ἢ	ἤ	CCONJ	C-	_	17	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.95,feats:0.97,head:0.85,deprel:0.85
+14	αὐτὸν	αὐτός	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	17	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.55
+15	ὑπ’	ὑπό	ADP	R-	_	16	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+16	ἄλλων	ἄλλος	ADJ	A-	Case=Gen|Degree=Pos|Gender=Masc|Number=Plur	17	obl:agent	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.95,feats:0.95,head:0.90,deprel:0.85
+17	ἀπόλλυσθαι	ἀπόλλυμι	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Mid	12	conj	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.90,head:0.85,deprel:0.85
+
+# source = Histories, Book 1, chapter 11
+# text = αἱρέεται αὐτὸς περιεῖναι
+# sent_id = 64445
+1	αἱρέεται	αἱρέω	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Mid	0	root	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.95,deprel:0.99
+2	αὐτὸς	αὐτός	PRON	Pd	Case=Nom|Gender=Masc|Number=Sing	1	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.70,xpos:0.80,feats:0.90,head:0.85,deprel:0.65
+3	περιεῖναι	περίειμι	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	1	xcomp	_	Conf=form:0.97,lemma:0.93,upos:0.95,xpos:0.97,feats:0.95,head:0.90,deprel:0.65
+
+# source = Histories, Book 1, chapter 11
+# text = ἐπειρώτα δὴ λέγων τάδε
+# sent_id = 64446
+1	ἐπειρώτα	ἐπερωτάω	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+2	δὴ	δή	ADV	Df	_	1	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+3	λέγων	λέγω	VERB	V-	Case=Nom|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Act	1	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.90
+4	τάδε	ὅδε	PRON	Pd	Case=Acc|Gender=Neut|Number=Plur	3	obj	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.97,feats:0.93,head:0.95,deprel:0.95
+
+# source = Histories, Book 1, chapter 11
+# text = ἐπεί με ἀναγκάζεις δεσπότεα τὸν ἐμὸν κτείνειν οὐκ ἐθέλοντα φέρε ἀκούσω τέῳ καὶ τρόπῳ ἐπιχειρήσομεν αὐτῷ
+# sent_id = 64447
+1	ἐπεί	ἐπεί	SCONJ	G-	_	3	mark	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.90,feats:0.92,head:0.93,deprel:0.93
+2	με	ἐγώ	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=1|PronType=Prs	3	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.90,deprel:0.90
+3	ἀναγκάζεις	ἀναγκάζω	VERB	V-	Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	11	advcl	_	Conf=form:0.97,lemma:0.98,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.88
+4	δεσπότεα	δεσπότης	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	7	obj	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.93
+5	τὸν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	4	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+6	ἐμὸν	ἐμός	DET	Ps	Case=Acc|Gender=Masc|Number=Sing|Person=1|Poss=Yes	4	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.93,deprel:0.97
+7	κτείνειν	κτείνω	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	3	xcomp	_	Conf=form:0.97,lemma:0.98,upos:0.96,xpos:0.97,feats:0.95,head:0.90,deprel:0.80
+8	οὐκ	οὐ	ADV	Df	Polarity=Neg	9	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+9	ἐθέλοντα	ἐθέλω	VERB	V-	Case=Acc|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Act	2	acl	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.30,deprel:0.70
+10	φέρε	φέρω	VERB	V-	Mood=Imp|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act	11	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.70,deprel:0.75
+11	ἀκούσω	ἀκούω	VERB	V-	Aspect=Perf|Mood=Sub|Number=Sing|Person=1|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.96,upos:0.95,xpos:0.90,feats:0.85,head:0.95,deprel:0.99
+12	τέῳ	τίς	PRON	Pi	Case=Dat|Gender=Masc|Number=Sing|PronType=Int	14	det	_	Conf=form:0.97,lemma:0.88,upos:0.88,xpos:0.88,feats:0.88,head:0.88,deprel:0.88
+13	καὶ	καί	ADV	C-	_	12	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.35,feats:0.97,head:0.40,deprel:0.50
+14	τρόπῳ	τρόπος	NOUN	Nb	Case=Dat|Gender=Masc|Number=Sing	15	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.88
+15	ἐπιχειρήσομεν	ἐπιχειρέω	VERB	V-	Mood=Ind|Number=Plur|Person=1|Tense=Fut|VerbForm=Fin|Voice=Act	11	ccomp	_	Conf=form:0.97,lemma:0.95,upos:0.97,xpos:0.97,feats:0.95,head:0.85,deprel:0.80
+16	αὐτῷ	αὐτός	PRON	Pp	Case=Dat|Gender=Masc|Number=Sing|Person=3|PronType=Prs	15	obl:arg	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.92,deprel:0.85
+
+# source = Histories, Book 1, chapter 11
+# text = ἣ δὲ ὑπολαβοῦσα ἔφη
+# sent_id = 64448
+1	ἣ	ὁ	PRON	Pp	Case=Nom|Gender=Fem|Number=Sing|Person=3|PronType=Prs	4	nsubj	_	Conf=form:0.97,lemma:0.90,upos:0.97,xpos:0.75,feats:0.85,head:0.92,deprel:0.97
+2	δὲ	δέ	ADV	Df	_	4	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+3	ὑπολαβοῦσα	ὑπολαμβάνω	VERB	V-	Aspect=Perf|Case=Nom|Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part|Voice=Act	4	advcl	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.97
+4	ἔφη	φημί	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.99
+
+# source = Histories, Book 1, chapter 11
+# text = ἐκ τοῦ αὐτοῦ μὲν χωρίου ἡ ὁρμή ἔσται ὅθεν περ καὶ ἐκεῖνος ἐμέ ἐπεδέξατο γυμνήν
+# sent_id = 75014
+1	ἐκ	ἐκ	ADP	R-	_	5	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.97
+2	τοῦ	ὁ	DET	S-	Case=Gen|Definite=Def|Gender=Neut|Number=Sing|PronType=Dem	5	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.88,head:0.88,deprel:0.88
+3	αὐτοῦ	αὐτός	PRON	Pp	Case=Gen|Gender=Neut|Number=Sing|Person=3|PronType=Prs	5	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.85,head:0.80,deprel:0.85
+4	μὲν	μέν	ADV	Df	_	5	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.95
+5	χωρίου	χωρίον	NOUN	Nb	Case=Gen|Gender=Neut|Number=Sing	0	root	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.80,deprel:0.90
+6	ἡ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	7	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+7	ὁρμή	ὁρμή	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	5	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.80,deprel:0.93
+8	ἔσται	εἰμί	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Mid	5	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.93
+9	ὅθεν	ὅθεν	ADV	Dq	PronType=Rel	14	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.70
+10	περ	πέρ	ADV	Df	_	9	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.93
+11	καὶ	καί	ADV	Df	_	12	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.80,xpos:0.90,feats:0.97,head:0.80,deprel:0.90
+12	ἐκεῖνος	ἐκεῖνος	PRON	Pd	Case=Nom|Gender=Masc|Number=Sing	14	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.93
+13	ἐμέ	ἐγώ	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=1|PronType=Prs	14	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.92
+14	ἐπεδέξατο	ἐπιδέχομαι	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	5	acl	_	Conf=form:0.97,lemma:0.92,upos:0.97,xpos:0.97,feats:0.93,head:0.70,deprel:0.80
+15	γυμνήν	γυμνός	ADJ	A-	Case=Acc|Degree=Pos|Gender=Fem|Number=Sing	14	xcomp	_	Conf=form:0.97,lemma:0.98,upos:0.93,xpos:0.97,feats:0.95,head:0.70,deprel:0.60
+
+# source = Histories, Book 1, chapter 11
+# text = ὑπνωμένῳ δὲ ἡ ἐπιχείρησις ἔσται
+# sent_id = 75042
+1	ὑπνωμένῳ	ὑπνόω	VERB	V-	Case=Dat|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Pass	5	advcl	_	Conf=form:0.97,lemma:0.82,upos:0.92,xpos:0.90,feats:0.60,head:0.70,deprel:0.60
+2	δὲ	δέ	ADV	Df	_	5	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.95
+3	ἡ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	4	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+4	ἐπιχείρησις	ἐπιχείρησις	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	5	nsubj	_	Conf=form:0.97,lemma:0.95,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+5	ἔσται	εἰμί	AUX	V-	Mood=Ind|Number=Sing|Person=3|Tense=Fut|VerbForm=Fin|Voice=Mid	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.93
+
+# source = Histories, Book 1, chapter 12
+# text = ὡς δὲ ἤρτυσαν τὴν ἐπιβουλήν νυκτὸς γενομένης οὐ γὰρ ἐμετίετο ὁ Γύγης οὐδέ οἱ ἦν ἀπαλλαγὴ οὐδεμία ἀλλ’ ἔδεε ἤ αὐτὸν ἀπολωλέναι ἢ Κανδαύλεα εἵπετο ἐς τὸν θάλαμον τῇ γυναικί καί μιν ἐκείνη ἐγχειρίδιον δοῦσα κατακρύπτει ὑπὸ τὴν αὐτὴν θύρην
+# sent_id = 64449
+1	ὡς	ὡς	SCONJ	G-	_	3	mark	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.85,feats:0.90,head:0.95,deprel:0.95
+2	δὲ	δέ	ADV	Df	_	25	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.60,deprel:0.95
+3	ἤρτυσαν	ἀρτύω	VERB	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	25	advcl	_	Conf=form:0.97,lemma:0.92,upos:0.95,xpos:0.97,feats:0.93,head:0.90,deprel:0.95
+4	τὴν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	5	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
+5	ἐπιβουλήν	ἐπιβουλή	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	3	obj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+6	νυκτὸς	νύξ	NOUN	Nb	Case=Gen|Gender=Fem|Number=Sing	7	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.90
+7	γενομένης	γίγνομαι	VERB	V-	Aspect=Perf|Case=Gen|Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part|Voice=Mid	25	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+8	οὐ	οὐ	ADV	Df	Polarity=Neg	10	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+9	γὰρ	γάρ	ADV	Df	_	10	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+10	ἐμετίετο	μετίημι	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	25	parataxis	_	Conf=form:0.97,lemma:0.85,upos:0.95,xpos:0.97,feats:0.90,head:0.70,deprel:0.55
+11	ὁ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	12	det	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
+12	Γύγης	Γύγης	PROPN	Ne	Case=Nom|Gender=Masc|Number=Sing	10	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.97,head:0.92,deprel:0.95
+13	οὐδέ	οὐδέ	CCONJ	C-	_	16	cc	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.95,feats:0.90,head:0.75,deprel:0.90
+14	οἱ	οὗ	PRON	Pp	Case=Dat|Gender=Masc|Number=Sing|Person=3|PronType=Prs	16	obl:arg	_	Conf=form:0.97,lemma:0.90,upos:0.85,xpos:0.80,feats:0.93,head:0.80,deprel:0.60
+15	ἦν	εἰμί	AUX	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	16	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.85
+16	ἀπαλλαγὴ	ἀπαλλαγή	NOUN	Nb	Case=Nom|Gender=Fem|Number=Sing	10	conj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.97,head:0.75,deprel:0.85
+17	οὐδεμία	οὐδείς	DET	Px	Case=Nom|Gender=Fem|Number=Sing	16	det	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+18	ἀλλ’	ἀλλά	CCONJ	C-	_	19	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+19	ἔδεε	δεῖ	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	10	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.85
+20	ἤ	ἤ	CCONJ	C-	_	21	cc	_	Conf=form:0.97,lemma:0.97,upos:0.75,xpos:0.85,feats:0.97,head:0.65,deprel:0.75
+21	αὐτὸν	αὐτός	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	22	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.65
+22	ἀπολωλέναι	ἀπόλλυμι	VERB	V-	Aspect=Perf|Tense=Past|VerbForm=Inf|Voice=Act	19	ccomp	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.90,head:0.85,deprel:0.85
+23	ἢ	ἤ	CCONJ	C-	_	24	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.95,feats:0.97,head:0.85,deprel:0.90
+24	Κανδαύλεα	Κανδαύλης	PROPN	Ne	Case=Acc|Gender=Masc|Number=Sing	21	conj	_	Conf=form:0.97,lemma:0.95,upos:0.90,xpos:0.97,feats:0.97,head:0.60,deprel:0.80
+25	εἵπετο	ἕπομαι	VERB	V-	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.93,head:0.85,deprel:0.97
+26	ἐς	εἰς	ADP	R-	_	28	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
+27	τὸν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	28	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
+28	θάλαμον	θάλαμος	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	25	obl	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.97,head:0.92,deprel:0.90
+29	τῇ	ὁ	DET	S-	Case=Dat|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	30	det	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
+30	γυναικί	γυνή	NOUN	Nb	Case=Dat|Gender=Fem|Number=Sing	25	obl:arg	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.75
+31	καί	καί	CCONJ	C-	_	36	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.95
+32	μιν	μιν	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	36	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.88,deprel:0.90
+33	ἐκείνη	ἐκεῖνος	PRON	Pd	Case=Nom|Gender=Fem|Number=Sing	36	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.97,feats:0.97,head:0.90,deprel:0.95
+34	ἐγχειρίδιον	ἐγχειρίδιον	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	35	obj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.97,head:0.92,deprel:0.95
+35	δοῦσα	δίδωμι	VERB	V-	Aspect=Perf|Case=Nom|Gender=Fem|Number=Sing|Tense=Past|VerbForm=Part|Voice=Act	36	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.92,head:0.90,deprel:0.90
+36	κατακρύπτει	κατακρύπτω	VERB	V-	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	25	conj	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+37	ὑπὸ	ὑπό	ADP	R-	_	40	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
+38	τὴν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	40	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+39	αὐτὴν	αὐτός	DET	Pd	Case=Acc|Gender=Fem|Number=Sing	40	det	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.90,feats:0.85,head:0.92,deprel:0.90
+40	θύρην	θύρα	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	36	obl	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+
+# source = Histories, Book 1, chapter 12
+# text = καὶ μετὰ ταῦτα ἀναπαυομένου Κανδαύλεω ὑπεκδύς τε καὶ ἀποκτείνας αὐτὸν ἔσχε καὶ τὴν γυναῖκα καὶ τὴν βασιληίην Γύγης τοῦ καὶ Ἀρχίλοχος ὁ Πάριος κατὰ τὸν αὐτὸν χρόνον γενόμενος ἐν ἰάμβῳ τριμέτρῳ ἐπεμνήσθη
+# sent_id = 64450
+1	καὶ	καί	CCONJ	C-	_	11	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.97,feats:0.97,head:0.80,deprel:0.90
+2	μετὰ	μετά	ADP	R-	_	3	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+3	ταῦτα	οὗτος	PRON	Pd	Case=Acc|Gender=Neut|Number=Plur	11	obl	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.97,feats:0.97,head:0.85,deprel:0.88
+4	ἀναπαυομένου	ἀναπαύω	VERB	V-	Case=Gen|Gender=Masc|Number=Sing|Tense=Pres|VerbForm=Part|Voice=Mid	11	advcl	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.90,deprel:0.90
+5	Κανδαύλεω	Κανδαύλης	PROPN	Ne	Case=Gen|Gender=Masc|Number=Sing	4	nsubj	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.85
+6	ὑπεκδύς	ὑπεκδύω	VERB	V-	Aspect=Perf|Case=Nom|Gender=Masc|Number=Sing|Tense=Past|VerbForm=Part|Voice=Act	11	advcl	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.90,deprel:0.90
+7	τε	τε	CCONJ	C-	_	9	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.90
+8	καὶ	καί	CCONJ	C-	_	9	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+9	ἀποκτείνας	ἀποκτείνω	VERB	V-	Aspect=Perf|Case=Nom|Gender=Masc|Number=Sing|Tense=Past|VerbForm=Part|Voice=Act	6	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+10	αὐτὸν	αὐτός	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	9	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.95
+11	ἔσχε	ἔχω	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+12	καὶ	καί	CCONJ	C-	_	14	cc	_	Conf=form:0.97,lemma:0.97,upos:0.90,xpos:0.92,feats:0.97,head:0.85,deprel:0.75
+13	τὴν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	14	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+14	γυναῖκα	γυνή	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	11	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.95
+15	καὶ	καί	CCONJ	C-	_	17	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+16	τὴν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	17	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+17	βασιληίην	βασιλεία	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	14	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+18	Γύγης	Γύγης	PROPN	Ne	Case=Nom|Gender=Masc|Number=Sing	11	nsubj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.95,deprel:0.95
+19	τοῦ	ὁ	PRON	S-	Case=Gen|Gender=Masc|Number=Sing|PronType=Rel	32	obl:arg	_	Conf=form:0.97,lemma:0.97,upos:0.80,xpos:0.97,feats:0.80,head:0.80,deprel:0.75
+20	καὶ	καί	ADV	Df	_	21	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.90,feats:0.97,head:0.85,deprel:0.85
+21	Ἀρχίλοχος	Ἀρχίλοχος	PROPN	Ne	Case=Nom|Gender=Masc|Number=Sing	32	nsubj	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.90
+22	ὁ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	23	det	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.97,feats:0.95,head:0.95,deprel:0.95
+23	Πάριος	Πάριος	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Sing	21	appos	_	Conf=form:0.97,lemma:0.90,upos:0.70,xpos:0.85,feats:0.93,head:0.85,deprel:0.60
+24	κατὰ	κατά	ADP	R-	_	27	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+25	τὸν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	27	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+26	αὐτὸν	αὐτός	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	27	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+27	χρόνον	χρόνος	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	28	obl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+28	γενόμενος	γίγνομαι	VERB	V-	Aspect=Perf|Case=Nom|Gender=Masc|Number=Sing|Tense=Past|VerbForm=Part|Voice=Mid	21	acl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.75
+29	ἐν	ἐν	ADP	R-	_	30	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+30	ἰάμβῳ	ἴαμβος	NOUN	Nb	Case=Dat|Gender=Masc|Number=Sing	32	obl	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.93
+31	τριμέτρῳ	τρίμετρος	ADJ	A-	Case=Dat|Degree=Pos|Gender=Masc,Neut|Number=Sing	30	amod	_	Conf=form:0.97,lemma:0.95,upos:0.90,xpos:0.95,feats:0.85,head:0.90,deprel:0.90
+32	ἐπεμνήσθη	ἐπιμιμνῄσκω	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Pass	18	acl	_	Conf=form:0.97,lemma:0.80,upos:0.95,xpos:0.95,feats:0.88,head:0.80,deprel:0.85
+
+# source = Histories, Book 1, chapter 13
+# text = ἔσχε δὲ τὴν βασιληίην καὶ ἐκρατύνθη ἐκ τοῦ ἐν Δελφοῖσι χρηστηρίου
+# sent_id = 64451
+1	ἔσχε	ἔχω	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.99
+2	δὲ	δέ	ADV	Df	_	1	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+3	τὴν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	4	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.97,deprel:0.97
+4	βασιληίην	βασιλεία	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	1	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+5	καὶ	καί	CCONJ	C-	_	6	cc	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.95,feats:0.97,head:0.95,deprel:0.95
+6	ἐκρατύνθη	κρατύνω	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Pass	1	conj	_	Conf=form:0.97,lemma:0.92,upos:0.92,xpos:0.97,feats:0.92,head:0.92,deprel:0.92
+7	ἐκ	ἐκ	ADP	R-	_	11	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+8	τοῦ	ὁ	DET	S-	Case=Gen|Definite=Def|Gender=Neut|Number=Sing|PronType=Dem	11	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.80,head:0.95,deprel:0.97
+9	ἐν	ἐν	ADP	R-	_	10	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+10	Δελφοῖσι	Δελφοί	PROPN	Ne	Case=Dat|Gender=Masc|Number=Plur	11	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+11	χρηστηρίου	χρηστήριον	NOUN	Nb	Case=Gen|Gender=Neut|Number=Sing	6	obl	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.70
+
+# source = Histories, Book 1, chapter 13
+# text = ὡς γὰρ δὴ οἱ Λυδοὶ δεινόν ἐποιεῦντο τὸ Κανδαύλεω πάθος καὶ ἐν ὅπλοισι ἦσαν συνέβησαν ἐς τὸ αὐτὸ οἳ τε τοῦ Γύγεω στασιῶται καί οἱ λοιποὶ Λυδοί ἤν μὲν τὸ χρηστήριον ἀνέλῃ μιν βασιλέα εἶναι Λυδῶν τόν δὲ βασιλεύειν ἤν δὲ μή ἀποδοῦναι ὀπίσω ἐς Ἡρακλείδας τὴν ἀρχήν
+# sent_id = 64452
+1	ὡς	ὡς	SCONJ	G-	_	7	mark	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.90,feats:0.92,head:0.90,deprel:0.95
+2	γὰρ	γάρ	ADV	Df	_	15	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.97
+3	δὴ	δή	ADV	Df	_	7	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.60,deprel:0.95
+4	οἱ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Masc|Number=Plur|PronType=Dem	5	det	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+5	Λυδοὶ	Λυδός	NOUN	Nb	Case=Nom|Gender=Masc|Number=Plur	7	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.93
+6	δεινόν	δεινός	ADJ	A-	Case=Acc|Degree=Pos|Gender=Neut|Number=Sing	7	xcomp	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.93,head:0.85,deprel:0.80
+7	ἐποιεῦντο	ποιέω	VERB	V-	Aspect=Imp|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Mid	15	advcl	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.93
+8	τὸ	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Neut|Number=Sing|PronType=Dem	10	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+9	Κανδαύλεω	Κανδαύλης	PROPN	Ne	Case=Gen|Gender=Masc|Number=Sing	10	nmod	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.88,deprel:0.93
+10	πάθος	πάθος	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	7	obj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.88,deprel:0.88
+11	καὶ	καί	CCONJ	C-	_	13	cc	_	Conf=form:0.97,lemma:0.97,upos:0.93,xpos:0.93,feats:0.97,head:0.80,deprel:0.93
+12	ἐν	ἐν	ADP	R-	_	13	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.92,deprel:0.97
+13	ὅπλοισι	ὅπλον	NOUN	Nb	Case=Dat|Gender=Neut|Number=Plur	7	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.70,deprel:0.80
+14	ἦσαν	εἰμί	AUX	V-	Aspect=Imp|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	13	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.90
+15	συνέβησαν	συμβαίνω	VERB	V-	Aspect=Perf|Mood=Ind|Number=Plur|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.96,upos:0.96,xpos:0.97,feats:0.96,head:0.88,deprel:0.96
+16	ἐς	εἰς	ADP	R-	_	18	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.95
+17	τὸ	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Neut|Number=Sing|PronType=Dem	18	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.93,deprel:0.93
+18	αὐτὸ	αὐτός	PRON	Pd	Case=Acc|Gender=Neut|Number=Sing|Person=3|PronType=Prs	15	obl	_	Conf=form:0.97,lemma:0.97,upos:0.70,xpos:0.80,feats:0.60,head:0.82,deprel:0.70
+19	οἳ	ὁ	DET	Pr	Case=Nom|Definite=Def|Gender=Masc|Number=Plur|PronType=Dem	23	det	_	Conf=form:0.97,lemma:0.85,upos:0.65,xpos:0.55,feats:0.60,head:0.85,deprel:0.80
+20	τε	τε	CCONJ	C-	_	23	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.75,deprel:0.90
+21	τοῦ	ὁ	DET	S-	Case=Gen|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	22	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+22	Γύγεω	Γύγης	PROPN	Ne	Case=Gen|Gender=Masc|Number=Sing	23	nmod	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.85,deprel:0.93
+23	στασιῶται	στασιώτης	NOUN	Nb	Case=Nom|Gender=Masc|Number=Plur	15	nsubj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.95,head:0.85,deprel:0.95
+24	καί	καί	CCONJ	C-	_	27	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.90
+25	οἱ	ὁ	DET	S-	Case=Nom|Definite=Def|Gender=Masc|Number=Plur|PronType=Dem	27	det	_	Conf=form:0.97,lemma:0.97,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.97
+26	λοιποὶ	λοιπός	ADJ	A-	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	27	amod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.88
+27	Λυδοί	Λυδός	NOUN	Nb	Case=Nom|Gender=Masc|Number=Plur	23	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+28	ἤν	ἐάν	SCONJ	G-	_	32	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.97
+29	μὲν	μέν	ADV	Df	_	32	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.95
+30	τὸ	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Neut|Number=Sing|PronType=Dem	31	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.35,head:0.95,deprel:0.97
+31	χρηστήριον	χρηστήριον	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	32	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.30,head:0.85,deprel:0.80
+32	ἀνέλῃ	ἀναιρέω	VERB	V-	Aspect=Perf|Mood=Sub|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	39	advcl	_	Conf=form:0.97,lemma:0.88,upos:0.88,xpos:0.88,feats:0.88,head:0.75,deprel:0.90
+33	μιν	μιν	PRON	Pp	Case=Acc|Gender=Masc|Number=Sing|Person=3|PronType=Prs	34	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.90,head:0.75,deprel:0.80
+34	βασιλέα	βασιλεύς	NOUN	Nb	Case=Acc|Gender=Masc|Number=Sing	32	ccomp	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.70,deprel:0.75
+35	εἶναι	εἰμί	AUX	V-	Tense=Pres|VerbForm=Inf|Voice=Act	34	cop	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.93
+36	Λυδῶν	Λυδός	NOUN	Nb	Case=Gen|Gender=Masc|Number=Plur	34	nmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.90
+37	τόν	ὁ	PRON	S-	Case=Acc|Definite=Def|Gender=Masc|Number=Sing|PronType=Dem	39	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.97,feats:0.97,head:0.75,deprel:0.80
+38	δὲ	δέ	ADV	Df	_	39	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.80,deprel:0.95
+39	βασιλεύειν	βασιλεύω	VERB	V-	Tense=Pres|VerbForm=Inf|Voice=Act	15	ccomp	_	Conf=form:0.97,lemma:0.90,upos:0.90,xpos:0.97,feats:0.90,head:0.60,deprel:0.80
+40	ἤν	ἐάν	SCONJ	G-	_	43	mark	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.97
+41	δὲ	δέ	ADV	Df	_	43	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.95
+42	μή	μή	ADV	Df	Polarity=Neg	43	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.80,feats:0.93,head:0.70,deprel:0.85
+43	ἀποδοῦναι	ἀποδίδωμι	VERB	V-	Aspect=Perf|Tense=Past|VerbForm=Inf|Voice=Act	39	conj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.65,deprel:0.75
+44	ὀπίσω	ὀπίσω	ADV	Df	_	43	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.85,xpos:0.85,feats:0.97,head:0.85,deprel:0.85
+45	ἐς	εἰς	ADP	R-	_	46	case	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.96,deprel:0.96
+46	Ἡρακλείδας	Ἡρακλείδης	PROPN	Ne	Case=Acc|Gender=Masc|Number=Plur	43	obl	_	Conf=form:0.97,lemma:0.88,upos:0.88,xpos:0.88,feats:0.88,head:0.88,deprel:0.88
+47	τὴν	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Fem|Number=Sing|PronType=Dem	48	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.95,deprel:0.97
+48	ἀρχήν	ἀρχή	NOUN	Nb	Case=Acc|Gender=Fem|Number=Sing	43	obj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.92
+
+# source = Histories, Book 1, chapter 13
+# text = ἀνεῖλέ τε δὴ τὸ χρηστήριον καὶ ἐβασίλευσε οὕτω Γύγης
+# sent_id = 64453
+1	ἀνεῖλέ	ἀναιρέω	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	0	root	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.99
+2	τε	τε	CCONJ	C-	_	1	cc	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.85,deprel:0.88
+3	δὴ	δή	ADV	Df	_	1	discourse	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.88,deprel:0.95
+4	τὸ	ὁ	DET	S-	Case=Acc|Definite=Def|Gender=Neut|Number=Sing|PronType=Dem	5	det	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.95,head:0.95,deprel:0.97
+5	χρηστήριον	χρηστήριον	NOUN	Nb	Case=Acc|Gender=Neut|Number=Sing	1	nsubj	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.35,head:0.93,deprel:0.85
+6	καὶ	καί	CCONJ	C-	_	7	cc	_	Conf=form:0.97,lemma:0.97,upos:0.95,xpos:0.95,feats:0.97,head:0.95,deprel:0.95
+7	ἐβασίλευσε	βασιλεύω	VERB	V-	Aspect=Perf|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	1	conj	_	Conf=form:0.97,lemma:0.93,upos:0.93,xpos:0.97,feats:0.93,head:0.93,deprel:0.93
+8	οὕτω	οὕτω(ς)	ADV	Df	_	7	advmod	_	Conf=form:0.97,lemma:0.97,upos:0.97,xpos:0.97,feats:0.97,head:0.90,deprel:0.95
+9	Γύγης	Γύγης	PROPN	Ne	Case=Nom|Gender=Masc|Number=Sing	7	nsubj	_	Conf=form:0.97,lemma:0.95,upos:0.95,xpos:0.97,feats:0.97,head:0.85,deprel:0.90
+
