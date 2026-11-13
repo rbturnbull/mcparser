@@ -2,13 +2,21 @@
 
 ## Install
 
-MCParser uses [uv](https://docs.astral.sh/uv/) and Python 3.11 or later.
+MCParser needs Python 3.11 or later.
 
 ```bash
-git clone <repository> && cd mcparser
-uv sync
-export ANTHROPIC_API_KEY=...   # or the key for whichever provider your models use
+pip install --pre mcparser           # alpha release; or: uv tool install --prerelease allow mcparser
+export ANTHROPIC_API_KEY=...         # the key for whichever provider your models use
+mcparser --version
 ```
+
+To work from a clone instead, run `uv sync` in the repository and prefix the
+commands in these docs with `uv run`. Other providers are installed with extras
+(`pip install "mcparser[openai]"`); see [Models and providers](providers.md).
+
+Before spending anything, `mcparser validate train.conllu` checks that your
+trusted file is well formed, and `--sentence ID` or `--max-sentences N` limit a run
+to a few sentences.
 
 ## A held-out test on a UD treebank
 

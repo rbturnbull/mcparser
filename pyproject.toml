@@ -1,11 +1,27 @@
 [project]
 name = "mcparser"
-version = "0.2.0"
+version = "0.2.0a1"
 description = "Uses LLM agents to perform dependency parsing, with an MCP server over CoNLL-U corpora."
 authors = [{ name = "Robert Turnbull", email = "robert.turnbull@unimelb.edu.au" }]
 license = { text = "Apache-2.0" }
+license-files = ["LICENSE"]
 readme = "README.rst"
 requires-python = ">=3.11"
+keywords = ["dependency parsing", "universal dependencies", "conllu", "llm", "agents", "mcp", "nlp", "linguistics"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Linguistic",
+    "Typing :: Typed",
+]
 dependencies = [
     "mcp>=2.3",
     "pydantic>=2.10",
@@ -14,6 +30,24 @@ dependencies = [
     "pydantic-ai-slim[anthropic,mcp]>=2.56.0",
     "genai-prices>=0.1",
 ]
+
+[project.optional-dependencies]
+# Other model providers; the default models use Anthropic. Each extra installs the matching pydantic-ai provider.
+openai = ["pydantic-ai-slim[openai]>=2.56.0"]
+google = ["pydantic-ai-slim[google]>=2.56.0"]
+bedrock = ["pydantic-ai-slim[bedrock]>=2.56.0"]
+groq = ["pydantic-ai-slim[groq]>=2.56.0"]
+mistral = ["pydantic-ai-slim[mistral]>=2.56.0"]
+xai = ["pydantic-ai-slim[xai]>=2.56.0"]
+openrouter = ["pydantic-ai-slim[openrouter]>=2.56.0"]
+all-providers = ["pydantic-ai-slim[openai,google,bedrock,groq,mistral,xai,openrouter]>=2.56.0"]
+
+[project.urls]
+Homepage = "https://github.com/rbturnbull/mcparser"
+Documentation = "https://rbturnbull.github.io/mcparser"
+Repository = "https://github.com/rbturnbull/mcparser"
+Issues = "https://github.com/rbturnbull/mcparser/issues"
+Changelog = "https://github.com/rbturnbull/mcparser/blob/main/CHANGELOG.md"
 
 [project.scripts]
 mcparser = "mcparser.cli:app"
