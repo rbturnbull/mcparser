@@ -45,9 +45,12 @@ quickstart
 concepts
 pipeline
 agents
+providers
 mcp
 alignment
 evaluation
+results
+troubleshooting
 ```
 
 ```{toctree}
@@ -57,4 +60,5 @@ evaluation
 _generated/cli
 api
 development
+changelog
 ```

@@ -14,6 +14,7 @@ import typer
 from pydantic import ValidationError
 from pydantic_ai.exceptions import UserError
 
+from . import __version__
 from .agents.roles import ROLES
 from .agents.team import AgentTeam, ModelUsage
 from .baseline import run_baseline
@@ -59,6 +60,21 @@ class TierOptions:
 app = typer.Typer(help="LLM agents for dependency parsing with CoNLL-U files.", no_args_is_help=True)
 mcp_app = typer.Typer(help="The CoNLL-U MCP server.", no_args_is_help=True)
 app.add_typer(mcp_app, name="mcp")
+
+
+def _show_version(value: bool) -> None:
+    if value:
+        typer.echo(f"mcparser {__version__}")
+        raise typer.Exit()
+
+
+@app.callback()
+def _main(
+    version: Annotated[
+        bool, typer.Option("--version", callback=_show_version, is_eager=True, help="Show the version and exit.")
+    ] = False,
+) -> None:
+    """LLM agents for dependency parsing with CoNLL-U files."""
 
 
 class Transport(StrEnum):

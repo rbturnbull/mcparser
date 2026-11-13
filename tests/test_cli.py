@@ -79,6 +79,13 @@ def test_validate_command(train_path, pred_path):
     assert "invalid-upos" in result.stdout
 
 
+def test_version_option():
+    from mcparser import __version__
+
+    result = runner.invoke(app, ["--version"])
+    assert result.exit_code == 0 and result.output.strip() == f"mcparser {__version__}"
+
+
 def test_module_entry_point(monkeypatch, capsys):
     monkeypatch.setattr(sys, "argv", ["mcparser", "--help"])
     with pytest.raises(SystemExit) as exit_info:

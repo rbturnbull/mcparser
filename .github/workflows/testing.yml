@@ -28,3 +28,25 @@ jobs:
       # The tests never call a real model, so no API key is needed.
       - name: Run tests
         run: uv run --locked pytest
+
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Build and check the package
+        run: |
+          uv build
+          uvx twine check dist/*
+
+      - name: Install the wheel and run the CLI
+        run: |
+          uv venv --python 3.13 /tmp/wheel-test
+          uv pip install --python /tmp/wheel-test/bin/python dist/*.whl
+          /tmp/wheel-test/bin/mcparser --version
+          /tmp/wheel-test/bin/mcparser --help
