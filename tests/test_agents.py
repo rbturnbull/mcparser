@@ -337,6 +337,19 @@ def test_team_models_and_agents(store):
     assert values("upos", "X")("") == {"values": ""}
 
 
+def test_cheap_first_uses_a_cheaper_agent_in_round_one(store):
+    team = AgentTeam(store, "pred", Settings(cheap_first=True))
+    store.round = 1
+    first = team.agent("lemma")
+    assert team.model("lemma", 1) == Settings().efficient_model
+    store.round = 2
+    later = team.agent("lemma")
+    assert later is not first and team.agent("lemma") is later
+    assert team.model("lemma", 2) == Settings().strong_model
+    store.round = 1
+    assert team.agent("lemma") is first
+
+
 def test_applier_rejects_values_the_treebank_never_uses(store):
     with pytest.raises(ModelRetry, match="SCONJ never occurs in the treebank's XPOS"):
         Applier(store, ROLES["xpos"]).annotation(Annotation(values="p2 1 SCONJ 0.9"), batch("p2"))

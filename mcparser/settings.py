@@ -46,6 +46,7 @@ DEFAULT_EFFICIENT_ROLES = ("upos", "feats", "scorer")
 DEFAULT_LIGHT_ROLES = ("xpos",)
 """Roles that are close to a lookup once UPOS and FEATS are known."""
 Tier = Literal["strong", "efficient", "light"]
+DOWNGRADE: dict[Tier, Tier] = {"strong": "efficient", "efficient": "light", "light": "light"}
 
 THINKING_LEVELS = ("minimal", "low", "medium", "high", "xhigh")
 Thinking = bool | Literal["minimal", "low", "medium", "high", "xhigh"]
@@ -81,6 +82,14 @@ class Settings(BaseModel):
     efficient_thinking: Thinking | None = Field(None, description="Reasoning effort for efficient roles; None = model default.")
     light_thinking: Thinking | None = Field(None, description="Reasoning effort for light roles; None = model default.")
     model: str | None = Field(None, description="If set, one model for every role (overrides both tiers).")
+    cheap_first: bool = Field(
+        False,
+        description=(
+            "Round 1 uses the next cheaper tier (strong to efficient, efficient to light); later rounds use each role's "
+            "own tier, so only cells still below the threshold reach the stronger model. The scorer, models set per "
+            "role and a single `model` are not downgraded."
+        ),
+    )
     threshold: float = Field(0.8, ge=0, le=1, description="Cells below this confidence are refined.")
     rounds: int = Field(3, ge=1, description="Maximum number of score/refine rounds.")
     concurrency: int = Field(1, ge=1, description="Sentences processed at the same time.")
@@ -138,18 +147,25 @@ class Settings(BaseModel):
             return "light"
         return "efficient" if name in self.efficient_roles else "strong"
 
-    def model_for(self, name: str) -> str:
+    def effective_tier(self, name: str, round: int | None = None) -> Tier:
+        """The tier ``name`` runs at in ``round``: one tier down in round 1 if ``cheap_first`` (see there)."""
+        tier = self.tier(name)
+        if self.cheap_first and round == 1 and name != "scorer" and not self.model and not self.role(name).model:
+            return DOWNGRADE[tier]
+        return tier
+
+    def model_for(self, name: str, round: int | None = None) -> str:
         if self.role(name).model:
             return self.role(name).model
         if self.model:
             return self.model
-        return getattr(self, f"{self.tier(name)}_model")
+        return getattr(self, f"{self.effective_tier(name, round)}_model")
 
-    def thinking_for(self, name: str) -> Thinking | None:
+    def thinking_for(self, name: str, round: int | None = None) -> Thinking | None:
         override = self.role(name).thinking
         if override is not None:
             return override
-        return getattr(self, f"{self.tier(name)}_thinking")
+        return getattr(self, f"{self.effective_tier(name, round)}_thinking")
 
     def enabled(self, name: str) -> bool:
         enabled = self.role(name).enabled

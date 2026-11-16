@@ -2,6 +2,14 @@
 
 All notable changes to MCParser. The format follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+- `cheap_first` / `--cheap-first`: round 1 runs one model tier down (Opus → Sonnet, Sonnet → Haiku) and later rounds use each
+  role's own tier, so only cells still below the threshold reach the stronger model.
+- `mcparser align import` and `align export`: convert alignments to and from plain text (Pharaoh/Ugarit lines,
+  0- or 1-based) and YAML (`sent_id: links`). Functions in `mcparser.corpus.alignment_io`.
+
 ## [0.2.0a1]
 
 First alpha release on PyPI. Install with `pip install --pre mcparser`.

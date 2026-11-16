@@ -25,6 +25,26 @@ argument): a link sent again unchanged (same S/P and confidence) keeps its
 agent, so a program can tell rule links, model links and links a scorer has
 already rated apart. `get_parallel` shows them as `agents`.
 
+## Import and export
+
+JSON Lines is the stored format. For exchange with other tools, and for
+reading, `mcparser align` converts to and from two plain formats:
+
+- `text`: one line per sentence pair (in the order of side A's CoNLL-U file) of
+  links `i-j`, optionally ending in `S` or `P` (Pharaoh, Ugarit). Word numbers
+  in such files usually start at 0 (`--base 0`, the default); CoNLL-U ids start at 1.
+- `yaml`: a mapping from `sent_id` to Ugarit links with CoNLL-U ids,
+  `B10K1V1: 1-1S 2-3P`.
+
+```bash
+mcparser align import gold.txt -a a.conllu -b b.conllu -o gold.jsonl --confidence 1
+mcparser align export gold.jsonl -a a.conllu -b b.conllu -f yaml -o gold.yaml
+mcparser align export pred.jsonl -a a.conllu -b b.conllu --plain --min-confidence 0.8
+```
+
+Import checks that every word exists. The same functions are in
+`mcparser.corpus.alignment_io` (`read_links`, `format_links`).
+
 Like sources, a set is read-only (trusted, e.g. gold alignments, default
 confidence 1.0) or writable (default 0.0); a writable file is created when
 first saved, edits are saved immediately, and every change is appended to

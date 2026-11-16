@@ -81,3 +81,18 @@ def test_to_yaml_round_trips(tmp_path):
     path = tmp_path / "s.yaml"
     path.write_text(settings.to_yaml(), encoding="utf-8")
     assert Settings.from_file(path) == settings
+
+
+def test_cheap_first_downgrades_round_one_only():
+    settings = Settings(cheap_first=True, roles={"deprel": RoleSettings(model="fixed")}, strong_thinking="high", efficient_thinking="low")
+    assert settings.model_for("lemma", 1) == settings.efficient_model
+    assert settings.model_for("upos", 1) == settings.light_model
+    assert settings.model_for("xpos", 1) == settings.light_model
+    assert settings.thinking_for("lemma", 1) == "low"
+    for round in (2, 3, None):
+        assert settings.model_for("lemma", round) == settings.strong_model
+        assert settings.model_for("upos", round) == settings.efficient_model
+    assert settings.model_for("scorer", 1) == settings.efficient_model  # the scorer is not downgraded
+    assert settings.model_for("deprel", 1) == "fixed"  # a model set for the role wins
+    assert Settings(cheap_first=True, model="m").model_for("lemma", 1) == "m"
+    assert Settings().model_for("lemma", 1) == Settings().strong_model  # off by default

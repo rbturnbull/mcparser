@@ -67,6 +67,7 @@ light_roles: [xpos]
 strong_thinking: low          # reasoning effort: false, true, minimal, low, medium, high, xhigh
 threshold: 0.8                # refine cells below this confidence
 rounds: 3                     # maximum rounds
+cheap_first: false            # round 1 one tier down (Opus -> Sonnet, Sonnet -> Haiku); later rounds use the role's own tier
 batch_sentences: 8            # sentences per agent task
 batch_cells: 120              # cells per agent task
 concurrency: 1                # tasks run at the same time
@@ -89,7 +90,9 @@ Command-line overrides: `--strong-model`, `--efficient-model`, `--light-model`,
 `--efficient-roles`, `--light-roles`, `--strong-thinking`,
 `--efficient-thinking`, `--light-thinking`, `--model` (one model for every
 role), `--model-for ROLE=MODEL`, `--roles`, `--rounds`, `--threshold`,
-`--batch-sentences`, `--concurrency`, `--max-cost`, `--sentence` and `--max-sentences`.
+`--batch-sentences`, `--concurrency`, `--max-cost`, `--cheap-first`, `--sentence` and `--max-sentences`.
+`--cheap-first` runs round 1 on the next cheaper tier and sends only the cells that stay below the threshold to the role's own
+tier in later rounds (it needs at least two rounds to pay off; the scorer, `--model` and per-role models are not downgraded).
 `--max-cost 50` stops starting agent tasks once the estimate reaches $50 (tasks already running finish, so the total can
 exceed it by a few tasks); the sentences not reached stay unannotated, and `run` on the same file continues.
 `mcparser score` runs only the rules and the scorer.

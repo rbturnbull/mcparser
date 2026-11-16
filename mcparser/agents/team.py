@@ -84,7 +84,7 @@ class AgentTeam:
         self.models = dict(models or {})
         self.corpus_tool = settings.corpus_tool and bool(store.text_corpora)
         self.toolset = toolset or MCPToolset(build_server(store))
-        self._agents: dict[str, Agent[Batch, Answer]] = {}
+        self._agents: dict[tuple[str, str], Agent[Batch, Answer]] = {}
         self.usage: dict[str, ModelUsage] = {}
         """Token use and estimated cost per model."""
         self.role_usage: dict[str, ModelUsage] = {}
@@ -99,15 +99,17 @@ class AgentTeam:
     def trusted(self) -> list[str]:
         return [info.name for info in self.store.list_sources() if info.mode == "ro"]
 
-    def model(self, role: str) -> Model | str:
-        return self.models.get(role) or self.models.get("*") or self.settings.model_for(role)
+    def model(self, role: str, round: int | None = None) -> Model | str:
+        return self.models.get(role) or self.models.get("*") or self.settings.model_for(role, round)
 
     def agent(self, role: str) -> Agent[Batch, Answer]:
-        if role not in self._agents:
+        round = self.store.round
+        key = (role, self.settings.effective_tier(role, round))
+        if key not in self._agents:
             spec = ROLES[role]
             output_type = TaskReport if spec.edits_with_tools else Scores if spec.is_scorer else Annotation
             agent = Agent(
-                self.model(role),
+                self.model(role, round),
                 name=role,
                 deps_type=Batch,
                 instructions=instructions(
@@ -118,7 +120,7 @@ class AgentTeam:
                 output_type=output_type,
                 toolsets=[role_toolset(self.toolset, spec, self.target, CORPUS_TOOLS if self.corpus_tool else frozenset())],
                 retries=3,
-                model_settings=self.model_settings(role),
+                model_settings=self.model_settings(role, round),
                 defer_model_check=True,
             )
             if not spec.edits_with_tools:
@@ -129,12 +131,12 @@ class AgentTeam:
                 def check_and_apply(ctx: RunContext[Batch], answer: Annotation | Scores) -> Annotation | Scores:
                     return apply(answer, ctx.deps)
 
-            self._agents[role] = agent
-        return self._agents[role]
+            self._agents[key] = agent
+        return self._agents[key]
 
-    def model_settings(self, role: str) -> ModelSettings:
+    def model_settings(self, role: str, round: int | None = None) -> ModelSettings:
         settings = ModelSettings(cache=self.settings.cache)
-        thinking = self.settings.thinking_for(role)
+        thinking = self.settings.thinking_for(role, round)
         if thinking is not None:
             settings["thinking"] = thinking
         return settings
@@ -162,7 +164,7 @@ class AgentTeam:
         result = await self.agent(role).run(
             prompt, deps=batch, usage_limits=UsageLimits(request_limit=self.settings.request_limit)
         )
-        name = self.model_name(self.model(role))
+        name = self.model_name(self.model(role, self.store.round))
         task = ModelUsage()
         task.add(result.usage, name)
         self.usage.setdefault(name, ModelUsage(cost=0.0)).merge(task)

@@ -20,6 +20,9 @@ from .agents.team import AgentTeam, ModelUsage
 from .baseline import run_baseline
 from .rules import Rules
 from .corpus import CorpusError, CorpusStore, SourceMode, format_conllu, parse_conllu
+from .corpus.alignment import AlignmentSet
+from .corpus.alignment_io import AlignmentFormat, format_links, read_links
+from .corpus.source import CorpusSource
 from .evaluate import calibration, calibration_table
 from .evaluate import evaluate as evaluate_predictions
 from .evaluate import run_official
@@ -60,6 +63,8 @@ class TierOptions:
 app = typer.Typer(help="LLM agents for dependency parsing with CoNLL-U files.", no_args_is_help=True)
 mcp_app = typer.Typer(help="The CoNLL-U MCP server.", no_args_is_help=True)
 app.add_typer(mcp_app, name="mcp")
+align_app = typer.Typer(help="Import and export word alignments (text, YAML).", no_args_is_help=True)
+app.add_typer(align_app, name="align")
 
 
 def _show_version(value: bool) -> None:
@@ -425,6 +430,13 @@ def run(
             help="Let agents call corpus_find (default) or give them only the corpus evidence in the prompt.",
         ),
     ] = None,
+    cheap_first: Annotated[
+        bool | None,
+        typer.Option(
+            "--cheap-first/--no-cheap-first",
+            help="Round 1 with the next cheaper model tier; later rounds use each role's own tier for the cells still unsure.",
+        ),
+    ] = None,
     threshold: Annotated[float | None, typer.Option(min=0, max=1, help="Refine cells below this confidence.")] = None,
     concurrency: Annotated[int | None, typer.Option(min=1, help="Sentences processed at once.")] = None,
     sentence: SentenceOption = None,
@@ -441,6 +453,7 @@ def run(
         config, model, model_for, roles, tiers,
         rounds=rounds, threshold=threshold, concurrency=concurrency, batch_sentences=batch_sentences,
         final_scoring=final_score, joint_syntax=joint_syntax, corpus_tool=corpus_tool, max_cost=max_cost,
+        cheap_first=cheap_first,
     )  # fmt: skip
     _annotate(prediction, source, settings, sentence, False, report, max_sentences, corpus)
 
@@ -571,3 +584,77 @@ def evaluate(
 def show_settings(config: ConfigOption = None) -> None:
     """Print the settings (defaults, or CONFIG with defaults filled in) as YAML."""
     typer.echo(_settings(config, None, None, None).to_yaml(), nl=False)
+
+
+FormatOption = Annotated[AlignmentFormat, typer.Option("--format", "-f", help="text (Pharaoh/Ugarit lines) or yaml (sent_id: links).")]
+BaseOption = Annotated[int, typer.Option(min=0, max=1, help="Number of the first word in text files (0 or 1; YAML uses CoNLL-U ids).")]
+
+
+def _alignment_sources(path_a: Path, path_b: Path) -> tuple[CorpusSource, CorpusSource]:
+    return CorpusSource("a", path_a), CorpusSource("b", path_b)
+
+
+@align_app.command("import")
+def align_import(
+    input_path: Annotated[Path, typer.Argument(metavar="INPUT", help="Text file (one line per sentence pair) or YAML.")],
+    source_a: Annotated[Path, typer.Option("--source-a", "-a", help="CoNLL-U file of side A; its sentence order gives the lines.")],
+    source_b: Annotated[Path, typer.Option("--source-b", "-b", help="CoNLL-U file of side B (same sent_ids).")],
+    output: Annotated[Path, typer.Option("--output", "-o", help="Alignment set (JSON Lines) to create.")],
+    format: FormatOption = AlignmentFormat.TEXT,
+    base: BaseOption = 0,
+    confidence: Annotated[float | None, typer.Option(min=0, max=1, help="Confidence to store on every link.")] = None,
+    force: Annotated[bool, typer.Option("--force", help="Overwrite OUTPUT.")] = False,
+) -> None:
+    """Convert a text or YAML alignment into an alignment set (JSON Lines), checking every word id."""
+    if output.exists() and not force:
+        typer.echo(f"Error: {output} exists; use --force to overwrite it.", err=True)
+        raise typer.Exit(1)
+    try:
+        a, b = _alignment_sources(source_a, source_b)
+        sent_ids = [sentence.sent_id for sentence in a.sentences]
+        pairs = read_links(input_path.read_text(encoding="utf-8"), sent_ids, format, base)
+        for sent_id, links in pairs.items():
+            words_a = {word.id for word in a.sentence(sent_id).words}
+            words_b = {word.id for word in b.sentence(sent_id).words}
+            for link in links:
+                if link.source not in words_a or link.target not in words_b:
+                    raise CorpusError(f"Pair {sent_id}: link {link.key} points to a missing word.")
+                link.confidence = confidence
+        output.unlink(missing_ok=True)
+        target = AlignmentSet("import", a, b, output)
+        target.pairs = pairs
+        target.save()
+    except (CorpusError, OSError) as error:
+        typer.echo(f"Error: {error}", err=True)
+        raise typer.Exit(1) from error
+    typer.echo(f"Wrote {sum(map(len, pairs.values()))} links in {len(pairs)} pairs to {output}.")
+
+
+@align_app.command("export")
+def align_export(
+    alignment: Annotated[Path, typer.Argument(help="Alignment set (JSON Lines).")],
+    source_a: Annotated[Path, typer.Option("--source-a", "-a", help="CoNLL-U file of side A (sentence order).")],
+    source_b: Annotated[Path, typer.Option("--source-b", "-b", help="CoNLL-U file of side B.")],
+    output: Annotated[Path | None, typer.Option("--output", "-o", help="File to write (default: standard output).")] = None,
+    format: FormatOption = AlignmentFormat.TEXT,
+    base: BaseOption = 0,
+    plain: Annotated[bool, typer.Option("--plain", help="Pharaoh i-j only: leave out S/P.")] = False,
+    min_confidence: Annotated[float, typer.Option(min=0, max=1, help="Leave out links below this confidence.")] = 0.0,
+) -> None:
+    """Write an alignment set as text lines (Pharaoh/Ugarit) or YAML."""
+    try:
+        a, b = _alignment_sources(source_a, source_b)
+        loaded = AlignmentSet("export", a, b, alignment, mode="ro")
+        pairs = {
+            sent_id: [link for link in links if loaded.confidence(link) >= min_confidence]
+            for sent_id, links in loaded.pairs.items()
+        }
+        text = format_links(pairs, [sentence.sent_id for sentence in a.sentences], format, base, suffix=not plain)
+        if output is None:
+            typer.echo(text, nl=False)
+        else:
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(text, encoding="utf-8")
+    except (CorpusError, OSError) as error:
+        typer.echo(f"Error: {error}", err=True)
+        raise typer.Exit(1) from error
