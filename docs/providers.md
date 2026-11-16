@@ -90,6 +90,12 @@ cache reads).
 Prompts below a provider's minimum length (512 tokens for the current Anthropic
 models) are simply not cached. Set `cache: false` to switch it off.
 
+## Batch mode
+
+`--batch` sends Anthropic requests through the Message Batches API at half the price, at the
+cost of hours of latency; see [Message Batches](pipeline.md#message-batches-batch). It needs Anthropic
+models for every role, so it cannot be combined with the other providers above.
+
 ## Cost estimates and `--max-cost`
 
 Each run prints token counts and an estimated price per model. Anthropic prices

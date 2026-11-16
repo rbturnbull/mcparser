@@ -279,3 +279,46 @@ def test_run_stops_at_the_cost_limit(scripted_team, monkeypatch, pred_path):
     assert scripted_team[0].max_cost == 1.5
     assert "STOPPED: the cost limit was reached (1 tasks not started)" in result.stdout
     assert "(0 failed)" in result.stdout
+
+
+def test_run_and_score_accept_the_batch_options(scripted_team, pred_path):
+    result = runner.invoke(
+        app, ["run", str(pred_path), "--batch", "--batch-poll-seconds", "5", "--batch-cache", "5m", "--sentence", "p2"]
+    )
+    assert result.exit_code == 0, result.output
+    assert scripted_team[0].batch is True and scripted_team[0].batch_poll_seconds == 5
+    assert scripted_team[0].batch_cache == "5m"
+    assert "By model (batch prices, half the live price):" in result.stdout and "Batches" not in result.stdout
+    result = runner.invoke(app, ["score", str(pred_path), "--batch", "--batch-poll-seconds", "9", "--sentence", "p2"])
+    assert result.exit_code == 0, result.output
+    assert scripted_team[1].batch is True and scripted_team[1].batch_poll_seconds == 9
+    assert scripted_team[1].batch_cache == "1h"  # the default
+    runner.invoke(app, ["run", str(pred_path), "--sentence", "p2"])
+    assert scripted_team[2].batch is False  # off unless asked for
+
+
+def test_batch_cache_must_be_a_known_lifetime(pred_path):
+    result = runner.invoke(app, ["run", str(pred_path), "--batch", "--batch-cache", "forever"])
+    assert result.exit_code != 0 and "batch_cache" in result.output
+
+
+def test_run_report_lists_the_batches(scripted_team, monkeypatch, pred_path):
+    from mcparser.agents.batching import BatchRecord
+    from mcparser.agents.team import AgentTeam
+
+    records = [
+        BatchRecord(id="msgbatch_1", size=4, submitted="t", seconds=125.4, succeeded=3, errored=1),
+        BatchRecord(size=1, submitted="t", error="boom"),
+    ]
+    monkeypatch.setattr(AgentTeam, "batch_records", lambda self: records)
+    result = runner.invoke(app, ["run", str(pred_path), "--batch", "--sentence", "p2"])
+    assert result.exit_code == 0, result.output
+    assert "Batches (2):" in result.stdout
+    assert "msgbatch_1: 4 requests, 125s, 3 succeeded, 1 errored, 0 expired, 0 canceled" in result.stdout
+    assert "(not created): 1 requests, 0 succeeded, 0 errored, 0 expired, 0 canceled, FAILED: boom" in result.stdout
+
+
+def test_batch_mode_with_another_provider_stops_with_a_clear_error(pred_path, train_path):
+    result = runner.invoke(app, ["run", str(pred_path), "-s", str(train_path), "--batch", "--model", "openai:gpt-5.6", "--sentence", "p2"])
+    assert result.exit_code == 1
+    assert "Batch mode only works with Anthropic models" in result.output

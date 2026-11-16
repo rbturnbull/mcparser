@@ -5,6 +5,12 @@ All notable changes to MCParser. The format follows [Keep a Changelog](https://k
 ## [Unreleased]
 
 ### Added
+- `--batch` / `batch`: send the model requests through Anthropic's Message Batches API for half the price, for long runs
+  that are not urgent. The requests are batched, not the run, so agents, tools and retries are unchanged: a
+  `BatchingClient` (`mcparser.agents.batching`, reusable) queues each request and a dispatcher submits a batch whenever every
+  task in flight is waiting, polls it, and hands the answers back. Settings `batch_poll_seconds` and
+  `batch_max_wait_seconds`, `batch_cache` (5m, 1h or off; default 1h), CLI `--batch-poll-seconds` and `--batch-cache`. Prices are halved and marked in the
+  report, each batch is logged and listed in the run report, and `--batch` with a non-Anthropic model is an error.
 - `cheap_first` / `--cheap-first`: round 1 runs one model tier down (Opus → Sonnet, Sonnet → Haiku) and later rounds use each
   role's own tier, so only cells still below the threshold reach the stronger model.
 - `mcparser align import` and `align export`: convert alignments to and from plain text (Pharaoh/Ugarit lines,

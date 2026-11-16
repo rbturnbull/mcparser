@@ -294,7 +294,14 @@ def _print_report(report: RunReport) -> None:
     typer.echo(f"Final mean confidence {report.confidence:.3f}{rescored}. {len(report.tasks)} tasks ({failures} failed).")
     if report.budget_reached:
         typer.echo(f"STOPPED: the cost limit was reached ({skipped} tasks not started). Run again to continue.")
-    typer.echo("By model:")
+    if report.batches:
+        typer.echo(f"Batches ({len(report.batches)}):")
+        for item in report.batches:
+            counts = f"{item.succeeded} succeeded, {item.errored} errored, {item.expired} expired, {item.canceled} canceled"
+            waited = f", {item.seconds:.0f}s" if item.seconds is not None else ""
+            failed = f", FAILED: {item.error}" if item.error else ""
+            typer.echo(f"  {item.id or '(not created)'}: {item.size} requests{waited}, {counts}{failed}")
+    typer.echo("By model (batch prices, half the live price):" if report.batch_pricing else "By model:")
     for name, usage in [*report.usage.items(), ("total", report.total)]:
         typer.echo(f"  {name}: {_usage_line(usage)}")
     typer.echo("By role:")
@@ -349,6 +356,28 @@ def _annotate(
         report_path.write_text(report.model_dump_json(indent=1), encoding="utf-8")
 
 
+BatchModeOption = Annotated[
+    bool | None,
+    typer.Option(
+        "--batch/--no-batch",
+        help=(
+            "Send model requests through Anthropic's Message Batches API: half the price, but each wave of requests "
+            "takes minutes to hours (24 at most). Anthropic models only; use with a high --concurrency."
+        ),
+    ),
+]
+BatchCacheOption = Annotated[
+    str | None,
+    typer.Option(
+        help=(
+            "Prompt cache lifetime in batch mode: 5m, 1h (default) or off. A batch outlives five minutes, "
+            "but a one-hour cache write costs more."
+        )
+    ),
+]
+BatchPollOption = Annotated[
+    float | None, typer.Option(min=1, help="Seconds between checks of a submitted batch (default 30; it backs off).")
+]
 ModelOption = Annotated[
     str | None, typer.Option(help="One model for every role (overrides --strong-model and --efficient-model).")
 ]
@@ -437,6 +466,9 @@ def run(
             help="Round 1 with the next cheaper model tier; later rounds use each role's own tier for the cells still unsure.",
         ),
     ] = None,
+    batch: BatchModeOption = None,
+    batch_poll_seconds: BatchPollOption = None,
+    batch_cache: BatchCacheOption = None,
     threshold: Annotated[float | None, typer.Option(min=0, max=1, help="Refine cells below this confidence.")] = None,
     concurrency: Annotated[int | None, typer.Option(min=1, help="Sentences processed at once.")] = None,
     sentence: SentenceOption = None,
@@ -453,7 +485,7 @@ def run(
         config, model, model_for, roles, tiers,
         rounds=rounds, threshold=threshold, concurrency=concurrency, batch_sentences=batch_sentences,
         final_scoring=final_score, joint_syntax=joint_syntax, corpus_tool=corpus_tool, max_cost=max_cost,
-        cheap_first=cheap_first,
+        cheap_first=cheap_first, batch=batch, batch_poll_seconds=batch_poll_seconds, batch_cache=batch_cache,
     )  # fmt: skip
     _annotate(prediction, source, settings, sentence, False, report, max_sentences, corpus)
 
@@ -469,6 +501,9 @@ def score(
     efficient_thinking: EfficientThinkingOption = None,
     batch_sentences: BatchOption = None,
     model_for: ModelForOption = None,
+    batch: BatchModeOption = None,
+    batch_poll_seconds: BatchPollOption = None,
+    batch_cache: BatchCacheOption = None,
     concurrency: Annotated[int | None, typer.Option(min=1, help="Tasks run at once.")] = None,
     sentence: SentenceOption = None,
     max_sentences: MaxSentencesOption = None,
@@ -476,7 +511,10 @@ def score(
 ) -> None:
     """Only run the scorer: give every changed or unscored cell a confidence."""
     tiers = TierOptions(efficient_model=efficient_model, efficient_thinking=efficient_thinking)
-    settings = _settings(config, model, model_for, None, tiers, concurrency=concurrency, batch_sentences=batch_sentences)
+    settings = _settings(
+        config, model, model_for, None, tiers, concurrency=concurrency, batch_sentences=batch_sentences,
+        batch=batch, batch_poll_seconds=batch_poll_seconds, batch_cache=batch_cache,
+    )  # fmt: skip
     _annotate(prediction, source, settings, sentence, True, report, max_sentences, corpus)
 
 

@@ -29,6 +29,7 @@
 ```{eval-rst}
 .. automodule:: mcparser.agents.roles
 .. automodule:: mcparser.agents.team
+.. automodule:: mcparser.agents.batching
 .. automodule:: mcparser.agents.toolset
 .. automodule:: mcparser.agents.prompts
    :members: instructions, task_prompt

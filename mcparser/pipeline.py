@@ -25,6 +25,7 @@ import anyio
 from pydantic import BaseModel
 from pydantic_ai.exceptions import UserError
 
+from .agents.batching import BatchRecord
 from .agents.evidence import EvidenceBuilder
 from .agents.outputs import Batch
 from .agents.prompts import TaskItem, task_prompt
@@ -79,6 +80,10 @@ class RunReport(BaseModel):
     """Token use and estimated cost per role."""
     budget_reached: bool = False
     """The run stopped early because ``max_cost`` was reached; tasks that were not started are recorded as skipped."""
+    batch_pricing: bool = False
+    """The costs are Message Batches prices (half the live price)."""
+    batches: list[BatchRecord] = []
+    """The batches submitted in this run (batch mode only): id, size, wait and how the requests ended."""
 
 
 @dataclass
@@ -114,6 +119,8 @@ class Pipeline:
             self.source.sentence(sent_id)
         self.sent_ids = set(sent_ids) if sent_ids else None
         self.progress = progress or (lambda message: None)
+        if progress and team.on_batch is None:
+            team.on_batch = progress
         self.roles = [name for name in REFINE_ORDER if settings.enabled(name)]
         self.columns = list(dict.fromkeys(column for name in self.roles for column in ROLES[name].columns))
         self.tasks: list[TaskResult] = []
@@ -370,5 +377,7 @@ class Pipeline:
             total=self.team.total(),
             usage=self.team.usage,
             roles=self.team.role_usage,
+            batch_pricing=self.settings.batch,
+            batches=self.team.batch_records(),
             budget_reached=self.out_of_budget(),
         )

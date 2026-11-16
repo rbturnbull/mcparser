@@ -174,6 +174,22 @@ tests/               # pytest; data in tests/data/{train,pred}.conllu;
   for the word's actual head; for HEAD, how similar words attach.
 - Runs print tokens and an estimated price per model (`pricing.py`; update the
   table when prices change).
+## Message Batches (`--batch`)
+
+`agents/batching.py`: batches the *requests*, not the run. `BatchingClient` is an `AsyncAnthropic` subclass whose
+`beta.messages.create` (the call `AnthropicModel._messages_create` makes; `.beta` is overridden, everything else is the real client)
+queues the request on a `BatchDispatcher`; `AgentTeam` builds `AnthropicModel(name, provider=AnthropicProvider(anthropic_client=client))`
+for models named in the settings when `settings.batch` (explicit `models=` are untouched). The dispatcher submits when every
+`task()` in flight (`AgentTeam.run` wraps each) has a request waiting and the queue stopped growing for `settle_seconds`
+(or after `batch_max_wait_seconds`, or when full: 100k requests / 200 MB), polls with back-off, streams results, and resolves
+each future; errored/expired/canceled results raise `BatchRequestError` in that task only. Betas are a header of a batch, so
+requests are grouped by beta set; `speed`/`fallbacks`/`stream` raise `UserError`. Batch runs use `settings.batch_cache` (default `1h`; `5m`, `off`; a batch outlives
+the 5-minute cache), `pricing.estimate(batch=True)` halves everything and prices cache writes by the cache lifetime (`cache_ttl`). Non-Anthropic models
+with `batch` raise `UserError` in `AgentTeam.__init__`. `RunReport.batches` / `batch_pricing`; batch ids are logged through
+`Pipeline.progress`. No crash recovery beyond rerunning `run` (edits are saved per task). Verified against the Anthropic docs
+(2026-11): 50% discount, 100,000 requests or 256 MB per batch, most batches within an hour and at most 24 hours (then they
+expire), results kept 29 days, `max_tokens >= 1`.
+
 ## Unannotated text corpora (`--corpus`)
 
 `corpus/textcorpus.py`: `TextCorpus` over plain-text files (one sentence or

@@ -11,6 +11,8 @@ know get no estimate.
 from __future__ import annotations
 
 from genai_prices import Usage, calc_price
+from typing import Literal
+
 from pydantic import BaseModel
 
 
@@ -34,18 +36,40 @@ def price_for(model: str) -> Price | None:
     return PRICES.get(model.rsplit(":", 1)[-1])
 
 
-def estimate(model: str, input_tokens: int, cache_read_tokens: int, cache_write_tokens: int, output_tokens: int) -> float | None:
-    """Dollars for this usage. ``input_tokens`` includes the cached and cache-written tokens."""
+BATCH_DISCOUNT = 0.5
+"""The Message Batches API charges half of the live price for input and output."""
+LONG_CACHE_WRITE = 2.0
+"""A 1-hour cache write costs this many times the input price (a 5-minute one 1.25)."""
+CacheTtl = Literal["5m", "1h"]
+
+
+def estimate(
+    model: str,
+    input_tokens: int,
+    cache_read_tokens: int,
+    cache_write_tokens: int,
+    output_tokens: int,
+    batch: bool = False,
+    cache_ttl: CacheTtl = "1h",
+) -> float | None:
+    """Dollars for this usage. ``input_tokens`` includes the cached and cache-written tokens.
+
+    With ``batch`` the Message Batches discount applies. Cache writes are priced at the live rate
+    of ``cache_ttl`` (``"5m"`` or ``"1h"``, the cache lifetime the run used; the live API uses 5 minutes).
+    """
     price = price_for(model)
     if price is None:
-        return _listed_estimate(model, input_tokens, cache_read_tokens, cache_write_tokens, output_tokens)
+        cost = _listed_estimate(model, input_tokens, cache_read_tokens, cache_write_tokens, output_tokens)
+        return cost if cost is None or not batch else cost * BATCH_DISCOUNT
     uncached = input_tokens - cache_read_tokens - cache_write_tokens
-    return (
+    cache_write = price.input * LONG_CACHE_WRITE if cache_ttl == "1h" and batch else price.cache_write
+    cost = (
         uncached * price.input
         + cache_read_tokens * price.cache_read
-        + cache_write_tokens * price.cache_write
+        + cache_write_tokens * cache_write
         + output_tokens * price.output
     ) / 1_000_000
+    return cost * BATCH_DISCOUNT if batch else cost
 
 
 def _listed_estimate(model: str, input_tokens: int, cache_read_tokens: int, cache_write_tokens: int, output_tokens: int) -> float | None:

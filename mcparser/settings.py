@@ -95,6 +95,24 @@ class Settings(BaseModel):
     concurrency: int = Field(1, ge=1, description="Sentences processed at the same time.")
     request_limit: int = Field(60, ge=1, description="Maximum model requests per agent task.")
     cache: bool = Field(True, description="Use prompt caching (tool definitions, instructions, conversation).")
+    batch: bool = Field(
+        False,
+        description=(
+            "Send the model requests through Anthropic's Message Batches API: half the price, but each wave of requests "
+            "takes minutes to hours (24 at most). Only Anthropic models; use a high concurrency."
+        ),
+    )
+    batch_cache: Literal["5m", "1h", "off"] = Field(
+        "1h",
+        description=(
+            "Prompt cache lifetime in batch mode: 5m, 1h (a batch takes longer than five minutes, but a one-hour write costs "
+            "more) or off. Ignored if cache is false."
+        ),
+    )
+    batch_poll_seconds: float = Field(30, gt=0, description="Seconds between checks of a submitted batch (backs off up to five minutes).")
+    batch_max_wait_seconds: float = Field(
+        600, gt=0, description="Submit queued requests after this long even if some tasks are still preparing theirs."
+    )
     batch_sentences: int = Field(8, ge=1, description="Maximum sentences per agent task.")
     batch_cells: int = Field(120, ge=1, description="Maximum words with cells to work on per agent task (a single sentence may exceed it).")
     joint_syntax: bool = Field(
@@ -153,6 +171,15 @@ class Settings(BaseModel):
         if self.cheap_first and round == 1 and name != "scorer" and not self.model and not self.role(name).model:
             return DOWNGRADE[tier]
         return tier
+
+    def non_anthropic_models(self) -> list[tuple[str, str]]:
+        """(role, model) for every enabled role whose model is not an Anthropic one, in round 1 or later."""
+        found = []
+        for name in ROLES:
+            if self.enabled(name):
+                models = {self.model_for(name, None), self.model_for(name, 1)}
+                found += [(name, model) for model in sorted(models) if not model.startswith("anthropic:")]
+        return found
 
     def model_for(self, name: str, round: int | None = None) -> str:
         if self.role(name).model:
